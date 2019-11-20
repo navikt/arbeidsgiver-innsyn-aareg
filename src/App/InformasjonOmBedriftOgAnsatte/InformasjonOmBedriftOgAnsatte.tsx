@@ -1,5 +1,4 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react';
-import { OrganisasjonsDetaljerContext } from '../../OrganisasjonDetaljerProvider';
 import './InformasjonOmBedriftOgAnsatte.less';
 import Lenke from 'nav-frontend-lenker';
 import { basename } from '../../paths';
@@ -26,7 +25,7 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent = () => {
                 }
                 };
         }
-    }, []);
+    }, [valgtOrganisasjon]);
 
     const setStateForVisning = (index: number) => {
         if (index === 0) {
@@ -40,14 +39,8 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent = () => {
     if (valgtOrganisasjon) {
         return (
             <>
-                { valgtOrganisasjon && <>
+
                 {' '}
-                <Lenke
-                    className={'tilbake-til-forsiden'}
-                    href={basename + '/' + valgtOrganisasjon.OrganizationNumber + '/'}
-                >
-                    Tilbake til forsiden
-                </Lenke>
                 <div className="bedrift-og-ansatte-tab">
                     <Tabs
                         tabs={[{ label: 'Informasjon om bedrift' }, { label: 'Mine ansatte' }]}
@@ -57,14 +50,10 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent = () => {
                 </div>
                 {visInfoEllerAnsatte === 'informasjon' && <Informasjon />}
                 {visInfoEllerAnsatte === 'ansatte' && <MineAnsatte />}
-            </>}
                 </>
         );
 
     }
-
-
-
 };
 
 export default InformasjonOmBedriftOgAnsatte;

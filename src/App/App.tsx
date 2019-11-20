@@ -1,8 +1,25 @@
-import React from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import logo from '../logo.svg';
 import './App.css';
+import {hentArbeidsforhold} from "./api/AAregApi";
+import {OrganisasjonFraAltinn} from "./Objekter/OrganisasjonFraAltinn";
+import {hentOrganisasjonerFraAltinn} from "./api/altinnApi";
 
-const App: React.FC = () => {
+const App: FunctionComponent = () => {
+  const [organisasjonsListe, setOrganisasjonsListe] = useState(Array<OrganisasjonFraAltinn>());
+  useEffect(() => {
+    const hentOrganisasjoner = async () => {
+      const organisasjonsRespons = await hentOrganisasjonerFraAltinn();
+      const organisasjonsResponsFiltrert = organisasjonsRespons.filter((organisasjon: OrganisasjonFraAltinn) => {
+        return organisasjon.OrganizationForm === 'BEDR';
+      });
+      if (organisasjonsResponsFiltrert) {
+        setOrganisasjonsListe(organisasjonsResponsFiltrert);
+    };
+    }
+  }, []);
+
+
   return (
     <div className="App">
       <header className="App-header">
