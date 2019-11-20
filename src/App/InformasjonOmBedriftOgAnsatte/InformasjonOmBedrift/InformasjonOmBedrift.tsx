@@ -2,21 +2,21 @@ import React, { FunctionComponent, useContext, useEffect, useState } from 'react
 import { Normaltekst, Systemtittel, Ingress } from 'nav-frontend-typografi';
 import './InformasjonOmBedrift.less';
 import Lenke from 'nav-frontend-lenker';
+import {OrganisasjonFraEnhetsregisteret, tomEnhetsregOrg} from "../../Objekter/OrganisasjonFraEnhetsregisteret";
+import {OrganisasjonFraAltinn} from "../../Objekter/OrganisasjonFraAltinn";
+import {hentOverordnetEnhet, hentUnderenhet} from "../../../api/AAregApi";
 
-import { OrganisasjonsDetaljerContext } from '../../../OrganisasjonDetaljerProvider';
-import {
-    OrganisasjonFraEnhetsregisteret,
-    tomEnhetsregOrg,
-} from '../../../Objekter/Organisasjoner/OrganisasjonFraEnhetsregisteret';
-import { hentOverordnetEnhet, hentUnderenhet } from '../../../api/enhetsregisteretApi';
+interface Props {
+    valgtOrganisasjon: OrganisasjonFraAltinn
 
-const InformasjonOmBedrift: FunctionComponent = () => {
-    const { valgtOrganisasjon } = useContext(OrganisasjonsDetaljerContext);
+}
+
+const InformasjonOmBedrift: FunctionComponent<Props> = props => {
     const [underenhet, setUnderenhet] = useState<OrganisasjonFraEnhetsregisteret>(tomEnhetsregOrg);
     const [overordnetEnhet, setOverordnetEnhet] = useState<OrganisasjonFraEnhetsregisteret>(
         tomEnhetsregOrg
     );
-    const orgnr = valgtOrganisasjon.OrganizationNumber;
+    const orgnr = props.valgtOrganisasjon.OrganizationNumber;
 
     useEffect(() => {
         const setEnheter = async () => {

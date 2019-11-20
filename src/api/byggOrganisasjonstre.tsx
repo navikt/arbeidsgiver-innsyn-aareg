@@ -1,6 +1,6 @@
-import {JuridiskEnhetMedUnderEnheter} from "../Objekter/JuridiskEnhetMedUnderEnheter";
+import {JuridiskEnhetMedUnderEnheter} from "../App/Objekter/JuridiskEnhetMedUnderEnheter";
 import {hentAlleJuridiskeEnheter} from "./AAregApi";
-import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
+import {OrganisasjonFraAltinn} from "../App/Objekter/OrganisasjonFraAltinn";
 
 export function settSammenJuridiskEnhetMedUnderOrganisasjoner(
     juridiskeEnheter: OrganisasjonFraAltinn[],
