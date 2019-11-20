@@ -2,7 +2,7 @@ import {hentArbeidsforholdLink, hentOverordnetEnhetApiLink, hentUnderenhetApiLin
 import {ListeMedJuridiskeEnheter, OrganisasjonFraEnhetsregisteret} from "../Objekter/OrganisasjonFraEnhetsregisteret";
 import {OrganisasjonFraAltinn, tomaAltinnOrganisasjon} from "../Objekter/OrganisasjonFraAltinn";
 
-export async function hentArbeidsforhold(orgnr: string): Promise<any> {
+export async function hentArbeidsforholdFraAAreg(orgnr: string): Promise<any> {
     let respons = await fetch(hentArbeidsforholdLink(orgnr));
     if (respons.ok) {
         return await respons.json();

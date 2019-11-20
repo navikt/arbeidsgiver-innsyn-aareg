@@ -9,23 +9,18 @@ import Bedriftsmeny from "@navikt/bedriftsmeny";
 
 const App: FunctionComponent<RouteComponentProps> = props => {
   const { history } = props;
-  const [organisasjonsListe, setOrganisasjonsListe] = useState(Array<OrganisasjonFraAltinn>());
   const [organisasjonsTre, setOrganisasjonsTre] = useState(Array<JuridiskEnhetMedUnderEnheter >());
   const [valgtOrganisasjon, setValgtOrganisasjon] = useState<OrganisasjonFraAltinn | null>(null);
-
 
   useEffect(() => {
     const hentOrganisasjonerOgByggTre = async () => {
       const organisasjonsRespons = await hentOrganisasjonerFraAltinn();
-      const organisasjonsResponsFiltrert = organisasjonsRespons.filter((organisasjon: OrganisasjonFraAltinn) => {
-        return organisasjon.OrganizationForm === 'BEDR';
-      });
-      if (organisasjonsResponsFiltrert) {
-        setOrganisasjonsListe(organisasjonsResponsFiltrert);
+      if (organisasjonsRespons) {
         const bygdOrganisasjonstre = await byggOrganisasjonstre(organisasjonsRespons);
         setOrganisasjonsTre(bygdOrganisasjonstre);
     };
     }
+    hentOrganisasjonerOgByggTre();
   }, []);
 
   return (

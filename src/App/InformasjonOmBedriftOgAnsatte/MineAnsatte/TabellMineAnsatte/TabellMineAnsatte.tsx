@@ -1,13 +1,14 @@
 import React, { FunctionComponent } from 'react';
 import KolonnerFullSkjerm from './Kolonner/Kolonner';
-import { arbeidsforhold } from '../../../../Objekter/Ansatte';
+
 import './TabellMineAnsatte.less';
 import 'nav-frontend-tabell-style';
 import { KolonneState } from '../MineAnsatte';
+import {Arbeidsforhold} from "../../../Objekter/ArbeidsForhold";
 
 interface Props {
     className?: string;
-    listeMedArbeidsForhold: arbeidsforhold[];
+    listeMedArbeidsForhold: Arbeidsforhold[];
     setNavarendeKolonne: (kolonne: KolonneState) => void;
     byttSide: (indeks: number) => void;
     navarendeKolonne: KolonneState;
