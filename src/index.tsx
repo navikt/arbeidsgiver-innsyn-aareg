@@ -1,8 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App/App';
-import * as serviceWorker from './serviceWorker';
+import 'core-js';
+
+if (process.env.REACT_APP_MOCK) {
+    console.log('========================================');
+    console.log('=============== MED MOCK ===============');
+    console.log('===DETTE SKAL DU IKKE SE I PRODUKSJON===');
+    console.log('========================================');
+    require('./mocking/AAregMock');
+    require('./mocking/altinnMock');
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

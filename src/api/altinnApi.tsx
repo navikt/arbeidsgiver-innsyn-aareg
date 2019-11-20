@@ -1,4 +1,4 @@
-import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
+import {OrganisasjonFraAltinn} from "../App/Objekter/OrganisasjonFraAltinn";
 
 export async function hentOrganisasjonerFraAltinn(): Promise<OrganisasjonFraAltinn[]> {
     let respons = await fetch('/min-side-arbeidsgiver/api/organisasjoner');

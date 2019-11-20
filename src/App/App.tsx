@@ -1,9 +1,9 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import './App.css';
 import {OrganisasjonFraAltinn} from "./Objekter/OrganisasjonFraAltinn";
-import {hentOrganisasjonerFraAltinn} from "./api/altinnApi";
+import {hentOrganisasjonerFraAltinn} from "../api/altinnApi";
 import {JuridiskEnhetMedUnderEnheter} from "./Objekter/JuridiskEnhetMedUnderEnheter";
-import {byggOrganisasjonstre} from "./api/byggOrganisasjonstre";
+import {byggOrganisasjonstre} from "../api/byggOrganisasjonstre";
 import { withRouter, RouteComponentProps } from 'react-router';
 import Bedriftsmeny from "@navikt/bedriftsmeny";
 

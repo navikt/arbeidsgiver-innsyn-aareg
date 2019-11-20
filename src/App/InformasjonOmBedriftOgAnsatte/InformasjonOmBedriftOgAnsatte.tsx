@@ -4,7 +4,7 @@ import Tabs from 'nav-frontend-tabs';
 
 import Informasjon from './InformasjonOmBedrift/InformasjonOmBedrift';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
-import { hentArbeidsforholdFraAAreg} from "../api/AAregApi";
+import { hentArbeidsforholdFraAAreg} from "../../api/AAregApi";
 import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
 
 interface Props {
@@ -48,7 +48,7 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent<Props> = props => {
                         kompakt
                     />
                 </div>
-                {visInfoEllerAnsatte === 'informasjon' && <Informasjon/>}
+                {visInfoEllerAnsatte === 'informasjon' && <Informasjon valgtOrganisasjon={props.valgtOrganisasjon}/>}
                 {visInfoEllerAnsatte === 'ansatte' && <MineAnsatte listeMedArbeidsForhold={listeOverArbeidsForholdFraAareg} />}
                 </>
         );
