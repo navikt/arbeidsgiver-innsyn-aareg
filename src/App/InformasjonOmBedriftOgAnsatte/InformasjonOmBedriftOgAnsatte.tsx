@@ -8,13 +8,12 @@ import Informasjon from './InformasjonOmBedrift/InformasjonOmBedrift';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
 import {hentArbeidsforhold} from "../api/AAregApi";
 import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
-import {ObjektFraAAregisteret} from "../Objekter/ObjektFraAAreg";
+
 
 const InformasjonOmBedriftOgAnsatte: FunctionComponent = () => {
     const [visInfoEllerAnsatte, setVisInfoEllerAnsatte] = useState('informasjon');
     const [listeOverArbeidsForholdFraAareg, setlisteOverArbeidsForholdFraAareg] = useState([]);
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState<OrganisasjonFraAltinn | null>(null);
-
     useEffect(() => {
         if (valgtOrganisasjon) {
             const hentArbeidsForhold = async () =>  {
