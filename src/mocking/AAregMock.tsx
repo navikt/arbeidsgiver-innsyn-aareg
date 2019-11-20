@@ -1,7 +1,7 @@
 import fetchMock from 'fetch-mock';
-import {ObjektFraAAregisteret} from "../Objekter/ObjektFraAAreg";
-import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
-import {hentArbeidsforholdLink} from "../lenker";
+import {ObjektFraAAregisteret} from "../App/Objekter/ObjektFraAAreg";
+import {Arbeidsforhold} from "../App/Objekter/ArbeidsForhold";
+import {hentArbeidsforholdLink} from "../App/lenker";
 
 export const eksempel1: Arbeidsforhold = {
     navn: 'Gøril',

@@ -1,6 +1,6 @@
-import {hentArbeidsforholdLink, hentOverordnetEnhetApiLink, hentUnderenhetApiLink} from "../lenker";
-import {ListeMedJuridiskeEnheter, OrganisasjonFraEnhetsregisteret} from "../Objekter/OrganisasjonFraEnhetsregisteret";
-import {OrganisasjonFraAltinn, tomaAltinnOrganisasjon} from "../Objekter/OrganisasjonFraAltinn";
+import {hentArbeidsforholdLink, hentOverordnetEnhetApiLink, hentUnderenhetApiLink} from "../App/lenker";
+import {ListeMedJuridiskeEnheter, OrganisasjonFraEnhetsregisteret} from "../App/Objekter/OrganisasjonFraEnhetsregisteret";
+import {OrganisasjonFraAltinn, tomaAltinnOrganisasjon} from "../App/Objekter/OrganisasjonFraAltinn";
 
 export async function hentArbeidsforholdFraAAreg(orgnr: string): Promise<any> {
     let respons = await fetch(hentArbeidsforholdLink(orgnr));
