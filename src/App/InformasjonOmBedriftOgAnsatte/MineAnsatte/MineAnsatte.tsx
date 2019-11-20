@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import './MineAnsatte.less';
 import { Undertittel } from 'nav-frontend-typografi';
-import { OrganisasjonsDetaljerContext } from '../../../OrganisasjonDetaljerProvider';
+import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';
 import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
@@ -10,13 +10,14 @@ import {
     sorterArbeidsforhold,
 } from './sorteringOgFiltreringsFunksjoner';
 
-import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';
+
 import {
     regnUtantallSider,
     regnUtArbeidsForholdSomSkalVisesPaEnSide,
     visEllerSkjulChevroner,
 } from './pagineringsFunksjoner';
-import { arbeidsforhold } from '../../../Objekter/Ansatte';
+import {arbeidsforhold} from "../../Objekter/ObjektFraAAreg";
+
 
 export enum SorteringsAttributt {
     NAVN,
@@ -33,8 +34,12 @@ export interface KolonneState {
     reversSortering: boolean;
 }
 
-const MineAnsatte: FunctionComponent = () => {
-    const { mineAnsatte } = useContext(OrganisasjonsDetaljerContext);
+interface Props {
+    listeMedArbeidsForhold: arbeidsforhold[]
+
+}
+
+const MineAnsatte: FunctionComponent<Props> = props => {
     const [ansattForholdPaSiden, setAnsattForholdPaSiden] = useState(Array<arbeidsforhold>());
     const [antallSider, setAntallSider] = useState(0);
     const [naVarendeSidetall, setnaVarendeSidetall] = useState(1);
@@ -58,7 +63,7 @@ const MineAnsatte: FunctionComponent = () => {
 
     useEffect(() => {
         let sortertListe = sorterArbeidsforhold(
-            mineAnsatte.arbeidsforholdoversikter,
+            props.listeMedArbeidsForhold,
             navarendeKolonne.sorteringsAttributt
         );
         if (navarendeKolonne.reversSortering) {
@@ -82,7 +87,7 @@ const MineAnsatte: FunctionComponent = () => {
             'sidebytter-chevron-venstre',
             'sidebytter-chevron-hoyre'
         );
-    }, [mineAnsatte, naVarendeSidetall, navarendeKolonne, filterState, antallSider]);
+    }, [props.listeMedArbeidsForhold, naVarendeSidetall, navarendeKolonne, filterState, antallSider]);
 
     useEffect(() => {
         setnaVarendeSidetall(1);
@@ -111,7 +116,7 @@ const MineAnsatte: FunctionComponent = () => {
             </Wrapper>
             <div className={'mine-ansatte__topp'}>
                 <div tabIndex={0} className={'mine-ansatte__antall-forhold'}>
-                    {mineAnsatte.arbeidsforholdoversikter.length} arbeidsforhold
+                    {props.listeMedArbeidsForhold.length} arbeidsforhold
                 </div>
                 <SideBytter
                     className={'sidebytter'}
