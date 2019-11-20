@@ -1,30 +1,31 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react';
 import './InformasjonOmBedriftOgAnsatte.less';
-import Lenke from 'nav-frontend-lenker';
-import { basename } from '../../paths';
 import Tabs from 'nav-frontend-tabs';
 
 import Informasjon from './InformasjonOmBedrift/InformasjonOmBedrift';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
-import {hentArbeidsforhold} from "../api/AAregApi";
+import { hentArbeidsforholdFraAAreg} from "../api/AAregApi";
 import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
 
+interface Props {
+    valgtOrganisasjon: OrganisasjonFraAltinn,
+};
 
-const InformasjonOmBedriftOgAnsatte: FunctionComponent = () => {
+const InformasjonOmBedriftOgAnsatte: FunctionComponent<Props> = props => {
     const [visInfoEllerAnsatte, setVisInfoEllerAnsatte] = useState('informasjon');
     const [listeOverArbeidsForholdFraAareg, setlisteOverArbeidsForholdFraAareg] = useState([]);
-    const [valgtOrganisasjon, setValgtOrganisasjon] = useState<OrganisasjonFraAltinn | null>(null);
     useEffect(() => {
-        if (valgtOrganisasjon) {
-            const hentArbeidsForhold = async () =>  {
-                let objekt = await hentArbeidsforhold(valgtOrganisasjon.OrganizationNumber);
+        if (props.valgtOrganisasjon) {
+            const hentArbeidsforhold = async () =>  {
+                let objekt = await hentArbeidsforholdFraAAreg(props.valgtOrganisasjon.OrganizationNumber);
                 if (objekt) {
                      setlisteOverArbeidsForholdFraAareg(objekt);
 
                 }
                 };
+            hentArbeidsforhold();
         }
-    }, [valgtOrganisasjon]);
+    }, [props.valgtOrganisasjon]);
 
     const setStateForVisning = (index: number) => {
         if (index === 0) {
@@ -35,7 +36,7 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent = () => {
         }
     };
 
-    if (valgtOrganisasjon) {
+
         return (
             <>
 
@@ -47,12 +48,12 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent = () => {
                         kompakt
                     />
                 </div>
-                {visInfoEllerAnsatte === 'informasjon' && <Informasjon />}
-                {visInfoEllerAnsatte === 'ansatte' && <MineAnsatte />}
+                {visInfoEllerAnsatte === 'informasjon' && <Informasjon/>}
+                {visInfoEllerAnsatte === 'ansatte' && <MineAnsatte listeMedArbeidsForhold={listeOverArbeidsForholdFraAareg} />}
                 </>
         );
 
-    }
+
 };
 
 export default InformasjonOmBedriftOgAnsatte;
