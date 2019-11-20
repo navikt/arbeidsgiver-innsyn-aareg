@@ -6,3 +6,12 @@ export interface OrganisasjonFraAltinn {
     Status: string;
     ParentOrganizationNumber: string;
 }
+
+export const tomaAltinnOrganisasjon: OrganisasjonFraAltinn = {
+    Name: '',
+    Type: '',
+    OrganizationNumber: '',
+    OrganizationForm: '',
+    Status: '',
+    ParentOrganizationNumber: '',
+};
