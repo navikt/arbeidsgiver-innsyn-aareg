@@ -1,16 +1,18 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import logo from '../logo.svg';
 import './App.css';
-import {hentArbeidsforhold} from "./api/AAregApi";
 import {OrganisasjonFraAltinn} from "./Objekter/OrganisasjonFraAltinn";
 import {hentOrganisasjonerFraAltinn} from "./api/altinnApi";
 import {JuridiskEnhetMedUnderEnheter} from "./Objekter/JuridiskEnhetMedUnderEnheter";
 import {byggOrganisasjonstre} from "./api/byggOrganisasjonstre";
+import { withRouter, RouteComponentProps } from 'react-router';
+import Bedriftsmeny from "@navikt/bedriftsmeny";
 
-const App: FunctionComponent = () => {
+const App: FunctionComponent<RouteComponentProps> = props => {
+  const { history } = props;
   const [organisasjonsListe, setOrganisasjonsListe] = useState(Array<OrganisasjonFraAltinn>());
   const [organisasjonsTre, setOrganisasjonsTre] = useState(Array<JuridiskEnhetMedUnderEnheter >());
   const [valgtOrganisasjon, setValgtOrganisasjon] = useState<OrganisasjonFraAltinn | null>(null);
+
 
   useEffect(() => {
     const hentOrganisasjonerOgByggTre = async () => {
@@ -28,20 +30,12 @@ const App: FunctionComponent = () => {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Bedriftsmeny
+          sidetittel="Informasjon om bedrift og ansatte"
+          organisasjonstre={organisasjonsTre}
+          onOrganisasjonChange={setValgtOrganisasjon}
+          history={history}
+      />
     </div>
   );
 }
