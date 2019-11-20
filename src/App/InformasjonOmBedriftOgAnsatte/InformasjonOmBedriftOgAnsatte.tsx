@@ -7,16 +7,26 @@ import Tabs from 'nav-frontend-tabs';
 
 import Informasjon from './InformasjonOmBedrift/InformasjonOmBedrift';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
+import {hentArbeidsforhold} from "../api/AAregApi";
+import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
+import {ObjektFraAAregisteret} from "../Objekter/ObjektFraAAreg";
 
 const InformasjonOmBedriftOgAnsatte: FunctionComponent = () => {
-    const { valgtOrganisasjon } = useContext(OrganisasjonsDetaljerContext);
     const [visInfoEllerAnsatte, setVisInfoEllerAnsatte] = useState('informasjon');
     const [listeOverArbeidsForholdFraAareg, setlisteOverArbeidsForholdFraAareg] = useState([]);
+    const [valgtOrganisasjon, setValgtOrganisasjon] = useState<OrganisasjonFraAltinn | null>(null);
 
     useEffect(() => {
+        if (valgtOrganisasjon) {
+            const hentArbeidsForhold = async () =>  {
+                let objekt = await hentArbeidsforhold(valgtOrganisasjon.OrganizationNumber);
+                if (objekt) {
+                     setlisteOverArbeidsForholdFraAareg(objekt);
 
-        setnaVarendeSidetall(1);
-    }, [navarendeKolonne]);
+                }
+                };
+        }
+    }, []);
 
     const setStateForVisning = (index: number) => {
         if (index === 0) {
@@ -27,26 +37,34 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent = () => {
         }
     };
 
-    return (
-        <>
-            {' '}
-            <Lenke
-                className={'tilbake-til-forsiden'}
-                href={basename + '/' + valgtOrganisasjon.OrganizationNumber + '/'}
-            >
-                Tilbake til forsiden
-            </Lenke>
-            <div className="bedrift-og-ansatte-tab">
-                <Tabs
-                    tabs={[{ label: 'Informasjon om bedrift' }, { label: 'Mine ansatte' }]}
-                    onChange={(event: any, index: number) => setStateForVisning(index)}
-                    kompakt
-                />
-            </div>
-            {visInfoEllerAnsatte === 'informasjon' && <Informasjon />}
-            {visInfoEllerAnsatte === 'ansatte' && <MineAnsatte />}
-        </>
-    );
+    if (valgtOrganisasjon) {
+        return (
+            <>
+                { valgtOrganisasjon && <>
+                {' '}
+                <Lenke
+                    className={'tilbake-til-forsiden'}
+                    href={basename + '/' + valgtOrganisasjon.OrganizationNumber + '/'}
+                >
+                    Tilbake til forsiden
+                </Lenke>
+                <div className="bedrift-og-ansatte-tab">
+                    <Tabs
+                        tabs={[{ label: 'Informasjon om bedrift' }, { label: 'Mine ansatte' }]}
+                        onChange={(event: any, index: number) => setStateForVisning(index)}
+                        kompakt
+                    />
+                </div>
+                {visInfoEllerAnsatte === 'informasjon' && <Informasjon />}
+                {visInfoEllerAnsatte === 'ansatte' && <MineAnsatte />}
+            </>}
+                </>
+        );
+
+    }
+
+
+
 };
 
 export default InformasjonOmBedriftOgAnsatte;
