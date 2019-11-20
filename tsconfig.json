@@ -17,12 +17,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "react"
   },
   "include": [
-    "src"
-  ],
-  "exclude": [
-    "src/server/"
+    "./src"
   ]
 }
