@@ -10,6 +10,7 @@
     "@types/react-aria-menubutton": "^6.2.2",
     "@types/react-dom": "16.9.4",
     "@types/react-router": "^5.1.3",
+    "craco": "^0.0.3",
     "fetch-mock": "^8.0.0",
     "nav-frontend-core": "^4.0.11",
     "nav-frontend-lenker": "^1.0.32",
@@ -23,9 +24,12 @@
     "typescript": "3.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "winmock": "set REACT_APP_MOCK=true && yarn start",
+    "mock": "REACT_APP_MOCK=true yarn start",
+    "server": "yarn build && node src/server/server.js",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
