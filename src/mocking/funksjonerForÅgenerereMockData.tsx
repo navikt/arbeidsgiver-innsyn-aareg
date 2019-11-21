@@ -1,12 +1,105 @@
-const listeMedFornavn: string[]= ["Gudrun", "Elina", "Kaia", "Knut", "Jenny", "Petter", "Martin", "Marie", "Herman", "Alfred", "Leif", "Inger", "Ivar", "Trond"];
+import {Arbeidsforhold} from "../App/Objekter/ArbeidsForhold";
+import {arbeidsforhold} from "../App/Objekter/ObjektFraAAreg";
 
-const listeMedEtterNavn: string[] = ["Rishovd", "Knuten", "Ludvigsen", "Solberg", "Stoltenberg", "Støre", "Ibsen", "Munch", "Vang", "Nesbø", "Morgenstierne"];
+export const listeMedFornavn: string[]= ["Gudrun", "Elina", "Kaia", "Knut", "Jenny", "Petter", "Martin", "Marie", "Herman", "Alfred", "Leif", "Inger", "Ivar", "Trond"];
 
-const datoFortid: string[] = ["29/01/1996", "01/04/1999", "01/12/1998", "18/04/1990", "14/02/1990", "01/05/1980", "17/05/2000", "17/05/1814"];
+export const listeMedEtterNavn: string[] = ["Rishovd", "Knuten", "Ludvigsen", "Solberg", "Stoltenberg", "Støre", "Ibsen", "Munch", "Vang", "Nesbø", "Morgenstierne"];
 
-const datoFramtid: string[] = ["29/01/2020", "01/04/2021", "01/12/2024", "18/04/2020", "14/02/2021", "01/05/2025", "17/05/2020", "17/05/2020"];
+export const datoFortid: string[] = ["29/01/1996", "01/04/1999", "01/12/1998", "18/04/1990", "14/02/1990", "01/05/1980", "17/05/2000", "17/05/1814"];
 
-const yrker: string[] = ["Ekspeditør", "Prsonalansvarlig", "Daglig leder", "Servitør", "Pianist", "Lektor", "Gymlærer", "Konsulent", "Produkteier", "Generalsekretær", "Arkitekt", "Slangetemmer", "Performer", "Torpedo"];
+export const datoFramtid: string[] = ["29/01/2020", "01/04/2021", "01/12/2024", "18/04/2020", "14/02/2021", "01/05/2025", "17/05/2020", "17/05/2020"];
 
-const fodselsNr: string []= ["04015226825","15119702590","30067234940","22059007517","14039717019","08020285185","20106012971","20085624661","08024706711","26075014618","14117227856","03045013986","08114503186","19105737176","05037702090","14077541803","07106728814","28079345867","28077403517","23097011680","14109431703","03049219872","09037947773","21038137589","17123920384","06047414707","21123832989"];
+export const yrker: string[] = ["Ekspeditør", "Prsonalansvarlig", "Daglig leder", "Servitør", "Pianist", "Lektor", "Gymlærer", "Konsulent", "Produkteier", "Generalsekretær", "Arkitekt", "Slangetemmer", "Performer", "Torpedo"];
+
+export const fodselsNr: string []= ["04015226825","15119702590","30067234940","22059007517","14039717019","08020285185","20106012971","20085624661","08024706711","26075014618","14117227856","03045013986","08114503186","19105737176","05037702090","14077541803","07106728814","28079345867","28077403517","23097011680","14109431703","03049219872","09037947773","21038137589","17123920384","06047414707","21123832989"];
+
+export const varlingskoder: string[] = ["ERKONK", "SENTBEKREFTET", "NEDLAGT", "OVERFORT"];
+
+const tomtArbeidsForhold: Arbeidsforhold = { navn: '',
+  ansattFom: '',
+  ansattTom: '',
+  arbeidsgiver: {
+    type: '',
+  },
+  arbeidstaker: {
+    type: '',
+    aktoerId: '',
+    offentligIdent: '',
+  },
+  innrapportertEtterAOrdningen: '',
+  navArbeidsforholdId: '',
+  opplysningspliktig: {
+    type: '',
+  },
+  permisjonPermitteringsprosent: '',
+  sistBekreftet: '',
+  stillingsprosent: '',
+  type: '',
+  varslingskode: '',
+  yrke: '',
+};
+
+
+const genererRandomIndex = (lengde: number): number => {
+  let tilfeldigIndeks = Math.random();
+  tilfeldigIndeks = tilfeldigIndeks * lengde;
+  return Math.floor(tilfeldigIndeks);
+
+};
+
+const setNavn = (): string => {
+  const indeksFornavn =genererRandomIndex(listeMedFornavn.length);
+  const indeksEtternavn = genererRandomIndex(listeMedEtterNavn.length)
+  let navn = listeMedFornavn[indeksFornavn] + " " + listeMedEtterNavn[indeksEtternavn];
+  return navn;
+
+};
+
+const setTom = (): string => {
+  const indeks = genererRandomIndex(datoFortid.length);
+  return datoFortid[indeks];
+};
+
+const setFom = (): string => {
+  const indeks = genererRandomIndex(datoFramtid.length);
+  return datoFramtid[indeks];
+};
+
+const setYrke = (): string => {
+  const indeks = genererRandomIndex(yrker.length);
+  return yrker[indeks];
+
+};
+
+const setFnr = (): string => {
+  const indeks = genererRandomIndex(fodselsNr.length);
+  return fodselsNr[indeks];
+
+};
+
+const setVarslingskode = (): string => {
+  const indeks = genererRandomIndex(varlingskoder.length);
+  return varlingskoder[indeks];
+
+};
+
+
+
+const lagAnsattForhold = (): Arbeidsforhold => {
+  let arbeidsForhold = tomtArbeidsForhold;
+  arbeidsForhold.navn = setNavn();
+  arbeidsForhold.ansattTom = setTom();
+  arbeidsForhold.ansattFom = setFom();
+  arbeidsForhold.yrke = setYrke();
+  arbeidsForhold.varslingskode = setVarslingskode();
+  return arbeidsForhold;
+};
+
+export const genererMockingAvArbeidsForhold = (antall: number): arbeidsforhold[] => {
+  let listeMedArbeidsForhold: Arbeidsforhold[] = [];
+  for (let i: number = 0; i < antall;  i++) {
+    listeMedArbeidsForhold.push(lagAnsattForhold());
+  }
+  return listeMedArbeidsForhold;
+};
 
