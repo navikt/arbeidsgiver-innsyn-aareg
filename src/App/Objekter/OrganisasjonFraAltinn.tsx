@@ -4,7 +4,7 @@ export interface OrganisasjonFraAltinn {
     OrganizationNumber: string;
     OrganizationForm: string;
     Status: string;
-    ParentOrganizationNumber: string;
+    ParentOrganizationNumber: any;
 }
 
 export const tomaAltinnOrganisasjon: OrganisasjonFraAltinn = {

@@ -1,13 +1,14 @@
 import { SorteringsAttributt } from './MineAnsatte';
-import { arbeidsforhold } from '../../../Objekter/Ansatte';
+import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
+
 
 export const skrivOmDatoForm = (dato: string) => {
     const nydato = dato.substr(3, 3) + dato.substr(0, 3) + dato.substr(6, 5);
     return nydato;
 };
 
-export const sorterBasertPaDatoFom = (arbeidsforhold: Array<arbeidsforhold>) => {
-    const sortert: arbeidsforhold[] = arbeidsforhold.sort((a, b) => {
+export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => {
+    const sortert: Arbeidsforhold[] = arbeidsforhold.sort((a, b) => {
         const nyFormA = skrivOmDatoForm(a.ansattFom);
         const nyFormB = skrivOmDatoForm(b.ansattFom);
         const datoA = new Date(nyFormA);
@@ -20,7 +21,7 @@ export const sorterBasertPaDatoFom = (arbeidsforhold: Array<arbeidsforhold>) => 
     return sortert;
 };
 
-export const sorterBasertPaDatoTom = (arbeidsforhold: arbeidsforhold[]) => {
+export const sorterBasertPaDatoTom = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
         const nyFormA = skrivOmDatoForm(a.ansattTom);
         const nyFormB = skrivOmDatoForm(b.ansattTom);
@@ -34,7 +35,7 @@ export const sorterBasertPaDatoTom = (arbeidsforhold: arbeidsforhold[]) => {
     return sortert;
 };
 
-const sorterBasertPaNavn = (arbeidsforhold: arbeidsforhold[]) => {
+const sorterBasertPaNavn = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
         if (a.navn > b.navn) {
             return 1;
@@ -44,7 +45,7 @@ const sorterBasertPaNavn = (arbeidsforhold: arbeidsforhold[]) => {
     return sortert;
 };
 
-const sorterBasertPaKode = (arbeidsforhold: arbeidsforhold[]) => {
+const sorterBasertPaKode = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
         if (a.varslingskode > b.varslingskode) {
             return 1;
@@ -54,7 +55,7 @@ const sorterBasertPaKode = (arbeidsforhold: arbeidsforhold[]) => {
     return sortert;
 };
 
-const sorterBasertPaFnr = (arbeidsforhold: arbeidsforhold[]) => {
+const sorterBasertPaFnr = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
         if (a.arbeidstaker.offentligIdent > b.arbeidstaker.offentligIdent) {
             return 1;
@@ -64,7 +65,7 @@ const sorterBasertPaFnr = (arbeidsforhold: arbeidsforhold[]) => {
     return sortert;
 };
 
-const sorterBasertPaYrke = (arbeidsforhold: arbeidsforhold[]) => {
+const sorterBasertPaYrke = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
         if (a.yrke > b.yrke) {
             return 1;
@@ -75,7 +76,7 @@ const sorterBasertPaYrke = (arbeidsforhold: arbeidsforhold[]) => {
 };
 
 export const sorterArbeidsforhold = (
-    arbeidsforhold: arbeidsforhold[],
+    arbeidsforhold: Arbeidsforhold[],
     atributt: SorteringsAttributt
 ) => {
     switch (atributt) {
@@ -97,7 +98,7 @@ export const sorterArbeidsforhold = (
     }
 };
 
-export const filtrerAktiveOgAvsluttede = (arbeidsforhold: arbeidsforhold[], aktiv: boolean) => {
+export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], aktiv: boolean) => {
     const navarendeDato = new Date();
     if (aktiv) {
         return arbeidsforhold.filter(forhold => {
