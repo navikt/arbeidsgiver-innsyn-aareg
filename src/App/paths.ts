@@ -1,2 +1,2 @@
-export const basename = '/bedriftoversikt-og-ansatte';
+export const basename = '/bedriftsoversikt-og-ansatte';
 export const pathTilLoggInn = '/login';

@@ -17,7 +17,7 @@ const App: FunctionComponent = () => {
           <div>
               <div className="bakgrunnsside">
                           <Route
-                              path="/bedriftoversikt-og-ansatte"
+                              path="/"
                               exact={true}
                               component={InformasjonOmBedriftOgAnsatte}
                           />
