@@ -16,17 +16,30 @@ const InformasjonOmBedrift: FunctionComponent<Props> = props => {
     const [overordnetEnhet, setOverordnetEnhet] = useState<OrganisasjonFraEnhetsregisteret>(
         tomEnhetsregOrg
     );
-    const orgnr = props.valgtOrganisasjon.OrganizationNumber;
+
+    //MIDLERTIDIG FOR MOCKING
+    const lokalkjoringOrg =  {
+        Name: 'NAV HAMAR ',
+        Type: 'Business',
+        OrganizationNumber: '990229023',
+        ParentOrganizationNumber: '874652202',
+        OrganizationForm: 'BEDR',
+        Status: 'Active',
+    };
+
+
+
+    const orgnr = lokalkjoringOrg.OrganizationNumber;
 
     useEffect(() => {
         const setEnheter = async () => {
             if (orgnr !== '') {
                 setUnderenhet(await hentUnderenhet(orgnr));
-                setOverordnetEnhet(await hentOverordnetEnhet(underenhet.overordnetEnhet));
+                setOverordnetEnhet(await hentOverordnetEnhet(lokalkjoringOrg.ParentOrganizationNumber));
             }
         };
         setEnheter();
-    }, [orgnr, underenhet.overordnetEnhet]);
+    }, []);
 
     return (
         <>
