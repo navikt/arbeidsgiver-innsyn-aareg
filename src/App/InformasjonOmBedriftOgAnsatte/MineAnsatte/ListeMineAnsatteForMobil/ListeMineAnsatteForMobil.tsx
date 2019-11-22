@@ -1,11 +1,13 @@
 import React, { FunctionComponent } from 'react';
 import './ListeMineAnsatteForMobil.less';
-import Ansatt from './Ansatt/Ansatt';
-import { arbeidsforhold } from '../../../../Objekter/Ansatte';
+import {Arbeidsforhold} from "../../../Objekter/ArbeidsForhold";
+import Ansatt from "./Ansatt/Ansatt";
+
+
 
 interface Props {
     className?: string;
-    listeMedArbeidsForhold: arbeidsforhold[];
+    listeMedArbeidsForhold: Arbeidsforhold[];
 }
 
 const ListeMedAnsatteForMobil: FunctionComponent<Props> = props => {

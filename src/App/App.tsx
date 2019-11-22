@@ -1,38 +1,31 @@
-import React, {FunctionComponent, useEffect, useState} from 'react';
+import React, {FunctionComponent} from 'react';
 import './App.css';
-import {OrganisasjonFraAltinn} from "./Objekter/OrganisasjonFraAltinn";
-import {hentOrganisasjonerFraAltinn} from "../api/altinnApi";
-import {JuridiskEnhetMedUnderEnheter} from "./Objekter/JuridiskEnhetMedUnderEnheter";
-import {byggOrganisasjonstre} from "../api/byggOrganisasjonstre";
-import { withRouter, RouteComponentProps } from 'react-router';
-import Bedriftsmeny from "@navikt/bedriftsmeny";
+import {BrowserRouter} from 'react-router-dom';
 
-const App: FunctionComponent<RouteComponentProps> = props => {
-  const { history } = props;
-  const [organisasjonsTre, setOrganisasjonsTre] = useState(Array<JuridiskEnhetMedUnderEnheter >());
-  const [valgtOrganisasjon, setValgtOrganisasjon] = useState<OrganisasjonFraAltinn | null>(null);
+import { Route} from 'react-router';
+import InformasjonOmBedriftOgAnsatte from "./InformasjonOmBedriftOgAnsatte/InformasjonOmBedriftOgAnsatte";
+import { basename } from './paths';
 
-  useEffect(() => {
-    const hentOrganisasjonerOgByggTre = async () => {
-      const organisasjonsRespons = await hentOrganisasjonerFraAltinn();
-      if (organisasjonsRespons) {
-        const bygdOrganisasjonstre = await byggOrganisasjonstre(organisasjonsRespons);
-        setOrganisasjonsTre(bygdOrganisasjonstre);
-    };
-    }
-    hentOrganisasjonerOgByggTre();
-  }, []);
+const App: FunctionComponent = () => {
+
 
   return (
-    <div className="App">
-      <Bedriftsmeny
-          sidetittel="Informasjon om bedrift og ansatte"
-          organisasjonstre={organisasjonsTre}
-          onOrganisasjonChange={setValgtOrganisasjon}
-          history={history}
-      />
-    </div>
+      <div className="typo-normal">
+          <div
+          >helloo</div>
+        <BrowserRouter basename={basename}>
+          <div>
+              <div className="bakgrunnsside">
+                          <Route
+                              path="/bedriftoversikt-og-ansatte"
+                              exact={true}
+                              component={InformasjonOmBedriftOgAnsatte}
+                          />
+              </div>
+          </div>
+        </BrowserRouter>
+      </div>
   );
-}
+};
 
 export default App;

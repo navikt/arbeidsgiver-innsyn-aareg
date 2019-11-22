@@ -1,5 +1,5 @@
 import fetchMock from 'fetch-mock';
-const delay = new Promise(res => setTimeout(res, 500));
+/*const delay = new Promise(res => setTimeout(res, 500));
 
 fetchMock
     .get(
@@ -11,7 +11,9 @@ fetchMock
     .spy();
 
 //const tomOrganisasjonerResponse = [{}];
-const OrganisasjonerResponse = [
+
+ */
+export const OrganisasjonerResponse = [
     {
         Name: 'BALLSTAD OG HAMARØY',
         Type: 'Business',
