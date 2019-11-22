@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Normaltekst, Systemtittel, Ingress } from 'nav-frontend-typografi';
 import './InformasjonOmBedrift.less';
 import Lenke from 'nav-frontend-lenker';
@@ -31,15 +31,15 @@ const InformasjonOmBedrift: FunctionComponent<Props> = props => {
 
     const orgnr = lokalkjoringOrg.OrganizationNumber;
 
-    useEffect(() => {
-        const setEnheter = async () => {
-            if (orgnr !== '') {
-                setUnderenhet(await hentUnderenhet(orgnr));
-                setOverordnetEnhet(await hentOverordnetEnhet(lokalkjoringOrg.ParentOrganizationNumber));
-            }
-        };
-        setEnheter();
-    }, []);
+
+    const setEnheter = async () => {
+        if (orgnr !== '') {
+            setUnderenhet(await hentUnderenhet(orgnr));
+            setOverordnetEnhet(await hentOverordnetEnhet(lokalkjoringOrg.ParentOrganizationNumber));
+        }
+    };
+    setEnheter();
+
 
     return (
         <>
