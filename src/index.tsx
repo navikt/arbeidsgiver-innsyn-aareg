@@ -8,8 +8,6 @@ if (process.env.REACT_APP_MOCK) {
     console.log('=============== MED MOCK ===============');
     console.log('===DETTE SKAL DU IKKE SE I PRODUKSJON===');
     console.log('========================================');
-    require('./mocking/AAregMock');
-    require('./mocking/altinnMock');
 }
 
 ReactDOM.render(<App/>, document.getElementById('root'));
