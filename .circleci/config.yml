@@ -66,10 +66,6 @@ workflows:
     jobs:
       - verify:
           context: tag-ci
-      - test:
-          context: tag-ci
-          requires:
-            - verify
       - publish-docker:
           context: NAIS deployment
           filters:
