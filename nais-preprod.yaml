@@ -17,8 +17,7 @@ spec:
   readiness:
     path: /bedriftsoversikt-og-ansatte/internal/isReady
     initialDelay: 20
-  vault:
-    enabled: true
+
 
 
 
