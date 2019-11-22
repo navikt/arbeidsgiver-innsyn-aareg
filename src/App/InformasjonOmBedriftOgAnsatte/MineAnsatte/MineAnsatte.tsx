@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import './MineAnsatte.less';
 import { Undertittel } from 'nav-frontend-typografi';
 import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';

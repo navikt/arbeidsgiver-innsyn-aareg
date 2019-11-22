@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Normaltekst, Systemtittel, Ingress } from 'nav-frontend-typografi';
 import './InformasjonOmBedrift.less';
 import Lenke from 'nav-frontend-lenker';
