@@ -1,22 +1,26 @@
-import React, {FunctionComponent, useContext, useEffect, useState} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import './InformasjonOmBedriftOgAnsatte.less';
 import Tabs from 'nav-frontend-tabs';
-import { withRouter, RouteComponentProps } from 'react-router'
+import { RouteComponentProps } from 'react-router'
 
 import Informasjon from './InformasjonOmBedrift/InformasjonOmBedrift';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
 import { hentArbeidsforholdFraAAreg} from "../../api/AAregApi";
 import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
-import Bedriftsmeny from "@navikt/bedriftsmeny";
-import {OrganisasjonerResponse} from "../../mocking/altinnMock";
 
 
 
-const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = props => {
-    const { history } = props;
+const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = () => {
     const [visInfoEllerAnsatte, setVisInfoEllerAnsatte] = useState('informasjon');
     const [listeOverArbeidsForholdFraAareg, setlisteOverArbeidsForholdFraAareg] = useState([]);
-    const valgtOrganisasjon: OrganisasjonFraAltinn = OrganisasjonerResponse[0];
+    const valgtOrganisasjon: OrganisasjonFraAltinn = {
+        Name: 'BALLSTAD OG HAMARØY',
+        Type: 'Business',
+        OrganizationNumber: '811076732',
+        ParentOrganizationNumber: '811076112',
+        OrganizationForm: 'BEDR',
+        Status: 'Active',
+    }
 
     useEffect(() => {
         if (valgtOrganisasjon) {
