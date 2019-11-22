@@ -11,7 +11,7 @@ executors:
     environment:
       TEAM: teamtag
       CLUSTER: dev-sbs
-      REGISTRY: docker.pkg.github.com
+      REGISTRY: docker.io
     docker:
       - image: navikt/deployment-cli:latest
 
