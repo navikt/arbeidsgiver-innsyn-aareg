@@ -43,6 +43,16 @@ jobs:
           name: Testing with docker-compose
           command: chmod +x *.sh && ./up.sh
 
+  publish-docker:
+    executor: deployment-cli
+    steps:
+      - checkout
+      - env/attach-env
+      - nais/docker:
+          registry: $REGISTRY
+          image: $IMAGE_NAME
+          tag: $RELEASE_VERSION
+
   deploy:
     executor: deployment-cli
     steps:
@@ -51,10 +61,6 @@ jobs:
       - run:
           name: Unpack Private Key
           command: echo $GITHUB_PRIVATE_KEY | base64 -d > .circleci/github.key.pem
-      - nais/docker:
-          registry: $REGISTRY
-          image: $IMAGE_NAME
-          tag: $RELEASE_VERSION
       - nais/deploy-with-gh-app:
           repo: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
           nais-template: naiserator.yaml
@@ -74,6 +80,13 @@ workflows:
           context: tag-ci
           requires:
             - verify
+      - publish-docker:
+          context: NAIS deployment
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
       - deploy:
           context: tag-ci
           requires:
