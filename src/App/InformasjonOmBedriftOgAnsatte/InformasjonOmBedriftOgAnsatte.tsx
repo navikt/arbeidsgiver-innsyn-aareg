@@ -1,23 +1,27 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react';
 import './InformasjonOmBedriftOgAnsatte.less';
 import Tabs from 'nav-frontend-tabs';
+import { withRouter, RouteComponentProps } from 'react-router'
 
 import Informasjon from './InformasjonOmBedrift/InformasjonOmBedrift';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
 import { hentArbeidsforholdFraAAreg} from "../../api/AAregApi";
 import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
+import Bedriftsmeny from "@navikt/bedriftsmeny";
+import {OrganisasjonerResponse} from "../../mocking/altinnMock";
 
-interface Props {
-    valgtOrganisasjon: OrganisasjonFraAltinn,
-};
 
-const InformasjonOmBedriftOgAnsatte: FunctionComponent<Props> = props => {
+
+const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = props => {
+    const { history } = props;
     const [visInfoEllerAnsatte, setVisInfoEllerAnsatte] = useState('informasjon');
     const [listeOverArbeidsForholdFraAareg, setlisteOverArbeidsForholdFraAareg] = useState([]);
+    const valgtOrganisasjon: OrganisasjonFraAltinn = OrganisasjonerResponse[0];
+
     useEffect(() => {
-        if (props.valgtOrganisasjon) {
+        if (valgtOrganisasjon) {
             const hentArbeidsforhold = async () =>  {
-                let objekt = await hentArbeidsforholdFraAAreg(props.valgtOrganisasjon.OrganizationNumber);
+                let objekt = await hentArbeidsforholdFraAAreg(valgtOrganisasjon.OrganizationNumber);
                 if (objekt) {
                      setlisteOverArbeidsForholdFraAareg(objekt);
 
@@ -25,7 +29,7 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent<Props> = props => {
                 };
             hentArbeidsforhold();
         }
-    }, [props.valgtOrganisasjon]);
+    }, [valgtOrganisasjon]);
 
     const setStateForVisning = (index: number) => {
         if (index === 0) {
@@ -48,7 +52,7 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent<Props> = props => {
                         kompakt
                     />
                 </div>
-                {visInfoEllerAnsatte === 'informasjon' && <Informasjon valgtOrganisasjon={props.valgtOrganisasjon}/>}
+                {visInfoEllerAnsatte === 'informasjon' && <Informasjon valgtOrganisasjon={valgtOrganisasjon}/>}
                 {visInfoEllerAnsatte === 'ansatte' && <MineAnsatte listeMedArbeidsForhold={listeOverArbeidsForholdFraAareg} />}
                 </>
         );

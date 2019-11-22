@@ -1,4 +1,5 @@
-import { arbeidsforhold } from '../../../Objekter/Ansatte';
+import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
+
 
 export const regnUtantallSider = (arbeidsForholdPerSide: number, antallArbeidsForhold: number) => {
     return Math.ceil(antallArbeidsForhold / arbeidsForholdPerSide);
@@ -8,8 +9,8 @@ export const regnUtArbeidsForholdSomSkalVisesPaEnSide = (
     naVarendeSideTall: number,
     arbeidsForholdPerSide: number,
     antallSider: number,
-    listeMedArbeidsForhold: arbeidsforhold[]
-): arbeidsforhold[] => {
+    listeMedArbeidsForhold: Arbeidsforhold[]
+): Arbeidsforhold[] => {
     const forsteElementPaSiden =
         arbeidsForholdPerSide * naVarendeSideTall - (arbeidsForholdPerSide - 1);
     const arbeidsForholdPaSiden = listeMedArbeidsForhold.slice(

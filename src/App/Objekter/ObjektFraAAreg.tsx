@@ -57,37 +57,6 @@ export interface arbeidsforhold {
     yrke: string;
 }
 
-export const Mocksrespons: ObjektFraAAregisteret = {
-    antall: '50',
-    arbeidsforholdoversikter: [
-        {
-            navn: 'Gøril',
-            ansattFom: '12/04/2009',
-            ansattTom: '12/04/2040',
-            arbeidsgiver: {
-                type: 'IKEA',
-            },
-            arbeidstaker: {
-                type: 'Selger',
-                aktoerId: '444',
-                offentligIdent: '707',
-            },
-            innrapportertEtterAOrdningen: 'JA',
-            navArbeidsforholdId: '666',
-            opplysningspliktig: {
-                type: 'Sjef',
-            },
-            permisjonPermitteringsprosent: '49%',
-            sistBekreftet: '1999',
-            stillingsprosent: '21%',
-            type: 'hardt arbeid',
-            varslingskode: 'Krise',
-            yrke: 'vasker',
-        },
-    ],
-    startrad: 'JA',
-    totalAntall: 'JA',
-};
 
 export const eksempel1: arbeidsforhold = {
     navn: 'Gøril',
