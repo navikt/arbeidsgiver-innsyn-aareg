@@ -3,7 +3,7 @@ import {ObjektFraAAregisteret} from "../App/Objekter/ObjektFraAAreg";
 import {Arbeidsforhold} from "../App/Objekter/ArbeidsForhold";
 import {hentArbeidsforholdLink} from "../App/lenker";
 
-export const eksempel1: Arbeidsforhold = {
+/*export const eksempel1: Arbeidsforhold = {
     navn: 'Gøril',
     ansattFom: '12/04/1809',
     ansattTom: '12/04/1905',
@@ -100,4 +100,4 @@ const genererRespons = (
 
 const objektFraAAregMocked = genererRespons(200);
 
-fetchMock.get(hentArbeidsforholdLink('begin:' + hentArbeidsforholdLink('')), objektFraAAregMocked);
+fetchMock.get(hentArbeidsforholdLink('begin:' + hentArbeidsforholdLink('')), objektFraAAregMocked);*/
