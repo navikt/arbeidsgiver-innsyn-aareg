@@ -32,17 +32,6 @@ jobs:
           var-value: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME
       - env/persist-env
 
-  test:
-    executor: docker-runner
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: Testing with docker-compose
-          command: chmod +x *.sh && ./up.sh
-
   publish-docker:
     executor: deployment-cli
     steps:
@@ -76,10 +65,6 @@ workflows:
     jobs:
       - verify:
           context: tag-ci
-      - test:
-          context: tag-ci
-          requires:
-            - verify
       - publish-docker:
           context: NAIS deployment
           requires:
