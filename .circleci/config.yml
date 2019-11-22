@@ -32,6 +32,7 @@ jobs:
           var-value: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME
       - env/persist-env
 
+
   publish-docker:
     executor: deployment-cli
     steps:
@@ -65,17 +66,17 @@ workflows:
     jobs:
       - verify:
           context: tag-ci
+      - test:
+          context: tag-ci
+          requires:
+            - verify
       - publish-docker:
           context: NAIS deployment
-          requires:
-            - test
           filters:
             branches:
               only: master
       - deploy:
           context: tag-ci
-          requires:
-            - test
           filters:
             branches:
               only: master
