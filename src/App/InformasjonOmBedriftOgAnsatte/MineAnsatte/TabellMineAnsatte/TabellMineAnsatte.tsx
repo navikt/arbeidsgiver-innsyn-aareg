@@ -15,12 +15,10 @@ interface Props {
 }
 
 const TabellMineAnsatte: FunctionComponent<Props> = props => {
-    let index: number = 0;
     const rader = props.listeMedArbeidsForhold.map(arbeidsforhold => {
-        index++;
         return (
             <tr>
-                <td className={'td'}>{arbeidsforhold.navn + index.toString()}</td>
+                <td className={'td'}>{arbeidsforhold.navn}</td>
                 <td className={'td'}>{arbeidsforhold.arbeidstaker.offentligIdent}</td>
                 <td className={'td'}>{arbeidsforhold.yrke}</td>
                 <td className={'td'}>{arbeidsforhold.ansattFom}</td>
