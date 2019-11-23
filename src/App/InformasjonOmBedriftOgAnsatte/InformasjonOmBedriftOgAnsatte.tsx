@@ -5,14 +5,15 @@ import { RouteComponentProps } from 'react-router'
 
 import Informasjon from './InformasjonOmBedrift/InformasjonOmBedrift';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
-import { hentArbeidsforholdFraAAreg} from "../../api/AAregApi";
 import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
+import {genererMockingAvArbeidsForhold} from "../../mocking/funksjonerForAlageAAregMock";
+import {arbeidsforhold} from "../Objekter/ObjektFraAAreg";
 
 
 
 const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = () => {
     const [visInfoEllerAnsatte, setVisInfoEllerAnsatte] = useState('informasjon');
-    const [listeOverArbeidsForholdFraAareg, setlisteOverArbeidsForholdFraAareg] = useState([]);
+    const [listeOverArbeidsForholdFraAareg, setListeOverArbeidsForholdFraAareg] = useState(Array<arbeidsforhold>());
     const valgtOrganisasjon: OrganisasjonFraAltinn = {
         Name: 'BALLSTAD OG HAMARØY',
         Type: 'Business',
@@ -20,10 +21,10 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = ()
         ParentOrganizationNumber: '811076112',
         OrganizationForm: 'BEDR',
         Status: 'Active',
-    }
+    };
 
     useEffect(() => {
-        if (valgtOrganisasjon) {
+        /*if (valgtOrganisasjon) {
             const hentArbeidsforhold = async () =>  {
                 let objekt = await hentArbeidsforholdFraAAreg(valgtOrganisasjon.OrganizationNumber);
                 if (objekt) {
@@ -32,8 +33,13 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = ()
                 }
                 };
             hentArbeidsforhold();
-        }
-    }, [valgtOrganisasjon]);
+        }*/
+        const listeMedArbeidsForhold = genererMockingAvArbeidsForhold(1000);
+        setListeOverArbeidsForholdFraAareg(listeMedArbeidsForhold);
+        console.log(listeMedArbeidsForhold);
+
+    }, []);
+
 
     const setStateForVisning = (index: number) => {
         if (index === 0) {
