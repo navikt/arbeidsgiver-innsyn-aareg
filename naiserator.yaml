@@ -12,7 +12,7 @@ spec:
   vault:
     enabled: false
   ingresses:
-    - https://arbeidsgiver-q.nav.no//bedriftsoversikt-og-ansatte/
+    - https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/
   liveness:
     path: /bedriftsoversikt-og-ansatte/internal/isAlive
     initialDelay: 5
