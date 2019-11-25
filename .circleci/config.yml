@@ -33,7 +33,8 @@ jobs:
       - env/persist-env
 
   bygg:
-    executor: docker-runner
+    docker:
+      - image: circleci/node
     steps:
     - checkout
     - restore_cache:
