@@ -52,12 +52,9 @@ jobs:
     - run:
         name: Bygg produksjonsversjon av React app
         command: yarn build
-     - run:
-        name: print variabel
-        command: echo $IMAGE_NAME
     - run:
         name: Bygger Docker image
-        cdocker build -t "navikt/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1" .
+        command: docker build -t "navikt/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1" .
 
   publish-docker:
     executor: deployment-cli
