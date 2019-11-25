@@ -28,8 +28,7 @@ jobs:
               echo 'export DOCKER_IMAGE_UNVERSIONED="$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"' >> $BASH_ENV
 
   bygg:
-    docker:
-      - image: circleci/node
+    executor: docker-runner
     steps:
     - checkout
     - restore_cache:
