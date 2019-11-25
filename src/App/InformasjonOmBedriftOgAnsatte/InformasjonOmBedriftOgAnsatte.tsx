@@ -9,8 +9,6 @@ import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
 import {genererMockingAvArbeidsForhold} from "../../mocking/funksjonerForAlageAAregMock";
 import {arbeidsforhold} from "../Objekter/ObjektFraAAreg";
 
-
-
 const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = () => {
     const [visInfoEllerAnsatte, setVisInfoEllerAnsatte] = useState('informasjon');
     const [listeOverArbeidsForholdFraAareg, setListeOverArbeidsForholdFraAareg] = useState(Array<arbeidsforhold>());
@@ -36,10 +34,8 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = ()
         }*/
         const listeMedArbeidsForhold = genererMockingAvArbeidsForhold(1000);
         setListeOverArbeidsForholdFraAareg(listeMedArbeidsForhold);
-        console.log(listeMedArbeidsForhold);
 
     }, []);
-
 
     const setStateForVisning = (index: number) => {
         if (index === 0) {
@@ -49,7 +45,6 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = ()
             setVisInfoEllerAnsatte('ansatte');
         }
     };
-
 
         return (
             <>

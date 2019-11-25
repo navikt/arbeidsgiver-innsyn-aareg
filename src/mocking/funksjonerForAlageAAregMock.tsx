@@ -1,6 +1,5 @@
 import {Arbeidsforhold} from "../App/Objekter/ArbeidsForhold";
 
-
 export const listeMedFornavn: string[]= ["Gudrun", "Elina", "Kaia", "Knut", "Jenny", "Petter", "Martin", "Marie", "Herman", "Alfred", "Leif", "Inger", "Ivar", "Trond"];
 
 export const listeMedEtterNavn: string[] = ["Rishovd", "Knuten", "Ludvigsen", "Solberg", "Stoltenberg", "Støre", "Ibsen", "Munch", "Vang", "Nesbø", "Morgenstierne"];
@@ -39,7 +38,6 @@ const tomtArbeidsForhold: Arbeidsforhold = { navn: '',
   yrke: '',
 };
 
-
 const genererRandomIndex = (lengde: number): number => {
   let tilfeldigIndeks = Math.random();
   tilfeldigIndeks = tilfeldigIndeks * lengde;
@@ -50,19 +48,17 @@ const genererRandomIndex = (lengde: number): number => {
 const setNavn = (): string => {
   const indeksFornavn =genererRandomIndex(listeMedFornavn.length);
   const indeksEtternavn = genererRandomIndex(listeMedEtterNavn.length)
-  let navn = listeMedFornavn[indeksFornavn] + " " + listeMedEtterNavn[indeksEtternavn];
-  return navn;
-
+  return(listeMedFornavn[indeksFornavn] + " " + listeMedEtterNavn[indeksEtternavn]);
 };
 
 const setTom = (): string => {
-  const indeks = genererRandomIndex(datoFortid.length);
-  return datoFortid[indeks];
+  const indeks = genererRandomIndex(datoFramtid.length);
+  return datoFramtid[indeks];
 };
 
 const setFom = (): string => {
-  const indeks = genererRandomIndex(datoFramtid.length);
-  return datoFramtid[indeks];
+  const indeks = genererRandomIndex(datoFortid.length);
+  return datoFortid[indeks];
 };
 
 const setYrke = (): string => {
@@ -83,22 +79,25 @@ const setVarslingskode = (): string => {
 
 };
 
-
-
 const lagAnsattForhold = (): Arbeidsforhold => {
-  let arbeidsForhold = tomtArbeidsForhold;
-  arbeidsForhold.navn = setNavn();
-  arbeidsForhold.ansattTom = setTom();
-  arbeidsForhold.ansattFom = setFom();
-  arbeidsForhold.yrke = setYrke();
-  arbeidsForhold.varslingskode = setVarslingskode();
-  arbeidsForhold.arbeidstaker.offentligIdent = setFnr();
-  return arbeidsForhold;
+  return {
+    ...tomtArbeidsForhold,
+    navn: setNavn(),
+    ansattTom: setTom(),
+    ansattFom: setFom(),
+    yrke:setYrke(),
+    varslingskode: setVarslingskode(),
+    arbeidstaker: {
+        ...tomtArbeidsForhold.arbeidstaker,
+      offentligIdent: setFnr()
+    }
+  };
 };
 
 export const genererMockingAvArbeidsForhold = (antall: number): Arbeidsforhold[] => {
-  let listeMedArbeidsForhold: Arbeidsforhold[] = [];
+  const listeMedArbeidsForhold: Arbeidsforhold[] = [];
   for (let i: number = 0; i < antall;  i++) {
+    console.log(lagAnsattForhold());
     listeMedArbeidsForhold.push(lagAnsattForhold());
   }
   return listeMedArbeidsForhold;
