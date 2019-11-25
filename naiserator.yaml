@@ -1,0 +1,21 @@
+apiVersion: 'nais.io/v1alpha1'
+kind: 'Application'
+metadata:
+  name: oversikt-over-bedrift-og-ansatte
+  namespace: default
+  labels:
+    team: teamtag
+spec:
+  image: navikt/oversikt-over-bedrift-og-ansatte:{{version}}
+  team: teamtag
+  port: 3000
+  vault:
+    enabled: {{vault-enabled}}
+  ingresses:
+    - https://arbeidsgiver-q.nav.no//bedriftsoversikt-og-ansatte/
+  liveness:
+    path: /bedriftsoversikt-og-ansatte/internal/isAlive
+    initialDelay: 5
+  readiness:
+    path: /bedriftsoversikt-og-ansatte/internal/isReady
+    initialDelay: 5
