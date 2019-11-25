@@ -29,7 +29,7 @@ jobs:
           var-value: $(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M')_$(git log -n 1 --pretty=format:'%h')
       - env/set-env-var:
           var-name: IMAGE_NAME
-          var-value: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+          var-value: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME >> $BASH_ENV
       - env/persist-env
 
   bygg:
@@ -55,7 +55,7 @@ jobs:
         command: yarn build
     - run:
         name: Bygger Docker image
-        command: docker build -t "$IMAGE_NAME" .
+        command: docker build -t ${IMAGE_NAME} .
 
   publish-docker:
     executor: deployment-cli
