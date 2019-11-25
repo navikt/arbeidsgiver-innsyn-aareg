@@ -22,10 +22,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Setter miljøvariabler
-          command: |
-              echo 'export DOCKER_IMAGE_VERSIONED="$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:$BRANCH_PREFIX$RELEASE_VERSION"' >> $BASH_ENV
-              echo 'export DOCKER_IMAGE_UNVERSIONED="$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"' >> $BASH_ENV
+          name: Verify that docker login works
+          command: echo "$DOCKER_PASSWORD" | docker login docker.pkg.github.com -u "$DOCKER_LOGIN" --password-stdin
+      - env/set-env-var:
+          var-name: RELEASE_VERSION
+          var-value: $(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M')_$(git log -n 1 --pretty=format:'%h')
+      - env/set-env-var:
+          var-name: IMAGE_NAME
+          var-value: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+      - env/persist-env
 
   bygg:
     executor: docker-runner
@@ -49,7 +54,7 @@ jobs:
         command: yarn build
     - run:
         name: Bygger Docker image
-        command: docker build -t $DOCKER_IMAGE_VERSIONED
+        command: docker build -t $IMAGE_NAME .
 
   publish-docker:
     executor: deployment-cli
