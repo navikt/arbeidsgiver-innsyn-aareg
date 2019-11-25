@@ -90,6 +90,7 @@ workflows:
     jobs:
       - verify:
           context: tag-ci
+      - bygg
       - publish-docker:
           context: NAIS deployment
           filters:
