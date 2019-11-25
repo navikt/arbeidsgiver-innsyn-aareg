@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const BASE_PATH='/bedriftsoversikt-og-ansatte';
 const server = express();
