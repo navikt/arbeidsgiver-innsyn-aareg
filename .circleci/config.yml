@@ -32,6 +32,30 @@ jobs:
           var-value: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME
       - env/persist-env
 
+  bygg:
+    docker:
+      - image: circleci/node
+    steps:
+    - checkout
+    - restore_cache:
+        name: Hent Yarn cache
+        keys:
+          - yarn-packages-{{ checksum "yarn.lock" }}
+    - run:
+        name: Installer avhengigheter
+        command: |
+            yarn install --frozen-lockfile
+    - save_cache:
+        name: Lagre Yarn cache
+        key: yarn-packages-{{ checksum "yarn.lock" }}
+        paths:
+          - ~/.cache/yarn
+    - run:
+        name: Bygg produksjonsversjon av React app
+        command: yarn build
+    - run:
+        name: Bygger Docker image
+        command: docker build -t $IMAGE_NAME .
 
   publish-docker:
     executor: deployment-cli
