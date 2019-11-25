@@ -39,16 +39,12 @@ jobs:
     steps:
       - checkout
       - deploy:
-          miljo: 'dev-fss'
-      - deploy:
           miljo: 'dev-sbs'
   deploy-til-prod:
     docker:
       - image: 'navikt/deployment-cli:v0.1.5'
     steps:
       - checkout
-      - deploy:
-          miljo: 'dev-sbs'
       - deploy:
           miljo: 'prod-sbs'
 
