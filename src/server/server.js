@@ -1,5 +1,5 @@
 const express = require('express');
-const BASE_PATH='/bedriftoversikt-og-ansatte';
+const BASE_PATH='/bedriftsoversikt-og-ansatte';
 const server = express();
 
 server.use(BASE_PATH, express.static(path.join(__dirname,'build')));
