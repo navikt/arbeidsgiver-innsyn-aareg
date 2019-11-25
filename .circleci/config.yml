@@ -48,7 +48,7 @@ jobs:
     steps:
       - checkout
       - deploy:
-          miljo: 'prod-fss'
+          miljo: 'dev-sbs'
       - deploy:
           miljo: 'prod-sbs'
 
