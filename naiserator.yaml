@@ -10,7 +10,7 @@ spec:
   team: teamtag
   port: 3000
   vault:
-    enabled: {{vault-enabled}}
+    enabled: false
   ingresses:
     - https://arbeidsgiver-q.nav.no//bedriftsoversikt-og-ansatte/
   liveness:
