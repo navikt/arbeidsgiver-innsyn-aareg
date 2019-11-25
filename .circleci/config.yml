@@ -58,7 +58,7 @@ commands:
       - run: # Brukernavn og passord til Github ligger i miljøvariable DEPLOYMENT_USERNAME og DEPLOYMENT_PASSWORD
           name: Deploy til << parameters.miljo >>
           command: |
-            deployment-cli deploy create --cluster=<< parameters.miljo >> --repository=navikt/tiltaksgjennomforing --team=teamtag --resource=naiserator.yaml --version=$CIRCLE_SHA1 --vars=nais/<< parameters.miljo >>.json
+            deployment-cli deploy create --cluster=<< parameters.miljo >> --repository=navikt/oversikt-over-bedrift-og-ansatte --team=teamtag --resource=naiserator.yaml --version=$CIRCLE_SHA1 --vars=nais/<< parameters.miljo >>.json
 workflows:
   version: 2.1
   bygg-og-deploy:
