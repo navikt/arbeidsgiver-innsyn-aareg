@@ -35,7 +35,7 @@ const GraSirkelMedNr: FunctionComponent<Props> = props => {
                 transitionAppear={true}
                 transitionAppearTimeout={500}
                 transitionEnterTimeout={100}
-                transitionLeaveTimeout={ 0}
+                transitionLeaveTimeout={0}
 
             >
                 <Element className={'valg__sidetall'}>{props.sidetall.toString()}</Element>
