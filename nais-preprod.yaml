@@ -10,7 +10,7 @@ spec:
   team: teamtag
   port: 3000
   ingresses:
-    - https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/
+    - https://arbeidsgiver-q.nav.no/innsyn-AAreg-arbeidsgiver/
   liveness:
     path: /bedriftsoversikt-og-ansatte/internal/isAlive
     initialDelay: 20
