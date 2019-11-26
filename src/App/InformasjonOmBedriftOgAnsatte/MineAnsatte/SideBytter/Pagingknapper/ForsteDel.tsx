@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent } from 'react';
 import './PagineringsKnapp/PagineringsKnapp.less';
 import PagineringsKnapp from './PagineringsKnapp/PagineringsKnapp';
 
@@ -10,16 +10,14 @@ interface Props {
 }
 
 const ForsteDel: FunctionComponent<Props> = props => {
-    const [naVarendeIndeks, setNaVarendeIndeks] = useState(props.naVarendeIndeks);
 
-    useEffect(() => {
-        setNaVarendeIndeks(props.naVarendeIndeks);
-    }, [props.naVarendeIndeks]);
+
+
 
     return (
         <>
             <PagineringsKnapp
-                naVarendeIndeks={naVarendeIndeks}
+                naVarendeIndeks={props.naVarendeIndeks}
                 sidetall={1}
                 siderTilsammen={props.siderTilsammen}
                 byttSide={props.byttSide}
@@ -28,7 +26,7 @@ const ForsteDel: FunctionComponent<Props> = props => {
             <PagineringsKnapp
                 sidetall={2}
                 siderTilsammen={props.siderTilsammen}
-                naVarendeIndeks={naVarendeIndeks}
+                naVarendeIndeks={props.naVarendeIndeks}
                 byttSide={props.byttSide}
             />
 
@@ -36,7 +34,7 @@ const ForsteDel: FunctionComponent<Props> = props => {
                 <PagineringsKnapp
                     sidetall={3}
                     siderTilsammen={props.siderTilsammen}
-                    naVarendeIndeks={naVarendeIndeks}
+                    naVarendeIndeks={props.naVarendeIndeks}
                     byttSide={props.byttSide}
                 />
             )}
