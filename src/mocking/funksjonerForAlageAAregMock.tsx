@@ -97,7 +97,6 @@ const lagAnsattForhold = (): Arbeidsforhold => {
 export const genererMockingAvArbeidsForhold = (antall: number): Arbeidsforhold[] => {
   const listeMedArbeidsForhold: Arbeidsforhold[] = [];
   for (let i: number = 0; i < antall;  i++) {
-    console.log(lagAnsattForhold());
     listeMedArbeidsForhold.push(lagAnsattForhold());
   }
   return listeMedArbeidsForhold;

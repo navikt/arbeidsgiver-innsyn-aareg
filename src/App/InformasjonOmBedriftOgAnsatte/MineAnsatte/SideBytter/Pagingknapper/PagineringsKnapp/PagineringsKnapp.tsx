@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import './PagineringsKnapp.less';
 import { Element } from 'nav-frontend-typografi';
-const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+const CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
 
 interface Props {
     sidetall: number;
@@ -30,15 +30,20 @@ const GraSirkelMedNr: FunctionComponent<Props> = props => {
             aria-label={ariaLabel}
             aria-current={props.naVarendeIndeks === props.sidetall}
         >
-            <ReactCSSTransitionGroup
+            <CSSTransitionGroup
                 transitionName="valg"
                 transitionAppear={true}
                 transitionAppearTimeout={500}
+                transitionEnterTimeout={100}
+                transitionLeaveTimeout={ 0}
+
             >
                 <Element className={'valg__sidetall'}>{props.sidetall.toString()}</Element>
-            </ReactCSSTransitionGroup>
+            </CSSTransitionGroup>
         </button>
     );
 };
 
 export default GraSirkelMedNr;
+
+
