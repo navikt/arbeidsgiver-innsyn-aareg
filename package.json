@@ -2,6 +2,7 @@
   "name": "bedriftsoversikt-og-ansatte",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/bedriftsoversikt-og-ansatte",
   "dependencies": {
     "@navikt/bedriftsmeny": "^1.0.15",
     "@types/jest": "24.0.23",
