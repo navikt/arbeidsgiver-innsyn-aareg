@@ -99,5 +99,10 @@ export const genererMockingAvArbeidsForhold = (antall: number): Arbeidsforhold[]
   for (let i: number = 0; i < antall;  i++) {
     listeMedArbeidsForhold.push(lagAnsattForhold());
   }
-  return listeMedArbeidsForhold;
+
+  return listeMedArbeidsForhold.map( forhold => {
+    return {...forhold,
+      navArbeidsforholdId: listeMedArbeidsForhold.indexOf(forhold).toString()
+    }
+  });
 };

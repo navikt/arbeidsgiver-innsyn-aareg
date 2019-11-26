@@ -1,73 +1,44 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import { Normaltekst, Systemtittel, Ingress } from 'nav-frontend-typografi';
 import './InformasjonOmBedrift.less';
 import Lenke from 'nav-frontend-lenker';
 import {OrganisasjonFraEnhetsregisteret, tomEnhetsregOrg} from "../../Objekter/OrganisasjonFraEnhetsregisteret";
-import {OrganisasjonFraAltinn} from "../../Objekter/OrganisasjonFraAltinn";
-import {hentOverordnetEnhet, hentUnderenhet} from "../../../api/AAregApi";
 
 interface Props {
-    valgtOrganisasjon: OrganisasjonFraAltinn
+    underenhet: OrganisasjonFraEnhetsregisteret;
+    enhet: OrganisasjonFraEnhetsregisteret;
 
 }
 
 const InformasjonOmBedrift: FunctionComponent<Props> = props => {
-    const [underenhet, setUnderenhet] = useState<OrganisasjonFraEnhetsregisteret>(tomEnhetsregOrg);
-    const [overordnetEnhet, setOverordnetEnhet] = useState<OrganisasjonFraEnhetsregisteret>(
-        tomEnhetsregOrg
-    );
-
-    //MIDLERTIDIG FOR MOCKING
-    const lokalkjoringOrg =  {
-        Name: 'NAV HAMAR ',
-        Type: 'Business',
-        OrganizationNumber: '990229023',
-        ParentOrganizationNumber: '874652202',
-        OrganizationForm: 'BEDR',
-        Status: 'Active',
-    };
-
-
-
-    const orgnr = lokalkjoringOrg.OrganizationNumber;
-
-
-    const setEnheter = async () => {
-        if (orgnr !== '') {
-            setUnderenhet(await hentUnderenhet(orgnr));
-            setOverordnetEnhet(await hentOverordnetEnhet(lokalkjoringOrg.ParentOrganizationNumber));
-        }
-    };
-    setEnheter();
-
 
     return (
         <>
             <div className="informasjon-om-bedrift">
-                {underenhet !== tomEnhetsregOrg && (
+                {props.underenhet !== tomEnhetsregOrg && (
                     <div className={'informasjon-om-bedrift__tekstomrade'}>
-                        <Systemtittel>{underenhet.navn}</Systemtittel>
+                        <Systemtittel>{props.underenhet.navn}</Systemtittel>
                         <br />
-                        {underenhet.organisasjonsnummer && (
+                        {props.underenhet.organisasjonsnummer && (
                             <div className={'informasjon-om-bedrift__infobolk'}>
                                 <Normaltekst>Organisasjonsnummer</Normaltekst>
-                                <Ingress> {underenhet.organisasjonsnummer}</Ingress>
+                                <Ingress> {props.underenhet.organisasjonsnummer}</Ingress>
                             </div>
                         )}
-                        {underenhet.overordnetEnhet && (
+                        {props.underenhet.overordnetEnhet && (
                             <div className={'informasjon-om-bedrift__infobolk'}>
                                 <Normaltekst>Overordnet enhet</Normaltekst>
-                                <Ingress> {overordnetEnhet.navn}</Ingress>
+                                <Ingress> {props.enhet.navn}</Ingress>
                             </div>
                         )}
-                        {underenhet.forretningsadresse && (
+                        {props.underenhet.forretningsadresse && (
                             <div className={'informasjon-om-bedrift__infobolk'}>
                                 <Normaltekst>Forretningsadresse</Normaltekst>
-                                <Ingress> {underenhet.forretningsadresse.adresse[0]}</Ingress>
+                                <Ingress> {props.underenhet.forretningsadresse.adresse[0]}</Ingress>
                                 <Ingress>
-                                    {underenhet.forretningsadresse.postnummer +
+                                    {props.underenhet.forretningsadresse.postnummer +
                                         ' ' +
-                                        underenhet.forretningsadresse.poststed}
+                                        props.underenhet.forretningsadresse.poststed}
                                 </Ingress>
                             </div>
                         )}
@@ -75,62 +46,62 @@ const InformasjonOmBedrift: FunctionComponent<Props> = props => {
                             <Normaltekst className={'informasjon-om-bedrift__naeringskoder'}>
                                 Næringskoder
                             </Normaltekst>
-                            {underenhet.naeringskode1 && (
+                            {props.underenhet.naeringskode1 && (
                                 <Ingress>
-                                    {underenhet.naeringskode1.kode +
+                                    {props.underenhet.naeringskode1.kode +
                                         '. ' +
-                                        underenhet.naeringskode1.beskrivelse}
+                                        props.underenhet.naeringskode1.beskrivelse}
                                 </Ingress>
                             )}
-                            {underenhet.naeringskode2 && (
+                            {props.underenhet.naeringskode2 && (
                                 <Ingress>
-                                    {underenhet.naeringskode2.kode +
+                                    {props.underenhet.naeringskode2.kode +
                                         '. ' +
-                                        underenhet.naeringskode2.beskrivelse}
+                                        props.underenhet.naeringskode2.beskrivelse}
                                 </Ingress>
                             )}
-                            {underenhet.naeringskode3 && (
+                            {props.underenhet.naeringskode3 && (
                                 <Ingress>
-                                    {underenhet.naeringskode3.kode +
+                                    {props.underenhet.naeringskode3.kode +
                                         '. ' +
-                                        underenhet.naeringskode3.beskrivelse}
+                                        props.underenhet.naeringskode3.beskrivelse}
                                 </Ingress>
                             )}
                         </div>
-                        {underenhet.hjemmeside && (
+                        {props.underenhet.hjemmeside && (
                             <div className={'informasjon-om-bedrift__infobolk'}>
                                 <Normaltekst>Hjemmeside</Normaltekst>
-                                <Lenke href={underenhet.hjemmeside}>{underenhet.hjemmeside}</Lenke>
+                                <Lenke href={props.underenhet.hjemmeside}>{props.underenhet.hjemmeside}</Lenke>
                                 <br />
                             </div>
                         )}
 
-                        {underenhet.organisasjonsform && (
+                        {props.underenhet.organisasjonsform && (
                             <div className={'informasjon-om-bedrift__infobolk'}>
                                 <Normaltekst>Organisasjonsform </Normaltekst>
                                 <Ingress>
-                                    {underenhet.organisasjonsform.beskrivelse +
+                                    {props.underenhet.organisasjonsform.beskrivelse +
                                         ' ' +
                                         '(' +
-                                        underenhet.organisasjonsform.kode +
+                                        props.underenhet.organisasjonsform.kode +
                                         ')'}
                                 </Ingress>
                             </div>
                         )}
-                        {underenhet.postadresse && (
+                        {props.underenhet.postadresse && (
                             <div className={'informasjon-om-bedrift__infobolk'}>
                                 <Normaltekst>Postadresse</Normaltekst>
-                                <Ingress>{underenhet.postadresse.adresse[0]}</Ingress>
+                                <Ingress>{props.underenhet.postadresse.adresse[0]}</Ingress>
                                 <Ingress>
-                                    {underenhet.postadresse.postnummer +
+                                    {props.underenhet.postadresse.postnummer +
                                         ' ' +
-                                        underenhet.postadresse.poststed}
+                                        props.underenhet.postadresse.poststed}
                                 </Ingress>
                             </div>
                         )}
                     </div>
                 )}
-                {underenhet === tomEnhetsregOrg && <div> Kunne ikke hente informasjon</div>}
+                {props.underenhet === tomEnhetsregOrg && <div> Kunne ikke hente informasjon</div>}
             </div>
         </>
     );
