@@ -8,32 +8,34 @@ import MineAnsatte from './MineAnsatte/MineAnsatte';
 import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
 import {genererMockingAvArbeidsForhold} from "../../mocking/funksjonerForAlageAAregMock";
 import {arbeidsforhold} from "../Objekter/ObjektFraAAreg";
+import {tomEnhetsregOrg} from "../Objekter/OrganisasjonFraEnhetsregisteret";
+import {hentOverordnetEnhet, hentUnderenhet} from "../../api/AAregApi";
 
 const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = () => {
     const [visInfoEllerAnsatte, setVisInfoEllerAnsatte] = useState('informasjon');
     const [listeOverArbeidsForholdFraAareg, setListeOverArbeidsForholdFraAareg] = useState(Array<arbeidsforhold>());
-    const valgtOrganisasjon: OrganisasjonFraAltinn = {
-        Name: 'BALLSTAD OG HAMARØY',
-        Type: 'Business',
-        OrganizationNumber: '811076732',
-        ParentOrganizationNumber: '811076112',
-        OrganizationForm: 'BEDR',
-        Status: 'Active',
-    };
+    const [underenhetEEreg, setUnderenhetEEreg] = useState(tomEnhetsregOrg);
+    const [enhetEEreg, setEnhetEEreg] = useState(tomEnhetsregOrg);
+
 
     useEffect(() => {
-        /*if (valgtOrganisasjon) {
-            const hentArbeidsforhold = async () =>  {
-                let objekt = await hentArbeidsforholdFraAAreg(valgtOrganisasjon.OrganizationNumber);
-                if (objekt) {
-                     setlisteOverArbeidsForholdFraAareg(objekt);
-
-                }
-                };
-            hentArbeidsforhold();
-        }*/
+        const valgtOrganisasjon: OrganisasjonFraAltinn = {
+            Name: 'NAV HAMAR ',
+            Type: 'Business',
+            OrganizationNumber: '990229023',
+            ParentOrganizationNumber: '874652202',
+            OrganizationForm: 'BEDR',
+            Status: 'Active',
+        };
         const listeMedArbeidsForhold = genererMockingAvArbeidsForhold(1000);
         setListeOverArbeidsForholdFraAareg(listeMedArbeidsForhold);
+        const setEnheter = async () => {
+            if (valgtOrganisasjon.OrganizationNumber !== '') {
+                setUnderenhetEEreg(await hentUnderenhet(valgtOrganisasjon.OrganizationNumber));
+                setEnhetEEreg(await hentOverordnetEnhet(valgtOrganisasjon.ParentOrganizationNumber));
+            }
+        };
+        setEnheter();
 
     }, []);
 
@@ -57,7 +59,7 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = ()
                         kompakt
                     />
                 </div>
-                {visInfoEllerAnsatte === 'informasjon' && <Informasjon valgtOrganisasjon={valgtOrganisasjon}/>}
+                {visInfoEllerAnsatte === 'informasjon' && <Informasjon underenhet={underenhetEEreg} enhet={enhetEEreg}/>}
                 {visInfoEllerAnsatte === 'ansatte' && <MineAnsatte listeMedArbeidsForhold={listeOverArbeidsForholdFraAareg} />}
                 </>
         );
