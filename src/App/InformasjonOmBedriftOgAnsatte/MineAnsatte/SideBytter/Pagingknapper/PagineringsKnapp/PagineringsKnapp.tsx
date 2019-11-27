@@ -12,19 +12,18 @@ interface Props {
 
 const GraSirkelMedNr: FunctionComponent<Props> = props => {
     let ariaLabel = 'Goto Page ' + props.sidetall.toString();
+    let className = 'valg';
     const erNavarendeSide = props.naVarendeIndeks === props.sidetall;
     if (erNavarendeSide) {
         ariaLabel = 'Current Page, ' + props.naVarendeIndeks.toString();
-        const id = document.getElementById(props.sidetall.toString());
-        if (id) {
-            id.focus();
-        }
+        className = className + " er-valgt";
+
     }
 
     return (
         <button
             key={props.sidetall}
-            className={'valg'}
+            className={className}
             onClick={() => props.byttSide(props.sidetall)}
             id={props.sidetall.toString()}
             aria-label={ariaLabel}
