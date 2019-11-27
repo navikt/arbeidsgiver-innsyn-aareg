@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import './MineAnsatte.less';
+import './stylingNedtrekksMeny.less';
 import { Undertittel } from 'nav-frontend-typografi';
 import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';
 import SideBytter from './SideBytter/SideBytter';
@@ -98,18 +99,18 @@ const MineAnsatte: FunctionComponent<Props> = props => {
             <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
                 Opplysninger fra Aa-registeret
             </Undertittel>
-            <Wrapper className="MyMenuButton" onSelection={filtreringValgt}>
-                <Button className="MyMenuButton-button">
-                    Filtrer på aktive eller avsluttede arbeidsforhold
+            <Wrapper className="wrapper" onSelection={filtreringValgt}>
+                <Button className="wrapper__button">
+                    Filtrer på aktive/avsluttede
                 </Button>
-                <Menu className="MyMenuButton-menu">
-                    <MenuItem className="MyMenuButton-menuItem" value={'visAlle'}>
+                <Menu className="wrapper">
+                    <MenuItem className="wrapper__valg" value={'visAlle'}>
                         Vis alle
                     </MenuItem>
-                    <MenuItem className="MyMenuButton-menuItem" value={'aktive'}>
+                    <MenuItem className="wrapper__valg" value={'aktive'}>
                         Aktive
                     </MenuItem>
-                    <MenuItem className="MyMenuButton-menuItem" value={'avsluttede'}>
+                    <MenuItem className="wrapper__valg" value={'avsluttede'}>
                         Avsluttede
                     </MenuItem>
                 </Menu>
