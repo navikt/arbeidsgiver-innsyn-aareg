@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import { Normaltekst, Systemtittel, Ingress } from 'nav-frontend-typografi';
 import './InformasjonOmBedrift.less';
 import Lenke from 'nav-frontend-lenker';
@@ -9,36 +9,38 @@ interface Props {
     enhet: OrganisasjonFraEnhetsregisteret;
 
 }
-
 const InformasjonOmBedrift: FunctionComponent<Props> = props => {
+    const [underenhetEEreg, setUnderenhetEEreg] = useState(props.underenhet);
+    const [enhetEEreg, setEnhetEEreg] = useState(props.enhet);
 
     return (
         <>
             <div className="informasjon-om-bedrift">
-                {props.underenhet !== tomEnhetsregOrg && (
+                {underenhetEEreg !== tomEnhetsregOrg && (
                     <div className={'informasjon-om-bedrift__tekstomrade'}>
-                        <Systemtittel>{props.underenhet.navn}</Systemtittel>
+                        <Systemtittel>{underenhetEEreg.navn}</Systemtittel>
                         <br />
-                        {props.underenhet.organisasjonsnummer && (
+                        {underenhetEEreg.organisasjonsnummer && (
                             <div className={'informasjon-om-bedrift__infobolk'}>
                                 <Normaltekst>Organisasjonsnummer</Normaltekst>
-                                <Ingress> {props.underenhet.organisasjonsnummer}</Ingress>
+                                <Ingress> {underenhetEEreg}</Ingress>
                             </div>
                         )}
-                        {props.underenhet.overordnetEnhet && (
+                        {underenhetEEreg.overordnetEnhet && (
                             <div className={'informasjon-om-bedrift__infobolk'}>
+
                                 <Normaltekst>Overordnet enhet</Normaltekst>
-                                <Ingress> {props.enhet.navn}</Ingress>
+                                <Ingress> {enhetEEreg.navn}</Ingress>
                             </div>
                         )}
-                        {props.underenhet.forretningsadresse && (
+                        {underenhetEEreg.forretningsadresse && (
                             <div className={'informasjon-om-bedrift__infobolk'}>
                                 <Normaltekst>Forretningsadresse</Normaltekst>
-                                <Ingress> {props.underenhet.forretningsadresse.adresse[0]}</Ingress>
+                                <Ingress> {underenhetEEreg.forretningsadresse.adresse[0]}</Ingress>
                                 <Ingress>
-                                    {props.underenhet.forretningsadresse.postnummer +
+                                    {underenhetEEreg.forretningsadresse.postnummer +
                                         ' ' +
-                                        props.underenhet.forretningsadresse.poststed}
+                                    underenhetEEreg.forretningsadresse.poststed}
                                 </Ingress>
                             </div>
                         )}
@@ -46,62 +48,62 @@ const InformasjonOmBedrift: FunctionComponent<Props> = props => {
                             <Normaltekst className={'informasjon-om-bedrift__naeringskoder'}>
                                 Næringskoder
                             </Normaltekst>
-                            {props.underenhet.naeringskode1 && (
+                            {underenhetEEreg.naeringskode1 && (
                                 <Ingress>
-                                    {props.underenhet.naeringskode1.kode +
+                                    {underenhetEEreg.naeringskode1.kode +
                                         '. ' +
-                                        props.underenhet.naeringskode1.beskrivelse}
+                                    underenhetEEreg.naeringskode1.beskrivelse}
                                 </Ingress>
                             )}
-                            {props.underenhet.naeringskode2 && (
+                            {underenhetEEreg.naeringskode2 && (
                                 <Ingress>
-                                    {props.underenhet.naeringskode2.kode +
+                                    {underenhetEEreg.naeringskode2.kode +
                                         '. ' +
-                                        props.underenhet.naeringskode2.beskrivelse}
+                                    underenhetEEreg.naeringskode2.beskrivelse}
                                 </Ingress>
                             )}
-                            {props.underenhet.naeringskode3 && (
+                            {underenhetEEreg.naeringskode3 && (
                                 <Ingress>
-                                    {props.underenhet.naeringskode3.kode +
+                                    {underenhetEEreg.naeringskode3.kode +
                                         '. ' +
-                                        props.underenhet.naeringskode3.beskrivelse}
+                                    underenhetEEreg.naeringskode3.beskrivelse}
                                 </Ingress>
                             )}
                         </div>
-                        {props.underenhet.hjemmeside && (
+                        {underenhetEEreg.hjemmeside && (
                             <div className={'informasjon-om-bedrift__infobolk'}>
                                 <Normaltekst>Hjemmeside</Normaltekst>
-                                <Lenke href={props.underenhet.hjemmeside}>{props.underenhet.hjemmeside}</Lenke>
+                                <Lenke href={underenhetEEreg.hjemmeside}>{underenhetEEreg.hjemmeside}</Lenke>
                                 <br />
                             </div>
                         )}
 
-                        {props.underenhet.organisasjonsform && (
+                        {underenhetEEreg.organisasjonsform && (
                             <div className={'informasjon-om-bedrift__infobolk'}>
                                 <Normaltekst>Organisasjonsform </Normaltekst>
                                 <Ingress>
-                                    {props.underenhet.organisasjonsform.beskrivelse +
+                                    {underenhetEEreg.organisasjonsform.beskrivelse +
                                         ' ' +
                                         '(' +
-                                        props.underenhet.organisasjonsform.kode +
+                                    underenhetEEreg.organisasjonsform.kode +
                                         ')'}
                                 </Ingress>
                             </div>
                         )}
-                        {props.underenhet.postadresse && (
+                        {underenhetEEreg.postadresse && (
                             <div className={'informasjon-om-bedrift__infobolk'}>
                                 <Normaltekst>Postadresse</Normaltekst>
-                                <Ingress>{props.underenhet.postadresse.adresse[0]}</Ingress>
+                                <Ingress>{underenhetEEreg.postadresse.adresse[0]}</Ingress>
                                 <Ingress>
-                                    {props.underenhet.postadresse.postnummer +
+                                    {underenhetEEreg.postadresse.postnummer +
                                         ' ' +
-                                        props.underenhet.postadresse.poststed}
+                                    underenhetEEreg.postadresse.poststed}
                                 </Ingress>
                             </div>
                         )}
                     </div>
                 )}
-                {props.underenhet === tomEnhetsregOrg && <div> Kunne ikke hente informasjon</div>}
+                {underenhetEEreg === tomEnhetsregOrg && <div> Kunne ikke hente informasjon</div>}
             </div>
         </>
     );
