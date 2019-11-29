@@ -4,7 +4,7 @@ import {
     tomEnhetsregOrg
 } from "../App/Objekter/OrganisasjonFraEnhetsregisteret";
 import {hentOverordnetEnhetApiLink, hentUnderenhetApiLink} from "../App/lenker";
-import {Organisasjon, tomAltinnOrganisasjon} from "@navikt/bedriftsmeny/lib/Organisasjon";
+import {Organisasjon, tomaAltinnOrganisasjon} from "../App/Objekter/OrganisasjonFraAltinn";
 
 
 export async function hentUnderenhet(orgnr: string): Promise<OrganisasjonFraEnhetsregisteret> {
@@ -48,7 +48,7 @@ export async function hentAlleJuridiskeEnheter(
             let distinkteJuridiskeEnheter: Organisasjon[] = distinkteJuridiskeEnheterFraEreg._embedded.enheter.map(
                 orgFraEereg => {
                     const jurOrg: Organisasjon = {
-                        ...tomAltinnOrganisasjon,
+                        ...tomaAltinnOrganisasjon,
                         Name: orgFraEereg.navn,
                         OrganizationNumber: orgFraEereg.organisasjonsnummer,
                     };

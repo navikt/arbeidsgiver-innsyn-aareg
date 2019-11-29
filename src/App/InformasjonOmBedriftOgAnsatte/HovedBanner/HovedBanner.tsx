@@ -5,20 +5,20 @@ import Bedriftsmeny from '@navikt/bedriftsmeny';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 
 import './HovedBanner.less';
-import {Organisasjon} from "@navikt/bedriftsmeny/lib/Organisasjon";
 
-import {JuridiskEnhetMedUnderEnheter} from "../../Objekter/JuridiskEnhetMedUnderEnheter";
-import {byggOrganisasjonstre} from "../../byggOrganisasjonsTre";
+
+
 import {orgTreMock} from "../../../mocking/mockresponsFraAltinn";
-import {OrganisasjonFraAltinn} from "../../Objekter/OrganisasjonFraAltinn";
+import {Organisasjon} from "../../Objekter/OrganisasjonFraAltinn";
+
 
 
 
 const Banner: FunctionComponent<RouteComponentProps> = props => {
     const { history } = props;
-    const orgtre: JuridiskEnhetMedUnderEnheter = byggOrganisasjonstre(OrganisasjonFraAltinn);
 
-   const endreOrganisasjon = (org: OrganisasjonFraAltinn) => {
+
+   const endreOrganisasjon = (org: Organisasjon) => {
        console.log(org)
    }
 
