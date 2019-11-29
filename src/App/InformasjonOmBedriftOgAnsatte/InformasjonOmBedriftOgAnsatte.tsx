@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router'
 
 import Informasjon from './InformasjonOmBedrift/InformasjonOmBedrift';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
+import Banner from './HovedBanner/HovedBanner';
 import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
 import {genererMockingAvArbeidsForhold} from "../../mocking/funksjonerForAlageAAregMock";
 import {arbeidsforhold} from "../Objekter/ObjektFraAAreg";
@@ -50,7 +51,7 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = ()
 
         return (
             <>
-
+<Banner>
                 {' '}
                 <div className="bedrift-og-ansatte-tab">
                     <Tabs
@@ -61,6 +62,7 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = ()
                 </div>
                 {visInfoEllerAnsatte === 'informasjon' && <Informasjon underenhet={underenhetEEreg} enhet={enhetEEreg}/>}
                 {visInfoEllerAnsatte === 'ansatte' && <MineAnsatte listeMedArbeidsForhold={listeOverArbeidsForholdFraAareg} />}
+                </Banner>
                 </>
         );
 

@@ -6,11 +6,17 @@ import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 
 import './HovedBanner.less';
 import {Organisasjon} from "@navikt/bedriftsmeny/lib/Organisasjon";
-import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
+
+import {JuridiskEnhetMedUnderEnheter} from "../../Objekter/JuridiskEnhetMedUnderEnheter";
+import {byggOrganisasjonstre} from "../../byggOrganisasjonsTre";
+import {orgTreMock} from "../../../mocking/mockresponsFraAltinn";
+import {OrganisasjonFraAltinn} from "../../Objekter/OrganisasjonFraAltinn";
+
 
 
 const Banner: FunctionComponent<RouteComponentProps> = props => {
     const { history } = props;
+    const orgtre: JuridiskEnhetMedUnderEnheter = byggOrganisasjonstre(OrganisasjonFraAltinn);
 
    const endreOrganisasjon = (org: OrganisasjonFraAltinn) => {
        console.log(org)
@@ -22,10 +28,13 @@ const Banner: FunctionComponent<RouteComponentProps> = props => {
         }
     };
 
+
+
+
     return (
         <Bedriftsmeny
             sidetittel="Min side – arbeidsgiver"
-            organisasjonstre={organisasjonstre}
+            organisasjonstre={orgTreMock}
             onOrganisasjonChange={onOrganisasjonChange}
             history={history}
         />
