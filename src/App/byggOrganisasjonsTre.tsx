@@ -1,13 +1,13 @@
-import {OrganisasjonFraAltinn} from "./Objekter/OrganisasjonFraAltinn";
-import {JuridiskEnhetMedUnderEnheter} from "./Objekter/JuridiskEnhetMedUnderEnheter";
+import {Organisasjon} from "./Objekter/OrganisasjonFraAltinn";
 import {hentAlleJuridiskeEnheter} from "../api/enhetsregisteretApi";
+import {JuridiskEnhetMedUnderEnheterArray} from "@navikt/bedriftsmeny/lib/Organisasjon";
 
 
 export function settSammenJuridiskEnhetMedUnderOrganisasjoner(
-    juridiskeEnheter: OrganisasjonFraAltinn[],
-    underEnheter: OrganisasjonFraAltinn[]
-): JuridiskEnhetMedUnderEnheter[] {
-  const organisasjonsTre: JuridiskEnhetMedUnderEnheter[] = juridiskeEnheter.map(
+    juridiskeEnheter: Organisasjon[],
+    underEnheter: Organisasjon[]
+): JuridiskEnhetMedUnderEnheterArray[] {
+  const organisasjonsTre: JuridiskEnhetMedUnderEnheterArray[] = juridiskeEnheter.map(
       juridiskEnhet => {
         const underenheter = underEnheter.filter(
             underenhet =>
@@ -25,9 +25,9 @@ export function settSammenJuridiskEnhetMedUnderOrganisasjoner(
 }
 
 export async function byggOrganisasjonstre(
-    organisasjoner: OrganisasjonFraAltinn[]
-): Promise<JuridiskEnhetMedUnderEnheter[]> {
-  const juridiskeEnheter = organisasjoner.filter(function(organisasjon: OrganisasjonFraAltinn) {
+    organisasjoner: Organisasjon[]
+): Promise<JuridiskEnhetMedUnderEnheterArray[]> {
+  const juridiskeEnheter = organisasjoner.filter(function(organisasjon: Organisasjon) {
     return organisasjon.Type === 'Enterprise';
   });
   const underenheter = organisasjoner.filter(org => org.OrganizationForm === 'BEDR');
@@ -35,14 +35,14 @@ export async function byggOrganisasjonstre(
       juridiskeEnheter,
       underenheter
   );
-  let underenheterMedTilgangTilJuridiskEnhet: OrganisasjonFraAltinn[] = [];
+  let underenheterMedTilgangTilJuridiskEnhet: Organisasjon[] = [];
   organisasjonsliste.forEach(juridiskenhet => {
     underenheterMedTilgangTilJuridiskEnhet.push.apply(
         underenheterMedTilgangTilJuridiskEnhet,
         juridiskenhet.Underenheter
     );
   });
-  let underEnheterUtenTilgangTilJuridiskEnhet: OrganisasjonFraAltinn[] = underenheter.filter(
+  let underEnheterUtenTilgangTilJuridiskEnhet: Organisasjon[] = underenheter.filter(
       underenhet => !underenheterMedTilgangTilJuridiskEnhet.includes(underenhet)
   );
 
@@ -50,7 +50,7 @@ export async function byggOrganisasjonstre(
     const juridiskeEnheterUtenTilgang = await hentAlleJuridiskeEnheter(
         underEnheterUtenTilgangTilJuridiskEnhet.map(org => org.ParentOrganizationNumber)
     );
-    let organisasjonsListeUtenTilgangJuridisk: JuridiskEnhetMedUnderEnheter[] = settSammenJuridiskEnhetMedUnderOrganisasjoner(
+    let organisasjonsListeUtenTilgangJuridisk: JuridiskEnhetMedUnderEnheterArray[] = settSammenJuridiskEnhetMedUnderOrganisasjoner(
         juridiskeEnheterUtenTilgang,
         underEnheterUtenTilgangTilJuridiskEnhet
     );
