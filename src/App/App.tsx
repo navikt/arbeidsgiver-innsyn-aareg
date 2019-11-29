@@ -10,8 +10,7 @@ import {hentOrganisasjonerFraAltinn} from "../api/altinnApi";
 const App: FunctionComponent = () => {
     hentOrganisasjonerFraAltinn();
 
-
-  return (
+    return (
       <div className="typo-normal">
           <div
           >helloo</div>
