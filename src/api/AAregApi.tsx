@@ -1,6 +1,6 @@
 import {hentArbeidsforholdLink, hentOverordnetEnhetApiLink, hentUnderenhetApiLink} from "../App/lenker";
 import {ListeMedJuridiskeEnheter, OrganisasjonFraEnhetsregisteret} from "../App/Objekter/OrganisasjonFraEnhetsregisteret";
-import {OrganisasjonFraAltinn, tomaAltinnOrganisasjon} from "../App/Objekter/OrganisasjonFraAltinn";
+import {Organisasjon, tomaAltinnOrganisasjon} from "../App/Objekter/OrganisasjonFraAltinn";
 
 export async function hentArbeidsforholdFraAAreg(orgnr: string): Promise<any> {
     let respons = await fetch(hentArbeidsforholdLink(orgnr));
@@ -48,10 +48,10 @@ export async function hentAlleJuridiskeEnheter(
     let respons = await fetch(url);
     if (respons.ok) {
         const distinkteJuridiskeEnheterFraEreg: ListeMedJuridiskeEnheter = await respons.json();
-        let distinkteJuridiskeEnheter: OrganisasjonFraAltinn[] = distinkteJuridiskeEnheterFraEreg._embedded.enheter.map(
+        let distinkteJuridiskeEnheter: Organisasjon[] = distinkteJuridiskeEnheterFraEreg._embedded.enheter.map(
             orgFraEereg => {
 
-                const jurOrg: OrganisasjonFraAltinn = {
+                const jurOrg: Organisasjon = {
                     ...tomaAltinnOrganisasjon,
                     Name: orgFraEereg.navn,
                     OrganizationNumber: orgFraEereg.organisasjonsnummer,

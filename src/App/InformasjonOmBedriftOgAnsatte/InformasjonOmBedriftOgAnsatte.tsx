@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router'
 import Informasjon from './InformasjonOmBedrift/InformasjonOmBedrift';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
 import Banner from './HovedBanner/HovedBanner';
-import {OrganisasjonFraAltinn} from "../Objekter/OrganisasjonFraAltinn";
+import {Organisasjon} from "../Objekter/OrganisasjonFraAltinn";
 import {genererMockingAvArbeidsForhold} from "../../mocking/funksjonerForAlageAAregMock";
 import {arbeidsforhold} from "../Objekter/ObjektFraAAreg";
 import {tomEnhetsregOrg} from "../Objekter/OrganisasjonFraEnhetsregisteret";
@@ -20,7 +20,7 @@ const InformasjonOmBedriftOgAnsatte: FunctionComponent<RouteComponentProps> = ()
 
 
     useEffect(() => {
-        const valgtOrganisasjon: OrganisasjonFraAltinn = {
+        const valgtOrganisasjon: Organisasjon = {
             Name: 'NAV HAMAR ',
             Type: 'Business',
             OrganizationNumber: '990229023',
