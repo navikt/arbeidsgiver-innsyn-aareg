@@ -1,6 +1,7 @@
-import {Organisasjon} from "./Objekter/OrganisasjonFraAltinn";
-import {hentAlleJuridiskeEnheter} from "../api/enhetsregisteretApi";
+
 import {JuridiskEnhetMedUnderEnheterArray} from "@navikt/bedriftsmeny/lib/Organisasjon";
+import {Organisasjon} from "../../Objekter/OrganisasjonFraAltinn";
+import {hentAlleJuridiskeEnheter} from "../../../api/AAregApi";
 
 const settSammenJuridiskEnhetMedUnderOrganisasjoner = (
     juridiskeEnheter: Organisasjon[],
@@ -23,10 +24,13 @@ const settSammenJuridiskEnhetMedUnderOrganisasjoner = (
   return organisasjonsTre;
 };
 
-const hentOgSettSammentMedJuridiskeEnheter = (underEnheterUtenTilgangTilJuridiskEnhet: Organisasjon[]): JuridiskEnhetMedUnderEnheterArray[] => {
+const hentOgSettSammentMedJuridiskeEnheter = async (underEnheterUtenTilgangTilJuridiskEnhet: Organisasjon[]): Promise<JuridiskEnhetMedUnderEnheterArray[]> => {
   const juridiskeEnheterUtenTilgang = await hentAlleJuridiskeEnheter(
       underEnheterUtenTilgangTilJuridiskEnhet.map(org => org.ParentOrganizationNumber)
   );
+  if (juridiskeEnheterUtenTilgang) {
+
+  }
   const organisasjonsListeUtenTilgangJuridisk: JuridiskEnhetMedUnderEnheterArray[] = settSammenJuridiskEnhetMedUnderOrganisasjoner(
       juridiskeEnheterUtenTilgang,
       underEnheterUtenTilgangTilJuridiskEnhet
