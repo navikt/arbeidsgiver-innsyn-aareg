@@ -6,6 +6,7 @@ import { Route} from 'react-router';
 import InformasjonOmBedriftOgAnsatte from "./InformasjonOmBedriftOgAnsatte/InformasjonOmBedriftOgAnsatte";
 import { basename } from './paths';
 import {hentOrganisasjonerFraAltinn} from "../api/altinnApi";
+import LoginBoundary from "./LoggInnBoundary";
 
 const App: FunctionComponent = () => {
     hentOrganisasjonerFraAltinn();
@@ -15,6 +16,7 @@ const App: FunctionComponent = () => {
           <div
           >helloo</div>
         <BrowserRouter basename={basename}>
+            <LoginBoundary>
           <div>
               <div className="bakgrunnsside">
                           <Route
@@ -24,6 +26,7 @@ const App: FunctionComponent = () => {
                           />
               </div>
           </div>
+            </LoginBoundary>
         </BrowserRouter>
       </div>
   );
