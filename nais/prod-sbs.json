@@ -2,5 +2,6 @@
   "ingress": "https://arbeidsgiver.nav.no/bedriftsoversikt-og-ansatte/",
   "API_GATEWAY": "https://api-gw.oera.no",
   "selvbetjening-login-url": "https://loginservice.nav.no/login?redirect=https://arbeidsgiver.nav.no/bedriftsoversikt-og-ansatte",
-  "logout-url": "https://loginservice.nav.no/slo"
+  "logout-url": "https://loginservice.nav.no/slo",
+  "LOGIN_URL": "https://loginservice.nav.no/login?redirect=https://arbeidsgiver.nav.no/min-side-arbeidsgiver/"
 }
