@@ -17,7 +17,10 @@ import {
     regnUtArbeidsForholdSomSkalVisesPaEnSide,
     visEllerSkjulChevroner,
 } from './pagineringsFunksjoner';
-import {arbeidsforhold} from "../../Objekter/ObjektFraAAreg";
+import {arbeidsforhold} from "../Objekter/ObjektFraAAreg";
+import {genererMockingAvArbeidsForhold} from "../../mocking/funksjonerForAlageAAregMock";
+import HovedBanner from "./HovedBanner/HovedBanner";
+
 
 
 export enum SorteringsAttributt {
@@ -34,16 +37,11 @@ export interface KolonneState {
     sorteringsAttributt: SorteringsAttributt;
     reversSortering: boolean;
 }
-
-interface Props {
-    listeMedArbeidsForhold: arbeidsforhold[]
-
-}
-
-const MineAnsatte: FunctionComponent<Props> = props => {
+const MineAnsatte: FunctionComponent = () => {
     const [ansattForholdPaSiden, setAnsattForholdPaSiden] = useState(Array<arbeidsforhold>());
     const [antallSider, setAntallSider] = useState(0);
     const [naVarendeSidetall, setnaVarendeSidetall] = useState(1);
+    const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<arbeidsforhold>());
     const initialKolonne: KolonneState = {
         erValgt: true,
         sorteringsAttributt: SorteringsAttributt.NAVN,
@@ -63,8 +61,14 @@ const MineAnsatte: FunctionComponent<Props> = props => {
     };
 
     useEffect(() => {
+        const listeFraAareg = genererMockingAvArbeidsForhold(300);
+        setListeMedArbeidsForhold(listeFraAareg);
+    }, [navarendeKolonne]);
+
+
+    useEffect(() => {
         let sortertListe = sorterArbeidsforhold(
-            props.listeMedArbeidsForhold,
+           listeMedArbeidsForhold,
             navarendeKolonne.sorteringsAttributt
         );
         if (navarendeKolonne.reversSortering) {
@@ -88,14 +92,17 @@ const MineAnsatte: FunctionComponent<Props> = props => {
             'sidebytter-chevron-venstre',
             'sidebytter-chevron-hoyre'
         );
-    }, [props.listeMedArbeidsForhold, naVarendeSidetall, navarendeKolonne, filterState, antallSider]);
+    }, [listeMedArbeidsForhold, naVarendeSidetall, navarendeKolonne, filterState, antallSider]);
 
     useEffect(() => {
         setnaVarendeSidetall(1);
     }, [navarendeKolonne]);
 
     return (
+        <>
+        <HovedBanner/>
         <div className={'mine-ansatte'}>
+
             <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
                 Opplysninger fra Aa-registeret
             </Undertittel>
@@ -117,7 +124,7 @@ const MineAnsatte: FunctionComponent<Props> = props => {
             </Wrapper>
             <div className={'mine-ansatte__topp'}>
                 <div tabIndex={0} className={'mine-ansatte__antall-forhold'}>
-                    {props.listeMedArbeidsForhold.length} arbeidsforhold
+                    {listeMedArbeidsForhold.length} arbeidsforhold
                 </div>
                 <SideBytter
                     className={'sidebytter'}
@@ -138,6 +145,7 @@ const MineAnsatte: FunctionComponent<Props> = props => {
                 className={'mine-ansatte__liste'}
             />
         </div>
+            </>
     );
 };
 

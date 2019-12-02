@@ -1,6 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import './ListeMineAnsatteForMobil.less';
-import {Arbeidsforhold} from "../../../Objekter/ArbeidsForhold";
+
+
+import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
 import Ansatt from "./Ansatt/Ansatt";
 
 
