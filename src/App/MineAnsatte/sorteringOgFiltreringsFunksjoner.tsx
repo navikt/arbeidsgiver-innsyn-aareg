@@ -1,5 +1,5 @@
 import { SorteringsAttributt } from './MineAnsatte';
-import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
+import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
 
 
 export const skrivOmDatoForm = (dato: string) => {

@@ -1,4 +1,4 @@
-import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
+import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
 
 
 export const regnUtantallSider = (arbeidsForholdPerSide: number, antallArbeidsForhold: number) => {

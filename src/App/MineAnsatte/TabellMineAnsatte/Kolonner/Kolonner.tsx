@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import { KolonneState, SorteringsAttributt } from '../../MineAnsatte';
+
 import Kolonne from './Kolonne/Kolonne';
+import {KolonneState, SorteringsAttributt} from "../../MineAnsatte";
 
 interface Props {
     navarendeKolonne: KolonneState;

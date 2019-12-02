@@ -34,10 +34,7 @@ const Banner: FunctionComponent<RouteComponentProps> = props => {
     }, []);
 
 
-
-
-
-   const endreOrganisasjon = (org: Organisasjon) => {
+    const endreOrganisasjon = (org: Organisasjon) => {
        console.log(org)
    }
 
