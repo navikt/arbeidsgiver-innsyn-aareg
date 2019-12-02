@@ -9,8 +9,6 @@ spec:
   image: navikt/oversikt-over-bedrift-og-ansatte:{{version}}
   team: teamtag
   port: 3000
-  vault:
-    enabled: false
   ingresses:
     - https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/
   liveness:
@@ -19,3 +17,5 @@ spec:
   readiness:
     path: /bedriftsoversikt-og-ansatte/internal/isReady
     initialDelay: 5
+  vault:
+    enabled: true
