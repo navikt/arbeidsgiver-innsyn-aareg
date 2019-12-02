@@ -12,11 +12,10 @@ import {Hovedknapp} from "nav-frontend-knapper";
 const LoggInn: FunctionComponent = () => {
     const redirectTilLogin = () => {
         if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs') {
-            window.location.href = '/min-side-arbeidsgiver/redirect-til-login';
+            window.location.href = '/bedriftsoversikt-og-ansatte/redirect-til-login';
         } else {
-            document.cookie = 'nav-esso=0123456789..*; path=/;';
             document.cookie = 'selvbetjening-idtoken =0123456789..*; path=/;';
-            window.location.href = '/min-side-arbeidsgiver/';
+            window.location.href = '/bedriftsoversikt-og-ansatte/';
         }
     };
 
