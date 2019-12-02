@@ -5,6 +5,7 @@ import {BrowserRouter} from 'react-router-dom';
 import { Route} from 'react-router';
 import InformasjonOmBedriftOgAnsatte from "./InformasjonOmBedriftOgAnsatte/InformasjonOmBedriftOgAnsatte";
 import { basename } from './paths';
+import {EnkeltArbeidsforhold} from "./InformasjonOmBedriftOgAnsatte/MineAnsatte/EnkeltArbeidsForhold/EnkeltArbeidsforhold";
 
 const App: FunctionComponent = () => {
 
@@ -20,6 +21,11 @@ const App: FunctionComponent = () => {
                               path="/"
                               exact={true}
                               component={InformasjonOmBedriftOgAnsatte}
+                          />
+                          <Route
+                              path="/enkeltarbeidsforhold"
+                              exact={true}
+                              component={EnkeltArbeidsforhold}
                           />
               </div>
           </div>
