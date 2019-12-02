@@ -3,9 +3,9 @@ const CracoLessPlugin = require("craco-less");
 module.exports = {
     devServer: {
         proxy: {
-            '/min-side-arbeidsgiver/api': {
+            '/bedriftsoversikt-og-ansatte/api': {
                 target: 'http://localhost:8080',
-                pathRewrite: {'^/min-side-arbeidsgiver/api' : '/ditt-nav-arbeidsgiver-api/api'}
+                pathRewrite: {'^/bedriftsoversikt-og-ansatte/api' : '/ditt-nav-arbeidsgiver-api/api'}
             }
         },
         before: (app) => {
