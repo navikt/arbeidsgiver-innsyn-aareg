@@ -1,9 +1,6 @@
 import {Organisasjon} from "../App/Objekter/OrganisasjonFraAltinn";
-import {byggOrganisasjonstre} from "../App/byggOrganisasjonsTre";
-import {JuridiskEnhetMedUnderEnheterArray} from "../App/Objekter/JuridiskEnhetMedUnderenhetArray";
 
-
-const OrganisasjonerRespons: Organisasjon [] = [
+export const OrganisasjonerRespons: Organisasjon [] = [
   {
     Name: 'BALLSTAD OG HAMARØY',
     Type: 'Business',
@@ -55,7 +52,7 @@ const OrganisasjonerRespons: Organisasjon [] = [
 ];
 
 
-let orgtre: JuridiskEnhetMedUnderEnheterArray[] = [];
-orgtre = byggOrganisasjonstre(OrganisasjonerRespons);
+
+
 
 
