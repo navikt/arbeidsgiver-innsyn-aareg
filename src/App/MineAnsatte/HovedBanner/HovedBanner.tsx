@@ -6,7 +6,8 @@ import './HovedBanner.less';
 import {OrganisasjonerRespons} from "../../../mocking/mockresponsFraAltinn";
 import {Organisasjon} from "../../Objekter/OrganisasjonFraAltinn";
 import {JuridiskEnhetMedUnderEnheterArray} from "../../Objekter/JuridiskEnhetMedUnderenhetArray";
-import {byggOrganisasjonstre} from "../../byggOrganisasjonsTre";
+import {byggOrganisasjonstre} from "./byggOrganisasjonsTre";
+
 
 const Banner: FunctionComponent<RouteComponentProps> = props => {
     const { history } = props;
