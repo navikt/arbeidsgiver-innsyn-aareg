@@ -5,25 +5,23 @@ import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import './HovedBanner.less';
 import {OrganisasjonerRespons} from "../../../mocking/mockresponsFraAltinn";
 import {Organisasjon} from "../../Objekter/OrganisasjonFraAltinn";
-import {byggOrganisasjonstre} from "../../byggOrganisasjonsTre";
 import {JuridiskEnhetMedUnderEnheterArray} from "../../Objekter/JuridiskEnhetMedUnderenhetArray";
+import {byggOrganisasjonstre} from "../../byggOrganisasjonsTre";
 
 const Banner: FunctionComponent<RouteComponentProps> = props => {
     const { history } = props;
     const [organisasjonstre, setorganisasjonstre] = useState(
         Array<JuridiskEnhetMedUnderEnheterArray>());
 
-    useEffect(() => {
-        const lagOgSettTre = async () => {
-            const toDim: Array<JuridiskEnhetMedUnderEnheterArray> = await byggOrganisasjonstre(
-                OrganisasjonerRespons
-            );
-            setorganisasjonstre(toDim)
-
-        }
-        lagOgSettTre();
-
-    }, []);
+  useEffect(() => {
+    const lagOgSettTre = async () => {
+      const juridiskeenheterMedBarn: JuridiskEnhetMedUnderEnheterArray[] = await byggOrganisasjonstre(
+          OrganisasjonerRespons
+      );
+      return juridiskeenheterMedBarn
+    };
+    lagOgSettTre().then(juridiskeenheterMedBarn => setorganisasjonstre(juridiskeenheterMedBarn));
+  }, []);
 
     const endreOrganisasjon = (org: Organisasjon) => {
        console.log(org)
