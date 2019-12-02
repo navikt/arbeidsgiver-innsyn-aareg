@@ -4,7 +4,9 @@ import KolonnerFullSkjerm from './Kolonner/Kolonner';
 import './TabellMineAnsatte.less';
 import 'nav-frontend-tabell-style';
 import { KolonneState } from '../MineAnsatte';
-import {Arbeidsforhold} from "../../../Objekter/ArbeidsForhold";
+import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
+
+
 
 interface Props {
     className?: string;
