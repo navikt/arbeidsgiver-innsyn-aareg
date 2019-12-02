@@ -11,7 +11,6 @@ import {
     sorterArbeidsforhold,
 } from './sorteringOgFiltreringsFunksjoner';
 
-
 import {
     regnUtantallSider,
     regnUtArbeidsForholdSomSkalVisesPaEnSide,
@@ -20,8 +19,6 @@ import {
 import {arbeidsforhold} from "../Objekter/ObjektFraAAreg";
 import {genererMockingAvArbeidsForhold} from "../../mocking/funksjonerForAlageAAregMock";
 import HovedBanner from "./HovedBanner/HovedBanner";
-
-
 
 export enum SorteringsAttributt {
     NAVN,

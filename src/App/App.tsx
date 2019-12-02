@@ -5,11 +5,7 @@ import MineAnsatte from "./MineAnsatte/MineAnsatte";
 
 const App: FunctionComponent = () => {
 
-
     return (
-
-
-
 
         <BrowserRouter basename={basename}>
             <MineAnsatte/>
