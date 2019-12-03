@@ -18,7 +18,7 @@ const Sokefelt: FunctionComponent<Props> = ({ soketekst, onChange }) => (
             label={''}
             value={soketekst}
             onChange={(e: any) => onChange(e.target.value)}
-            placeholder="Søk etter underenheter"
+            placeholder="Søk på navn eller fødselsnummer"
         />
         <div className="sokefelt__ikon">
             {soketekst.length === 0 ? (
