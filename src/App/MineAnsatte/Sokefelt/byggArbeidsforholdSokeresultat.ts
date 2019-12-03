@@ -12,6 +12,7 @@ export function byggArbeidsforholdSokeresultat(
     inputTekst: string
 ): arbeidsforhold[] {
     const sokeresultat = finnArbeidsforholdMedSok(ListeMedArbeidsforhold, inputTekst);
+    console.log(sokeresultat);
     return sokeresultat;
 };
 
