@@ -1,0 +1,53 @@
+@import '../../../node_modules/nav-frontend-core/less/_variabler';
+
+.wrapper {
+  background-color: white;
+  border-radius: 0.25rem;
+  position: relative;
+  padding-right: 1rem;
+  width: 17rem;
+  margin-bottom: 1.5rem;
+
+  &:focus {
+    z-index: 16;
+    background-color: @navLysGra;
+    outline: none;
+    box-shadow: 0 0 0 3px @fokusFarge;
+  }
+
+  &__button {
+    display: flex;
+    border: 1px solid #59514B;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 0.7rem 1rem 0.7rem 1rem;
+    border-radius: 0.25rem;
+
+    &:focus {
+      z-index: 16;
+      background-color: @navLysGra;
+      outline: none;
+      box-shadow: 0 0 0 3px @fokusFarge;
+    }
+
+  }
+
+  &__valg {
+    display: flex;
+    border: 0.5px solid @navGra60 ;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 0.7rem 2rem 0.7rem 1rem;
+    cursor: default;
+    border-radius: 0.25rem;
+
+    &:focus {
+      z-index: 16;
+      background-color: @navLysGra;
+      outline: none;
+      box-shadow: 0 0 0 3px @fokusFarge;
+    }
+  }
+
+
+}
