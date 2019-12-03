@@ -62,7 +62,6 @@ const MineAnsatte: FunctionComponent = () => {
         setListeMedArbeidsForhold(listeFraAareg);
     }, [navarendeKolonne]);
 
-
     useEffect(() => {
         let sortertListe = sorterArbeidsforhold(
            listeMedArbeidsForhold,
