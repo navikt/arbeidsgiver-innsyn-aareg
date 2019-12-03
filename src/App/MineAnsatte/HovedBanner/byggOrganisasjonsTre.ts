@@ -1,4 +1,3 @@
-
 import {JuridiskEnhetMedUnderEnheterArray} from "@navikt/bedriftsmeny/lib/Organisasjon";
 import {Organisasjon} from "../../Objekter/OrganisasjonFraAltinn";
 import {hentAlleJuridiskeEnheter} from "../../../api/AAregApi";
