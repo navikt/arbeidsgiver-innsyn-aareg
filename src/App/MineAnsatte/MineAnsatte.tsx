@@ -19,6 +19,8 @@ import {
 import {arbeidsforhold} from "../Objekter/ObjektFraAAreg";
 import {genererMockingAvArbeidsForhold} from "../../mocking/funksjonerForAlageAAregMock";
 import HovedBanner from "./HovedBanner/HovedBanner";
+import Sokefelt from "./Sokefelt/Sokefelt";
+import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -46,6 +48,8 @@ const MineAnsatte: FunctionComponent = () => {
     };
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
     const [filterState, setFilterState] = useState('visAlle');
+    const [soketekst, setSoketekst] = useState('');
+    const [sokeresultat, setSokeresultat] = useState(Array<arbeidsforhold>());
 
     const arbeidsforholdPerSide = 25;
 
@@ -55,6 +59,11 @@ const MineAnsatte: FunctionComponent = () => {
 
     const filtreringValgt = (value: any, event: any) => {
         setFilterState(value);
+    };
+
+    const onSoketekstChange = (soketekst: string) => {
+        setSoketekst(soketekst);
+        setSokeresultat(byggArbeidsforholdSokeresultat(listeMedArbeidsForhold,soketekst));
     };
 
     useEffect(() => {
@@ -118,6 +127,7 @@ const MineAnsatte: FunctionComponent = () => {
                     </MenuItem>
                 </Menu>
             </Wrapper>
+            <Sokefelt onChange={onSoketekstChange} soketekst={soketekst}/>
             <div className={'mine-ansatte__topp'}>
                 <div tabIndex={0} className={'mine-ansatte__antall-forhold'}>
                     {listeMedArbeidsForhold.length} arbeidsforhold
