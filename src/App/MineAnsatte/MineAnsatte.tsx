@@ -44,9 +44,9 @@ const MineAnsatte: FunctionComponent = () => {
         sorteringsAttributt: SorteringsAttributt.NAVN,
         reversSortering: false,
     };
-
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
     const [filterState, setFilterState] = useState('visAlle');
+
     const arbeidsforholdPerSide = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
