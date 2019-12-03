@@ -23,15 +23,6 @@ const settSammenJuridiskEnhetMedUnderOrganisasjoner = (
   return organisasjonsTre;
 };
 
-const hentOgSettSammentMedJuridiskeEnheter = async (underEnheterUtenTilgangTilJuridiskEnhet: Organisasjon[]): Promise<JuridiskEnhetMedUnderEnheterArray[]> => {
-  const juridiskeEnheterUtenTilgang = await hentAlleJuridiskeEnheter(
-      underEnheterUtenTilgangTilJuridiskEnhet.map(org => org.ParentOrganizationNumber)
-  );
-  return settSammenJuridiskEnhetMedUnderOrganisasjoner(
-      juridiskeEnheterUtenTilgang,
-      underEnheterUtenTilgangTilJuridiskEnhet
-  );
-};
 
 export async function byggOrganisasjonstre(
     organisasjoner: Organisasjon[]
@@ -39,26 +30,21 @@ export async function byggOrganisasjonstre(
   const juridiskeEnheter = organisasjoner.filter(function(organisasjon: Organisasjon) {
     return organisasjon.Type === 'Enterprise';
   });
-  const underenheter = organisasjoner.filter(org => org.OrganizationForm === 'BEDR');
-  let organisasjonsliste = settSammenJuridiskEnhetMedUnderOrganisasjoner(
-      juridiskeEnheter,
-      underenheter
-  );
-  const underenheterMedTilgangTilJuridiskEnhet: Organisasjon[] = [];
-  organisasjonsliste.forEach(juridiskenhet => {
-    underenheterMedTilgangTilJuridiskEnhet.push.apply(
-        underenheterMedTilgangTilJuridiskEnhet,
-        juridiskenhet.Underenheter
-    );
+  const underenheter = organisasjoner.filter(function(organisasjon: Organisasjon) {
+    return organisasjon.OrganizationForm === 'BEDR';
   });
-  const underEnheterUtenTilgangTilJuridiskEnhet: Organisasjon[] = underenheter.filter(
-      underenhet => !underenheterMedTilgangTilJuridiskEnhet.includes(underenhet)
-  );
-  if (underEnheterUtenTilgangTilJuridiskEnhet.length > 0) {
-    const juridiskeEnheterUtenTilgangMedArray = await hentOgSettSammentMedJuridiskeEnheter(underEnheterUtenTilgangTilJuridiskEnhet);
-    hentOgSettSammentMedJuridiskeEnheter(underEnheterUtenTilgangTilJuridiskEnhet).then(() => {organisasjonsliste = organisasjonsliste.concat(juridiskeEnheterUtenTilgangMedArray)});
-  };
-  return organisasjonsliste.sort((a, b) =>
+  const jurEnheterOrgNr = juridiskeEnheter.map(jurorg => jurorg.OrganizationNumber);
+  const underEnheterMedJuridiskEnhet = organisasjoner.filter(org => {
+    return jurEnheterOrgNr.includes(org.ParentOrganizationNumber);
+  });
+  const underEnheterUtenJuridiskEnhet = organisasjoner.filter(org => {
+    return (!underEnheterMedJuridiskEnhet.includes(org) && org.OrganizationForm === "BEDR" )
+
+  });
+  const juridiskeEnheterUtenTilgang: any = hentAlleJuridiskeEnheter(underEnheterUtenJuridiskEnhet.map(org => org.ParentOrganizationNumber));
+  hentAlleJuridiskeEnheter(underEnheterUtenJuridiskEnhet.map(org => org.ParentOrganizationNumber)).then(() => juridiskeEnheter.concat(juridiskeEnheterUtenTilgang));
+  const orgtre = settSammenJuridiskEnhetMedUnderOrganisasjoner(juridiskeEnheter,underenheter);
+  return orgtre.sort((a, b) =>
       a.JuridiskEnhet.Name.localeCompare(b.JuridiskEnhet.Name)
   );
 };

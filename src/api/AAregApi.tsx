@@ -45,22 +45,28 @@ export async function hentAlleJuridiskeEnheter(
             url += ',' + orgnr;
         }
     });
+    console.log(listeMedJuridiskeOrgNr);
     let respons = await fetch(url);
-    if (respons.ok) {
-        const distinkteJuridiskeEnheterFraEreg: ListeMedJuridiskeEnheter = await respons.json();
-        let distinkteJuridiskeEnheter: Organisasjon[] = distinkteJuridiskeEnheterFraEreg._embedded.enheter.map(
-            orgFraEereg => {
+    console.log(url);
+    {const distinkteJuridiskeEnheterFraEreg: ListeMedJuridiskeEnheter = await respons.json();
+    console.log(distinkteJuridiskeEnheterFraEreg);
+        if (distinkteJuridiskeEnheterFraEreg._embedded.enheter.length>0) {
+            const distinkteJuridiskeEnheter: Organisasjon[] = distinkteJuridiskeEnheterFraEreg._embedded.enheter.map(
+                orgFraEereg => {
 
-                const jurOrg: Organisasjon = {
-                    ...tomaAltinnOrganisasjon,
-                    Name: orgFraEereg.navn,
-                    OrganizationNumber: orgFraEereg.organisasjonsnummer,
-                };
-                return jurOrg;
-            }
-        );
-        return distinkteJuridiskeEnheter;
-    }
+                    const jurOrg: Organisasjon = {
+                        ...tomaAltinnOrganisasjon,
+                        Name: orgFraEereg.navn,
+                        OrganizationNumber: orgFraEereg.organisasjonsnummer,
+                    };
+                    return jurOrg;
+                }
+            );
+            return distinkteJuridiskeEnheter;
+
+        }
+
+    };
 
     return [];
 }
