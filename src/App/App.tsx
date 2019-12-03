@@ -8,8 +8,6 @@ import { basename } from './paths';
 import {EnkeltArbeidsforhold} from "./InformasjonOmBedriftOgAnsatte/MineAnsatte/EnkeltArbeidsForhold/EnkeltArbeidsforhold";
 
 const App: FunctionComponent = () => {
-
-
   return (
       <div className="typo-normal">
           <div
