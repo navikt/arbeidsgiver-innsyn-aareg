@@ -49,7 +49,6 @@ const MineAnsatte: FunctionComponent = () => {
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
     const [filterState, setFilterState] = useState('visAlle');
     const [soketekst, setSoketekst] = useState('');
-    const [sokeresultat, setSokeresultat] = useState(Array<arbeidsforhold>());
     const listeFraAareg = genererMockingAvArbeidsForhold(300);
 
     const arbeidsforholdPerSide = 25;
@@ -115,23 +114,23 @@ const MineAnsatte: FunctionComponent = () => {
             <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
                 Opplysninger fra Aa-registeret
             </Undertittel>
+            <div className={"mine-ansatte__sok-og-filter"}>
             <Wrapper className="wrapper" onSelection={filtreringValgt}>
                 <Button className="wrapper__button">
-                    Filtrer på aktive/avsluttede
+                    Aktive arbeidsforhold
                 </Button>
                 <Menu className="wrapper">
-                    <MenuItem className="wrapper__valg" value={'visAlle'}>
-                        Vis alle
-                    </MenuItem>
+
                     <MenuItem className="wrapper__valg" value={'aktive'}>
-                        Aktive
+                        Aktive arbeidsforhold
                     </MenuItem>
                     <MenuItem className="wrapper__valg" value={'avsluttede'}>
-                        Avsluttede
+                        Avsluttede arbeidsforhold
                     </MenuItem>
                 </Menu>
             </Wrapper>
             <Sokefelt onChange={onSoketekstChange} soketekst={soketekst}/>
+            </div>
             <div className={'mine-ansatte__topp'}>
                 <div tabIndex={0} className={'mine-ansatte__antall-forhold'}>
                     {listeMedArbeidsForhold.length} arbeidsforhold
