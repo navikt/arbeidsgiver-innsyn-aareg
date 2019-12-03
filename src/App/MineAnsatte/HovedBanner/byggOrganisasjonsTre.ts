@@ -41,8 +41,7 @@ export async function byggOrganisasjonstre(
     return (!underEnheterMedJuridiskEnhet.includes(org) && org.OrganizationForm === "BEDR" )
 
   });
-  const juridiskeEnheterUtenTilgang: any = hentAlleJuridiskeEnheter(underEnheterUtenJuridiskEnhet.map(org => org.ParentOrganizationNumber));
-  hentAlleJuridiskeEnheter(underEnheterUtenJuridiskEnhet.map(org => org.ParentOrganizationNumber)).then(() => juridiskeEnheter.concat(juridiskeEnheterUtenTilgang));
+  const juridiskeEnheterUtenTilgang: any = hentAlleJuridiskeEnheter(underEnheterUtenJuridiskEnhet.map(org => org.ParentOrganizationNumber)).then(() => juridiskeEnheter.concat(juridiskeEnheterUtenTilgang));
   const orgtre = settSammenJuridiskEnhetMedUnderOrganisasjoner(juridiskeEnheter,underenheter);
   return orgtre.sort((a, b) =>
       a.JuridiskEnhet.Name.localeCompare(b.JuridiskEnhet.Name)
