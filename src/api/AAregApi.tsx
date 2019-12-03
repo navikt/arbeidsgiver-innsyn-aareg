@@ -6,19 +6,19 @@ export async function hentArbeidsforholdFraAAreg(orgnr: string): Promise<any> {
     let respons = await fetch(hentArbeidsforholdLink(orgnr));
     if (respons.ok) {
         return await respons.json();
-    } else {
+    }else {
         return null;
-    }
-}
+    };
+};
 
 export async function hentUnderenhet(orgnr: string): Promise<any> {
     let respons = await fetch(hentUnderenhetApiLink(orgnr));
     if (respons.ok) {
         const enhet: OrganisasjonFraEnhetsregisteret = await respons.json();
         return enhet;
-    }
+    };
     return null;
-}
+};
 
 export async function hentOverordnetEnhet(orgnr: string): Promise<any> {
     if (orgnr !== '') {
@@ -26,10 +26,10 @@ export async function hentOverordnetEnhet(orgnr: string): Promise<any> {
         if (respons.ok) {
             const enhet: OrganisasjonFraEnhetsregisteret = await respons.json();
             return enhet;
-        }
-    }
+        };
+    };
     return null;
-}
+};
 
 export async function hentAlleJuridiskeEnheter(
     listeMedJuridiskeOrgNr: string[]
@@ -43,13 +43,11 @@ export async function hentAlleJuridiskeEnheter(
             url += orgnr;
         } else {
             url += ',' + orgnr;
-        }
+        };
     });
-    console.log(listeMedJuridiskeOrgNr);
     let respons = await fetch(url);
-    console.log(url);
-    {const distinkteJuridiskeEnheterFraEreg: ListeMedJuridiskeEnheter = await respons.json();
-    console.log(distinkteJuridiskeEnheterFraEreg);
+    if (respons.ok && distinkteJuridiskeEnhetsnr.length >0 ) {
+        const distinkteJuridiskeEnheterFraEreg: ListeMedJuridiskeEnheter = await respons.json();
         if (distinkteJuridiskeEnheterFraEreg._embedded.enheter.length>0) {
             const distinkteJuridiskeEnheter: Organisasjon[] = distinkteJuridiskeEnheterFraEreg._embedded.enheter.map(
                 orgFraEereg => {
@@ -63,10 +61,8 @@ export async function hentAlleJuridiskeEnheter(
                 }
             );
             return distinkteJuridiskeEnheter;
-
         }
-
     };
 
     return [];
-}
+};
