@@ -50,6 +50,7 @@ const MineAnsatte: FunctionComponent = () => {
     const [filterState, setFilterState] = useState('visAlle');
     const [soketekst, setSoketekst] = useState('');
     const [sokeresultat, setSokeresultat] = useState(Array<arbeidsforhold>());
+    const listeFraAareg = genererMockingAvArbeidsForhold(300);
 
     const arbeidsforholdPerSide = 25;
 
@@ -63,13 +64,16 @@ const MineAnsatte: FunctionComponent = () => {
 
     const onSoketekstChange = (soketekst: string) => {
         setSoketekst(soketekst);
-        setSokeresultat(byggArbeidsforholdSokeresultat(listeMedArbeidsForhold,soketekst));
     };
 
     useEffect(() => {
-        const listeFraAareg = genererMockingAvArbeidsForhold(300);
-        setListeMedArbeidsForhold(listeFraAareg);
-    }, [navarendeKolonne]);
+        if (soketekst.length>0) {
+            setListeMedArbeidsForhold(byggArbeidsforholdSokeresultat(listeMedArbeidsForhold,soketekst));
+        }
+        else {
+            setListeMedArbeidsForhold(listeFraAareg);
+        }
+    }, [soketekst]);
 
     useEffect(() => {
         let sortertListe = sorterArbeidsforhold(
@@ -101,7 +105,7 @@ const MineAnsatte: FunctionComponent = () => {
 
     useEffect(() => {
         setnaVarendeSidetall(1);
-    }, [navarendeKolonne]);
+    }, [navarendeKolonne,soketekst]);
 
     return (
         <>
