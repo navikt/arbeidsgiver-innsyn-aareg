@@ -28,14 +28,10 @@ const hentOgSettSammentMedJuridiskeEnheter = async (underEnheterUtenTilgangTilJu
   const juridiskeEnheterUtenTilgang = await hentAlleJuridiskeEnheter(
       underEnheterUtenTilgangTilJuridiskEnhet.map(org => org.ParentOrganizationNumber)
   );
-  if (juridiskeEnheterUtenTilgang) {
-
-  }
-  const organisasjonsListeUtenTilgangJuridisk: JuridiskEnhetMedUnderEnheterArray[] = settSammenJuridiskEnhetMedUnderOrganisasjoner(
+  return settSammenJuridiskEnhetMedUnderOrganisasjoner(
       juridiskeEnheterUtenTilgang,
       underEnheterUtenTilgangTilJuridiskEnhet
   );
-  return organisasjonsListeUtenTilgangJuridisk;
 };
 
 export async function byggOrganisasjonstre(
@@ -45,7 +41,7 @@ export async function byggOrganisasjonstre(
     return organisasjon.Type === 'Enterprise';
   });
   const underenheter = organisasjoner.filter(org => org.OrganizationForm === 'BEDR');
-  const organisasjonsliste = settSammenJuridiskEnhetMedUnderOrganisasjoner(
+  let organisasjonsliste = settSammenJuridiskEnhetMedUnderOrganisasjoner(
       juridiskeEnheter,
       underenheter
   );
@@ -60,12 +56,9 @@ export async function byggOrganisasjonstre(
       underenhet => !underenheterMedTilgangTilJuridiskEnhet.includes(underenhet)
   );
   if (underEnheterUtenTilgangTilJuridiskEnhet.length > 0) {
-    const juridiskeEnheterUtenTilgang = hentOgSettSammentMedJuridiskeEnheter(underEnheterUtenTilgangTilJuridiskEnhet);
-    const ferdigListe = organisasjonsliste.concat(juridiskeEnheterUtenTilgang);
-    return ferdigListe.sort((a, b) =>
-        a.JuridiskEnhet.Name.localeCompare(b.JuridiskEnhet.Name)
-    );
-  }
+    const juridiskeEnheterUtenTilgangMedArray = await hentOgSettSammentMedJuridiskeEnheter(underEnheterUtenTilgangTilJuridiskEnhet);
+    hentOgSettSammentMedJuridiskeEnheter(underEnheterUtenTilgangTilJuridiskEnhet).then(() => {organisasjonsliste = organisasjonsliste.concat(juridiskeEnheterUtenTilgangMedArray)});
+  };
   return organisasjonsliste.sort((a, b) =>
       a.JuridiskEnhet.Name.localeCompare(b.JuridiskEnhet.Name)
   );
