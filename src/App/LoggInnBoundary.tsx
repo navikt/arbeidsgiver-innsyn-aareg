@@ -49,7 +49,7 @@ const LoginBoundary: FunctionComponent = props => {
         return <LoggInn/>;
     } else {
         return null;
-    }
+    };
 
 };
 
