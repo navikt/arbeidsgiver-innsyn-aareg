@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
 import { Input } from 'nav-frontend-skjema';
-
 import Forstørrelsesglass from './Forstørrelsesglass';
 import Kryss from './Kryss';
 import './Sokefelt.less';
