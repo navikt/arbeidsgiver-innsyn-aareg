@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Forstørrelsesglass = () => (
+const Forstorrelsesglass = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
         <title>Forstørrelsesglass</title>
         <path
@@ -11,4 +11,4 @@ const Forstørrelsesglass = () => (
     </svg>
 );
 
-export default Forstørrelsesglass;
+export default Forstorrelsesglass;

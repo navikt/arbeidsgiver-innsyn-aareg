@@ -1,5 +1,6 @@
 import {Organisasjon} from "../App/Objekter/OrganisasjonFraAltinn";
 
+
 export const OrganisasjonerRespons: Organisasjon [] = [
   {
     Name: 'BALLSTAD OG HAMARØY',

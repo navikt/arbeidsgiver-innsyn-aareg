@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import { Input } from 'nav-frontend-skjema';
-import Forstørrelsesglass from './Forstørrelsesglass';
 import Kryss from './Kryss';
 import './Sokefelt.less';
+import Forstorrelsesglass from "./Forstørrelsesglass";
 
 interface Props {
     soketekst: string;
@@ -21,7 +21,7 @@ const Sokefelt: FunctionComponent<Props> = ({ soketekst, onChange }) => (
         />
         <div className="sokefelt__ikon">
             {soketekst.length === 0 ? (
-                <Forstørrelsesglass />
+                <Forstorrelsesglass />
             ) : (
                 <Kryss className="sokefelt__ikon--klikkbart" onClick={() => onChange('')} />
             )}
