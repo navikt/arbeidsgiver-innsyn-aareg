@@ -1,4 +1,4 @@
-import React, { FunctionComponent, HTMLProps } from 'react';
+import React, { FunctionComponent } from 'react';
 
 const Kryss: FunctionComponent<any> = (props) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="16" height="16">
