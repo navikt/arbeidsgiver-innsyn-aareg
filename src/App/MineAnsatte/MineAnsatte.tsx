@@ -49,7 +49,8 @@ const MineAnsatte: FunctionComponent = () => {
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
     const [filterState, setFilterState] = useState('visAlle');
     const [soketekst, setSoketekst] = useState('');
-    const listeFraAareg = genererMockingAvArbeidsForhold(300);
+    const [listeFraAareg,setListeFraAareg] = useState(Array<arbeidsforhold>())
+
 
     const arbeidsforholdPerSide = 25;
 
@@ -66,13 +67,17 @@ const MineAnsatte: FunctionComponent = () => {
     };
 
     useEffect(() => {
+        setListeFraAareg(genererMockingAvArbeidsForhold(300));
+    }, []);
+
+    useEffect(() => {
         if (soketekst.length>0) {
-            setListeMedArbeidsForhold(byggArbeidsforholdSokeresultat(listeMedArbeidsForhold,soketekst));
+            setListeMedArbeidsForhold(byggArbeidsforholdSokeresultat(listeFraAareg,soketekst));
         }
         else {
             setListeMedArbeidsForhold(listeFraAareg);
         }
-    }, [soketekst]);
+    }, [soketekst,listeFraAareg]);
 
     useEffect(() => {
         let sortertListe = sorterArbeidsforhold(
