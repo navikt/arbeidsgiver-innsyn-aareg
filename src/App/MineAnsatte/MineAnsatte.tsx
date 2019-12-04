@@ -1,8 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import './MineAnsatte.less';
-import './stylingNedtrekksMeny.less';
 import { Undertittel } from 'nav-frontend-typografi';
-import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';
 import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
@@ -21,6 +19,7 @@ import {genererMockingAvArbeidsForhold} from "../../mocking/funksjonerForAlageAA
 import HovedBanner from "./HovedBanner/HovedBanner";
 import Sokefelt from "./Sokefelt/Sokefelt";
 import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
+import NedtrekksMenyForFiltrering from "./NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -67,7 +66,7 @@ const MineAnsatte: FunctionComponent = () => {
     };
 
     useEffect(() => {
-        setListeFraAareg(genererMockingAvArbeidsForhold(300));
+        setListeFraAareg(genererMockingAvArbeidsForhold(20000));
     }, []);
 
     useEffect(() => {
@@ -120,20 +119,7 @@ const MineAnsatte: FunctionComponent = () => {
                 Opplysninger fra Aa-registeret
             </Undertittel>
             <div className={"mine-ansatte__sok-og-filter"}>
-            <Wrapper className="wrapper" onSelection={filtreringValgt}>
-                <Button className="wrapper__button">
-                    Aktive arbeidsforhold
-                </Button>
-                <Menu className="wrapper">
-
-                    <MenuItem className="wrapper__valg" value={'aktive'}>
-                        Aktive arbeidsforhold
-                    </MenuItem>
-                    <MenuItem className="wrapper__valg" value={'avsluttede'}>
-                        Avsluttede arbeidsforhold
-                    </MenuItem>
-                </Menu>
-            </Wrapper>
+          <NedtrekksMenyForFiltrering onFiltrering={filtreringValgt}/>
             <Sokefelt onChange={onSoketekstChange} soketekst={soketekst}/>
             </div>
             <div className={'mine-ansatte__topp'}>
