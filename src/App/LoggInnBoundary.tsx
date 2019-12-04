@@ -1,5 +1,5 @@
 import {FunctionComponent, useEffect, useState} from "react";
-import environment from "./Objekter/utils/environment";
+import environment from "../utils/environment";
 import hentVeilarbStatus from "../api/veilarbApi";
 import LoggInn from "./LoggInn/LoggInn";
 import React from "react";

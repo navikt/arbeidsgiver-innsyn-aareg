@@ -5,8 +5,9 @@ import Lenke from 'nav-frontend-lenker';
 import LoggInnBanner from './LoggInnBanner/LoggInnBanner';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { TilgangsStyringInfoTekst } from './TilgangsStyringInfoTekst/TilgangsStyringInfoTekst';
-import environment from "../Objekter/utils/environment";
+import environment from "../../utils/environment";
 import {Hovedknapp} from "nav-frontend-knapper";
+
 
 
 const LoggInn: FunctionComponent = () => {
