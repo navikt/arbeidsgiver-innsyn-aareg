@@ -43,11 +43,14 @@ const LoginBoundary: FunctionComponent = props => {
     }, []);
 
     if (innlogget === Tilgang.TILGANG) {
+        console.log("TILGAGNG");
         return <> {props.children} </>;
     }
     if (innlogget === Tilgang.IKKE_TILGANG) {
+        console.log("IKKE TILGAGNG");
         return <LoggInn/>;
     } else {
+        console.log(innlogget);
         return null;
     };
 
