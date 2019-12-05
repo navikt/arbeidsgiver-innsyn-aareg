@@ -14,7 +14,9 @@ const LoggInn: FunctionComponent = () => {
     const redirectTilLogin = () => {
         if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs') {
             window.location.href = '/bedriftsoversikt-og-ansatte/redirect-til-login';
+            console.log("Klart å lese miljø, miljø er lik: ", environment.MILJO);
         } else {
+            console.log("lokalKjoring");
             document.cookie = 'selvbetjening-idtoken =0123456789..*; path=/;';
             window.location.href = '/bedriftsoversikt-og-ansatte/';
         }
