@@ -20,6 +20,7 @@ import HovedBanner from "./HovedBanner/HovedBanner";
 import Sokefelt from "./Sokefelt/Sokefelt";
 import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
 import NedtrekksMenyForFiltrering from "./NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering";
+import {hentArbeidsforholdFraAAreg} from "../../api/AaregApi";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -48,7 +49,10 @@ const MineAnsatte: FunctionComponent = () => {
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
     const [filterState, setFilterState] = useState('visAlle');
     const [soketekst, setSoketekst] = useState('');
-    const [listeFraAareg,setListeFraAareg] = useState(Array<arbeidsforhold>())
+    const [listeFraAareg,setListeFraAareg] = useState(Array<arbeidsforhold>());
+
+    const fraAareg = hentArbeidsforholdFraAAreg("910825518", "810825472");
+    console.log(fraAareg);
 
 
     const arbeidsforholdPerSide = 25;
