@@ -3,8 +3,8 @@ import {ObjektFraAAregisteret, tomResponsFraAareg} from "../App/Objekter/ObjektF
 
 export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string): Promise<ObjektFraAAregisteret> {
     const headere = new Headers();
-    headere.append('org-nr', underenhet);
-    headere.append('jurenhet', enhet);
+    headere.set('orgnr', underenhet);
+    headere.set('jurenhet', enhet);
     let respons = await fetch(hentArbeidsforholdLink(), {headers:headere});
     if (respons.ok) {
         return await respons.json();
