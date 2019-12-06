@@ -11,7 +11,6 @@ const App: FunctionComponent = () => {
             <LoginBoundary>
                 <MineAnsatte/>
             </LoginBoundary>
-            <MineAnsatte/>
         </BrowserRouter>
   );
 };
