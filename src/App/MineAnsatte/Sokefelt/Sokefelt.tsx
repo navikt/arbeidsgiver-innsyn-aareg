@@ -20,11 +20,9 @@ const Sokefelt: FunctionComponent<Props> = ({ soketekst, onChange }) => (
             placeholder="Søk på navn eller fødselsnummer"
         />
         <div className="sokefelt__ikon">
-            {soketekst.length === 0 ? (
+            {soketekst.length === 0 && (
                 <Forstorrelsesglass />
-            ) : (
-                <Kryss className="sokefelt__ikon--klikkbart" onClick={() => onChange('')} />
-            )}
+            ) }
         </div>
     </div>
 );
