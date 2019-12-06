@@ -1,4 +1,4 @@
-export interface OrganisasjonFraAltinn {
+export interface Organisasjon {
     Name: string;
     Type: string;
     OrganizationNumber: string;
@@ -7,7 +7,7 @@ export interface OrganisasjonFraAltinn {
     ParentOrganizationNumber: any;
 }
 
-export const tomaAltinnOrganisasjon: OrganisasjonFraAltinn = {
+export const tomaAltinnOrganisasjon: Organisasjon = {
     Name: '',
     Type: '',
     OrganizationNumber: '',
