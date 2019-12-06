@@ -57,6 +57,12 @@ export interface arbeidsforhold {
     yrke: string;
 }
 
+export const tomResponsFraAareg: ObjektFraAAregisteret = {
+    antall: "",
+    listeMedArbeidsForhold: [],
+    startrad: "",
+    totalAntall: ""
+}
 
 export const eksempel1: arbeidsforhold = {
     navn: 'Gøril',
