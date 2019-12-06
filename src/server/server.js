@@ -4,6 +4,7 @@ const BASE_PATH='/bedriftsoversikt-og-ansatte';
 const server = express();
 const createEnvSettingsFile = require('./envSettings.js');
 const buildPath = path.join(__dirname,'../../build');
+const sonekrysning = require('./sonekrysningConfig.js');
 
 server.use(BASE_PATH, express.static(path.join(__dirname,'../../build')));
 server.use(`${BASE_PATH}/api`, sonekrysning);
