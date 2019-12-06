@@ -1,4 +1,4 @@
-import {Organisasjon} from "../App/Objekter/OrganisasjonFraAltinn";
+import Organisasjon from "../App/Objekter/OrganisasjonFraAltinn";
 
 export async function hentOrganisasjonerFraAltinn(): Promise<Organisasjon[]> {
     let respons = await fetch('/bedriftsoversikt-og-ansatte/api/organisasjoner');
@@ -8,4 +8,3 @@ export async function hentOrganisasjonerFraAltinn(): Promise<Organisasjon[]> {
         return [];
     }
 }
-
