@@ -10,7 +10,7 @@ spec:
   team: teamtag
   port: 3000
   ingresses:
-    - https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/
+    - '{{{ingress}}}'
   liveness:
     path: /bedriftsoversikt-og-ansatte/internal/isAlive
     initialDelay: 5
@@ -19,3 +19,8 @@ spec:
     initialDelay: 5
   vault:
     enabled: true
+  env:
+    - name: APIGW_URL
+      value: '{{{api-gw-url}}}'
+  - name: LOGIN_URL
+      value: '{{{selvbetjening-login-url}}}'
