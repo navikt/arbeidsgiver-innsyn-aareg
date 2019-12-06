@@ -1,7 +1,6 @@
-export const hentArbeidsforholdLink = (orgnr: string) => {
+export const hentArbeidsforholdLink = () => {
     return (
-        'https://arbeidsgiver.nais.preprod.local/ditt-nav-arbeidsgiver-api/api/arbeidsforhold/' +
-        orgnr
+        '/bedriftsoversikt-og-ansatte/api/arbeidsforhold'
     );
 };
 
@@ -12,3 +11,4 @@ export const hentUnderenhetApiLink = (orgnr: string) => {
 export const hentOverordnetEnhetApiLink = (orgnr: string) => {
     return `https://data.brreg.no/enhetsregisteret/api/enheter/${orgnr}`;
 };
+
