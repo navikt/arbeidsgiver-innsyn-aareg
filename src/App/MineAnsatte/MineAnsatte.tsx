@@ -20,6 +20,7 @@ import Sokefelt from "./Sokefelt/Sokefelt";
 import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
 import NedtrekksMenyForFiltrering from "./NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering";
 import {hentArbeidsforholdFraAAreg} from "../../api/AaregApi";
+import {Organisasjon, tomaAltinnOrganisasjon} from "../Objekter/OrganisasjonFraAltinn";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -36,6 +37,8 @@ export interface KolonneState {
     reversSortering: boolean;
 }
 const MineAnsatte: FunctionComponent = () => {
+    const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
+
     const [ansattForholdPaSiden, setAnsattForholdPaSiden] = useState(Array<arbeidsforhold>());
     const [antallSider, setAntallSider] = useState(0);
     const [naVarendeSidetall, setnaVarendeSidetall] = useState(1);
@@ -63,11 +66,9 @@ const MineAnsatte: FunctionComponent = () => {
         setSoketekst(soketekst);
     };
 
-
-
     useEffect(() => {
         const hentogSettArbeidsforhold = async () => {
-            const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg("910825518", "810825472");
+            const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg(valgtOrganisasjon.OrganizationNumber, valgtOrganisasjon.ParentOrganizationNumber);
             return responsAareg;
         };
         hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
@@ -117,7 +118,7 @@ const MineAnsatte: FunctionComponent = () => {
 
     return (
         <>
-        <HovedBanner/>
+        <HovedBanner byttOrganisasjon={setValgtOrganisasjon}/>
         <div className={'mine-ansatte'}>
 
             <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>

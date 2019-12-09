@@ -8,8 +8,10 @@ import {JuridiskEnhetMedUnderEnheterArray} from "../../Objekter/JuridiskEnhetMed
 import {byggOrganisasjonstre} from "./byggOrganisasjonsTre";
 import {hentOrganisasjonerFraAltinn} from "../../../api/altinnApi";
 
-
-const Banner: FunctionComponent<RouteComponentProps> = props => {
+interface Props {
+    byttOrganisasjon: (org: Organisasjon) => void;
+};
+const Banner: FunctionComponent<RouteComponentProps & Props> = props => {
     const { history } = props;
     const [organisasjonstre, setorganisasjonstre] = useState(
         Array<JuridiskEnhetMedUnderEnheterArray>());
@@ -32,7 +34,7 @@ const Banner: FunctionComponent<RouteComponentProps> = props => {
   }, []);
 
     const endreOrganisasjon = (org: Organisasjon) => {
-       console.log(org)
+       props.byttOrganisasjon(org);
    };
 
     const onOrganisasjonChange = (organisasjon?: Organisasjon) => {
