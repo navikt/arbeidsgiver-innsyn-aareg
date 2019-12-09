@@ -3,7 +3,7 @@ import {DetaljertArbeidsforhold } from "@navikt/arbeidsforhold/dist";
 import environment from "../../../utils/environment";
 
 const miljo = () => {
-    if (environment.MILJO === 'prod-sbs') {
+    if (environment.MILJO === 'dev-sbs') {
         return "Q0"
     }
     return "LOCAL"
