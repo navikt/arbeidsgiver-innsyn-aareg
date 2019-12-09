@@ -1,20 +1,23 @@
 import React, {FunctionComponent} from "react";
 import {DetaljertArbeidsforhold } from "@navikt/arbeidsforhold/dist";
+import environment from "../../../utils/environment";
 
-
-
-const arbeidsforholdIdFraUrl = () => new URL(window.location.href).searchParams.get('arbeidsforhold');
+const miljo = () => {
+    if (environment.MILJO === 'prod-sbs') {
+        return "Q0"
+    }
+    return "LOCAL"
+};
 
 export const EnkeltArbeidsforhold:FunctionComponent = props =>{
     const locale = "nb" as "nb" | "en";
-    const miljo = "LOCAL";
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
     if(arbeidsforholdIdFraUrl) {
         const arbeidsforholdId = parseInt(arbeidsforholdIdFraUrl);
         return <div>
             <DetaljertArbeidsforhold
                 locale={locale}
-                miljo={miljo}
+                miljo={miljo()}
                 navArbeidsforholdId={arbeidsforholdId} />
         </div>
     }
