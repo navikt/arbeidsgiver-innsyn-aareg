@@ -20,7 +20,7 @@ import Sokefelt from "./Sokefelt/Sokefelt";
 import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
 import NedtrekksMenyForFiltrering from "./NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering";
 import {hentArbeidsforholdFraAAreg} from "../../api/AaregApi";
-import {Organisasjon, tomaAltinnOrganisasjon} from "../Objekter/OrganisasjonFraAltinn";
+import { tomaAltinnOrganisasjon} from "../Objekter/OrganisasjonFraAltinn";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -72,7 +72,7 @@ const MineAnsatte: FunctionComponent = () => {
             return responsAareg;
         };
         hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
-    }, []);
+    }, [valgtOrganisasjon]);
 
 
     useEffect(() => {
@@ -130,7 +130,7 @@ const MineAnsatte: FunctionComponent = () => {
             </div>
             <div className={'mine-ansatte__topp'}>
                 <div tabIndex={0} className={'mine-ansatte__antall-forhold'}>
-                    0 && {listeMedArbeidsForhold.length} arbeidsforhold
+                  {listeMedArbeidsForhold.length} arbeidsforhold
                 </div>
                 <SideBytter
                     className={'sidebytter'}
