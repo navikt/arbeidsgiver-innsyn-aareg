@@ -50,7 +50,24 @@ export const MockresponsOrganisasjoner: Organisasjon [] = [
     OrganizationForm: 'BEDR',
     Status: 'Active',
   },
+  {
+    Name: 'MAURA OG KOLBU AS ',
+    Type: 'Enterprise',
+    OrganizationNumber: '910825518',
+    ParentOrganizationNumber: null,
+    OrganizationForm: 'AS',
+    Status: 'Active',
+  },
+  {
+    Name: 'MAURA OG KOLBU',
+    Type: 'Business',
+    OrganizationNumber: '810825472',
+    ParentOrganizationNumber: '910825518',
+    OrganizationForm: 'BEDR',
+    Status: 'Active',
+  },
 ];
+
 
 
 
