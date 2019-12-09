@@ -5,6 +5,7 @@ import './TabellMineAnsatte.less';
 import 'nav-frontend-tabell-style';
 import { KolonneState } from '../MineAnsatte';
 import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
+import Lenke from "nav-frontend-lenker";
 
 
 
@@ -20,7 +21,7 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
     const rader = props.listeMedArbeidsForhold.map(arbeidsforhold => {
         return (
             <tr key={arbeidsforhold.navArbeidsforholdId}>
-                <td className={'td'}>{arbeidsforhold.navn}</td>
+                <td className={'td'}><Lenke href={"enkeltarbeidsforhold/?arbeidsforhold="+arbeidsforhold.navArbeidsforholdId}>{arbeidsforhold.navn}</Lenke></td>
                 <td className={'td'}>{arbeidsforhold.arbeidstaker.offentligIdent}</td>
                 <td className={'td'}>{arbeidsforhold.yrke}</td>
                 <td className={'td'}>{arbeidsforhold.ansattFom}</td>
