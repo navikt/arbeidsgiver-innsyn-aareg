@@ -21,6 +21,7 @@ import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSoker
 import NedtrekksMenyForFiltrering from "./NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering";
 import {hentArbeidsforholdFraAAreg} from "../../api/AaregApi";
 import { tomaAltinnOrganisasjon} from "../Objekter/OrganisasjonFraAltinn";
+import {hentArbeidsforholdLink, hentOrganisasjonerLink} from "../lenker";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -66,6 +67,7 @@ const MineAnsatte: FunctionComponent = () => {
     const onSoketekstChange = (soketekst: string) => {
         setSoketekst(soketekst);
     };
+    console.log(hentArbeidsforholdLink(), hentOrganisasjonerLink())
 
     useEffect(() => {
         const hentogSettArbeidsforhold = async () => {

@@ -17,6 +17,7 @@ const Banner: FunctionComponent<Props> = props => {
         Array<JuridiskEnhetMedUnderEnheterArray>());
 
     useEffect(() => {
+        console.log("useeffect og kall gjort to ganger")
       const hentOgSettOrganisasjoner = async () => {
           const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
           return organisasjonliste;

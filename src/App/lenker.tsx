@@ -1,14 +1,15 @@
-import {basename} from "./paths";
+
+const landingsURL ='/bedriftsoversikt-og-ansatte/';
 
 export const hentArbeidsforholdLink = () => {
     return (
-        basename +'/api/arbeidsforhold'
+         landingsURL+'api/arbeidsforhold'
     );
 };
 
 export const hentOrganisasjonerLink = () => {
     return (
-        basename + '/api/organisasjoner'
+        landingsURL + 'api/organisasjoner'
     );
 };
 
