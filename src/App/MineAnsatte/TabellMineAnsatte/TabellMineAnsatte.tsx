@@ -21,7 +21,7 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
     const rader = props.listeMedArbeidsForhold.map(arbeidsforhold => {
         return (
             <tr key={arbeidsforhold.navArbeidsforholdId}>
-                <td className={'td'}><Lenke href={"enkeltarbeidsforhold/?arbeidsforhold="+arbeidsforhold.navArbeidsforholdId}>{arbeidsforhold.navn}</Lenke></td>
+                <td className={'td'}><Lenke href={"enkeltarbeidsforhold/?arbeidsforhold="+arbeidsforhold.navArbeidsforholdId}>{arbeidsforhold.arbeidstaker.navn}</Lenke></td>
                 <td className={'td'}>{arbeidsforhold.arbeidstaker.offentligIdent}</td>
                 <td className={'td'}>{arbeidsforhold.yrke}</td>
                 <td className={'td'}>{arbeidsforhold.ansattFom}</td>

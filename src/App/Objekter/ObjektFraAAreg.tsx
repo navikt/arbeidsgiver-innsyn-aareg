@@ -40,6 +40,7 @@ export interface arbeidsforhold {
         type: string;
     };
     arbeidstaker: {
+        navn: string
         type: string;
         aktoerId: string;
         offentligIdent: string;
@@ -72,6 +73,7 @@ export const eksempel1: arbeidsforhold = {
         type: 'IKEA',
     },
     arbeidstaker: {
+        navn: "Gøril",
         type: 'Selger',
         aktoerId: '444',
         offentligIdent: '777',
@@ -97,6 +99,7 @@ export const eksempel2: arbeidsforhold = {
         type: 'IKEA',
     },
     arbeidstaker: {
+        navn: "Fabian",
         type: 'Selger',
         aktoerId: '444',
         offentligIdent: '101',
@@ -122,6 +125,7 @@ export const eksempel3: arbeidsforhold = {
         type: 'IKEA',
     },
     arbeidstaker: {
+        navn: 'LeoNardo',
         type: 'Selger',
         aktoerId: '444',
         offentligIdent: '177',

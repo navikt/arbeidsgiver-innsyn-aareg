@@ -9,6 +9,7 @@ export interface Arbeidsforhold {
         type: string;
         aktoerId: string;
         offentligIdent: string;
+        navn:string;
     };
     innrapportertEtterAOrdningen: string;
     navArbeidsforholdId: string;
