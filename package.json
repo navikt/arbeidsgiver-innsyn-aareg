@@ -17,6 +17,7 @@
     "@types/react-transition-group": "^4.2.3",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
+    "core-js": "^3.4.8",
     "craco": "^0.0.3",
     "craco-less": "^1.14.4",
     "express": "^4.17.1",
