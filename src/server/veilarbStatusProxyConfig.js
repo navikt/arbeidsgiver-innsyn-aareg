@@ -9,7 +9,6 @@ const veilarbStatus = () => {
     }
 };
 
-
 const veilarbStatusProxyConfig = {
     changeOrigin: true,
     target: veilarbStatus(),
