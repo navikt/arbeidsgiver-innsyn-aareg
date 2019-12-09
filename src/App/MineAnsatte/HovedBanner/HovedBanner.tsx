@@ -3,10 +3,10 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Bedriftsmeny from '@navikt/bedriftsmeny';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import './HovedBanner.less';
-import {OrganisasjonerRespons} from "../../../mocking/mockresponsFraAltinn";
 import {Organisasjon} from "../../Objekter/OrganisasjonFraAltinn";
 import {JuridiskEnhetMedUnderEnheterArray} from "../../Objekter/JuridiskEnhetMedUnderenhetArray";
 import {byggOrganisasjonstre} from "./byggOrganisasjonsTre";
+import {hentOrganisasjonerFraAltinn} from "../../../api/altinnApi";
 
 
 const Banner: FunctionComponent<RouteComponentProps> = props => {
@@ -14,14 +14,21 @@ const Banner: FunctionComponent<RouteComponentProps> = props => {
     const [organisasjonstre, setorganisasjonstre] = useState(
         Array<JuridiskEnhetMedUnderEnheterArray>());
 
-  useEffect(() => {
-    const lagOgSettTre = async () => {
+    useEffect(() => {
+      const hentOgSettOrganisasjoner = async () => {
+          const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
+          return organisasjonliste;
+      };
+      const lagOgSettTre = async (organisasjoner: Organisasjon[]) => {
       const juridiskeenheterMedBarn: JuridiskEnhetMedUnderEnheterArray[] = await byggOrganisasjonstre(
-          OrganisasjonerRespons
+          organisasjoner
       );
       return juridiskeenheterMedBarn
     };
-    lagOgSettTre().then(juridiskeenheterMedBarn => setorganisasjonstre(juridiskeenheterMedBarn));
+
+      hentOgSettOrganisasjoner().then(organisasjoner => {
+          lagOgSettTre(organisasjoner).then(juridiskeenheterMedBarn => setorganisasjonstre(juridiskeenheterMedBarn));
+      });
   }, []);
 
     const endreOrganisasjon = (org: Organisasjon) => {

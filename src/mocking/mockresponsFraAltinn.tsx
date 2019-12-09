@@ -1,7 +1,7 @@
 import {Organisasjon} from "../App/Objekter/OrganisasjonFraAltinn";
 
 
-export const OrganisasjonerRespons: Organisasjon [] = [
+export const MockresponsOrganisasjoner: Organisasjon [] = [
   {
     Name: 'BALLSTAD OG HAMARØY',
     Type: 'Business',
