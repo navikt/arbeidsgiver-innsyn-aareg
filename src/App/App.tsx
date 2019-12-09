@@ -10,9 +10,7 @@ const App: FunctionComponent = () => {
     return (
         <BrowserRouter basename={basename}>
             <LoginBoundary>
-                <Normaltekst>
                 <MineAnsatte/>
-                </Normaltekst>
             </LoginBoundary>
         </BrowserRouter>
   );

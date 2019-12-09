@@ -36,6 +36,7 @@ export interface KolonneState {
     sorteringsAttributt: SorteringsAttributt;
     reversSortering: boolean;
 }
+
 const MineAnsatte: FunctionComponent = () => {
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
 
@@ -71,7 +72,10 @@ const MineAnsatte: FunctionComponent = () => {
             const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg(valgtOrganisasjon.OrganizationNumber, valgtOrganisasjon.ParentOrganizationNumber);
             return responsAareg;
         };
-        hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
+        console.log(valgtOrganisasjon);
+        if (valgtOrganisasjon.OrganizationNumber !== "" && valgtOrganisasjon.ParentOrganizationNumber !== "") {
+            hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
+        }
     }, [valgtOrganisasjon]);
 
 
