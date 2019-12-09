@@ -1,17 +1,21 @@
 import React, {FunctionComponent} from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import { basename } from './paths';
 import LoginBoundary from "./LoggInnBoundary";
 import MineAnsatte from "./MineAnsatte/MineAnsatte";
+import {EnkeltArbeidsforhold} from "./MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold";
 
 const App: FunctionComponent = () => {
 
     return (
-        <BrowserRouter basename={basename}>
+     <div>
             <LoginBoundary>
-                <MineAnsatte/>
+                <Router basename={basename}>
+                    <Route exact path="/enkeltArbeidsforhold"><EnkeltArbeidsforhold /></Route>
+                    <Route exact path="/"><MineAnsatte/></Route>
+                    </Router>
             </LoginBoundary>
-        </BrowserRouter>
+     </div>
   );
 };
 
