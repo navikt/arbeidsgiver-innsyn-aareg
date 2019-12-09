@@ -18,7 +18,7 @@ export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => 
             console.log(a.ansattFom, ">", b.ansattFom)
             return -1;
         }
-        console.log(a.ansattFom, "<", b.ansattFom)
+        console.log(a.ansattFom, "<", b.ansattFom, "havnet i else");
         return 1;
     });
     return sortert;
