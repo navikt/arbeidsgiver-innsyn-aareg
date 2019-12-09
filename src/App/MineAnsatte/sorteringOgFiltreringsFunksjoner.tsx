@@ -8,14 +8,17 @@ export const skrivOmDatoForm = (dato: string) => {
 };
 
 export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => {
+    console.log("sortering på dato FOM");
     const sortert: Arbeidsforhold[] = arbeidsforhold.sort((a, b) => {
         const nyFormA = skrivOmDatoForm(a.ansattFom);
         const nyFormB = skrivOmDatoForm(b.ansattFom);
         const datoA = new Date(nyFormA);
         const datoB = new Date(nyFormB);
         if (datoA > datoB) {
+            console.log(a.ansattFom, ">", b.ansattTom)
             return -1;
         }
+        console.log(a.ansattFom, "<", b.ansattTom)
         return 1;
     });
     return sortert;
