@@ -5,7 +5,6 @@ import LoginBoundary from "./LoggInnBoundary";
 import MineAnsatte from "./MineAnsatte/MineAnsatte";
 
 const App: FunctionComponent = () => {
-    console.log()
 
     return (
         <BrowserRouter basename={basename}>

@@ -20,8 +20,11 @@ import Sokefelt from "./Sokefelt/Sokefelt";
 import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
 import NedtrekksMenyForFiltrering from "./NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering";
 import {hentArbeidsforholdFraAAreg} from "../../api/AaregApi";
-import { tomaAltinnOrganisasjon} from "../Objekter/OrganisasjonFraAltinn";
+import {Organisasjon, tomaAltinnOrganisasjon} from "../Objekter/OrganisasjonFraAltinn";
 import {hentArbeidsforholdLink, hentOrganisasjonerLink} from "../lenker";
+import {JuridiskEnhetMedUnderEnheterArray} from "../Objekter/JuridiskEnhetMedUnderenhetArray";
+import {hentOrganisasjonerFraAltinn} from "../../api/altinnApi";
+import {byggOrganisasjonstre} from "./HovedBanner/byggOrganisasjonsTre";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -39,6 +42,8 @@ export interface KolonneState {
 }
 
 const MineAnsatte: FunctionComponent = () => {
+    const [organisasjonstre, setorganisasjonstre] = useState(
+        Array<JuridiskEnhetMedUnderEnheterArray>());
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
 
     const [ansattForholdPaSiden, setAnsattForholdPaSiden] = useState(Array<arbeidsforhold>());
@@ -56,6 +61,25 @@ const MineAnsatte: FunctionComponent = () => {
     const [listeFraAareg,setListeFraAareg] = useState(Array<arbeidsforhold>());
     const arbeidsforholdPerSide = 25;
 
+
+
+
+    useEffect(() => {
+        const hentOgSettOrganisasjoner = async () => {
+            const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
+            return organisasjonliste;
+        };
+        const lagOgSettTre = async (organisasjoner: Organisasjon[]) => {
+            const juridiskeenheterMedBarn: JuridiskEnhetMedUnderEnheterArray[] = await byggOrganisasjonstre(
+                organisasjoner
+            );
+            return juridiskeenheterMedBarn
+        };
+        hentOgSettOrganisasjoner().then(organisasjoner => {
+            lagOgSettTre(organisasjoner).then(juridiskeenheterMedBarn => setorganisasjonstre(juridiskeenheterMedBarn));
+        });
+    }, []);
+
     const setIndeksOgGenererListe = (indeks: number) => {
         setnaVarendeSidetall(indeks);
     };
@@ -67,14 +91,12 @@ const MineAnsatte: FunctionComponent = () => {
     const onSoketekstChange = (soketekst: string) => {
         setSoketekst(soketekst);
     };
-    console.log(hentArbeidsforholdLink(), hentOrganisasjonerLink())
 
     useEffect(() => {
         const hentogSettArbeidsforhold = async () => {
             const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg(valgtOrganisasjon.OrganizationNumber, valgtOrganisasjon.ParentOrganizationNumber);
             return responsAareg;
         };
-        console.log(valgtOrganisasjon);
         if (valgtOrganisasjon.OrganizationNumber !== "" && valgtOrganisasjon.ParentOrganizationNumber !== "") {
             hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
         }
@@ -124,7 +146,7 @@ const MineAnsatte: FunctionComponent = () => {
 
     return (
         <>
-        <HovedBanner byttOrganisasjon={setValgtOrganisasjon}/>
+        <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjonstre={organisasjonstre}/>
         <div className={'mine-ansatte'}>
 
             <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>

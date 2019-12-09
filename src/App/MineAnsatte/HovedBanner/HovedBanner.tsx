@@ -10,29 +10,10 @@ import {hentOrganisasjonerFraAltinn} from "../../../api/altinnApi";
 
 interface Props extends RouteComponentProps{
     byttOrganisasjon: (org: Organisasjon) => void;
+    organisasjonstre: JuridiskEnhetMedUnderEnheterArray[];
 };
 const Banner: FunctionComponent<Props> = props => {
     const { history } = props;
-    const [organisasjonstre, setorganisasjonstre] = useState(
-        Array<JuridiskEnhetMedUnderEnheterArray>());
-
-    useEffect(() => {
-        console.log("useeffect og kall gjort to ganger")
-      const hentOgSettOrganisasjoner = async () => {
-          const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
-          return organisasjonliste;
-      };
-      const lagOgSettTre = async (organisasjoner: Organisasjon[]) => {
-      const juridiskeenheterMedBarn: JuridiskEnhetMedUnderEnheterArray[] = await byggOrganisasjonstre(
-          organisasjoner
-      );
-      return juridiskeenheterMedBarn
-    };
-
-      hentOgSettOrganisasjoner().then(organisasjoner => {
-          lagOgSettTre(organisasjoner).then(juridiskeenheterMedBarn => setorganisasjonstre(juridiskeenheterMedBarn));
-      });
-  }, []);
 
     const onOrganisasjonChange = (organisasjon?: Organisasjon) => {
         if (organisasjon) {
@@ -43,7 +24,7 @@ const Banner: FunctionComponent<Props> = props => {
     return (
         <Bedriftsmeny
             sidetittel="Oversikt over bedrift og ansatte"
-            organisasjonstre={organisasjonstre}
+            organisasjonstre={props.organisasjonstre}
             onOrganisasjonChange={onOrganisasjonChange}
             history={history}
         />
