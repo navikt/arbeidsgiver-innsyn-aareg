@@ -21,6 +21,7 @@ import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSoker
 import NedtrekksMenyForFiltrering from "./NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering";
 import {hentArbeidsforholdFraAAreg} from "../../api/AaregApi";
 import {hentOrganisasjonerFraAltinn} from "../../api/altinnApi";
+import {genererMockingAvArbeidsForhold} from "../../mocking/funksjonerForAlageAAregMock";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -70,7 +71,7 @@ const MineAnsatte: FunctionComponent = () => {
         setSoketekst(soketekst);
     };
 
-    useEffect(() => {
+    /*useEffect(() => {
         const hentogSettArbeidsforhold = async () => {
             const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg("910825518", "810825472");
             return responsAareg;
@@ -78,10 +79,12 @@ const MineAnsatte: FunctionComponent = () => {
         hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
     }, []);
 
-    /*useEffect(() => {
+     */
+
+    useEffect(() => {
         setListeFraAareg(genererMockingAvArbeidsForhold(20000));
     }, []);
-    */
+
 
     useEffect(() => {
         if (soketekst.length>0) {

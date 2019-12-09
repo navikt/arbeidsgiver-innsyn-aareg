@@ -14,7 +14,7 @@ export const fodselsNr: string []= ["04015226825","15119702590","30067234940","2
 
 export const varlingskoder: string[] = ["ERKONK", "EROPPH", "ERVIRK", "IBARBG","IBKAOR"];
 
-const tomtArbeidsForhold: Arbeidsforhold = { navn: '',
+const tomtArbeidsForhold: Arbeidsforhold = {
   ansattFom: '',
   ansattTom: '',
   arbeidsgiver: {
@@ -24,6 +24,7 @@ const tomtArbeidsForhold: Arbeidsforhold = { navn: '',
     type: '',
     aktoerId: '',
     offentligIdent: '',
+    navn: '',
   },
   innrapportertEtterAOrdningen: '',
   navArbeidsforholdId: '',
@@ -82,14 +83,14 @@ const setVarslingskode = (): string => {
 const lagAnsattForhold = (): Arbeidsforhold => {
   return {
     ...tomtArbeidsForhold,
-    navn: setNavn(),
     ansattTom: setTom(),
     ansattFom: setFom(),
     yrke:setYrke(),
     varslingskode: setVarslingskode(),
     arbeidstaker: {
         ...tomtArbeidsForhold.arbeidstaker,
-      offentligIdent: setFnr()
+      offentligIdent: setFnr(),
+      navn: setNavn()
     }
   };
 };

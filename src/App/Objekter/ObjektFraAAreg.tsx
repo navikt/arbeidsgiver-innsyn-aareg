@@ -33,7 +33,6 @@ export interface ObjektFraAAregisteret {
 }
 
 export interface arbeidsforhold {
-    navn: string;
     ansattFom: string;
     ansattTom: string;
     arbeidsgiver: {
@@ -43,6 +42,7 @@ export interface arbeidsforhold {
         type: string;
         aktoerId: string;
         offentligIdent: string;
+        navn:string
     };
     innrapportertEtterAOrdningen: string;
     navArbeidsforholdId: string;
@@ -62,79 +62,5 @@ export const tomResponsFraAareg: ObjektFraAAregisteret = {
     arbeidsforholdoversikter: [],
     startrad: "",
     totalAntall: ""
-}
-
-export const eksempel1: arbeidsforhold = {
-    navn: 'Gøril',
-    ansattFom: '12/04/1809',
-    ansattTom: '12/04/1905',
-    arbeidsgiver: {
-        type: 'IKEA',
-    },
-    arbeidstaker: {
-        type: 'Selger',
-        aktoerId: '444',
-        offentligIdent: '777',
-    },
-    innrapportertEtterAOrdningen: 'JA',
-    navArbeidsforholdId: '666',
-    opplysningspliktig: {
-        type: 'Sjef',
-    },
-    permisjonPermitteringsprosent: '49%',
-    sistBekreftet: '1999',
-    stillingsprosent: '21%',
-    type: 'hardt arbeid',
-    varslingskode: 'Ekstra krise',
-    yrke: 'pianist',
 };
 
-export const eksempel2: arbeidsforhold = {
-    navn: 'Fabian',
-    ansattFom: '12/04/2004',
-    ansattTom: '12/04/2030',
-    arbeidsgiver: {
-        type: 'IKEA',
-    },
-    arbeidstaker: {
-        type: 'Selger',
-        aktoerId: '444',
-        offentligIdent: '101',
-    },
-    innrapportertEtterAOrdningen: 'JA',
-    navArbeidsforholdId: '666',
-    opplysningspliktig: {
-        type: 'Sjef',
-    },
-    permisjonPermitteringsprosent: '49%',
-    sistBekreftet: '1999',
-    stillingsprosent: '21%',
-    type: 'hardt arbeid',
-    varslingskode: 'OK',
-    yrke: 'fiolinist',
-};
-
-export const eksempel3: arbeidsforhold = {
-    navn: 'LeoNardo',
-    ansattFom: '12/04/1400',
-    ansattTom: '12/04/1903',
-    arbeidsgiver: {
-        type: 'IKEA',
-    },
-    arbeidstaker: {
-        type: 'Selger',
-        aktoerId: '444',
-        offentligIdent: '177',
-    },
-    innrapportertEtterAOrdningen: 'JA',
-    navArbeidsforholdId: '666',
-    opplysningspliktig: {
-        type: 'Sjef',
-    },
-    permisjonPermitteringsprosent: '49%',
-    sistBekreftet: '1999',
-    stillingsprosent: '21%',
-    type: 'hardt arbeid',
-    varslingskode: 'Flott',
-    yrke: 'gitarist',
-};

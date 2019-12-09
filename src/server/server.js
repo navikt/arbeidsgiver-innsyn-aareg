@@ -33,3 +33,17 @@ server.get(`${BASE_PATH}/*`, (req, res) => {
 server.listen(port, () => {
     console.log('Server listening on port', port);
 });
+
+const startMockServer = html => {
+    console.log("start server");
+    server.use(BASE_PATH, express.static(buildPath));
+
+    setInternalEndpoints();
+
+    server.get(`${BASE_PATH}/*`, (req, res) => {
+        res.sendFile(path.resolve(buildPath, 'index.html'));
+    });
+    server.listen(port, () => {
+        console.log('Server listening on port', port);
+    });
+};
