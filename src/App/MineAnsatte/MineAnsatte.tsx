@@ -21,7 +21,6 @@ import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSoker
 import NedtrekksMenyForFiltrering from "./NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering";
 import {hentArbeidsforholdFraAAreg} from "../../api/AaregApi";
 import {Organisasjon, tomaAltinnOrganisasjon} from "../Objekter/OrganisasjonFraAltinn";
-import {hentArbeidsforholdLink, hentOrganisasjonerLink} from "../lenker";
 import {JuridiskEnhetMedUnderEnheterArray} from "../Objekter/JuridiskEnhetMedUnderenhetArray";
 import {hentOrganisasjonerFraAltinn} from "../../api/altinnApi";
 import {byggOrganisasjonstre} from "./HovedBanner/byggOrganisasjonsTre";
