@@ -18,7 +18,10 @@ export const EnkeltArbeidsforhold:FunctionComponent = props =>{
             <DetaljertArbeidsforhold
                 locale={locale}
                 miljo={miljo()}
-                navArbeidsforholdId={arbeidsforholdId} />
+                navArbeidsforholdId={arbeidsforholdId}
+                rolle={"ARBEIDSGIVER"}
+                fnrArbeidstaker={27127424204}
+            />
         </div>
     }
     return <div>
