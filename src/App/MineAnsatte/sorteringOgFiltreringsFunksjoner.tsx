@@ -15,10 +15,10 @@ export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => 
         const datoA = new Date(nyFormA);
         const datoB = new Date(nyFormB);
         if (datoA > datoB) {
-            console.log(a.ansattFom, ">", b.ansattTom)
+            console.log(a.ansattFom, ">", b.ansattFom)
             return -1;
         }
-        console.log(a.ansattFom, "<", b.ansattTom)
+        console.log(a.ansattFom, "<", b.ansattFom)
         return 1;
     });
     return sortert;
