@@ -75,7 +75,7 @@ const MineAnsatte: FunctionComponent = () => {
             const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg("910825518", "810825472");
             return responsAareg;
         };
-        hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.listeMedArbeidsForhold));
+        hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
     }, []);
 
     /*useEffect(() => {
@@ -138,7 +138,7 @@ const MineAnsatte: FunctionComponent = () => {
             </div>
             <div className={'mine-ansatte__topp'}>
                 <div tabIndex={0} className={'mine-ansatte__antall-forhold'}>
-                    {listeMedArbeidsForhold.length} arbeidsforhold
+                    0 && {listeMedArbeidsForhold.length} arbeidsforhold
                 </div>
                 <SideBytter
                     className={'sidebytter'}

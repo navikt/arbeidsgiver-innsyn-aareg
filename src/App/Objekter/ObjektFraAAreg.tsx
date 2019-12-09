@@ -27,7 +27,7 @@ export interface periode {
 
 export interface ObjektFraAAregisteret {
     antall: string;
-    listeMedArbeidsForhold: arbeidsforhold[];
+    arbeidsforholdoversikter: arbeidsforhold[];
     startrad: string;
     totalAntall: string;
 }
@@ -59,7 +59,7 @@ export interface arbeidsforhold {
 
 export const tomResponsFraAareg: ObjektFraAAregisteret = {
     antall: "",
-    listeMedArbeidsForhold: [],
+    arbeidsforholdoversikter: [],
     startrad: "",
     totalAntall: ""
 }
