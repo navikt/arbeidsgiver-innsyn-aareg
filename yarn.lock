@@ -1208,10 +1208,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@navikt/arbeidsforhold@^1.1.11":
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/@navikt/arbeidsforhold/-/arbeidsforhold-1.1.11.tgz#721b72b341860f63fedecd3047495ce0833c90e1"
-  integrity sha512-MU54Ixhf1J6pR0/vcdtF7iE1Ysg9L3oFjw2AEPw/ogYuDvT+3pxV1mH0B6LItqFnDra4UMw2gyb4COlnZu5kBg==
+"@navikt/arbeidsforhold@^1.1.15":
+  version "1.1.15"
+  resolved "https://registry.yarnpkg.com/@navikt/arbeidsforhold/-/arbeidsforhold-1.1.15.tgz#52877df9cb7d7bff4c8d8a43d4121172ca9dc535"
+  integrity sha512-6ng2aF0mRV04fEpnE0gbPnBkkFkXfEMzfOfYYHEX8r3teWIhfTMeQZl0FiIG10q+Ljvl2WUGYtj4dSCKhYODEQ==
 
 "@navikt/bedriftsmeny@^1.0.15":
   version "1.0.15"
