@@ -14,8 +14,7 @@ import {
     regnUtArbeidsForholdSomSkalVisesPaEnSide,
     visEllerSkjulChevroner,
 } from './pagineringsFunksjoner';
-import {arbeidsforhold} from "../Objekter/ObjektFraAAreg";
-import {genererMockingAvArbeidsForhold} from "../../mocking/funksjonerForAlageAAregMock";
+import {arbeidsforhold, ObjektFraAAregisteret} from "../Objekter/ObjektFraAAreg";
 import HovedBanner from "./HovedBanner/HovedBanner";
 import Sokefelt from "./Sokefelt/Sokefelt";
 import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
@@ -72,8 +71,17 @@ const MineAnsatte: FunctionComponent = () => {
     };
 
     useEffect(() => {
+        const hentogSettArbeidsforhold = async () => {
+            const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg("910825518", "810825472");
+            return responsAareg;
+        };
+        hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.listeMedArbeidsForhold));
+    }, []);
+
+    /*useEffect(() => {
         setListeFraAareg(genererMockingAvArbeidsForhold(20000));
     }, []);
+    */
 
     useEffect(() => {
         if (soketekst.length>0) {
