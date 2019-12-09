@@ -1,4 +1,5 @@
 import {Arbeidsforhold} from "../App/Objekter/ArbeidsForhold";
+import {ObjektFraAAregisteret, tomResponsFraAareg} from "../App/Objekter/ObjektFraAAreg";
 
 export const listeMedFornavn: string[]= ["Ingrid Alexandra", "Håkon", "Mette Marit", "Harald", "Sonja", "Olav","Lars Andreas", "Bendik", "Thomas", "Hanna", "Silje", "Anders", "Vera", "Jonathan", "Lilly", "Helene", "Tobias", "Gabriel", "Henriette", "Trude", "Gudrun", "Elina", "Kaia", "Knut", "Jenny", "Petter", "Martin", "Marie", "Herman", "Alfred", "Leif", "Inger", "Ivar", "Trond"];
 
@@ -95,7 +96,7 @@ const lagAnsattForhold = (): Arbeidsforhold => {
   };
 };
 
-export const genererMockingAvArbeidsForhold = (antall: number): Arbeidsforhold[] => {
+const genererMockingAvArbeidsForhold = (antall: number): Arbeidsforhold[] => {
   const listeMedArbeidsForhold: Arbeidsforhold[] = [];
   for (let i: number = 0; i < antall;  i++) {
     listeMedArbeidsForhold.push(lagAnsattForhold());
@@ -106,4 +107,8 @@ export const genererMockingAvArbeidsForhold = (antall: number): Arbeidsforhold[]
       navArbeidsforholdId: listeMedArbeidsForhold.indexOf(forhold).toString()
     }
   });
+};
+
+export const AaregMockObjekt: ObjektFraAAregisteret =  {...tomResponsFraAareg,
+    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(1000)
 };

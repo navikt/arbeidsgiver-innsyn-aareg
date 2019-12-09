@@ -14,14 +14,12 @@ import {
     regnUtArbeidsForholdSomSkalVisesPaEnSide,
     visEllerSkjulChevroner,
 } from './pagineringsFunksjoner';
-import {arbeidsforhold} from "../Objekter/ObjektFraAAreg";
+import {arbeidsforhold, ObjektFraAAregisteret} from "../Objekter/ObjektFraAAreg";
 import HovedBanner from "./HovedBanner/HovedBanner";
 import Sokefelt from "./Sokefelt/Sokefelt";
 import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
 import NedtrekksMenyForFiltrering from "./NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering";
 import {hentArbeidsforholdFraAAreg} from "../../api/AaregApi";
-import {hentOrganisasjonerFraAltinn} from "../../api/altinnApi";
-import {genererMockingAvArbeidsForhold} from "../../mocking/funksjonerForAlageAAregMock";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -51,12 +49,6 @@ const MineAnsatte: FunctionComponent = () => {
     const [filterState, setFilterState] = useState('visAlle');
     const [soketekst, setSoketekst] = useState('');
     const [listeFraAareg,setListeFraAareg] = useState(Array<arbeidsforhold>());
-
-    const fraAareg = hentArbeidsforholdFraAAreg("910825518", "810825472");
-    console.log(fraAareg);
-    hentOrganisasjonerFraAltinn();
-
-
     const arbeidsforholdPerSide = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
@@ -71,18 +63,16 @@ const MineAnsatte: FunctionComponent = () => {
         setSoketekst(soketekst);
     };
 
-    useEffect(() => {
-        setListeFraAareg(genererMockingAvArbeidsForhold(20000));
-    }, []);
 
-    /*useEffect(() => {
+
+    useEffect(() => {
         const hentogSettArbeidsforhold = async () => {
             const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg("910825518", "810825472");
             return responsAareg;
         };
         hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
     }, []);
-    */
+
 
     useEffect(() => {
         if (soketekst.length>0) {
