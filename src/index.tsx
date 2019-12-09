@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App/App';
 import 'core-js';
+import 'unorm/lib/unorm';
 
 if (process.env.REACT_APP_MOCK) {
     console.log('========================================');
