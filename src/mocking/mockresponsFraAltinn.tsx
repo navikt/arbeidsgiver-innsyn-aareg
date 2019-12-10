@@ -84,7 +84,3 @@ export const testRespons: Organisasjon[] =
   {"Name":"BIRTAVARRE OG VÆRLANDET REGNSKAP","Type":"Business","ParentOrganizationNumber":"910825550","OrganizationNumber":"910825607","OrganizationForm":"BEDR","Status":"Active"},
   {"Name":"MAURA OG KOLBU REGNSKAP","Type":"Business","ParentOrganizationNumber":"810825472","OrganizationNumber":"910825518","OrganizationForm":"BEDR","Status":"Active"},
   {"Name":"GAMLE FREDRIKSTAD OG RAMNES REGNSKAP","Type":"Business","ParentOrganizationNumber":"810825472","OrganizationNumber":"910825526","OrganizationForm":"BEDR","Status":"Active"}];
-
-console.log(testRespons.filter(org => {
-  return org.OrganizationForm === "BEDR" && !org.ParentOrganizationNumber;
-}));

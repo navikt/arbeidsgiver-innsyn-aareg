@@ -19,7 +19,6 @@ export async function hentAlleJuridiskeEnheter(
         };
     });
     let respons = await fetch(url);
-    console.log(url);
     if (respons.ok && distinkteJuridiskeEnhetsnr.length >0 ) {
         const distinkteJuridiskeEnheterFraEreg: ListeMedJuridiskeEnheter = await respons.json();
         if ( distinkteJuridiskeEnheterFraEreg._embedded && distinkteJuridiskeEnheterFraEreg._embedded.enheter.length>0) {

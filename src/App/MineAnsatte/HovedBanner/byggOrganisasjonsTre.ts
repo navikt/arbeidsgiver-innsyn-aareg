@@ -12,7 +12,6 @@ const settSammenJuridiskEnhetMedUnderOrganisasjoner = (
             underenhet =>
                 underenhet.ParentOrganizationNumber === juridiskEnhet.OrganizationNumber
         );
-
         const resultat = {
           JuridiskEnhet: juridiskEnhet,
           Underenheter: underenheter,
@@ -20,7 +19,7 @@ const settSammenJuridiskEnhetMedUnderOrganisasjoner = (
         return resultat;
       }
   );
-  return organisasjonsTre;
+  return organisasjonsTre.filter(orgtre => orgtre.Underenheter.length > 0);
 };
 
 export async function byggOrganisasjonstre(
@@ -30,7 +29,7 @@ export async function byggOrganisasjonstre(
     return organisasjon.Type === 'Enterprise';
   });
   const underenheter = organisasjoner.filter(function(organisasjon: Organisasjon) {
-    return organisasjon.OrganizationForm === 'BEDR';
+    return organisasjon.OrganizationForm === 'BEDR' && organisasjon.OrganizationNumber;
   });
   const jurEnheterOrgNr = juridiskeEnheter.map(jurorg => jurorg.OrganizationNumber);
   const underEnheterMedJuridiskEnhet = organisasjoner.filter(org => {
