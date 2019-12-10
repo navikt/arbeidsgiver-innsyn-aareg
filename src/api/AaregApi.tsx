@@ -1,6 +1,5 @@
 import {hentArbeidsforholdLink} from "../App/lenker";
 import {ObjektFraAAregisteret, tomResponsFraAareg} from "../App/Objekter/ObjektFraAAreg";
-import {VeilStatus} from "./veilarbApi";
 
 export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string): Promise<ObjektFraAAregisteret> {
     const headere = new Headers();
