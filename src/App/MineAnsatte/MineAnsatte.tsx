@@ -60,10 +60,7 @@ const MineAnsatte: FunctionComponent = () => {
     const [listeFraAareg,setListeFraAareg] = useState(Array<arbeidsforhold>());
     const arbeidsforholdPerSide = 25;
 
-
-
-
-    useEffect(() => {
+    /*useEffect(() => {
         const hentOgSettOrganisasjoner = async () => {
             const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
             return organisasjonliste;
@@ -77,7 +74,7 @@ const MineAnsatte: FunctionComponent = () => {
         hentOgSettOrganisasjoner().then(organisasjoner => {
             lagOgSettTre(organisasjoner).then(juridiskeenheterMedBarn => setorganisasjonstre(juridiskeenheterMedBarn));
         });
-    }, []);
+    }, []);*/
 
     const setIndeksOgGenererListe = (indeks: number) => {
         setnaVarendeSidetall(indeks);
