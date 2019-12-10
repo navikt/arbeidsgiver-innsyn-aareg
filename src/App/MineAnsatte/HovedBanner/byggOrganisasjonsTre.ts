@@ -23,7 +23,6 @@ const settSammenJuridiskEnhetMedUnderOrganisasjoner = (
   return organisasjonsTre;
 };
 
-
 export async function byggOrganisasjonstre(
     organisasjoner: Organisasjon[]
 ): Promise<JuridiskEnhetMedUnderEnheterArray[]> {

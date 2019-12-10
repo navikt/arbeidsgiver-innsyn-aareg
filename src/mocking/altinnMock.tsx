@@ -7,7 +7,7 @@ fetchMock
     .get(
         hentOrganisasjonerLink(),
         delay.then(() => {
-            return MockresponsOrganisasjoner;
+            return MockresponsOrganisasjoner
         })
     )
     .spy();
