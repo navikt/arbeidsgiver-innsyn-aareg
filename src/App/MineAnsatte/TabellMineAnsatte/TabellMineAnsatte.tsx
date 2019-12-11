@@ -6,6 +6,7 @@ import 'nav-frontend-tabell-style';
 import { KolonneState } from '../MineAnsatte';
 import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
 import Lenke from "nav-frontend-lenker";
+import {Link} from "react-router-dom";
 
 
 
@@ -20,13 +21,14 @@ interface Props {
 
 const TabellMineAnsatte: FunctionComponent<Props> = props => {
     function oppdaterValgtArbeidsgiver (fnr:string){
+        console.log("oppdaterValgtArbeidsgiver(): "+ fnr);
         const fnrSomheltall: number = parseInt(fnr);
         props.settValgtArbeidsgiver(fnrSomheltall);
     }
     const rader = props.listeMedArbeidsForhold.map(arbeidsforhold => {
         return (
             <tr key={arbeidsforhold.navArbeidsforholdId}>
-                <td className={'td'}><div ><Lenke onClick={() => oppdaterValgtArbeidsgiver(arbeidsforhold.arbeidstaker.offentligIdent)} href={"enkeltarbeidsforhold/?arbeidsforhold="+arbeidsforhold.navArbeidsforholdId}>{arbeidsforhold.arbeidstaker.navn}</Lenke></div></td>
+                <td className={'td'}><div onClick={() => oppdaterValgtArbeidsgiver(arbeidsforhold.arbeidstaker.offentligIdent)}><Link  to={"enkeltarbeidsforhold/?arbeidsforhold="+arbeidsforhold.navArbeidsforholdId}>{arbeidsforhold.arbeidstaker.navn}</Link></div></td>
                 <td className={'td'}>{arbeidsforhold.arbeidstaker.offentligIdent}</td>
                 <td className={'td'}>{arbeidsforhold.yrke}</td>
                 <td className={'td'}>{arbeidsforhold.ansattFom}</td>
