@@ -5,7 +5,7 @@
   "homepage": "/bedriftsoversikt-og-ansatte",
   "dependencies": {
     "@jest/environment": "^24.9.0",
-    "@navikt/arbeidsforhold": "^1.1.15",
+    "@navikt/arbeidsforhold": "^1.1.18",
     "@navikt/bedriftsmeny": "^1.0.15",
     "@types/jest": "24.0.23",
     "@types/node": "12.12.11",
