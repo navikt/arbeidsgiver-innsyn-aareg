@@ -8,7 +8,7 @@ import {EnkeltArbeidsforhold} from "./MineAnsatte/EnkeltArbeidsforhold/EnkeltArb
 
 const App: FunctionComponent = () => {
 
-    const [valgtArbeidstaker,setValgtArbeidstaker] = useState(07300270756);
+    const [valgtArbeidstaker,setValgtArbeidstaker] = useState();
     return (
      <div>
             <LoginBoundary>
