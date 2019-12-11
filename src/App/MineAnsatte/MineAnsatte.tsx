@@ -20,7 +20,7 @@ import Sokefelt from "./Sokefelt/Sokefelt";
 import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
 import NedtrekksMenyForFiltrering from "./NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering";
 import {hentArbeidsforholdFraAAreg} from "../../api/AaregApi";
-import {hentOrganisasjonerFraAltinn} from "../../api/altinnApi";
+
 
 export enum SorteringsAttributt {
     NAVN,
@@ -31,12 +31,17 @@ export enum SorteringsAttributt {
     VARSEL,
 }
 
+export declare interface ArbeistakerProps{
+    setValgtArbeidstaker: (fnr: number) => void
+
+}
+
 export interface KolonneState {
     erValgt: boolean;
     sorteringsAttributt: SorteringsAttributt;
     reversSortering: boolean;
 }
-const MineAnsatte: FunctionComponent = () => {
+const MineAnsatte: FunctionComponent<ArbeistakerProps> = ( props:ArbeistakerProps) => {
     const [ansattForholdPaSiden, setAnsattForholdPaSiden] = useState(Array<arbeidsforhold>());
     const [antallSider, setAntallSider] = useState(0);
     const [naVarendeSidetall, setnaVarendeSidetall] = useState(1);
@@ -50,11 +55,6 @@ const MineAnsatte: FunctionComponent = () => {
     const [filterState, setFilterState] = useState('visAlle');
     const [soketekst, setSoketekst] = useState('');
     const [listeFraAareg,setListeFraAareg] = useState(Array<arbeidsforhold>());
-
-    const fraAareg = hentArbeidsforholdFraAAreg("910825518", "810825472");
-    console.log(fraAareg);
-    hentOrganisasjonerFraAltinn();
-
 
     const arbeidsforholdPerSide = 25;
 
@@ -153,6 +153,7 @@ const MineAnsatte: FunctionComponent = () => {
                 setNavarendeKolonne={setNavarendeKolonne}
                 byttSide={setIndeksOgGenererListe}
                 navarendeKolonne={navarendeKolonne}
+                settValgtArbeidsgiver={props.setValgtArbeidstaker}
             />
             <ListeMedAnsatteForMobil
                 listeMedArbeidsForhold={ansattForholdPaSiden}
