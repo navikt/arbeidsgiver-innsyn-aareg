@@ -23,6 +23,7 @@ export const EnkeltArbeidsforhold:FunctionComponent = props =>{
                 navArbeidsforholdId={arbeidsforholdId}
                 rolle="ARBEIDSGIVER"
                 fnrArbeidstaker={27127424204}
+                customApiUrl={"https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}"}
             />
         </div>
     }
