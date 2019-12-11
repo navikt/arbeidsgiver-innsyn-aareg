@@ -1,7 +1,10 @@
 import React, {FunctionComponent} from "react";
 import {DetaljertArbeidsforhold } from "@navikt/arbeidsforhold/dist";
 import environment from "../../../utils/environment";
-import {hentEnkeltArbeidsforholdFraAAreg} from "../../../api/AaregApi";
+
+export declare type EnkeltArbeidsforholdProps = {
+    valgtArbeidsTaker:number
+}
 
 const miljo = () => {
     if (environment.MILJO === 'dev-sbs') {
@@ -10,10 +13,10 @@ const miljo = () => {
     return "LOCAL"
 };
 
-export const EnkeltArbeidsforhold:FunctionComponent = props =>{
+export const EnkeltArbeidsforhold:FunctionComponent<EnkeltArbeidsforholdProps> = (props:EnkeltArbeidsforholdProps) =>{
     const locale = "nb" as "nb" | "en";
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
-    hentEnkeltArbeidsforholdFraAAreg();
+
     if(arbeidsforholdIdFraUrl) {
         const arbeidsforholdId = parseInt(arbeidsforholdIdFraUrl);
         return <div>
@@ -22,7 +25,7 @@ export const EnkeltArbeidsforhold:FunctionComponent = props =>{
                 miljo={miljo()}
                 navArbeidsforholdId={arbeidsforholdId}
                 rolle="ARBEIDSGIVER"
-                fnrArbeidstaker={27127424204}
+                fnrArbeidstaker={props.valgtArbeidsTaker}
                 customApiUrl={"https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}"}
             />
         </div>
