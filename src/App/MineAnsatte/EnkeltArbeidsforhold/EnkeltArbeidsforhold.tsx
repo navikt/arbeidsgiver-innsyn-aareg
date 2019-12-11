@@ -16,7 +16,7 @@ const miljo = () => {
 export const EnkeltArbeidsforhold:FunctionComponent<EnkeltArbeidsforholdProps> = (props:EnkeltArbeidsforholdProps) =>{
     const locale = "nb" as "nb" | "en";
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
-
+    console.log("valgtArbeidstager",props.valgtArbeidsTaker.toString());
     if(arbeidsforholdIdFraUrl) {
         const arbeidsforholdId = parseInt(arbeidsforholdIdFraUrl);
         return <div>
