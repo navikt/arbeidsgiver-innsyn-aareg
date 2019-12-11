@@ -5,7 +5,6 @@ import './TabellMineAnsatte.less';
 import 'nav-frontend-tabell-style';
 import { KolonneState } from '../MineAnsatte';
 import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
-import Lenke from "nav-frontend-lenker";
 import {Link} from "react-router-dom";
 
 
