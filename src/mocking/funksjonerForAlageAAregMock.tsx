@@ -22,7 +22,6 @@ const tomtArbeidsForhold: Arbeidsforhold = {
     type: '',
   },
   arbeidstaker: {
-    navn: '',
     type: '',
     aktoerId: '',
     offentligIdent: '',
