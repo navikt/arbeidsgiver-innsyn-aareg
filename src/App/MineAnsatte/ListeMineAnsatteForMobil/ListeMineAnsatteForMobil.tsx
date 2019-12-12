@@ -15,7 +15,7 @@ interface Props {
 const ListeMedAnsatteForMobil: FunctionComponent<Props> = props => {
     const rader = props.listeMedArbeidsForhold.map(forhold => (
         <Ansatt
-            navn={forhold.navn}
+            navn={forhold.arbeidstaker.navn}
             fom={forhold.ansattFom}
             tom={forhold.ansattTom}
             offentligID={forhold.arbeidstaker.offentligIdent}
