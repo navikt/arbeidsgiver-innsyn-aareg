@@ -15,15 +15,12 @@ import {
     visEllerSkjulChevroner,
 } from './pagineringsFunksjoner';
 import {arbeidsforhold, ObjektFraAAregisteret} from "../Objekter/ObjektFraAAreg";
-import HovedBanner from "./HovedBanner/HovedBanner";
 import Sokefelt from "./Sokefelt/Sokefelt";
 import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
 import NedtrekksMenyForFiltrering from "./NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering";
 import {hentArbeidsforholdFraAAreg} from "../../api/AaregApi";
-import {Organisasjon, tomaAltinnOrganisasjon} from "../Objekter/OrganisasjonFraAltinn";
-import {JuridiskEnhetMedUnderEnheterArray} from "../Objekter/JuridiskEnhetMedUnderenhetArray";
-import {hentOrganisasjonerFraAltinn} from "../../api/altinnApi";
-import {byggOrganisasjonstre} from "./HovedBanner/byggOrganisasjonsTre";
+import {Organisasjon} from "../Objekter/OrganisasjonFraAltinn";
+
 
 export enum SorteringsAttributt {
     NAVN,
@@ -36,7 +33,7 @@ export enum SorteringsAttributt {
 
 export declare interface ArbeistakerProps{
     setValgtArbeidstaker: (fnr: number) => void
-
+    valgtOrganisasjon: Organisasjon
 }
 
 export interface KolonneState {
@@ -46,9 +43,6 @@ export interface KolonneState {
 }
 
 const MineAnsatte:  FunctionComponent<ArbeistakerProps> = ( props:ArbeistakerProps) => {
-    const [organisasjonstre, setorganisasjonstre] = useState(
-        Array<JuridiskEnhetMedUnderEnheterArray>());
-    const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
     const [ansattForholdPaSiden, setAnsattForholdPaSiden] = useState(Array<arbeidsforhold>());
     const [antallSider, setAntallSider] = useState(0);
     const [naVarendeSidetall, setnaVarendeSidetall] = useState(1);
@@ -64,22 +58,6 @@ const MineAnsatte:  FunctionComponent<ArbeistakerProps> = ( props:ArbeistakerPro
     const [listeFraAareg,setListeFraAareg] = useState(Array<arbeidsforhold>());
     const arbeidsforholdPerSide = 25;
 
-    useEffect(() => {
-        const hentOgSettOrganisasjoner = async () => {
-            const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
-            return organisasjonliste;
-        };
-        const lagOgSettTre = async (organisasjoner: Organisasjon[]) => {
-            const juridiskeenheterMedBarn: JuridiskEnhetMedUnderEnheterArray[] = await byggOrganisasjonstre(
-                organisasjoner
-            );
-            return juridiskeenheterMedBarn
-        };
-        hentOgSettOrganisasjoner().then(organisasjoner => {
-            lagOgSettTre(organisasjoner).then(juridiskeenheterMedBarn => setorganisasjonstre(juridiskeenheterMedBarn));
-        });
-    }, []);
-
     const setIndeksOgGenererListe = (indeks: number) => {
         setnaVarendeSidetall(indeks);
     };
@@ -94,13 +72,13 @@ const MineAnsatte:  FunctionComponent<ArbeistakerProps> = ( props:ArbeistakerPro
 
     useEffect(() => {
         const hentogSettArbeidsforhold = async () => {
-            const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg(valgtOrganisasjon.OrganizationNumber, valgtOrganisasjon.ParentOrganizationNumber);
+            const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber);
             return responsAareg;
         };
-        if (valgtOrganisasjon.OrganizationNumber !== "" && valgtOrganisasjon.ParentOrganizationNumber !== "") {
+        if (props.valgtOrganisasjon.OrganizationNumber !== "" && props.valgtOrganisasjon.ParentOrganizationNumber !== "") {
             hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
         }
-    }, [valgtOrganisasjon]);
+    }, [props.valgtOrganisasjon]);
 
 
     useEffect(() => {
@@ -146,7 +124,6 @@ const MineAnsatte:  FunctionComponent<ArbeistakerProps> = ( props:ArbeistakerPro
 
     return (
         <>
-        <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjonstre={organisasjonstre}/>
         <div className={'mine-ansatte'}>
 
             <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
