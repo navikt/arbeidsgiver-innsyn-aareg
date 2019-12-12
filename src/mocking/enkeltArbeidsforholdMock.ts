@@ -3,7 +3,7 @@ const delay = new Promise(res => setTimeout(res, 500));
 
 fetchMock
     .get(
-        'https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/47720602',
+        'begin:https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
         delay.then(() => {
             return enkelArbeidsforholdRespons;
         })
