@@ -1,4 +1,5 @@
 import {Arbeidsforhold} from "../App/Objekter/ArbeidsForhold";
+import {ObjektFraAAregisteret, tomResponsFraAareg} from "../App/Objekter/ObjektFraAAreg";
 
 export const listeMedFornavn: string[]= ["Ingrid Alexandra", "Håkon", "Mette Marit", "Harald", "Sonja", "Olav","Lars Andreas", "Bendik", "Thomas", "Hanna", "Silje", "Anders", "Vera", "Jonathan", "Lilly", "Helene", "Tobias", "Gabriel", "Henriette", "Trude", "Gudrun", "Elina", "Kaia", "Knut", "Jenny", "Petter", "Martin", "Marie", "Herman", "Alfred", "Leif", "Inger", "Ivar", "Trond"];
 
@@ -14,7 +15,7 @@ export const fodselsNr: string []= ["04015226825","15119702590","30067234940","2
 
 export const varlingskoder: string[] = ["ERKONK", "EROPPH", "ERVIRK", "IBARBG","IBKAOR"];
 
-const tomtArbeidsForhold: Arbeidsforhold = { navn: '',
+const tomtArbeidsForhold: Arbeidsforhold = {
   ansattFom: '',
   ansattTom: '',
   arbeidsgiver: {
@@ -25,6 +26,7 @@ const tomtArbeidsForhold: Arbeidsforhold = { navn: '',
     type: '',
     aktoerId: '',
     offentligIdent: '',
+    navn: '',
   },
   innrapportertEtterAOrdningen: '',
   navArbeidsforholdId: '',
@@ -83,19 +85,19 @@ const setVarslingskode = (): string => {
 const lagAnsattForhold = (): Arbeidsforhold => {
   return {
     ...tomtArbeidsForhold,
-    navn: setNavn(),
     ansattTom: setTom(),
     ansattFom: setFom(),
     yrke:setYrke(),
     varslingskode: setVarslingskode(),
     arbeidstaker: {
         ...tomtArbeidsForhold.arbeidstaker,
-      offentligIdent: setFnr()
+      offentligIdent: setFnr(),
+      navn: setNavn()
     }
   };
 };
 
-export const genererMockingAvArbeidsForhold = (antall: number): Arbeidsforhold[] => {
+const genererMockingAvArbeidsForhold = (antall: number): Arbeidsforhold[] => {
   const listeMedArbeidsForhold: Arbeidsforhold[] = [];
   for (let i: number = 0; i < antall;  i++) {
     listeMedArbeidsForhold.push(lagAnsattForhold());
@@ -106,4 +108,8 @@ export const genererMockingAvArbeidsForhold = (antall: number): Arbeidsforhold[]
       navArbeidsforholdId: listeMedArbeidsForhold.indexOf(forhold).toString()
     }
   });
+};
+
+export const AaregMockObjekt: ObjektFraAAregisteret =  {...tomResponsFraAareg,
+    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(1000)
 };

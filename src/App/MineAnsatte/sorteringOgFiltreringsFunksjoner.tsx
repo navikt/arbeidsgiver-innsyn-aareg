@@ -40,7 +40,7 @@ export const sorterBasertPaDatoTom = (arbeidsforhold: Arbeidsforhold[]) => {
 
 const sorterBasertPaNavn = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
-        if (a.navn > b.navn) {
+        if (a.arbeidstaker.navn > b.arbeidstaker.navn) {
             return 1;
         }
         return -1;

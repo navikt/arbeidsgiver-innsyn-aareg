@@ -5,8 +5,11 @@ import LoginBoundary from "./LoggInnBoundary";
 import MineAnsatte from "./MineAnsatte/MineAnsatte";
 import {EnkeltArbeidsforhold} from "./MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold";
 
+import {byggOrganisasjonstre} from "./MineAnsatte/HovedBanner/byggOrganisasjonsTre";
+import {testRespons} from "../mocking/mockresponsFraAltinn";
 
 const App: FunctionComponent = () => {
+    byggOrganisasjonstre(testRespons);
 
     const [valgtArbeidstaker,setValgtArbeidstaker] = useState();
     return (
