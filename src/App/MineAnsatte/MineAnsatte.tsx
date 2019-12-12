@@ -31,7 +31,7 @@ export enum SorteringsAttributt {
     VARSEL,
 }
 
-export declare interface ArbeistakerProps{
+export declare interface MineAnsatteProps{
     setValgtArbeidstaker: (fnr: number) => void
     valgtOrganisasjon: Organisasjon
 }
@@ -42,7 +42,7 @@ export interface KolonneState {
     reversSortering: boolean;
 }
 
-const MineAnsatte:  FunctionComponent<ArbeistakerProps> = ( props:ArbeistakerProps) => {
+const MineAnsatte:  FunctionComponent<MineAnsatteProps> = ( props:MineAnsatteProps) => {
     const [ansattForholdPaSiden, setAnsattForholdPaSiden] = useState(Array<arbeidsforhold>());
     const [antallSider, setAntallSider] = useState(0);
     const [naVarendeSidetall, setnaVarendeSidetall] = useState(1);
@@ -151,6 +151,7 @@ const MineAnsatte:  FunctionComponent<ArbeistakerProps> = ( props:ArbeistakerPro
                 byttSide={setIndeksOgGenererListe}
                 navarendeKolonne={navarendeKolonne}
                 settValgtArbeidsgiver={props.setValgtArbeidstaker}
+                valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
             />
             <ListeMedAnsatteForMobil
                 listeMedArbeidsForhold={ansattForholdPaSiden}
