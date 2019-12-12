@@ -1,6 +1,15 @@
+
+const landingsURL ='/bedriftsoversikt-og-ansatte/';
+
 export const hentArbeidsforholdLink = () => {
     return (
-        '/bedriftsoversikt-og-ansatte/api/arbeidsforhold'
+         landingsURL+'api/arbeidsforhold'
+    );
+};
+
+export const hentOrganisasjonerLink = () => {
+    return (
+        landingsURL + 'api/organisasjoner'
     );
 };
 
