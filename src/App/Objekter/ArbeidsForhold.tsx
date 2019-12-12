@@ -1,5 +1,4 @@
 export interface Arbeidsforhold {
-    navn: string;
     ansattFom: string;
     ansattTom: string;
     arbeidsgiver: {
@@ -9,6 +8,7 @@ export interface Arbeidsforhold {
         type: string;
         aktoerId: string;
         offentligIdent: string;
+        navn: string;
     };
     innrapportertEtterAOrdningen: string;
     navArbeidsforholdId: string;
