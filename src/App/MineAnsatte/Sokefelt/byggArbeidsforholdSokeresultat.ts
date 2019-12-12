@@ -2,7 +2,7 @@ import fuzzysort from 'fuzzysort';
 import {arbeidsforhold} from "../../Objekter/ObjektFraAAreg";
 
 const fuzzysortConfig = {
-    key: 'navn',
+    keys: ['arbeidstaker.offentligIdent','arbeidstaker.navn'],
     allowTypo: false,
     threshold: -1000
 };
