@@ -21,7 +21,6 @@ interface Props {
 
 const TabellMineAnsatte: FunctionComponent<Props> = props => {
     function oppdaterValgtArbeidsgiver (fnr:string){
-        console.log("oppdaterValgtArbeidsgiver(): "+ fnr);
         const fnrSomheltall: number = parseInt(fnr);
         props.settValgtArbeidsgiver(fnrSomheltall);
     }
