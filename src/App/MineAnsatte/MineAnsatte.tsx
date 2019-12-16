@@ -76,8 +76,6 @@ const MineAnsatte:  FunctionComponent<MineAnsatteProps> = ( props:MineAnsattePro
             return responsAareg;
         };
         if (props.valgtOrganisasjon.OrganizationNumber !== "" && props.valgtOrganisasjon.ParentOrganizationNumber !== "") {
-            console.log("props.valgtOrganisasjon.OrganizationNumber", props.valgtOrganisasjon.OrganizationNumber);
-            console.log("props.valgtOrganisasjon.ParentOrganizationNumber", props.valgtOrganisasjon.ParentOrganizationNumber);
             hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
         }
     }, [props.valgtOrganisasjon]);
