@@ -9,11 +9,12 @@ import { JuridiskEnhetMedUnderEnheterArray } from './Objekter/JuridiskEnhetMedUn
 import { Organisasjon, tomaAltinnOrganisasjon } from './Objekter/OrganisasjonFraAltinn';
 import { hentOrganisasjonerFraAltinn } from '../api/altinnApi';
 import { byggOrganisasjonstre } from './MineAnsatte/HovedBanner/byggOrganisasjonsTre';
+import {Arbeidstaker} from "./Objekter/Arbeidstaker";
 
 const App: FunctionComponent = () => {
     const [organisasjonstre, setorganisasjonstre] = useState(Array<JuridiskEnhetMedUnderEnheterArray>());
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
-    const [valgtArbeidstaker, setValgtArbeidstaker] = useState();
+    const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker|null>(null);
 
     useEffect(() => {
         const hentOgSettOrganisasjoner = async () => {
@@ -37,7 +38,7 @@ const App: FunctionComponent = () => {
                 <Router basename={basename}>
                     <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjonstre={organisasjonstre} />
                     <Route exact path="/enkeltArbeidsforhold">
-                        <EnkeltArbeidsforhold valgtArbeidsTaker={valgtArbeidstaker} />
+                        <EnkeltArbeidsforhold valgtArbeidstaker={valgtArbeidstaker} />
                     </Route>
                     <Route exact path="/">
                         <MineAnsatte
