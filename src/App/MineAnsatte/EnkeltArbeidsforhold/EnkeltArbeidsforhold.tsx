@@ -3,10 +3,10 @@ import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold/dist';
 import environment from '../../../utils/environment';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import {Arbeidstaker} from "../../Objekter/Arbeidstaker";
-import './EnkeltArbeidsforhold.less'
+import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
+import './EnkeltArbeidsforhold.less';
 export declare type EnkeltArbeidsforholdProps = {
-    valgtArbeidstaker: Arbeidstaker|null;
+    valgtArbeidstaker: Arbeidstaker | null;
 };
 
 const miljo = () => {

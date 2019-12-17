@@ -6,7 +6,7 @@ import 'nav-frontend-tabell-style';
 import { KolonneState } from '../MineAnsatte';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { Link } from 'react-router-dom';
-import {Arbeidstaker} from "../../Objekter/Arbeidstaker";
+import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
 
 interface Props {
     className?: string;
@@ -19,15 +19,22 @@ interface Props {
 }
 
 const TabellMineAnsatte: FunctionComponent<Props> = props => {
-    function oppdaterValgtArbeidsgiver(fnr: string, navn:string) {
+    function oppdaterValgtArbeidsgiver(fnr: string, navn: string) {
         const fnrSomheltall: number = parseInt(fnr);
-        props.settValgtArbeidsgiver({fnr:fnrSomheltall,navn:navn});
+        props.settValgtArbeidsgiver({ fnr: fnrSomheltall, navn: navn });
     }
     const rader = props.listeMedArbeidsForhold.map(arbeidsforhold => {
         return (
             <tr key={arbeidsforhold.navArbeidsforholdId}>
                 <td className={'td'}>
-                    <div onClick={() => oppdaterValgtArbeidsgiver(arbeidsforhold.arbeidstaker.offentligIdent,arbeidsforhold.arbeidstaker.navn)}>
+                    <div
+                        onClick={() =>
+                            oppdaterValgtArbeidsgiver(
+                                arbeidsforhold.arbeidstaker.offentligIdent,
+                                arbeidsforhold.arbeidstaker.navn
+                            )
+                        }
+                    >
                         <Link
                             to={
                                 'enkeltarbeidsforhold/?bedrift=' +
