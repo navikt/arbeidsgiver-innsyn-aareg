@@ -17,7 +17,7 @@ import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSok
 import NedtrekksMenyForFiltrering from './NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering';
 import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
-import {Arbeidstaker} from "../Objekter/Arbeidstaker";
+import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 
 export enum SorteringsAttributt {
     NAVN,
