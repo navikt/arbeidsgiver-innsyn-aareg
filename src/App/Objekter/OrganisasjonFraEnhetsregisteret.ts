@@ -73,7 +73,7 @@ export const tomEnhetsregOrg: OrganisasjonFraEnhetsregisteret = {
     navn: '',
     organisasjonsform: {
         kode: '',
-        beskrivelse: '',
+        beskrivelse: ''
     },
     overordnetEnhet: '',
     hjemmeside: '',
@@ -84,7 +84,7 @@ export const tomEnhetsregOrg: OrganisasjonFraEnhetsregisteret = {
         poststed: '',
         adresse: [''],
         kommune: '',
-        kommunenummer: '',
+        kommunenummer: ''
     },
     forretningsadresse: {
         land: '',
@@ -93,18 +93,18 @@ export const tomEnhetsregOrg: OrganisasjonFraEnhetsregisteret = {
         poststed: '',
         adresse: [''],
         kommune: '',
-        kommunenummer: '',
+        kommunenummer: ''
     },
     naeringskode1: {
         beskrivelse: '',
-        kode: '',
+        kode: ''
     },
     naeringskode2: {
         beskrivelse: '',
-        kode: '',
+        kode: ''
     },
     naeringskode3: {
         beskrivelse: '',
-        kode: '',
-    },
+        kode: ''
+    }
 };

@@ -42,7 +42,7 @@ export interface arbeidsforhold {
         type: string;
         aktoerId: string;
         offentligIdent: string;
-        navn:string
+        navn: string;
     };
     innrapportertEtterAOrdningen: string;
     navArbeidsforholdId: string;
@@ -58,9 +58,8 @@ export interface arbeidsforhold {
 }
 
 export const tomResponsFraAareg: ObjektFraAAregisteret = {
-    antall: "",
+    antall: '',
     arbeidsforholdoversikter: [],
-    startrad: "",
-    totalAntall: ""
+    startrad: '',
+    totalAntall: ''
 };
-
