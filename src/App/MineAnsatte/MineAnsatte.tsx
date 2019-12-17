@@ -17,6 +17,7 @@ import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSok
 import NedtrekksMenyForFiltrering from './NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering';
 import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import {Arbeidstaker} from "../Objekter/Arbeidstaker";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -28,7 +29,7 @@ export enum SorteringsAttributt {
 }
 
 export declare interface MineAnsatteProps {
-    setValgtArbeidstaker: (fnr: number) => void;
+    setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
     valgtOrganisasjon: Organisasjon;
 }
 

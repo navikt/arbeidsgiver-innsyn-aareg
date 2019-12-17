@@ -3,9 +3,10 @@ import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold/dist';
 import environment from '../../../utils/environment';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-
+import {Arbeidstaker} from "../../Objekter/Arbeidstaker";
+import './EnkeltArbeidsforhold.less'
 export declare type EnkeltArbeidsforholdProps = {
-    valgtArbeidsTaker: number;
+    valgtArbeidstaker: Arbeidstaker|null;
 };
 
 const miljo = () => {
@@ -20,16 +21,16 @@ export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> 
 ) => {
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
-    if (arbeidsforholdIdFraUrl && props.valgtArbeidsTaker) {
+    if (arbeidsforholdIdFraUrl && props.valgtArbeidstaker) {
         const arbeidsforholdId = parseInt(arbeidsforholdIdFraUrl);
         return (
-            <div>
+            <div className="enkelt-arbeidsforhold">
                 <div className="af-detaljert__header">
                     <span className="af-detaljert__kolonne">
                         <>
-                            <Undertittel>Arlene MCNeril</Undertittel>
+                            <Undertittel>{props.valgtArbeidstaker.navn}</Undertittel>
                         </>
-                        <Normaltekst>Fødselsnummer: 28048024078</Normaltekst>
+                        <Normaltekst>Fødselsnummer: {props.valgtArbeidstaker.fnr}</Normaltekst>
                     </span>
                     <span className="af-detaljert__kolonne">
                         <Undertittel>Ansattforhold ID</Undertittel>
@@ -41,7 +42,7 @@ export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> 
                     miljo={miljo()}
                     navArbeidsforholdId={arbeidsforholdId}
                     rolle="ARBEIDSGIVER"
-                    fnrArbeidstaker={props.valgtArbeidsTaker}
+                    fnrArbeidstaker={props.valgtArbeidstaker.fnr}
                     customApiUrl={
                         'https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}'
                     }
