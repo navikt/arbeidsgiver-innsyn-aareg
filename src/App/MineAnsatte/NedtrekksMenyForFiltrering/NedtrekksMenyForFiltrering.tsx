@@ -1,5 +1,5 @@
-import React, {FunctionComponent} from "react";
-import {Button, Menu, MenuItem, Wrapper} from "react-aria-menubutton";
+import React, { FunctionComponent } from 'react';
+import { Button, Menu, MenuItem, Wrapper } from 'react-aria-menubutton';
 import './NedtrekksMenyForFiltrering.less';
 
 interface Props {
@@ -7,12 +7,10 @@ interface Props {
 }
 
 const NedtrekksMenyForFiltrering: FunctionComponent<Props> = ({ onFiltrering }) => {
-    return (<Wrapper className="wrapper" onSelection={onFiltrering}>
-            <Button className="wrapper__button">
-                Aktive arbeidsforhold
-            </Button>
+    return (
+        <Wrapper className="wrapper" onSelection={onFiltrering}>
+            <Button className="wrapper__button">Aktive arbeidsforhold</Button>
             <Menu className="wrapper">
-
                 <MenuItem className="wrapper__valg" value={'aktive'}>
                     Aktive arbeidsforhold
                 </MenuItem>
@@ -21,9 +19,6 @@ const NedtrekksMenyForFiltrering: FunctionComponent<Props> = ({ onFiltrering }) 
                 </MenuItem>
             </Menu>
         </Wrapper>
-
-
-
     );
 };
 
