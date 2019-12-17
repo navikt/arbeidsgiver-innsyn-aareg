@@ -11,6 +11,7 @@ if (process.env.REACT_APP_MOCK) {
     console.log('========================================');
     require('./mocking/AaregMock');
     require('./mocking/altinnMock');
+    require('./mocking/enkeltArbeidsforholdMock');
 }
 
 ReactDOM.render(<App/>, document.getElementById('root'));
