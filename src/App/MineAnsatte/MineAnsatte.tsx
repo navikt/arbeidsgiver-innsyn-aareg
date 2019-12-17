@@ -15,15 +15,12 @@ import {
     visEllerSkjulChevroner,
 } from './pagineringsFunksjoner';
 import {arbeidsforhold, ObjektFraAAregisteret} from "../Objekter/ObjektFraAAreg";
-import HovedBanner from "./HovedBanner/HovedBanner";
 import Sokefelt from "./Sokefelt/Sokefelt";
 import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
 import NedtrekksMenyForFiltrering from "./NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering";
 import {hentArbeidsforholdFraAAreg} from "../../api/AaregApi";
-import {Organisasjon, tomaAltinnOrganisasjon} from "../Objekter/OrganisasjonFraAltinn";
-import {JuridiskEnhetMedUnderEnheterArray} from "../Objekter/JuridiskEnhetMedUnderenhetArray";
-import {hentOrganisasjonerFraAltinn} from "../../api/altinnApi";
-import {byggOrganisasjonstre} from "./HovedBanner/byggOrganisasjonsTre";
+import {Organisasjon} from "../Objekter/OrganisasjonFraAltinn";
+
 
 export enum SorteringsAttributt {
     NAVN,
@@ -34,17 +31,18 @@ export enum SorteringsAttributt {
     VARSEL,
 }
 
+export declare interface MineAnsatteProps{
+    setValgtArbeidstaker: (fnr: number) => void
+    valgtOrganisasjon: Organisasjon
+}
+
 export interface KolonneState {
     erValgt: boolean;
     sorteringsAttributt: SorteringsAttributt;
     reversSortering: boolean;
 }
 
-const MineAnsatte: FunctionComponent = () => {
-    const [organisasjonstre, setorganisasjonstre] = useState(
-        Array<JuridiskEnhetMedUnderEnheterArray>());
-    const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
-
+const MineAnsatte:  FunctionComponent<MineAnsatteProps> = ( props:MineAnsatteProps) => {
     const [ansattForholdPaSiden, setAnsattForholdPaSiden] = useState(Array<arbeidsforhold>());
     const [antallSider, setAntallSider] = useState(0);
     const [naVarendeSidetall, setnaVarendeSidetall] = useState(1);
@@ -60,22 +58,6 @@ const MineAnsatte: FunctionComponent = () => {
     const [listeFraAareg,setListeFraAareg] = useState(Array<arbeidsforhold>());
     const arbeidsforholdPerSide = 25;
 
-    useEffect(() => {
-        const hentOgSettOrganisasjoner = async () => {
-            const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
-            return organisasjonliste;
-        };
-        const lagOgSettTre = async (organisasjoner: Organisasjon[]) => {
-            const juridiskeenheterMedBarn: JuridiskEnhetMedUnderEnheterArray[] = await byggOrganisasjonstre(
-                organisasjoner
-            );
-            return juridiskeenheterMedBarn
-        };
-        hentOgSettOrganisasjoner().then(organisasjoner => {
-            lagOgSettTre(organisasjoner).then(juridiskeenheterMedBarn => setorganisasjonstre(juridiskeenheterMedBarn));
-        });
-    }, []);
-
     const setIndeksOgGenererListe = (indeks: number) => {
         setnaVarendeSidetall(indeks);
     };
@@ -90,13 +72,13 @@ const MineAnsatte: FunctionComponent = () => {
 
     useEffect(() => {
         const hentogSettArbeidsforhold = async () => {
-            const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg(valgtOrganisasjon.OrganizationNumber, valgtOrganisasjon.ParentOrganizationNumber);
+            const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber);
             return responsAareg;
         };
-        if (valgtOrganisasjon.OrganizationNumber !== "" && valgtOrganisasjon.ParentOrganizationNumber !== "") {
+        if (props.valgtOrganisasjon.OrganizationNumber !== "" && props.valgtOrganisasjon.ParentOrganizationNumber !== "") {
             hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
         }
-    }, [valgtOrganisasjon]);
+    }, [props.valgtOrganisasjon]);
 
 
     useEffect(() => {
@@ -142,7 +124,6 @@ const MineAnsatte: FunctionComponent = () => {
 
     return (
         <>
-        <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjonstre={organisasjonstre}/>
         <div className={'mine-ansatte'}>
 
             <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
@@ -169,6 +150,8 @@ const MineAnsatte: FunctionComponent = () => {
                 setNavarendeKolonne={setNavarendeKolonne}
                 byttSide={setIndeksOgGenererListe}
                 navarendeKolonne={navarendeKolonne}
+                settValgtArbeidsgiver={props.setValgtArbeidstaker}
+                valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
             />
             <ListeMedAnsatteForMobil
                 listeMedArbeidsForhold={ansattForholdPaSiden}
