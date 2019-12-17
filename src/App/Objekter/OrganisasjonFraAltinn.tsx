@@ -13,5 +13,5 @@ export const tomaAltinnOrganisasjon: Organisasjon = {
     OrganizationNumber: '',
     OrganizationForm: '',
     Status: '',
-    ParentOrganizationNumber: '',
+    ParentOrganizationNumber: ''
 };
