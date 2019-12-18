@@ -43,7 +43,6 @@ const genererRandomIndex = (lengde: number): number => {
   let tilfeldigIndeks = Math.random();
   tilfeldigIndeks = tilfeldigIndeks * lengde;
   return Math.floor(tilfeldigIndeks);
-
 };
 
 const setNavn = (): string => {
@@ -56,11 +55,12 @@ const setTom = (datoFom: string): string => {
   let indeks = genererRandomIndex(datoer.length);
   let datoTom: string = datoer[indeks];
   while (skrivOmDatoForm(datoTom) < skrivOmDatoForm(datoFom)){
-    indeks = genererRandomIndex(datoer.length);
-    datoTom = datoer[indeks];
-    console.log("fom: ", datoFom, "tom: ", datoTom );
+   indeks = genererRandomIndex(datoer.length);
+   datoTom = datoer[indeks];
   }
-  return datoTom
+  const nyDatoTom = datoTom;
+  return nyDatoTom;
+
 };
 
 const setFom = (): string => {
