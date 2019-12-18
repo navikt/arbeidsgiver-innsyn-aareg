@@ -15,7 +15,7 @@ export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => 
         const datoA = new Date(nyFormA);
         const datoB = new Date(nyFormB);
         if (datoA > datoB) {
-            console.log(a.ansattFom, nyFormA, ">", b.ansattFom, nyFormB, "havnet i if")
+            console.log(a.ansattFom, nyFormA, datoA, ">", b.ansattFom, nyFormB,datoB, "havnet i if")
             return -1;
         }
         console.log(a.ansattFom, nyFormA, ">", b.ansattFom, nyFormB, "havnet i else", datoA > datoB);
