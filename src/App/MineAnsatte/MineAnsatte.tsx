@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import './MineAnsatte.less';
-import { Undertittel } from 'nav-frontend-typografi';
+import {Normaltekst, Undertittel} from 'nav-frontend-typografi';
 import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
@@ -123,7 +123,7 @@ const MineAnsatte:  FunctionComponent<MineAnsatteProps> = ( props:MineAnsattePro
     }, [navarendeKolonne,soketekst]);
 
     return (
-        <>
+        <Normaltekst>
         <div className={'mine-ansatte'}>
 
             <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
@@ -158,7 +158,7 @@ const MineAnsatte:  FunctionComponent<MineAnsatteProps> = ( props:MineAnsattePro
                 className={'mine-ansatte__liste'}
             />
         </div>
-            </>
+            </Normaltekst>
     );
 };
 
