@@ -9,10 +9,12 @@ interface Props {
 const NedtrekksMenyForFiltrering: FunctionComponent<Props> = ({ onFiltrering }) => {
     return (<Wrapper className="wrapper" onSelection={onFiltrering}>
             <Button className="wrapper__button">
-                Aktive arbeidsforhold
+                Vis alle
             </Button>
             <Menu className="wrapper">
-
+                <MenuItem className="wrapper__valg" value={'visAlle'}>
+                    Alle arbeidsforhold
+                </MenuItem>
                 <MenuItem className="wrapper__valg" value={'aktive'}>
                     Aktive arbeidsforhold
                 </MenuItem>
