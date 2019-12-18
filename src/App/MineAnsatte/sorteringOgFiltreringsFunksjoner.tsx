@@ -30,7 +30,7 @@ export const sorterBasertPaDatoTom = (arbeidsforhold: Arbeidsforhold[]) => {
         const nyFormB = skrivOmDatoForm(b.ansattTom);
         const datoA = new Date(nyFormA);
         const datoB = new Date(nyFormB);
-        if (datoA > datoB) {
+        if (datoA < datoB) {
             return -1;
         }
         return 1;
