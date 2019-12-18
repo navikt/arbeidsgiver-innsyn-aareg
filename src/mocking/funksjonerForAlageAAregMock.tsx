@@ -1,13 +1,12 @@
 import {Arbeidsforhold} from "../App/Objekter/ArbeidsForhold";
 import {ObjektFraAAregisteret, tomResponsFraAareg} from "../App/Objekter/ObjektFraAAreg";
+import {skrivOmDatoForm} from "../App/MineAnsatte/sorteringOgFiltreringsFunksjoner";
 
 export const listeMedFornavn: string[]= ["Ingrid Alexandra", "Håkon", "Mette Marit", "Harald", "Sonja", "Olav","Lars Andreas", "Bendik", "Thomas", "Hanna", "Silje", "Anders", "Vera", "Jonathan", "Lilly", "Helene", "Tobias", "Gabriel", "Henriette", "Trude", "Gudrun", "Elina", "Kaia", "Knut", "Jenny", "Petter", "Martin", "Marie", "Herman", "Alfred", "Leif", "Inger", "Ivar", "Trond"];
 
 export const listeMedEtterNavn: string[] = ["Murphy", "Behn", "Lengali", "Pedersen", "Blåklokke", "Rivehjern", "Olavsson", "Hammerseng", "Northug", "Rishovd", "Knutsen", "Ludvigsen", "Solberg", "Stoltenberg", "Støre", "Ibsen", "Munch", "Vang", "Nesbø", "Morgenstierne"];
 
-export const datoFortid: string[] = ["29/01/1996", "01/04/1999", "01/12/1998", "18/04/1990", "14/02/1990", "01/05/1980", "17/05/2000", "17/05/1814"];
-
-export const datoFramtid: string[] = ["29/01/2020", "01/04/2021", "01/12/2024", "18/04/2020", "14/02/2021", "01/05/2025", "17/05/2020", "17/05/2020"];
+export const datoer: string[] = ["29/01/1996", "01/04/1999", "01/12/1998", "18/04/1990", "14/02/1990", "01/05/1980", "17/05/2000", "17/05/1814","29/01/2020", "01/04/2021", "01/12/2024", "18/04/2020", "14/02/2021", "01/05/2025", "17/05/2020", "17/05/2020"];
 
 export const yrker: string[] = ["Systemutvikler", "Interasksjonsdesigner", "Sjåfør", "Togfører", "Billettkontrollør", "Kokk", "Au pair", "Tannlege", "Kirurg", "Psykolog", "Psykiater", "Redaktør", "Journalist", "Skribent", "Forfatter", "Ekspeditør", "Prsonalansvarlig", "Daglig leder", "Servitør", "Pianist", "Lektor", "Gymlærer", "Konsulent", "Produkteier", "Generalsekretær", "Arkitekt", "Slangetemmer", "Performer", "Torpedo"];
 
@@ -53,14 +52,20 @@ const setNavn = (): string => {
   return(listeMedFornavn[indeksFornavn] + " " + listeMedEtterNavn[indeksEtternavn]);
 };
 
-const setTom = (): string => {
-  const indeks = genererRandomIndex(datoFramtid.length);
-  return datoFramtid[indeks];
+const setTom = (datoFom: string): string => {
+  let indeks = genererRandomIndex(datoer.length);
+  let datoTom: string = datoer[indeks];
+  while (skrivOmDatoForm(datoTom) < skrivOmDatoForm(datoFom)){
+    indeks = genererRandomIndex(datoer.length);
+    datoTom = datoer[indeks];
+    console.log("fom: ", datoFom, "tom: ", datoTom );
+  }
+  return datoTom
 };
 
 const setFom = (): string => {
-  const indeks = genererRandomIndex(datoFortid.length);
-  return datoFortid[indeks];
+  const indeks = genererRandomIndex(datoer.length);
+  return datoer[indeks];
 };
 
 const setYrke = (): string => {
@@ -82,10 +87,12 @@ const setVarslingskode = (): string => {
 };
 
 const lagAnsattForhold = (): Arbeidsforhold => {
+  const fomDato:string = setFom();
+  const tomDato: string = setTom(fomDato);
   return {
     ...tomtArbeidsForhold,
-    ansattTom: setTom(),
-    ansattFom: setFom(),
+    ansattFom: fomDato,
+    ansattTom: tomDato,
     yrke:setYrke(),
     varslingskode: setVarslingskode(),
     arbeidstaker: {
