@@ -54,7 +54,7 @@ const setNavn = (): string => {
 const setTom = (datoFom: string): string => {
   let indeks = genererRandomIndex(datoer.length);
   let datoTom: string = datoer[indeks];
-  while (skrivOmDatoForm(datoTom) < skrivOmDatoForm(datoFom)){
+  while (new Date(skrivOmDatoForm(datoTom)) < new Date(skrivOmDatoForm(datoFom))){
    indeks = genererRandomIndex(datoer.length);
    datoTom = datoer[indeks];
   }
