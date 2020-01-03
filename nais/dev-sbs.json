@@ -1,5 +1,0 @@
-{
-  "ingress": "https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/",
-  "api-gw-url": "https://api-gw-q1.oera.no",
-  "selvbetjening-login-url": "https://loginservice-q.nav.no/login?redirect=https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/"
-}
