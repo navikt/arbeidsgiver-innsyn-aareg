@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import './MineAnsatte.less';
-import { Undertittel } from 'nav-frontend-typografi';
+import {Normaltekst, Undertittel} from 'nav-frontend-typografi';
 import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
@@ -25,7 +25,7 @@ export enum SorteringsAttributt {
     YRKE,
     STARTDATO,
     SLUTTDATO,
-    VARSEL
+    VARSEL,
 }
 
 export declare interface MineAnsatteProps {
@@ -83,6 +83,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         }
     }, [props.valgtOrganisasjon]);
 
+
     useEffect(() => {
         if (soketekst.length > 0) {
             setListeMedArbeidsForhold(byggArbeidsforholdSokeresultat(listeFraAareg, soketekst));
@@ -92,7 +93,10 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [soketekst, listeFraAareg]);
 
     useEffect(() => {
-        let sortertListe = sorterArbeidsforhold(listeMedArbeidsForhold, navarendeKolonne.sorteringsAttributt);
+        let sortertListe = sorterArbeidsforhold(
+           listeMedArbeidsForhold,
+            navarendeKolonne.sorteringsAttributt
+        );
         if (navarendeKolonne.reversSortering) {
             sortertListe = sortertListe.reverse();
         }
@@ -121,41 +125,42 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [navarendeKolonne, soketekst]);
 
     return (
-        <>
-            <div className={'mine-ansatte'}>
-                <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
-                    Opplysninger fra Aa-registeret
-                </Undertittel>
-                <div className={'mine-ansatte__sok-og-filter'}>
-                    <NedtrekksMenyForFiltrering onFiltrering={filtreringValgt} />
-                    <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
+        <Normaltekst>
+        <div className={'mine-ansatte'}>
+
+            <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
+                Opplysninger fra Aa-registeret
+            </Undertittel>
+            <div className={"mine-ansatte__sok-og-filter"}>
+          <NedtrekksMenyForFiltrering onFiltrering={filtreringValgt}/>
+            <Sokefelt onChange={onSoketekstChange} soketekst={soketekst}/>
+            </div>
+            <div className={'mine-ansatte__topp'}>
+                <div tabIndex={0} className={'mine-ansatte__antall-forhold'}>
+                  {listeMedArbeidsForhold.length} arbeidsforhold
                 </div>
-                <div className={'mine-ansatte__topp'}>
-                    <div tabIndex={0} className={'mine-ansatte__antall-forhold'}>
-                        {listeMedArbeidsForhold.length} arbeidsforhold
-                    </div>
-                    <SideBytter
-                        className={'sidebytter'}
-                        byttSide={setIndeksOgGenererListe}
-                        antallSider={antallSider}
-                        naVarendeSidetall={naVarendeSidetall}
-                    />
-                </div>
-                <TabellMineAnsatte
-                    className={'mine-ansatte__table'}
-                    listeMedArbeidsForhold={ansattForholdPaSiden}
-                    setNavarendeKolonne={setNavarendeKolonne}
+                <SideBytter
+                    className={'sidebytter'}
                     byttSide={setIndeksOgGenererListe}
-                    navarendeKolonne={navarendeKolonne}
-                    settValgtArbeidsgiver={props.setValgtArbeidstaker}
-                    valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
-                />
-                <ListeMedAnsatteForMobil
-                    listeMedArbeidsForhold={ansattForholdPaSiden}
-                    className={'mine-ansatte__liste'}
+                    antallSider={antallSider}
+                    naVarendeSidetall={naVarendeSidetall}
                 />
             </div>
-        </>
+            <TabellMineAnsatte
+                className={'mine-ansatte__table'}
+                listeMedArbeidsForhold={ansattForholdPaSiden}
+                setNavarendeKolonne={setNavarendeKolonne}
+                byttSide={setIndeksOgGenererListe}
+                navarendeKolonne={navarendeKolonne}
+                settValgtArbeidsgiver={props.setValgtArbeidstaker}
+                valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
+            />
+            <ListeMedAnsatteForMobil
+                listeMedArbeidsForhold={ansattForholdPaSiden}
+                className={'mine-ansatte__liste'}
+            />
+        </div>
+            </Normaltekst>
     );
 };
 
