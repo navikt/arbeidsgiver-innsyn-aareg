@@ -4,23 +4,20 @@ import {Normaltekst, Undertittel} from 'nav-frontend-typografi';
 import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
-import {
-    filtrerAktiveOgAvsluttede,
-    sorterArbeidsforhold,
-} from './sorteringOgFiltreringsFunksjoner';
+import { filtrerAktiveOgAvsluttede, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 
 import {
     regnUtantallSider,
     regnUtArbeidsForholdSomSkalVisesPaEnSide,
-    visEllerSkjulChevroner,
+    visEllerSkjulChevroner
 } from './pagineringsFunksjoner';
-import {arbeidsforhold, ObjektFraAAregisteret} from "../Objekter/ObjektFraAAreg";
-import Sokefelt from "./Sokefelt/Sokefelt";
-import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
-import NedtrekksMenyForFiltrering from "./NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering";
-import {hentArbeidsforholdFraAAreg} from "../../api/AaregApi";
-import {Organisasjon} from "../Objekter/OrganisasjonFraAltinn";
-
+import { arbeidsforhold, ObjektFraAAregisteret } from '../Objekter/ObjektFraAAreg';
+import Sokefelt from './Sokefelt/Sokefelt';
+import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
+import NedtrekksMenyForFiltrering from './NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering';
+import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
+import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 
 export enum SorteringsAttributt {
     NAVN,
@@ -31,9 +28,9 @@ export enum SorteringsAttributt {
     VARSEL,
 }
 
-export declare interface MineAnsatteProps{
-    setValgtArbeidstaker: (fnr: number) => void
-    valgtOrganisasjon: Organisasjon
+export declare interface MineAnsatteProps {
+    setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
+    valgtOrganisasjon: Organisasjon;
 }
 
 export interface KolonneState {
@@ -42,7 +39,7 @@ export interface KolonneState {
     reversSortering: boolean;
 }
 
-const MineAnsatte:  FunctionComponent<MineAnsatteProps> = ( props:MineAnsatteProps) => {
+const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProps) => {
     const [ansattForholdPaSiden, setAnsattForholdPaSiden] = useState(Array<arbeidsforhold>());
     const [antallSider, setAntallSider] = useState(0);
     const [naVarendeSidetall, setnaVarendeSidetall] = useState(1);
@@ -50,12 +47,12 @@ const MineAnsatte:  FunctionComponent<MineAnsatteProps> = ( props:MineAnsattePro
     const initialKolonne: KolonneState = {
         erValgt: true,
         sorteringsAttributt: SorteringsAttributt.NAVN,
-        reversSortering: false,
+        reversSortering: false
     };
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
     const [filterState, setFilterState] = useState('visAlle');
     const [soketekst, setSoketekst] = useState('');
-    const [listeFraAareg,setListeFraAareg] = useState(Array<arbeidsforhold>());
+    const [listeFraAareg, setListeFraAareg] = useState(Array<arbeidsforhold>());
     const arbeidsforholdPerSide = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
@@ -72,23 +69,28 @@ const MineAnsatte:  FunctionComponent<MineAnsatteProps> = ( props:MineAnsattePro
 
     useEffect(() => {
         const hentogSettArbeidsforhold = async () => {
-            const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber);
+            const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg(
+                props.valgtOrganisasjon.OrganizationNumber,
+                props.valgtOrganisasjon.ParentOrganizationNumber
+            );
             return responsAareg;
         };
-        if (props.valgtOrganisasjon.OrganizationNumber !== "" && props.valgtOrganisasjon.ParentOrganizationNumber !== "") {
+        if (
+            props.valgtOrganisasjon.OrganizationNumber !== '' &&
+            props.valgtOrganisasjon.ParentOrganizationNumber !== ''
+        ) {
             hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
         }
     }, [props.valgtOrganisasjon]);
 
 
     useEffect(() => {
-        if (soketekst.length>0) {
-            setListeMedArbeidsForhold(byggArbeidsforholdSokeresultat(listeFraAareg,soketekst));
-        }
-        else {
+        if (soketekst.length > 0) {
+            setListeMedArbeidsForhold(byggArbeidsforholdSokeresultat(listeFraAareg, soketekst));
+        } else {
             setListeMedArbeidsForhold(listeFraAareg);
         }
-    }, [soketekst,listeFraAareg]);
+    }, [soketekst, listeFraAareg]);
 
     useEffect(() => {
         let sortertListe = sorterArbeidsforhold(
@@ -120,7 +122,7 @@ const MineAnsatte:  FunctionComponent<MineAnsatteProps> = ( props:MineAnsattePro
 
     useEffect(() => {
         setnaVarendeSidetall(1);
-    }, [navarendeKolonne,soketekst]);
+    }, [navarendeKolonne, soketekst]);
 
     return (
         <Normaltekst>
