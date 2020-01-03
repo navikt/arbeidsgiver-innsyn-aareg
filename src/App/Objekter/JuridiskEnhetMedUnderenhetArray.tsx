@@ -1,6 +1,6 @@
-import {Organisasjon} from "./OrganisasjonFraAltinn";
+import { Organisasjon } from './OrganisasjonFraAltinn';
 
 export interface JuridiskEnhetMedUnderEnheterArray {
-  JuridiskEnhet: Organisasjon;
-  Underenheter: Array<Organisasjon>;
+    JuridiskEnhet: Organisasjon;
+    Underenheter: Array<Organisasjon>;
 }

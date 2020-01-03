@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Input } from 'nav-frontend-skjema';
 import './Sokefelt.less';
-import Forstorrelsesglass from "./Forstørrelsesglass";
+import Forstorrelsesglass from './Forstørrelsesglass';
 
 interface Props {
     soketekst: string;
@@ -18,11 +18,7 @@ const Sokefelt: FunctionComponent<Props> = ({ soketekst, onChange }) => (
             onChange={(e: any) => onChange(e.target.value)}
             placeholder="Søk på navn eller fødselsnummer"
         />
-        <div className="sokefelt__ikon">
-            {soketekst.length === 0 && (
-                <Forstorrelsesglass />
-            ) }
-        </div>
+        <div className="sokefelt__ikon">{soketekst.length === 0 && <Forstorrelsesglass />}</div>
     </div>
 );
 

@@ -1,6 +1,5 @@
 import { SorteringsAttributt } from './MineAnsatte';
-import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
-
+import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 
 export const skrivOmDatoForm = (dato: string) => {
     const nydato = dato.substr(3, 3) + dato.substr(0, 3) + dato.substr(6, 5);
@@ -8,17 +7,17 @@ export const skrivOmDatoForm = (dato: string) => {
 };
 
 export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => {
-    console.log("sortering på dato FOM");
+    console.log('sortering på dato FOM');
     const sortert: Arbeidsforhold[] = arbeidsforhold.sort((a, b) => {
         const nyFormA = skrivOmDatoForm(a.ansattFom);
         const nyFormB = skrivOmDatoForm(b.ansattFom);
         const datoA = new Date(nyFormA);
         const datoB = new Date(nyFormB);
         if (datoA > datoB) {
-            console.log(a.ansattFom, nyFormA, datoA, ">", b.ansattFom, nyFormB,datoB, "havnet i if")
+            console.log(a.ansattFom, '>', b.ansattFom);
             return -1;
         }
-        console.log(a.ansattFom, nyFormA, ">", b.ansattFom, nyFormB, "havnet i else", datoA > datoB);
+        console.log(a.ansattFom, '>', b.ansattFom, 'havnet i else');
         return 1;
     });
     return sortert;
@@ -78,10 +77,7 @@ const sorterBasertPaYrke = (arbeidsforhold: Arbeidsforhold[]) => {
     return sortert;
 };
 
-export const sorterArbeidsforhold = (
-    arbeidsforhold: Arbeidsforhold[],
-    atributt: SorteringsAttributt
-) => {
+export const sorterArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], atributt: SorteringsAttributt) => {
     switch (atributt) {
         case SorteringsAttributt.NAVN:
             return sorterBasertPaNavn(arbeidsforhold);

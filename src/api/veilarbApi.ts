@@ -10,7 +10,7 @@ const hentVeilarbStatus = async (): Promise<VeilStatus> => {
     let responsBody = {} as VeilStatus;
     const respons = await fetch('/bedriftsoversikt-og-ansatte/veilarbstepup/status', {
         method: 'GET',
-        credentials: 'include',
+        credentials: 'include'
     });
     if (respons.ok) {
         responsBody = await respons.json();
