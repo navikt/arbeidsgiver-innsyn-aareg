@@ -23,8 +23,6 @@ jobs:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
-      - setup_remote_docker:
-          docker_layer_caching: true
       - run:
           name: Bygger Docker image
           command: docker build -t "navikt/oversikt-over-bedrift-og-ansatte:$CIRCLE_SHA1" .
