@@ -27,14 +27,18 @@ export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> 
             <div className="enkelt-arbeidsforhold">
                 <div className="af-detaljert__header">
                     <span className="af-detaljert__kolonne">
+                        <div className={"af-detaljert__arbeidsgiver"}>
                         <>
                             <Undertittel>{props.valgtArbeidstaker.navn}</Undertittel>
                         </>
                         <Normaltekst>Fødselsnummer: {props.valgtArbeidstaker.fnr}</Normaltekst>
+                            </div>
                     </span>
                     <span className="af-detaljert__kolonne">
+                        <div className={"af-detaljert__arbeidsgiver"}>
                         <Undertittel>Ansattforhold ID</Undertittel>
                         <Normaltekst>123456789123</Normaltekst>
+                        </div>
                     </span>
                 </div>
                 <DetaljertArbeidsforhold
