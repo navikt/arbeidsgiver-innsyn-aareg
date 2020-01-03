@@ -1,10 +1,11 @@
-
 version: 2.1
+orbs:
+  nais: navikt/nais-deployment@dev:master
 
 jobs:
-  bygg:
+  build:
     docker:
-      - image: circleci/node
+      - image: circleci/node:10
     steps:
       - checkout
       - restore_cache:
@@ -15,85 +16,92 @@ jobs:
           name: Installer avhengigheter
           command: |
             yarn install --frozen-lockfile
-      - run:
-          name: Bygger React app
-          command: yarn build
       - save_cache:
           name: Lagre Yarn cache
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - run:
-          name: Bygger Docker image
-          command: docker build -t "navikt/oversikt-over-bedrift-og-ansatte:$CIRCLE_SHA1" .
-      - run:
-          name: Pusher Docker image
-          command: |
-            echo $DOCKER_PASS | docker login --username $DOCKER_USER --password-stdin
-            docker push "navikt/oversikt-over-bedrift-og-ansatte:$CIRCLE_SHA1"
+          name: Bygg produksjonsversjon av React app
+          command: yarn build
+      - nais/docker:
+          image: navikt/oversikt-over-bedrift-og-ansatte
+
   deploy-til-dev:
     docker:
-      - image: 'navikt/deployment-cli:v0.1.5'
+      - image: navikt/deployment-cli:0.4.2
     steps:
       - checkout
-      - deploy:
-          miljo: 'dev-sbs'
+      - run:
+          name: Unpack Private Key
+          command: echo $GITHUB_PRIVATE_KEY | base64 -d > .circleci/github.key.pem
+      - nais/deploy-with-gh-app:
+          repo: navikt/oversikt-over-bedrift-og-ansatte
+          image: navikt/oversikt-over-bedrift-og-ansatte
+          github-app-id: 43789
+          nais-template: nais-preprod.yaml
+          environment: dev-sbs
+          team: teamtag
+
   deploy-til-prod:
     docker:
-      - image: 'navikt/deployment-cli:v0.1.5'
+      - image: navikt/deployment-cli:0.4.2
     steps:
       - checkout
-      - deploy:
-          miljo: 'prod-sbs'
+      - run:
+          name: Unpack Private Key
+          command: echo $GITHUB_PRIVATE_KEY | base64 -d > .circleci/github.key.pem
+      - nais/deploy-with-gh-app:
+          repo: navikt/oversikt-over-bedrift-og-ansatte
+          image: navikt/oversikt-over-bedrift-og-ansatte
+          github-app-id: 43789
+          nais-template: nais-prod.yaml
+          environment: prod-sbs
+          team: teamtag
 
-commands:
-  deploy:
-    description: 'Deploy til et gitt miljø'
-    parameters:
-      miljo:
-        type: string
-    steps:
-      - run: # Brukernavn og passord til Github ligger i miljøvariable DEPLOYMENT_USERNAME og DEPLOYMENT_PASSWORD
-          name: Deploy til << parameters.miljo >>
-          command: |
-            deployment-cli deploy create --cluster=<< parameters.miljo >> --repository=navikt/oversikt-over-bedrift-og-ansatte --team=teamtag --resource=naiserator.yaml --version=$CIRCLE_SHA1 --vars=nais/<< parameters.miljo >>.json
 workflows:
   version: 2.1
-  bygg-og-deploy:
+  bygg_og_deploy:
     jobs:
-      - bygg
-
-      # På branch kreves det approval for å deploye til dev-fss og dev-sbs
-      - godkjenn-deploy-til-dev:
+      - build:
+          context: NAIS deployment
+      - deploy-til-dev:
+          context: tag-ci
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+      - godkjenn-til-dev:
           type: approval
           requires:
-            - bygg
+            - build
           filters:
             branches:
               ignore:
                 - master
       - deploy-til-dev:
+          context: tag-ci
           requires:
-            - godkjenn-deploy-til-dev
-
-      # På master deployes det automatisk til dev-fss og dev-sbs
-      - deploy-til-dev:
-          requires:
-            - bygg
+            - godkjenn-til-dev
           filters:
             branches:
-              only:
+              ignore:
                 - master
-
-      # På master kreves det approval for å deploye til prod-fss og prod-sbs
-      - godkjenn-deploy-til-prod:
+      - godkjenn-til-prod:
           type: approval
           requires:
-            - bygg
+            - build
           filters:
             branches:
               only:
                 - master
       - deploy-til-prod:
+          context: tag-ci
           requires:
-            - godkjenn-deploy-til-prod
+            - godkjenn-til-prod
+          filters:
+            branches:
+              only:
+                - master
