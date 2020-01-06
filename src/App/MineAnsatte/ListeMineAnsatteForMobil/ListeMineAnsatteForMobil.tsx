@@ -4,12 +4,15 @@ import './ListeMineAnsatteForMobil.less';
 
 import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
 import Ansatt from "./Ansatt/Ansatt";
+import {Arbeidstaker} from "../../Objekter/Arbeidstaker";
 
 
 
 interface Props {
     className?: string;
     listeMedArbeidsForhold: Arbeidsforhold[];
+    settValgtArbeidsgiver: (valgtArbeidstaker: Arbeidstaker) => void;
+    valgtBedrift: string;
 }
 
 const ListeMedAnsatteForMobil: FunctionComponent<Props> = props => {
@@ -21,6 +24,9 @@ const ListeMedAnsatteForMobil: FunctionComponent<Props> = props => {
             offentligID={forhold.arbeidstaker.offentligIdent}
             yrke={forhold.yrke}
             key = {forhold.navArbeidsforholdId}
+            settValgtArbeidsgiver={props.settValgtArbeidsgiver}
+            valgtBedrift={props.valgtBedrift}
+            arbeidsforhold={forhold}
         />
     ));
 

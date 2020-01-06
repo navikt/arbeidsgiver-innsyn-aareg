@@ -158,6 +158,8 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             <ListeMedAnsatteForMobil
                 listeMedArbeidsForhold={ansattForholdPaSiden}
                 className={'mine-ansatte__liste'}
+                settValgtArbeidsgiver={props.setValgtArbeidstaker}
+                valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
             />
         </div>
             </Normaltekst>
