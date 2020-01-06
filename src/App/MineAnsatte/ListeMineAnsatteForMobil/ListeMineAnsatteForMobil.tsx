@@ -1,12 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import './ListeMineAnsatteForMobil.less';
 
-
-import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
-import Ansatt from "./Ansatt/Ansatt";
-import {Arbeidstaker} from "../../Objekter/Arbeidstaker";
-
-
+import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
+import Ansatt from './Ansatt/Ansatt';
+import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
 
 interface Props {
     className?: string;
@@ -23,7 +20,7 @@ const ListeMedAnsatteForMobil: FunctionComponent<Props> = props => {
             tom={forhold.ansattTom}
             offentligID={forhold.arbeidstaker.offentligIdent}
             yrke={forhold.yrke}
-            key = {forhold.navArbeidsforholdId}
+            key={forhold.navArbeidsforholdId}
             settValgtArbeidsgiver={props.settValgtArbeidsgiver}
             valgtBedrift={props.valgtBedrift}
             arbeidsforhold={forhold}

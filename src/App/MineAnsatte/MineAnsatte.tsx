@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import './MineAnsatte.less';
-import {Normaltekst, Undertittel} from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
@@ -25,7 +25,7 @@ export enum SorteringsAttributt {
     YRKE,
     STARTDATO,
     SLUTTDATO,
-    VARSEL,
+    VARSEL
 }
 
 export declare interface MineAnsatteProps {
@@ -83,7 +83,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         }
     }, [props.valgtOrganisasjon]);
 
-
     useEffect(() => {
         if (soketekst.length > 0) {
             setListeMedArbeidsForhold(byggArbeidsforholdSokeresultat(listeFraAareg, soketekst));
@@ -93,10 +92,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [soketekst, listeFraAareg]);
 
     useEffect(() => {
-        let sortertListe = sorterArbeidsforhold(
-           listeMedArbeidsForhold,
-            navarendeKolonne.sorteringsAttributt
-        );
+        let sortertListe = sorterArbeidsforhold(listeMedArbeidsForhold, navarendeKolonne.sorteringsAttributt);
         if (navarendeKolonne.reversSortering) {
             sortertListe = sortertListe.reverse();
         }
@@ -125,19 +121,17 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [navarendeKolonne, soketekst]);
 
     return (
-        <Normaltekst>
         <div className={'mine-ansatte'}>
-
             <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
                 Opplysninger fra Aa-registeret
             </Undertittel>
-            <div className={"mine-ansatte__sok-og-filter"}>
-          <NedtrekksMenyForFiltrering onFiltrering={filtreringValgt}/>
-            <Sokefelt onChange={onSoketekstChange} soketekst={soketekst}/>
+            <div className={'mine-ansatte__sok-og-filter'}>
+                <NedtrekksMenyForFiltrering onFiltrering={filtreringValgt} />
+                <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
             </div>
             <div className={'mine-ansatte__topp'}>
                 <div tabIndex={0} className={'mine-ansatte__antall-forhold'}>
-                  {listeMedArbeidsForhold.length} arbeidsforhold
+                    <Normaltekst>{listeMedArbeidsForhold.length} arbeidsforhold</Normaltekst>
                 </div>
                 <SideBytter
                     className={'sidebytter'}
@@ -146,6 +140,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     naVarendeSidetall={naVarendeSidetall}
                 />
             </div>
+
             <TabellMineAnsatte
                 className={'mine-ansatte__table'}
                 listeMedArbeidsForhold={ansattForholdPaSiden}
@@ -162,7 +157,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
             />
         </div>
-            </Normaltekst>
     );
 };
 

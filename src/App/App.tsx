@@ -9,12 +9,12 @@ import { JuridiskEnhetMedUnderEnheterArray } from './Objekter/JuridiskEnhetMedUn
 import { Organisasjon, tomaAltinnOrganisasjon } from './Objekter/OrganisasjonFraAltinn';
 import { hentOrganisasjonerFraAltinn } from '../api/altinnApi';
 import { byggOrganisasjonstre } from './MineAnsatte/HovedBanner/byggOrganisasjonsTre';
-import {Arbeidstaker} from "./Objekter/Arbeidstaker";
+import { Arbeidstaker } from './Objekter/Arbeidstaker';
 
 const App: FunctionComponent = () => {
     const [organisasjonstre, setorganisasjonstre] = useState(Array<JuridiskEnhetMedUnderEnheterArray>());
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
-    const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker|null>(null);
+    const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
 
     useEffect(() => {
         const hentOgSettOrganisasjoner = async () => {
