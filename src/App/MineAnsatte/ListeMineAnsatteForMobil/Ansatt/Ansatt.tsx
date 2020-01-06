@@ -27,6 +27,7 @@ const Ansatt: FunctionComponent<Props> = props => {
     return (
         <li className="arbeidsforhold">
             <ul className="arbeidsforhold__liste">
+                <div>
                 <li className="attributt">
                     <div className={'attributt__navn'}> Navn</div>
                     <div
@@ -49,6 +50,7 @@ const Ansatt: FunctionComponent<Props> = props => {
                         </Link>
                     </div>
                 </li>
+                    </div>
                 <AttributtVisning attributt="Offentlig Ident" attributtVerdi={props.offentligID} />
                 <AttributtVisning attributt="Yrke" attributtVerdi={props.yrke} />
                 <AttributtVisning attributt="Startet" attributtVerdi={props.fom} />
