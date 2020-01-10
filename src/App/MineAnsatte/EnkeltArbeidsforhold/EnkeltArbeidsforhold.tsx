@@ -16,6 +16,13 @@ const miljo = () => {
     return 'LOCAL';
 };
 
+const apiURL = () => {
+    if (environment.MILJO === 'prod-sbs') {
+        return 'https://arbeidsgiver.nav.no/bedriftsoversikt-og-ansatte/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
+    }
+    return 'https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
+};
+
 export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> = (
     props: EnkeltArbeidsforholdProps
 ) => {
@@ -27,17 +34,17 @@ export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> 
             <div className="enkelt-arbeidsforhold">
                 <div className="af-detaljert__header">
                     <span className="af-detaljert__kolonne">
-                        <div className={"af-detaljert__arbeidsgiver"}>
-                        <>
-                            <Undertittel>{props.valgtArbeidstaker.navn}</Undertittel>
-                        </>
-                        <Normaltekst>Fødselsnummer: {props.valgtArbeidstaker.fnr}</Normaltekst>
-                            </div>
+                        <div className={'af-detaljert__arbeidsgiver'}>
+                            <>
+                                <Undertittel>{props.valgtArbeidstaker.navn}</Undertittel>
+                            </>
+                            <Normaltekst>Fødselsnummer: {props.valgtArbeidstaker.fnr}</Normaltekst>
+                        </div>
                     </span>
                     <span className="af-detaljert__kolonne">
-                        <div className={"af-detaljert__arbeidsgiver"}>
-                        <Undertittel>Ansattforhold ID</Undertittel>
-                        <Normaltekst>123456789123</Normaltekst>
+                        <div className={'af-detaljert__arbeidsgiver'}>
+                            <Undertittel>Ansattforhold ID</Undertittel>
+                            <Normaltekst>{arbeidsforholdId}</Normaltekst>
                         </div>
                     </span>
                 </div>
@@ -47,9 +54,7 @@ export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> 
                     navArbeidsforholdId={arbeidsforholdId}
                     rolle="ARBEIDSGIVER"
                     fnrArbeidstaker={props.valgtArbeidstaker.fnr}
-                    customApiUrl={
-                        'https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}'
-                    }
+                    customApiUrl={apiURL()}
                 />
             </div>
         );

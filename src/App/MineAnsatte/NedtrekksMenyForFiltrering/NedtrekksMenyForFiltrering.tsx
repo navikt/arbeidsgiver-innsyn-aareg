@@ -1,7 +1,8 @@
-import React, {FunctionComponent, useState} from "react";
-import {Button, Menu, MenuItem, Wrapper} from "react-aria-menubutton";
+import React, { FunctionComponent, useState } from 'react';
+import { Button, Menu, MenuItem, Wrapper } from 'react-aria-menubutton';
 import './NedtrekksMenyForFiltrering.less';
-import {NedChevron, OppChevron} from "nav-frontend-chevron";
+import { NedChevron, OppChevron } from 'nav-frontend-chevron';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 interface Props {
     onFiltrering: (value: any, event: any) => void;
@@ -10,30 +11,31 @@ interface Props {
 const NedtrekksMenyForFiltrering: FunctionComponent<Props> = ({ onFiltrering }) => {
     const [erApen, setErApen] = useState(false);
 
-    return (<Wrapper className="wrapper" onSelection={onFiltrering} onMenuToggle={({ isOpen }) => {
-            setErApen(isOpen);
-        }}>
+    return (
+        <Wrapper
+            className="wrapper"
+            onSelection={onFiltrering}
+            onMenuToggle={({ isOpen }) => {
+                setErApen(isOpen);
+            }}
+        >
             <Button className="wrapper__button">
-                Vis alle
-                { !erApen &&
-                <NedChevron type={'ned'} />}
-                { erApen && <OppChevron/>}
+                <Normaltekst>Vis alle</Normaltekst>
+                {!erApen && <NedChevron type={'ned'} />}
+                {erApen && <OppChevron />}
             </Button>
             <Menu className="wrapper">
                 <MenuItem className="wrapper__valg" value={'visAlle'}>
-                    Alle arbeidsforhold
+                    <Normaltekst>Alle arbeidsforhold</Normaltekst>
                 </MenuItem>
                 <MenuItem className="wrapper__valg" value={'aktive'}>
-                    Aktive arbeidsforhold
+                    <Normaltekst>Aktive arbeidsforhold</Normaltekst>
                 </MenuItem>
                 <MenuItem className="wrapper__valg" value={'avsluttede'}>
-                    Avsluttede arbeidsforhold
+                    <Normaltekst>Avsluttede arbeidsforhold</Normaltekst>
                 </MenuItem>
             </Menu>
         </Wrapper>
-
-
-
     );
 };
 
