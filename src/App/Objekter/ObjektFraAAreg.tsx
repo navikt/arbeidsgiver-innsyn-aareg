@@ -27,12 +27,12 @@ export interface periode {
 
 export interface ObjektFraAAregisteret {
     antall: string;
-    arbeidsforholdoversikter: arbeidsforhold[];
+    arbeidsforholdoversikter: Arbeidsforhold[];
     startrad: string;
     totalAntall: string;
 }
 
-export interface arbeidsforhold {
+export interface Arbeidsforhold {
     ansattFom: string;
     ansattTom: string;
     arbeidsgiver: {
