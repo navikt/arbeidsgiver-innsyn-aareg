@@ -18,6 +18,8 @@ import NedtrekksMenyForFiltrering from './NedtrekksMenyForFiltrering/NedtrekksMe
 import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
+import ExcelEksport from "./ExcelEksport/ExcelEksport";
+
 
 export enum SorteringsAttributt {
     NAVN,
@@ -129,6 +131,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 <NedtrekksMenyForFiltrering onFiltrering={filtreringValgt} />
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
             </div>
+            <ExcelEksport/>
             <div className={'mine-ansatte__topp'}>
                 <div tabIndex={0} className={'mine-ansatte__antall-forhold'}>
                     <Normaltekst>{listeMedArbeidsForhold.length} arbeidsforhold</Normaltekst>
