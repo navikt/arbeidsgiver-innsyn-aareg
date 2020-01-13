@@ -1,12 +1,11 @@
 import {Arbeidsforhold} from "../App/Objekter/ArbeidsForhold";
 import {ObjektFraAAregisteret, tomResponsFraAareg} from "../App/Objekter/ObjektFraAAreg";
-import {skrivOmDatoForm} from "../App/MineAnsatte/sorteringOgFiltreringsFunksjoner";
 
 export const listeMedFornavn: string[]= ["Ingrid Alexandra", "Håkon", "Mette Marit", "Harald", "Sonja", "Olav","Lars Andreas", "Bendik", "Thomas", "Hanna", "Silje", "Anders", "Vera", "Jonathan", "Lilly", "Helene", "Tobias", "Gabriel", "Henriette", "Trude", "Gudrun", "Elina", "Kaia", "Knut", "Jenny", "Petter", "Martin", "Marie", "Herman", "Alfred", "Leif", "Inger", "Ivar", "Trond"];
 
 export const listeMedEtterNavn: string[] = ["Murphy", "Behn", "Lengali", "Pedersen", "Blåklokke", "Rivehjern", "Olavsson", "Hammerseng", "Northug", "Rishovd", "Knutsen", "Ludvigsen", "Solberg", "Stoltenberg", "Støre", "Ibsen", "Munch", "Vang", "Nesbø", "Morgenstierne"];
 
-export const datoer: string[] = ["29/01/1996", "01/04/1999", "01/12/1998", "18/04/1990", "14/02/1990", "01/05/1980", "17/05/2000", "17/05/1814","29/01/2020", "01/04/2021", "01/12/2024", "18/04/2020", "14/02/2021", "01/05/2025", "17/05/2020", "17/05/2020"];
+export const datoer: string[] = ["1996-01-29", "1999-04-01", "1998-12-01", "1990-04-18", "1990-02-14", "1980-05-01", "2000-05-17", "1814-05-17","2020-04-29", "2021-08-13", "2024-12-17", "2020-01-28", "2021-02-15", "2025-05-01", "2020-12-24", "2020-03-03"];
 
 export const yrker: string[] = ["Systemutvikler", "Interasksjonsdesigner", "Sjåfør", "Togfører", "Billettkontrollør", "Kokk", "Au pair", "Tannlege", "Kirurg", "Psykolog", "Psykiater", "Redaktør", "Journalist", "Skribent", "Forfatter", "Ekspeditør", "Prsonalansvarlig", "Daglig leder", "Servitør", "Pianist", "Lektor", "Gymlærer", "Konsulent", "Produkteier", "Generalsekretær", "Arkitekt", "Slangetemmer", "Performer", "Torpedo"];
 
@@ -54,7 +53,7 @@ const setNavn = (): string => {
 const setTom = (datoFom: string): string => {
   let indeks = genererRandomIndex(datoer.length);
   let datoTom: string = datoer[indeks];
-  while (new Date(skrivOmDatoForm(datoTom)) < new Date(skrivOmDatoForm(datoFom))){
+  while (new Date(datoTom) < new Date(datoFom)){
    indeks = genererRandomIndex(datoer.length);
    datoTom = datoer[indeks];
   }
