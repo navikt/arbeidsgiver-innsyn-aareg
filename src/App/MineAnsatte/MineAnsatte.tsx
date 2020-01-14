@@ -18,8 +18,7 @@ import NedtrekksMenyForFiltrering from './NedtrekksMenyForFiltrering/NedtrekksMe
 import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
-import ExcelEksport from "./ExcelEksport/ExcelEksport";
-
+import ExcelEksport from './ExcelEksport/ExcelEksport';
 
 export enum SorteringsAttributt {
     NAVN,
@@ -124,11 +123,15 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
 
     return (
         <div className={'mine-ansatte'}>
-            <div className={"mine-ansatte__header"} >
-            <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
-                Opplysninger fra Aa-registeret
-            </Undertittel>
-            <ExcelEksport  arbeidsforholdListe={listeMedArbeidsForhold}/>
+            <div className={'mine-ansatte__header'}>
+                <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
+                    Opplysninger fra Aa-registeret
+                </Undertittel>
+                <ExcelEksport
+                    arbeidsforholdListe={listeMedArbeidsForhold}
+                    navnBedrift={props.valgtOrganisasjon.Name}
+                    orgnrBedrift={props.valgtOrganisasjon.OrganizationNumber}
+                />
             </div>
             <div className={'mine-ansatte__sok-og-filter'}>
                 <NedtrekksMenyForFiltrering onFiltrering={filtreringValgt} />
