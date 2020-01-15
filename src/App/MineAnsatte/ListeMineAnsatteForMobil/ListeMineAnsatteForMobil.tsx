@@ -17,7 +17,7 @@ const ListeMedAnsatteForMobil: FunctionComponent<Props> = props => {
         <Ansatt
             navn={forhold.arbeidstaker.navn}
             fom={forhold.ansattFom}
-            tom={forhold.ansattTom}
+            tom={forhold.ansattTom? forhold.ansattTom : ""}
             offentligID={forhold.arbeidstaker.offentligIdent}
             yrke={forhold.yrke}
             key={forhold.navArbeidsforholdId}

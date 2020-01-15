@@ -1,3 +1,5 @@
+import {Arbeidsforhold} from "./ArbeidsForhold";
+
 export interface enkelArbeidsforhold {
     arbeidsavtaler: Array<enkelArbeidsavtale>;
     sistbekreftet: string;
@@ -27,35 +29,11 @@ export interface periode {
 
 export interface ObjektFraAAregisteret {
     antall: string;
-    arbeidsforholdoversikter: arbeidsforhold[];
+    arbeidsforholdoversikter: Arbeidsforhold[];
     startrad: string;
     totalAntall: string;
 }
 
-export interface arbeidsforhold {
-    ansattFom: string;
-    ansattTom: string;
-    arbeidsgiver: {
-        type: string;
-    };
-    arbeidstaker: {
-        type: string;
-        aktoerId: string;
-        offentligIdent: string;
-        navn: string;
-    };
-    innrapportertEtterAOrdningen: string;
-    navArbeidsforholdId: string;
-    opplysningspliktig: {
-        type: string;
-    };
-    permisjonPermitteringsprosent: string;
-    sistBekreftet: string;
-    stillingsprosent: string;
-    type: string;
-    varslingskode: string;
-    yrke: string;
-}
 
 export const tomResponsFraAareg: ObjektFraAAregisteret = {
     antall: '',

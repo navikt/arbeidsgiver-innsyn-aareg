@@ -11,13 +11,15 @@ import {
     regnUtArbeidsForholdSomSkalVisesPaEnSide,
     visEllerSkjulChevroner
 } from './pagineringsFunksjoner';
-import { arbeidsforhold, ObjektFraAAregisteret } from '../Objekter/ObjektFraAAreg';
+import { ObjektFraAAregisteret } from '../Objekter/ObjektFraAAreg';
 import Sokefelt from './Sokefelt/Sokefelt';
 import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
 import NedtrekksMenyForFiltrering from './NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering';
 import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
+import ExcelEksport from './ExcelEksport/ExcelEksport';
+import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -40,10 +42,10 @@ export interface KolonneState {
 }
 
 const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProps) => {
-    const [ansattForholdPaSiden, setAnsattForholdPaSiden] = useState(Array<arbeidsforhold>());
+    const [ansattForholdPaSiden, setAnsattForholdPaSiden] = useState(Array<Arbeidsforhold>());
     const [antallSider, setAntallSider] = useState(0);
     const [naVarendeSidetall, setnaVarendeSidetall] = useState(1);
-    const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<arbeidsforhold>());
+    const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
     const initialKolonne: KolonneState = {
         erValgt: true,
         sorteringsAttributt: SorteringsAttributt.NAVN,
@@ -52,7 +54,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
     const [filterState, setFilterState] = useState('visAlle');
     const [soketekst, setSoketekst] = useState('');
-    const [listeFraAareg, setListeFraAareg] = useState(Array<arbeidsforhold>());
+    const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const arbeidsforholdPerSide = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
@@ -101,7 +103,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             sortertListe = filtrerAktiveOgAvsluttede(sortertListe, visAktive);
         }
         setAntallSider(regnUtantallSider(arbeidsforholdPerSide, sortertListe.length));
-        const ansattForholdPaNavarendeSide: arbeidsforhold[] = regnUtArbeidsForholdSomSkalVisesPaEnSide(
+        const ansattForholdPaNavarendeSide: Arbeidsforhold[] = regnUtArbeidsForholdSomSkalVisesPaEnSide(
             naVarendeSidetall,
             arbeidsforholdPerSide,
             antallSider,
@@ -122,9 +124,16 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
 
     return (
         <div className={'mine-ansatte'}>
-            <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
-                Opplysninger fra Aa-registeret
-            </Undertittel>
+            <div className={'mine-ansatte__header'}>
+                <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
+                    Opplysninger fra Aa-registeret
+                </Undertittel>
+                <ExcelEksport
+                    arbeidsforholdListe={listeMedArbeidsForhold}
+                    navnBedrift={props.valgtOrganisasjon.Name}
+                    orgnrBedrift={props.valgtOrganisasjon.OrganizationNumber}
+                />
+            </div>
             <div className={'mine-ansatte__sok-og-filter'}>
                 <NedtrekksMenyForFiltrering onFiltrering={filtreringValgt} />
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />

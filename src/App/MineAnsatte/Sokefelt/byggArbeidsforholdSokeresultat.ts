@@ -1,5 +1,6 @@
 import fuzzysort from 'fuzzysort';
-import { arbeidsforhold } from '../../Objekter/ObjektFraAAreg';
+import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
+
 
 const fuzzysortConfig = {
     keys: ['arbeidstaker.offentligIdent', 'arbeidstaker.navn'],
@@ -8,12 +9,12 @@ const fuzzysortConfig = {
 };
 
 export function byggArbeidsforholdSokeresultat(
-    ListeMedArbeidsforhold: arbeidsforhold[] = [],
+    ListeMedArbeidsforhold: Arbeidsforhold[] = [],
     inputTekst: string
-): arbeidsforhold[] {
+): Arbeidsforhold[] {
     const sokeresultat = finnArbeidsforholdMedSok(ListeMedArbeidsforhold, inputTekst);
     return sokeresultat;
 }
 
-const finnArbeidsforholdMedSok = (ListeMedArbeidsforhold: arbeidsforhold[], inputTekst: string) =>
+const finnArbeidsforholdMedSok = (ListeMedArbeidsforhold: Arbeidsforhold[], inputTekst: string) =>
     fuzzysort.go(inputTekst, ListeMedArbeidsforhold, fuzzysortConfig).map((arbeidsforhold: any) => arbeidsforhold.obj);
