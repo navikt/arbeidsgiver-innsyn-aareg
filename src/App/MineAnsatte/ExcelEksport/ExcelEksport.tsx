@@ -22,7 +22,7 @@ const convertToDataset = (arbeidsforhold: Arbeidsforhold[]) => {
         detteArbeidsforholdet.push(a.arbeidstaker.offentligIdent);
         detteArbeidsforholdet.push(a.yrke);
         detteArbeidsforholdet.push(a.ansattFom);
-        detteArbeidsforholdet.push(a.ansattTom);
+        detteArbeidsforholdet.push(a.ansattTom? a.ansattTom : "")
         arbeidsforholdDataset.push(detteArbeidsforholdet);
     });
 
@@ -74,25 +74,6 @@ const ExcelEksport: FunctionComponent<ExcelEksportProps> = (props: ExcelEksportP
             </ExcelFile>
         </div>
     );
-    /*
-   return <div className={props.className} >
-        <ExcelFile element={<Hovedknapp>Last Ned</Hovedknapp>} filename={"ANSATTFORHOLD_"+props.navnBedrift+"_"+props.orgnrBedrift+"_"+dagensDato.toLocaleDateString()} >
-            <ExcelSheet data={aktiveArbeidsforhold} name="Aktive arbeidsforhold">
-                <ExcelColumn label="Navn" value={(col:Arbeidsforhold) => col.arbeidstaker.navn} />
-                <ExcelColumn label="Fødselsnummer" value={(col:Arbeidsforhold) => col.arbeidstaker.offentligIdent}/>
-                <ExcelColumn label="Yrke" value="yrke"/>
-                <ExcelColumn label="Startdato" value={"ansattFom"}/>
-                <ExcelColumn label="Sluttdato" value={"ansattTom"}/>
-            </ExcelSheet>
-        <ExcelSheet data={avsluttedeArbeidsforhold} name="Avsluttede arbeidsforhold">
-            <ExcelColumn label="Navn" value={(col:Arbeidsforhold) => col.arbeidstaker.navn}/>
-            <ExcelColumn label="Fødselsnummer" value={(col:Arbeidsforhold) => col.arbeidstaker.offentligIdent}/>
-            <ExcelColumn label="Yrke" value="yrke"/>
-            <ExcelColumn label="Startdato" value={"ansattFom"}/>
-            <ExcelColumn label="Sluttdato" value={"ansattTom"}/>
-        </ExcelSheet>
-    </ExcelFile>
-   </div>*/
 };
 
 export default ExcelEksport;

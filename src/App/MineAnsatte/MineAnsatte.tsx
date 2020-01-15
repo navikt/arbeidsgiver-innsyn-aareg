@@ -11,7 +11,7 @@ import {
     regnUtArbeidsForholdSomSkalVisesPaEnSide,
     visEllerSkjulChevroner
 } from './pagineringsFunksjoner';
-import { Arbeidsforhold, ObjektFraAAregisteret } from '../Objekter/ObjektFraAAreg';
+import { ObjektFraAAregisteret } from '../Objekter/ObjektFraAAreg';
 import Sokefelt from './Sokefelt/Sokefelt';
 import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
 import NedtrekksMenyForFiltrering from './NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering';
@@ -19,6 +19,7 @@ import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import ExcelEksport from './ExcelEksport/ExcelEksport';
+import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
 
 export enum SorteringsAttributt {
     NAVN,
