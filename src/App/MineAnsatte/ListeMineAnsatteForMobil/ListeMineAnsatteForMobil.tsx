@@ -12,7 +12,7 @@ interface Props {
     valgtBedrift: string;
 }
 
-const ListeMedAnsatteForMobil: FunctionComponent<Props> = props => {
+const ListeMedAnsatteForMobil: FunctionComponent<Props> = (props:Props) => {
     const rader = props.listeMedArbeidsForhold.map(forhold => (
         <Ansatt
             navn={forhold.arbeidstaker.navn}
@@ -26,7 +26,6 @@ const ListeMedAnsatteForMobil: FunctionComponent<Props> = props => {
             arbeidsforhold={forhold}
         />
     ));
-
     return <ul className={props.className}> {rader} </ul>;
 };
 
