@@ -9,9 +9,10 @@ if (process.env.REACT_APP_MOCK) {
     console.log('=============== MED MOCK ===============');
     console.log('===DETTE SKAL DU IKKE SE I PRODUKSJON===');
     console.log('========================================');
-    require('./mocking/AaregMock');
+//    require('./mocking/AaregMock');
     require('./mocking/altinnMock');
     require('./mocking/enkeltArbeidsforholdMock');
+    require('./mocking/hardkodetAaregmock');
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));

@@ -15,6 +15,12 @@ export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => 
 
 export const sorterBasertPaDatoTom = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
+        if(!a.ansattTom) {
+            return -1
+        }
+        if(!b.ansattTom) {
+            return 1
+        }
         const datoA = new Date(a.ansattTom);
         const datoB = new Date(b.ansattTom);
         if (datoA < datoB) {
@@ -37,6 +43,12 @@ const sorterBasertPaNavn = (arbeidsforhold: Arbeidsforhold[]) => {
 
 const sorterBasertPaKode = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
+        if(!a.varslingskode) {
+            return -1
+        }
+        if(!b.varslingskode) {
+            return 1
+        }
         if (a.varslingskode > b.varslingskode) {
             return 1;
         }
@@ -89,12 +101,17 @@ export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], akti
     const navarendeDato = new Date();
     if (aktiv) {
         return arbeidsforhold.filter(forhold => {
+            if(forhold.ansattTom) {
             const avslutningsdato = new Date(forhold.ansattTom);
             return avslutningsdato > navarendeDato;
+            }else{return true}
         });
     }
     return arbeidsforhold.filter(forhold => {
+        if(forhold.ansattTom) {
         const avslutningsdato = new Date(forhold.ansattTom);
         return avslutningsdato < navarendeDato;
+        }
+        else{return false}
     });
 };
