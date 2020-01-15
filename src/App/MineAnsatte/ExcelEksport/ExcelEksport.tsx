@@ -22,7 +22,9 @@ const convertToDataset = (arbeidsforhold: Arbeidsforhold[]) => {
         detteArbeidsforholdet.push(a.arbeidstaker.offentligIdent);
         detteArbeidsforholdet.push(a.yrke);
         detteArbeidsforholdet.push(a.ansattFom);
-        detteArbeidsforholdet.push(a.ansattTom? a.ansattTom : "")
+        detteArbeidsforholdet.push(a.ansattTom? a.ansattTom : "");
+        detteArbeidsforholdet.push(a.varslingskode? a.varslingskode : "");
+        detteArbeidsforholdet.push(a.varslingskodeForklaring? a.varslingskodeForklaring : "");
         arbeidsforholdDataset.push(detteArbeidsforholdet);
     });
 
@@ -30,12 +32,21 @@ const convertToDataset = (arbeidsforhold: Arbeidsforhold[]) => {
     return arbeidsforholdDataset;
 };
 
-const kolonner = [
+const kolonnerAktive = [
     { title: 'Navn', width: { wch: 25 } }, //pixels width
     { title: 'Fødselsnummer', width: { wch: 14 } }, //char width
     { title: 'Yrke', width: { wch: 20 } },
     { title: 'Startdato', width: { wch: 13 } },
-    { title: 'Sluttdato', width: { wch: 13 } }
+    { title: 'Sluttdato', width: { wch: 13 } },
+];
+const kolonnerAvsluttede = [
+    { title: 'Navn', width: { wch: 25 } }, //pixels width
+    { title: 'Fødselsnummer', width: { wch: 14 } }, //char width
+    { title: 'Yrke', width: { wch: 20 } },
+    { title: 'Startdato', width: { wch: 13 } },
+    { title: 'Sluttdato', width: { wch: 13 } },
+    { title: 'Varselkode', width: { wch: 13 } },
+    { title: 'Varsel beskrivelse', width: { wch: 25 } }
 ];
 
 const ExcelEksport: FunctionComponent<ExcelEksportProps> = (props: ExcelEksportProps) => {
@@ -46,13 +57,13 @@ const ExcelEksport: FunctionComponent<ExcelEksportProps> = (props: ExcelEksportP
     const avsluttedeArbeidsforholdDataset = convertToDataset(avsluttedeArbeidsforhold);
     const avsluttedeArbeidsforholdMultiDataSet = [
         {
-            columns: kolonner,
+            columns: kolonnerAvsluttede,
             data: avsluttedeArbeidsforholdDataset
         }
     ];
     const aktiveArbeidsforholdMultiDataSet = [
         {
-            columns: kolonner,
+            columns: kolonnerAktive,
             data: aktiveArbeidsforholdDataset
         }
     ];
