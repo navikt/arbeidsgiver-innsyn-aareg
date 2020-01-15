@@ -1,6 +1,6 @@
 export interface Arbeidsforhold {
     ansattFom: string;
-    ansattTom: string;
+    ansattTom?: string;
     arbeidsgiver: {
         type: string;
     };
@@ -19,6 +19,7 @@ export interface Arbeidsforhold {
     sistBekreftet: string;
     stillingsprosent: string;
     type: string;
-    varslingskode: string;
+    varslingskode?: string;
     yrke: string;
+    varslingskodeForklaring?: string;
 }
