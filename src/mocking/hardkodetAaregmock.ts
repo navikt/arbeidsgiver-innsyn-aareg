@@ -35,7 +35,8 @@ const OrganisasjonerResponse = {
             stillingsprosent: '100',
             type: 'ordinaertArbeidsforhold',
             varslingskode: 'ERKONK',
-            yrke: '3231109'
+            yrke: '3231109',
+            yrkesbeskrivelse: 'SYKEPLEIER'
         },
         {
             varslingskodeForklaring: null,
@@ -60,7 +61,8 @@ const OrganisasjonerResponse = {
             stillingsprosent: '100',
             type: 'ordinaertArbeidsforhold',
             varslingskode: null,
-            yrke: '3231109'
+            yrke: '3231109',
+            yrkesbeskrivelse: 'SYKEPLEIER'
         },
         {
             varslingskodeForklaring: null,
@@ -85,7 +87,8 @@ const OrganisasjonerResponse = {
             stillingsprosent: '100',
             type: 'ordinaertArbeidsforhold',
             varslingskode: null,
-            yrke: '3231109'
+            yrke: '3231109',
+            yrkesbeskrivelse: 'SYKEPLEIER'
         },
         {
             varslingskodeForklaring: null,
@@ -110,7 +113,8 @@ const OrganisasjonerResponse = {
             stillingsprosent: '100',
             type: 'ordinaertArbeidsforhold',
             varslingskode: null,
-            yrke: '3231109'
+            yrke: '3231109',
+            yrkesbeskrivelse: 'SYKEPLEIER'
         },
         {
             varslingskodeForklaring: null,
@@ -135,7 +139,8 @@ const OrganisasjonerResponse = {
             stillingsprosent: '100',
             type: 'ordinaertArbeidsforhold',
             varslingskode: null,
-            yrke: '3431129'
+            yrke: '3431129',
+            yrkesbeskrivelse: 'ADMINISTRASJONSMEDARBEIDER'
         }
     ],
     startrad: '0',
