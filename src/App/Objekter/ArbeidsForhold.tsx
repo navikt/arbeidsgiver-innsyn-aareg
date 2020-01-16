@@ -21,5 +21,6 @@ export interface Arbeidsforhold {
     type: string;
     varslingskode?: string;
     yrke: string;
+    yrkesbeskrivelse: string;
     varslingskodeForklaring?: string;
 }
