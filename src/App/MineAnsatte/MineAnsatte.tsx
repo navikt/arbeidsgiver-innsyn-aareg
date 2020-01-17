@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, {FunctionComponent, SyntheticEvent, useEffect, useState} from 'react';
 import './MineAnsatte.less';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import SideBytter from './SideBytter/SideBytter';
@@ -14,12 +14,12 @@ import {
 import { ObjektFraAAregisteret } from '../Objekter/ObjektFraAAreg';
 import Sokefelt from './Sokefelt/Sokefelt';
 import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
-import NedtrekksMenyForFiltrering from './NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering';
 import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import ExcelEksport from './ExcelEksport/ExcelEksport';
 import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
+import {ToggleGruppe, ToggleKnappPureProps} from 'nav-frontend-toggle';
 
 export enum SorteringsAttributt {
     NAVN,
@@ -52,8 +52,9 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         reversSortering: false
     };
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
-    const [filterState, setFilterState] = useState('visAlle');
+    const [filterState, setFilterState] = useState('Alle');
     const [soketekst, setSoketekst] = useState('');
+    //const [antallAktiveOgInaktive, setAntallAktiveOgInaktive] = useState([listeMedArbeidsForhold.length, 0, 0])
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const arbeidsforholdPerSide = 25;
 
@@ -61,8 +62,16 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         setnaVarendeSidetall(indeks);
     };
 
-    const filtreringValgt = (value: any, event: any) => {
-        setFilterState(value);
+    const filtreringValgt = (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]) => {
+        toggles.forEach(toggle => {
+            if (toggle.pressed === true && toggle.children) {
+                const filterstate = toggle.children.toString();
+                console.log(filterstate);
+                setFilterState(filterstate)
+            };
+
+        });
+        console.log("filtrering kallt med value: ", toggles);
     };
 
     const onSoketekstChange = (soketekst: string) => {
@@ -93,13 +102,32 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         }
     }, [soketekst, listeFraAareg]);
 
+    /*useEffect(() => {
+        const antallOversikt = [listeFraAareg.length,0,0]
+        const navarendeDato = new Date();
+        listeFraAareg.forEach(forhold => {
+            if(forhold.ansattTom) {
+                const avslutningsdato = new Date(forhold.ansattTom);
+                if (avslutningsdato<navarendeDato) {
+                    antallOversikt[2] ++;
+                }
+                else {
+                    antallOversikt[1] ++;
+                }
+            }else{antallOversikt[1] ++}
+        })
+        setAntallAktiveOgInaktive(antallOversikt);
+
+        }, [listeFraAareg]);
+        */
+
     useEffect(() => {
         let sortertListe = sorterArbeidsforhold(listeMedArbeidsForhold, navarendeKolonne.sorteringsAttributt);
         if (navarendeKolonne.reversSortering) {
             sortertListe = sortertListe.reverse();
         }
-        if (filterState !== 'visAlle') {
-            const visAktive = filterState === 'aktive';
+        if (filterState !== 'Alle') {
+            const visAktive = filterState === 'Aktive';
             sortertListe = filtrerAktiveOgAvsluttede(sortertListe, visAktive);
         }
         setAntallSider(regnUtantallSider(arbeidsforholdPerSide, sortertListe.length));
@@ -135,7 +163,16 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 />
             </div>
             <div className={'mine-ansatte__sok-og-filter'}>
-                <NedtrekksMenyForFiltrering onFiltrering={filtreringValgt} />
+                <ToggleGruppe
+                    onChange={filtreringValgt} className={"mine-ansatte__filter"}
+
+                    defaultToggles={[
+                        { children: 'Alle', pressed: true },
+                        { children: 'Aktive' },
+                        { children: 'Avsluttede' ,}
+                    ]}
+                    minstEn
+                />
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
             </div>
             <div className={'mine-ansatte__topp'}>
