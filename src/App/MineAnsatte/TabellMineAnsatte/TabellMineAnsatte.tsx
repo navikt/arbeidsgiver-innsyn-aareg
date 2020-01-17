@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import KolonnerFullSkjerm from './Kolonner/Kolonner';
 
 import './TabellMineAnsatte.less';
@@ -7,7 +7,9 @@ import { KolonneState } from '../MineAnsatte';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { Link } from 'react-router-dom';
 import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
-
+import VarslingPopover from './VarslingPopover/VarslingPopover';
+import Popover from 'nav-frontend-popover';
+import varselikon from "./varselikon.svg";
 interface Props {
     className?: string;
     listeMedArbeidsForhold: Arbeidsforhold[];
@@ -19,6 +21,7 @@ interface Props {
 }
 
 const TabellMineAnsatte: FunctionComponent<Props> = props => {
+    const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
     function oppdaterValgtArbeidsgiver(fnr: string, navn: string) {
         const fnrSomheltall: number = parseInt(fnr);
         props.settValgtArbeidsgiver({ fnr: fnrSomheltall, navn: navn });
@@ -51,7 +54,17 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
                 <td className={'td'}>{arbeidsforhold.yrke}</td>
                 <td className={'td'}>{arbeidsforhold.ansattFom}</td>
                 <td className={'td'}>{arbeidsforhold.ansattTom}</td>
-                <td className={'td'}>{arbeidsforhold.varslingskode}</td>
+                <td className={'td'}>
+                    {arbeidsforhold.varslingskode && arbeidsforhold.varslingskodeForklaring &&
+                    <div>
+                        <img src={varselikon} alt="Varsel om maskinell sluttdato" onMouseEnter={(e: any) => setAnker(e.currentTarget)}
+                             onMouseLeave={(e: any) => setAnker(undefined)}/>
+                        <Popover ankerEl={anker}>
+                            <p style={{padding: '1rem'}}>{arbeidsforhold.varslingskodeForklaring}</p>
+                        </Popover>
+                    </div>
+                    }
+                </td>
             </tr>
         );
     });
