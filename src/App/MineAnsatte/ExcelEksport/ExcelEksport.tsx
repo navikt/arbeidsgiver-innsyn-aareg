@@ -48,6 +48,19 @@ const kolonnerAvsluttede = [
     { title: 'Varselkode', width: { wch: 13 } },
     { title: 'Varsel beskrivelse', width: { wch: 25 } }
 ];
+const infosideData = [
+    {
+        columns: [
+            { title: '', width: { wpx: 500 } }
+        ],
+        data: [
+            [
+                {value: "Oversikten viser alle aktive og avsluttede arbeidsforhold rapportert etter 01.01.2015 for valgt underenhet. Hvis det er feil i et arbeidsforhold, skal du som arbeidsgiver endre dette gjennom a-meldingen", style: {font: {sz: "14", bold: true}, alignment:{wrapText:true,vertical:"top"}}},
+
+            ]
+        ]
+    }
+];
 
 const ExcelEksport: FunctionComponent<ExcelEksportProps> = (props: ExcelEksportProps) => {
     const dagensDato: Date = new Date();
@@ -80,6 +93,7 @@ const ExcelEksport: FunctionComponent<ExcelEksportProps> = (props: ExcelEksportP
                     dagensDato.toLocaleDateString()
                 }
             >
+                <ExcelSheet dataSet={infosideData} name="Info" />
                 <ExcelSheet dataSet={aktiveArbeidsforholdMultiDataSet} name="Aktive arbeidsforhold" />
                 <ExcelSheet dataSet={avsluttedeArbeidsforholdMultiDataSet} name="Avsluttede arbeidsforhold" />
             </ExcelFile>

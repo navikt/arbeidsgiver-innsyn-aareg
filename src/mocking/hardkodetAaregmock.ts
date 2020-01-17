@@ -10,6 +10,7 @@ fetchMock
     )
     .spy();
 const OrganisasjonerResponse = {
+    aktorIDtilArbeidstaker: '1071346840074',
     antall: '5',
     arbeidsforholdoversikter: [
         {
@@ -41,10 +42,8 @@ const OrganisasjonerResponse = {
         {
             varslingskodeForklaring: null,
             ansattFom: '2017-12-01',
-            ansattTom: '2022-12-01',
-            arbeidsgiver: {
-                type: 'Organisasjon'
-            },
+            ansattTom: null,
+            arbeidsgiver: { type: 'Organisasjon' },
             arbeidstaker: {
                 navn: 'Ola Normann',
                 type: 'Person',
