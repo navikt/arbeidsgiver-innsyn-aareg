@@ -21,7 +21,7 @@ const Banner: FunctionComponent<Props> = props => {
 
     return (
         <Bedriftsmeny
-            sidetittel="Oversikt over bedrift og ansatte"
+            sidetittel="Arbeidsforhold"
             organisasjonstre={props.organisasjonstre}
             onOrganisasjonChange={onOrganisasjonChange}
             history={history}
