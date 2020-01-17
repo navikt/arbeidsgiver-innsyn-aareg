@@ -10,6 +10,7 @@ fetchMock
     )
     .spy();
 const OrganisasjonerResponse = {
+    aktorIDtilArbeidstaker: '1071346840074',
     antall: '5',
     arbeidsforholdoversikter: [
         {
@@ -35,15 +36,14 @@ const OrganisasjonerResponse = {
             stillingsprosent: '100',
             type: 'ordinaertArbeidsforhold',
             varslingskode: 'ERKONK',
-            yrke: '3231109'
+            yrke: '3231109',
+            yrkesbeskrivelse: 'SYKEPLEIER'
         },
         {
             varslingskodeForklaring: null,
             ansattFom: '2017-12-01',
-            ansattTom: '2022-12-01',
-            arbeidsgiver: {
-                type: 'Organisasjon'
-            },
+            ansattTom: null,
+            arbeidsgiver: { type: 'Organisasjon' },
             arbeidstaker: {
                 navn: 'Ola Normann',
                 type: 'Person',
@@ -60,7 +60,8 @@ const OrganisasjonerResponse = {
             stillingsprosent: '100',
             type: 'ordinaertArbeidsforhold',
             varslingskode: null,
-            yrke: '3231109'
+            yrke: '3231109',
+            yrkesbeskrivelse: 'SYKEPLEIER'
         },
         {
             varslingskodeForklaring: null,
@@ -85,7 +86,8 @@ const OrganisasjonerResponse = {
             stillingsprosent: '100',
             type: 'ordinaertArbeidsforhold',
             varslingskode: null,
-            yrke: '3231109'
+            yrke: '3231109',
+            yrkesbeskrivelse: 'SYKEPLEIER'
         },
         {
             varslingskodeForklaring: null,
@@ -110,7 +112,8 @@ const OrganisasjonerResponse = {
             stillingsprosent: '100',
             type: 'ordinaertArbeidsforhold',
             varslingskode: null,
-            yrke: '3231109'
+            yrke: '3231109',
+            yrkesbeskrivelse: 'SYKEPLEIER'
         },
         {
             varslingskodeForklaring: null,
@@ -135,7 +138,8 @@ const OrganisasjonerResponse = {
             stillingsprosent: '100',
             type: 'ordinaertArbeidsforhold',
             varslingskode: null,
-            yrke: '3431129'
+            yrke: '3431129',
+            yrkesbeskrivelse: 'ADMINISTRASJONSMEDARBEIDER'
         }
     ],
     startrad: '0',

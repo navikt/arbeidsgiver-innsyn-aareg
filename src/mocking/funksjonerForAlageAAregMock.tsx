@@ -36,6 +36,7 @@ const tomtArbeidsForhold: Arbeidsforhold = {
   type: '',
   varslingskode: '',
   yrke: '',
+  yrkesbeskrivelse: ''
 };
 
 const genererRandomIndex = (lengde: number): number => {
