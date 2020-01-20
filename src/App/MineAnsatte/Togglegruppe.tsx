@@ -7,8 +7,7 @@ interface Props {
 }
 
 const Filtervalg: FunctionComponent<Props> = props => {
-        const arrayMedToggleTekst = ['Alle' + props.overSiktOverAntallAktiveOgInaktive[0],'Aktive'+ props.overSiktOverAntallAktiveOgInaktive[1].toString(), 'Avsluttede'+ props.overSiktOverAntallAktiveOgInaktive[2].toString() ];
-        console.log(props.overSiktOverAntallAktiveOgInaktive);
+        const arrayMedToggleTekst = ['Alle(' + props.overSiktOverAntallAktiveOgInaktive[0]+")",'Aktive('+ props.overSiktOverAntallAktiveOgInaktive[1].toString()+")", 'Avsluttede('+ props.overSiktOverAntallAktiveOgInaktive[2].toString()+")" ];
 
         return (
         <ToggleGruppe
