@@ -22,8 +22,8 @@ import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import ExcelEksport from './ExcelEksport/ExcelEksport';
 import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
-import {ToggleKnappPureProps, ToggleKnapp} from 'nav-frontend-toggle';
-import Filtervalg from "./Togglegruppe";
+import {ToggleKnappPureProps} from 'nav-frontend-toggle';
+import Filtervalg from "./Filtervalg/Filtervalg";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -174,9 +174,10 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     orgnrBedrift={props.valgtOrganisasjon.OrganizationNumber}
                 />
             </div>
+            <Normaltekst>Arbeidsforhold</Normaltekst>
             <div className={'mine-ansatte__sok-og-filter'}>
-                { listeFraAareg.length > 0 && <><Filtervalg filtreringValgt={filtreringValgt} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)}/>
-                <ToggleKnapp children = {"varslinger"} onClick={() => setErFiltrertPaVarsler(!erFiltrertPaVarsler)}/></>}
+                { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={filtreringValgt} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)} setfiltrerPaVarsler={() => setErFiltrertPaVarsler(!erFiltrertPaVarsler)}/>
+          }
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
             </div>
             <div className={'mine-ansatte__topp'}>
@@ -190,7 +191,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     naVarendeSidetall={naVarendeSidetall}
                 />}
             </div>
-
             <TabellMineAnsatte
                 className={'mine-ansatte__table'}
                 listeMedArbeidsForhold={ansattForholdPaSiden}
