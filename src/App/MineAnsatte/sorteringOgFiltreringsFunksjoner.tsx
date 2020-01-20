@@ -115,3 +115,22 @@ export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], akti
         else{return false}
     });
 };
+
+export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold: Arbeidsforhold[]): number[] => {
+    const antallOversikt: number[] = [listeMedArbeidsforhold.length,0,0];
+    const navarendeDato = new Date();
+    listeMedArbeidsforhold.forEach(forhold => {
+        if(forhold.ansattTom) {
+            const avslutningsdato = new Date(forhold.ansattTom);
+            if (avslutningsdato<navarendeDato) {
+                antallOversikt[2] ++;
+                console.log("avslutningsdato: ", avslutningsdato, "<" ,navarendeDato);
+            }
+            else {
+                antallOversikt[1] ++;
+            }
+        }else{antallOversikt[1] ++}
+    });
+    console.log(antallOversikt, antallOversikt[0])
+    return antallOversikt;
+};
