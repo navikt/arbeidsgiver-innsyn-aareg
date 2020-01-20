@@ -22,7 +22,7 @@ import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import ExcelEksport from './ExcelEksport/ExcelEksport';
 import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
-import {ToggleKnappPureProps} from 'nav-frontend-toggle';
+import {ToggleKnappPureProps, ToggleKnapp} from 'nav-frontend-toggle';
 import Filtervalg from "./Togglegruppe";
 
 export enum SorteringsAttributt {
@@ -59,6 +59,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     const [filterState, setFilterState] = useState('Alle');
     const [soketekst, setSoketekst] = useState('');
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
+    const [erFiltrertPaVarsler, setErFiltrertPaVarsler] = useState(false);
     const arbeidsforholdPerSide = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
@@ -146,8 +147,20 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [listeMedArbeidsForhold, naVarendeSidetall, navarendeKolonne, filterState, antallSider]);
 
     useEffect(() => {
-        setnaVarendeSidetall(1);
-    }, [navarendeKolonne, soketekst]);
+        const filtrertPaVarsler = listeFraAareg.filter(forhold => {
+                if (forhold.varslingskode && erFiltrertPaVarsler ) {
+                    if (forhold.varslingskode.length) {
+                        return forhold
+                    }
+                }
+                if (!erFiltrertPaVarsler) {
+                    return forhold
+                }
+                return null
+            }
+        );
+        setListeMedArbeidsForhold(filtrertPaVarsler);
+    }, [erFiltrertPaVarsler,listeFraAareg]);
 
     return (
         <div className={'mine-ansatte'}>
@@ -162,7 +175,8 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 />
             </div>
             <div className={'mine-ansatte__sok-og-filter'}>
-                { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={filtreringValgt} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)}/>}
+                { listeFraAareg.length > 0 && <><Filtervalg filtreringValgt={filtreringValgt} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)}/>
+                <ToggleKnapp children = {"varslinger"} onClick={() => setErFiltrertPaVarsler(!erFiltrertPaVarsler)}/></>}
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
             </div>
             <div className={'mine-ansatte__topp'}>
