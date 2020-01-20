@@ -2,8 +2,7 @@ import React, { FunctionComponent } from 'react';
 
 import './Logginn.less';
 import Lenke from 'nav-frontend-lenker';
-import LoggInnBanner from './LoggInnBanner/LoggInnBanner';
-import {Ingress, Innholdstittel, Normaltekst, Sidetittel, Systemtittel, Undertittel} from 'nav-frontend-typografi';
+import {Ingress, Normaltekst, Sidetittel} from 'nav-frontend-typografi';
 import { TilgangsStyringInfoTekst } from './TilgangsStyringInfoTekst/TilgangsStyringInfoTekst';
 import environment from "../../utils/environment";
 import {Hovedknapp} from "nav-frontend-knapper";
