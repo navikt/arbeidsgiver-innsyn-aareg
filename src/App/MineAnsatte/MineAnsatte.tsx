@@ -160,6 +160,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             }
         );
         setListeMedArbeidsForhold(filtrertPaVarsler);
+        setnaVarendeSidetall(1);
     }, [erFiltrertPaVarsler,listeFraAareg]);
 
     return (
