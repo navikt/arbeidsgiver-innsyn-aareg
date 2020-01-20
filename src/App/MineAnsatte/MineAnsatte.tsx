@@ -20,6 +20,7 @@ import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import ExcelEksport from './ExcelEksport/ExcelEksport';
 import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
+import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 
 export enum SorteringsAttributt {
     NAVN,
@@ -134,6 +135,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     orgnrBedrift={props.valgtOrganisasjon.OrganizationNumber}
                 />
             </div>
+            <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Hvis du finner feil i oversikten skal disse rapporteres inn via A-meldingen. </AlertStripeInfo>
             <div className={'mine-ansatte__sok-og-filter'}>
                 <NedtrekksMenyForFiltrering onFiltrering={filtreringValgt} />
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
