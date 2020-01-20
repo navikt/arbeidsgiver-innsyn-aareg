@@ -117,5 +117,5 @@ const genererMockingAvArbeidsForhold = (antall: number): Arbeidsforhold[] => {
 };
 
 export const AaregMockObjekt: ObjektFraAAregisteret =  {...tomResponsFraAareg,
-    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(1000)
+    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(80)
 };

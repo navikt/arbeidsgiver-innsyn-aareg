@@ -4,7 +4,10 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
-import { filtrerAktiveOgAvsluttede, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
+import {
+    filtrerAktiveOgAvsluttede,
+    sorterArbeidsforhold
+} from './sorteringOgFiltreringsFunksjoner';
 
 import {
     regnUtantallSider,
@@ -19,7 +22,8 @@ import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import ExcelEksport from './ExcelEksport/ExcelEksport';
 import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
-import {ToggleGruppe, ToggleKnappPureProps} from 'nav-frontend-toggle';
+import {ToggleKnappPureProps} from 'nav-frontend-toggle';
+import Filtervalg from "./Togglegruppe";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -54,7 +58,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
     const [filterState, setFilterState] = useState('Alle');
     const [soketekst, setSoketekst] = useState('');
-    //const [antallAktiveOgInaktive, setAntallAktiveOgInaktive] = useState([listeMedArbeidsForhold.length, 0, 0])
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const arbeidsforholdPerSide = 25;
 
@@ -62,16 +65,31 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         setnaVarendeSidetall(indeks);
     };
 
+    console.log(antallSider);
     const filtreringValgt = (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]) => {
+        console.log("kaller filtrering");
         toggles.forEach(toggle => {
+            console.log("toggle:", toggle.children);
             if (toggle.pressed === true && toggle.children) {
-                const filterstate = toggle.children.toString();
-                console.log(filterstate);
-                setFilterState(filterstate)
-            };
+                const includesString: boolean = true;
+                switch (includesString) {
+                    case (toggle.children.toString().startsWith("Alle")):
+                        setFilterState("Alle");
+                        break;
+                    case (toggle.children.toString().startsWith("Aktive")):
+                        setFilterState("Aktive");
+                        break;
+                    case (toggle.children.toString().startsWith("Avsluttede")):
+                        setFilterState("Avsluttede");
+                        break;
+                    default:
+                        break;
+                }
+                ;
 
-        });
-        console.log("filtrering kallt med value: ", toggles);
+            }
+            ;
+        })
     };
 
     const onSoketekstChange = (soketekst: string) => {
@@ -90,7 +108,11 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             props.valgtOrganisasjon.OrganizationNumber !== '' &&
             props.valgtOrganisasjon.ParentOrganizationNumber !== ''
         ) {
-            hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
+            hentogSettArbeidsforhold().then(responsAareg => {
+                setListeFraAareg(responsAareg.arbeidsforholdoversikter);
+
+
+            });
         }
     }, [props.valgtOrganisasjon]);
 
@@ -101,25 +123,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             setListeMedArbeidsForhold(listeFraAareg);
         }
     }, [soketekst, listeFraAareg]);
-
-    /*useEffect(() => {
-        const antallOversikt = [listeFraAareg.length,0,0]
-        const navarendeDato = new Date();
-        listeFraAareg.forEach(forhold => {
-            if(forhold.ansattTom) {
-                const avslutningsdato = new Date(forhold.ansattTom);
-                if (avslutningsdato<navarendeDato) {
-                    antallOversikt[2] ++;
-                }
-                else {
-                    antallOversikt[1] ++;
-                }
-            }else{antallOversikt[1] ++}
-        })
-        setAntallAktiveOgInaktive(antallOversikt);
-
-        }, [listeFraAareg]);
-        */
 
     useEffect(() => {
         let sortertListe = sorterArbeidsforhold(listeMedArbeidsForhold, navarendeKolonne.sorteringsAttributt);
@@ -163,28 +166,19 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 />
             </div>
             <div className={'mine-ansatte__sok-og-filter'}>
-                <ToggleGruppe
-                    onChange={filtreringValgt} className={"mine-ansatte__filter"}
-
-                    defaultToggles={[
-                        { children: 'Alle', pressed: true },
-                        { children: 'Aktive' },
-                        { children: 'Avsluttede' ,}
-                    ]}
-                    minstEn
-                />
+                <Filtervalg arbeidsforhold={listeMedArbeidsForhold} filtreringValgt={filtreringValgt}/>
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
             </div>
             <div className={'mine-ansatte__topp'}>
                 <div tabIndex={0} className={'mine-ansatte__antall-forhold'}>
                     <Normaltekst>{listeMedArbeidsForhold.length} arbeidsforhold</Normaltekst>
                 </div>
-                <SideBytter
+                {antallSider > 1 && <SideBytter
                     className={'sidebytter'}
                     byttSide={setIndeksOgGenererListe}
                     antallSider={antallSider}
                     naVarendeSidetall={naVarendeSidetall}
-                />
+                />}
             </div>
 
             <TabellMineAnsatte
