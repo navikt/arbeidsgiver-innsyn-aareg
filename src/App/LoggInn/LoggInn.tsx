@@ -3,11 +3,11 @@ import React, { FunctionComponent } from 'react';
 import './Logginn.less';
 import Lenke from 'nav-frontend-lenker';
 import LoggInnBanner from './LoggInnBanner/LoggInnBanner';
-import { Systemtittel } from 'nav-frontend-typografi';
+import {Ingress, Innholdstittel, Normaltekst, Sidetittel, Systemtittel, Undertittel} from 'nav-frontend-typografi';
 import { TilgangsStyringInfoTekst } from './TilgangsStyringInfoTekst/TilgangsStyringInfoTekst';
 import environment from "../../utils/environment";
 import {Hovedknapp} from "nav-frontend-knapper";
-
+import handshake from './handshake.svg';
 
 
 const LoggInn: FunctionComponent = () => {
@@ -24,27 +24,18 @@ const LoggInn: FunctionComponent = () => {
         <>
             {
                 <div className="innloggingsside">
-                    <LoggInnBanner />
+
                     <div className={'innloggingsside__innhold'}>
-                        <Systemtittel className={'innloggingsside__sidetittel'}>
-                            På Min side – arbeidsgiver kan du:
-                        </Systemtittel>
-                        <ul className="innloggingsside__punktliste">
-                            <li className={'innloggingsside__punkt'}>
-                                {' '}
-                                få oversikt over dine sykmeldte
-                            </li>
-                            <li className={'innloggingsside__punkt'}>
-                                se sykfraværsstatistikk for din virksomhet
-                            </li>
-                            <li className={'innloggingsside__punkt'}>
-                                rekruttere nye medarbeidere
-                            </li>
-                            <li className={'innloggingsside__punkt'}>
-                                sende inn digitale skjemaer
-                            </li>
-                        </ul>
+                        <div className={"innloggingsside__circle"}>
+                        <img src={handshake} className={'innloggingsside__handtrykkbilde'} alt="bilde av håndtrykk" />
+                        </div>
+                        <Sidetittel className={'innloggingsside__sidetittel'}>
+                           Innsyn i Aa-registeret
+                        </Sidetittel>
+                        <Ingress >Se alle arbeidsforhold du som arbeidsgiver rapporert inn via A-medlingen </Ingress>
+                       <div className={'innloggingsside__margintop'} >
                         <TilgangsStyringInfoTekst />
+                       </div>
                         <Hovedknapp
                             className={'innloggingsside__loginKnapp'}
                             onClick={redirectTilLogin}
@@ -53,11 +44,14 @@ const LoggInn: FunctionComponent = () => {
                         </Hovedknapp>
 
                         <div className="innloggingsside__besok-ditt-nav">
+                            <Normaltekst>
                             Ønsker du å se dine tjenester som privatperson? <br />
                             <Lenke href={'https://www.nav.no/person/dittnav/'}>
                                 Logg inn på Ditt NAV
                             </Lenke>
+                            </Normaltekst>
                         </div>
+
                     </div>
                 </div>
             }
