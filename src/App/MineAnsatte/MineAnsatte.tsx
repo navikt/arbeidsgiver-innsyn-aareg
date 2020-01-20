@@ -6,7 +6,7 @@ import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatte
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import {
     filtrerAktiveOgAvsluttede,
-    sorterArbeidsforhold
+    sorterArbeidsforhold, tellAntallAktiveOgInaktiveArbeidsforhold
 } from './sorteringOgFiltreringsFunksjoner';
 
 import {
@@ -64,12 +64,8 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     const setIndeksOgGenererListe = (indeks: number) => {
         setnaVarendeSidetall(indeks);
     };
-
-    console.log(antallSider);
     const filtreringValgt = (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]) => {
-        console.log("kaller filtrering");
         toggles.forEach(toggle => {
-            console.log("toggle:", toggle.children);
             if (toggle.pressed === true && toggle.children) {
                 const includesString: boolean = true;
                 switch (includesString) {
@@ -166,7 +162,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 />
             </div>
             <div className={'mine-ansatte__sok-og-filter'}>
-                <Filtervalg arbeidsforhold={listeMedArbeidsForhold} filtreringValgt={filtreringValgt}/>
+                { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={filtreringValgt} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)}/>}
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
             </div>
             <div className={'mine-ansatte__topp'}>

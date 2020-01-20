@@ -124,13 +124,11 @@ export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold:
             const avslutningsdato = new Date(forhold.ansattTom);
             if (avslutningsdato<navarendeDato) {
                 antallOversikt[2] ++;
-                console.log("avslutningsdato: ", avslutningsdato, "<" ,navarendeDato);
             }
             else {
                 antallOversikt[1] ++;
             }
         }else{antallOversikt[1] ++}
     });
-    console.log(antallOversikt, antallOversikt[0])
     return antallOversikt;
 };
