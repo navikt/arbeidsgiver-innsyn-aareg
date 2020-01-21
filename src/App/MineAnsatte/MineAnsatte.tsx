@@ -110,8 +110,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         ) {
             hentogSettArbeidsforhold().then(responsAareg => {
                 setListeFraAareg(responsAareg.arbeidsforholdoversikter);
-
-
             });
         }
     }, [props.valgtOrganisasjon]);
@@ -178,9 +176,9 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     orgnrBedrift={props.valgtOrganisasjon.OrganizationNumber}
                 />
             </div>
-            <Normaltekst>Arbeidsforhold</Normaltekst>
             <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Hvis du finner feil i oversikten skal disse rapporteres inn via A-meldingen. </AlertStripeInfo>
             <div className={'mine-ansatte__sok-og-filter'}>
+                <Normaltekst>Arbeidsforhold</Normaltekst>
                 { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={filtreringValgt} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)} setfiltrerPaVarsler={() => setErFiltrertPaVarsler(!erFiltrertPaVarsler)}/>
           }
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
