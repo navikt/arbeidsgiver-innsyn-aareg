@@ -8,11 +8,6 @@ import {Arbeidsforhold} from "../../../Objekter/ArbeidsForhold";
 
 interface Props {
     className?: string;
-    navn: string;
-    offentligID: string;
-    yrke: string;
-    fom: string;
-    tom: string;
     arbeidsforhold:Arbeidsforhold
     settValgtArbeidsgiver: (valgtArbeidstaker: Arbeidstaker) => void;
     valgtBedrift: string;
@@ -51,10 +46,12 @@ const Ansatt: FunctionComponent<Props> = props => {
                     </div>
                 </li>
                     </div>
-                <AttributtVisning attributt="Offentlig Ident" attributtVerdi={props.offentligID} />
-                <AttributtVisning attributt="Yrke" attributtVerdi={props.yrke} />
-                <AttributtVisning attributt="Startet" attributtVerdi={props.fom} />
-                <AttributtVisning attributt="Slutter" attributtVerdi={props.tom} />
+                <AttributtVisning attributt="Offentlig Ident" attributtVerdi={props.arbeidsforhold.arbeidstaker.offentligIdent} />
+                <AttributtVisning attributt="Startet" attributtVerdi={props.arbeidsforhold.ansattFom} />
+                <AttributtVisning attributt="Slutter" attributtVerdi={props.arbeidsforhold.ansattTom } />
+                <AttributtVisning attributt="Stillingsprosent %" attributtVerdi={props.arbeidsforhold.stillingsprosent} />
+                <AttributtVisning attributt="Yrke" attributtVerdi={props.arbeidsforhold.yrke} />
+                <AttributtVisning attributt="Permitteringsprosent %" attributtVerdi={props.arbeidsforhold.permisjonPermitteringsprosent} />
                 <AttributtVisning attributt="Varsling" attributtVerdi="9" />
             </ul>
         </li>
