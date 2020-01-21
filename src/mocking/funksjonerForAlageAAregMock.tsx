@@ -11,7 +11,7 @@ export const yrker: string[] = ["Systemutvikler", "Interasksjonsdesigner", "Sjå
 
 export const fodselsNr: string []= ["04015226825","15119702590","30067234940","22059007517","14039717019","08020285185","20106012971","20085624661","08024706711","26075014618","14117227856","03045013986","08114503186","19105737176","05037702090","14077541803","07106728814","28079345867","28077403517","23097011680","14109431703","03049219872","09037947773","21038137589","17123920384","06047414707","21123832989"];
 
-export const varlingskoder: string[] = ["ERKONK", "EROPPH", "ERVIRK", "IBARBG","IBKAOR"];
+export const varlingskoder: string[] = ["ERKONK", "EROPPH", "ERVIRK", "IBARBG","IBKAOR", "", ""];
 
 export const prosent: string[] = ["10","20","30","80","100"];
 
@@ -125,5 +125,5 @@ const genererMockingAvArbeidsForhold = (antall: number): Arbeidsforhold[] => {
 };
 
 export const AaregMockObjekt: ObjektFraAAregisteret =  {...tomResponsFraAareg,
-    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(1000)
+    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(80)
 };
