@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent} from 'react';
 import KolonnerFullSkjerm from './Kolonner/Kolonner';
 
 import './TabellMineAnsatte.less';
@@ -7,6 +7,7 @@ import { KolonneState } from '../MineAnsatte';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { Link } from 'react-router-dom';
 import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
+import VarslingPopover from './VarslingPopover/VarslingPopover';
 
 interface Props {
     className?: string;
@@ -53,7 +54,13 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
                 <td className={'td'}>{arbeidsforhold.stillingsprosent}</td>
                 <td className={'td'}>{arbeidsforhold.yrke}</td>
                 <td className={'td'}>{arbeidsforhold.permisjonPermitteringsprosent}</td>
-                <td className={'td'}>{arbeidsforhold.varslingskode}</td>
+                <td className={'td'}>
+                    {arbeidsforhold.varslingskode && arbeidsforhold.varslingskodeForklaring &&
+                    <div>
+             <VarslingPopover  tekst={arbeidsforhold.varslingskodeForklaring}/>
+                    </div>
+                    }
+                </td>
             </tr>
         );
     });

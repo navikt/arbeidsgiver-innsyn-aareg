@@ -90,7 +90,7 @@ const OrganisasjonerResponse = {
             yrkesbeskrivelse: 'SYKEPLEIER'
         },
         {
-            varslingskodeForklaring: null,
+            varslingskodeForklaring: "Maskinell sluttdato: Opphørt i Enhetsregisteret",
             ansattFom: '2017-12-01',
             ansattTom: null,
             arbeidsgiver: {
@@ -111,7 +111,7 @@ const OrganisasjonerResponse = {
             sistBekreftet: '2019-12-06T10:46:40',
             stillingsprosent: "60",
             type: 'ordinaertArbeidsforhold',
-            varslingskode: null,
+            varslingskode: "EROPPH",
             yrke: '3231109',
             yrkesbeskrivelse: 'SYKEPLEIER'
         },
