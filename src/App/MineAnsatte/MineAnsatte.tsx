@@ -21,6 +21,8 @@ import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import ExcelEksport from './ExcelEksport/ExcelEksport';
 import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import amplitude from 'amplitude-js';
+
 
 export enum SorteringsAttributt {
     NAVN,
@@ -82,7 +84,11 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             props.valgtOrganisasjon.OrganizationNumber !== '' &&
             props.valgtOrganisasjon.ParentOrganizationNumber !== ''
         ) {
-            hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
+            hentogSettArbeidsforhold().then(responsAareg => {
+                setListeFraAareg(responsAareg.arbeidsforholdoversikter)
+                amplitude.logEvent("arbeidsforholdsoversikter hentet, antall: ", responsAareg.arbeidsforholdoversikter.length);
+            }
+            );
         }
     }, [props.valgtOrganisasjon]);
 
