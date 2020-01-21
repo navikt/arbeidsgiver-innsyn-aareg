@@ -7015,10 +7015,10 @@ nav-frontend-js-utils@^1.0.8:
   resolved "https://registry.yarnpkg.com/nav-frontend-js-utils/-/nav-frontend-js-utils-1.0.8.tgz#1c1ecec8d90b125157097b22b227ef0b53045432"
   integrity sha512-GFDedxAONjvcrkdtq9mz2r+Im7KkWXcgrhh9HtGIUTR5By7n33SBAk0SdfnLt18Q3HWEbnsa/jOWHDRHrQE7Zg==
 
-nav-frontend-knapper-style@^0.3.32:
-  version "0.3.32"
-  resolved "https://registry.yarnpkg.com/nav-frontend-knapper-style/-/nav-frontend-knapper-style-0.3.32.tgz#7f6b1bf1b413199e0518fd3682b38dbd41478598"
-  integrity sha512-ezaB1PiFXRKts3h7uo2xIFEEU48n9dWgENFaFG08Fgr2Y7PdUVxbomj+XdiCQx0kkpIYpDAYn1QO5FiEfQ9+4g==
+nav-frontend-knapper-style@^0.3.34:
+  version "0.3.34"
+  resolved "https://registry.yarnpkg.com/nav-frontend-knapper-style/-/nav-frontend-knapper-style-0.3.34.tgz#a25adfd375937cd751fd9ad73bba67258f5eaed3"
+  integrity sha512-J2mdeQyL8uRGLmT5+vbAtUDkeVX12w56+R1YN01CgDfiiY2bc08yE8yjV+JEdMdKYBLpTTpVomiPVUnibG487Q==
 
 nav-frontend-knapper@^1.0.37:
   version "1.0.37"
@@ -7084,6 +7084,16 @@ nav-frontend-tabs@^0.0.36:
   version "0.0.36"
   resolved "https://registry.yarnpkg.com/nav-frontend-tabs/-/nav-frontend-tabs-0.0.36.tgz#0229935d75b13722c40ff69bcb4ebe3fc121cbcd"
   integrity sha512-7UPCsi5N2o8X5T5szQLMBUlyaWMlGBuktK0OzzGRacuuhqb+1eRW4z5DIG7TamWE4RvRO/xBwRkImZrf8GOj7w==
+
+nav-frontend-toggle-style@^0.0.30:
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/nav-frontend-toggle-style/-/nav-frontend-toggle-style-0.0.30.tgz#d37e8186d35f610dc2dfc9ee1b216a3f9f32e756"
+  integrity sha512-GjVWmOl7hbBwi9mIzg/HCn2pdE4SpkNP0FkblbseNQFjC85ghw0h3vdmBTuhGx+n6HagqsV60ULMl4graKzQsw==
+
+nav-frontend-toggle@^0.0.32:
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/nav-frontend-toggle/-/nav-frontend-toggle-0.0.32.tgz#fd24555fbe05eaed75a10a28be1d48064f343b2f"
+  integrity sha512-u1UfRej0TZBN5NWAkP0npkJewyGXWTllQWE7cmvko4PyHkJNbdfJPzLRQNxSw7V1adPdCQvi+A9gH61Ri7zE+w==
 
 nav-frontend-typografi-style@^1.0.18:
   version "1.0.18"
