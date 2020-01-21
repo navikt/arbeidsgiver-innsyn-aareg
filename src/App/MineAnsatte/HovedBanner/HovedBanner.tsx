@@ -20,7 +20,7 @@ const Banner: FunctionComponent<Props> = props => {
     };
 
     return (
-        <div className={"hovebanner"}>
+        <div className={"hovebanner"} >
         <Bedriftsmeny
             sidetittel="Arbeidsforhold"
             organisasjonstre={props.organisasjonstre}
