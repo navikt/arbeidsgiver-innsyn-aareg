@@ -168,7 +168,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
 
     return (
         <div className={"bakgrunnsside"}>
-            <Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>Min side – arbeidsgiver</Lenke>
+            <Normaltekst><Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>Min side – arbeidsgiver</Lenke> /arbeidsforhold /</Normaltekst>
         <div className={'mine-ansatte'}>
             <div className={'mine-ansatte__header'}>
                 <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
@@ -213,6 +213,12 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 settValgtArbeidsgiver={props.setValgtArbeidstaker}
                 valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
             />
+            {antallSider > 1 && <SideBytter
+                className={'nedre-sidebytter'}
+                byttSide={setIndeksOgGenererListe}
+                antallSider={antallSider}
+                naVarendeSidetall={naVarendeSidetall}
+            />}
         </div>
             </div>
     );
