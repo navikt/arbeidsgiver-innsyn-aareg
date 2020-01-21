@@ -24,6 +24,7 @@ import ExcelEksport from './ExcelEksport/ExcelEksport';
 import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
 import {ToggleKnappPureProps} from 'nav-frontend-toggle';
 import Filtervalg from "./Filtervalg/Filtervalg";
+import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 
 export enum SorteringsAttributt {
     NAVN,
@@ -31,7 +32,9 @@ export enum SorteringsAttributt {
     YRKE,
     STARTDATO,
     SLUTTDATO,
-    VARSEL
+    VARSEL,
+    PERMITTERINGSPROSENT,
+    STILLINGSPROSENT
 }
 
 export declare interface MineAnsatteProps {
@@ -176,6 +179,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 />
             </div>
             <Normaltekst>Arbeidsforhold</Normaltekst>
+            <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Hvis du finner feil i oversikten skal disse rapporteres inn via A-meldingen. </AlertStripeInfo>
             <div className={'mine-ansatte__sok-og-filter'}>
                 { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={filtreringValgt} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)} setfiltrerPaVarsler={() => setErFiltrertPaVarsler(!erFiltrertPaVarsler)}/>
           }
