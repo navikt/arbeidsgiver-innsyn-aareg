@@ -44,12 +44,12 @@ const sorterBasertPaNavn = (arbeidsforhold: Arbeidsforhold[]) => {
 const sorterBasertPaProsent = (arbeidsforhold: Arbeidsforhold[], sorterPaStillingsprosent: boolean, sorterPaPermisjonsprosent: boolean) => {
     const sortert = arbeidsforhold.sort((a, b) => {
         if (sorterPaStillingsprosent) {
-            if (a.stillingsprosent > b.stillingsprosent) {
+            if (Number(a.stillingsprosent) > Number(b.stillingsprosent)) {
                 return 1;
             } else return -1;
         }
         if (sorterPaPermisjonsprosent) {
-            if (a.permisjonPermitteringsprosent > b.permisjonPermitteringsprosent) {
+            if (Number(a.permisjonPermitteringsprosent )> Number(b.permisjonPermitteringsprosent)) {
                 return 1;
             } else return -1;
         }
