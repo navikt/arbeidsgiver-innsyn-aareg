@@ -20,7 +20,6 @@ interface Props {
 }
 
 const TabellMineAnsatte: FunctionComponent<Props> = props => {
-
     function oppdaterValgtArbeidsgiver(fnr: string, navn: string) {
         const fnrSomheltall: number = parseInt(fnr);
         props.settValgtArbeidsgiver({ fnr: fnrSomheltall, navn: navn });
@@ -50,9 +49,11 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
                     </div>
                 </td>
                 <td className={'td'}>{arbeidsforhold.arbeidstaker.offentligIdent}</td>
-                <td className={'td'}>{arbeidsforhold.yrke}</td>
                 <td className={'td'}>{arbeidsforhold.ansattFom}</td>
                 <td className={'td'}>{arbeidsforhold.ansattTom}</td>
+                <td className={'td'}>{arbeidsforhold.stillingsprosent}</td>
+                <td className={'td'}>{arbeidsforhold.yrke}</td>
+                <td className={'td'}>{arbeidsforhold.permisjonPermitteringsprosent}</td>
                 <td className={'td'}>
                     {arbeidsforhold.varslingskode && arbeidsforhold.varslingskodeForklaring &&
                     <div>

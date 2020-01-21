@@ -26,12 +26,6 @@ const KolonnerFullSkjerm: FunctionComponent<Props> = props => {
                 />
                 <Kolonne
                     setNavarendeKolonne={props.setNavarendeKolonne}
-                    label={'Yrke'}
-                    attributt={SorteringsAttributt.YRKE}
-                    navarendeKolonne={props.navarendeKolonne}
-                />
-                <Kolonne
-                    setNavarendeKolonne={props.setNavarendeKolonne}
                     label={'Startdato'}
                     attributt={SorteringsAttributt.STARTDATO}
                     navarendeKolonne={props.navarendeKolonne}
@@ -40,6 +34,24 @@ const KolonnerFullSkjerm: FunctionComponent<Props> = props => {
                     setNavarendeKolonne={props.setNavarendeKolonne}
                     label={'Sluttdato'}
                     attributt={SorteringsAttributt.SLUTTDATO}
+                    navarendeKolonne={props.navarendeKolonne}
+                />
+                <Kolonne
+                    setNavarendeKolonne={props.setNavarendeKolonne}
+                    label={'Stilling %'}
+                    attributt={SorteringsAttributt.STILLINGSPROSENT}
+                    navarendeKolonne={props.navarendeKolonne}
+                />
+                <Kolonne
+                    setNavarendeKolonne={props.setNavarendeKolonne}
+                    label={'Yrke'}
+                    attributt={SorteringsAttributt.YRKE}
+                    navarendeKolonne={props.navarendeKolonne}
+                />
+                <Kolonne
+                    setNavarendeKolonne={props.setNavarendeKolonne}
+                    label={'Perm- %'}
+                    attributt={SorteringsAttributt.PERMITTERINGSPROSENT}
                     navarendeKolonne={props.navarendeKolonne}
                 />
                 <Kolonne

@@ -31,9 +31,9 @@ const OrganisasjonerResponse = {
             opplysningspliktig: {
                 type: 'Organisasjon'
             },
-            permisjonPermitteringsprosent: null,
+            permisjonPermitteringsprosent: "20",
             sistBekreftet: '2019-12-06T10:46:25',
-            stillingsprosent: '100',
+            stillingsprosent: "100",
             type: 'ordinaertArbeidsforhold',
             varslingskode: 'ERKONK',
             yrke: '3231109',
@@ -55,9 +55,9 @@ const OrganisasjonerResponse = {
             opplysningspliktig: {
                 type: 'Organisasjon'
             },
-            permisjonPermitteringsprosent: null,
+            permisjonPermitteringsprosent: "10",
             sistBekreftet: '2019-12-06T10:46:32',
-            stillingsprosent: '100',
+            stillingsprosent: "50",
             type: 'ordinaertArbeidsforhold',
             varslingskode: null,
             yrke: '3231109',
@@ -81,9 +81,9 @@ const OrganisasjonerResponse = {
             opplysningspliktig: {
                 type: 'Organisasjon'
             },
-            permisjonPermitteringsprosent: null,
+            permisjonPermitteringsprosent: "40",
             sistBekreftet: '2019-12-06T10:46:50',
-            stillingsprosent: '100',
+            stillingsprosent: "100",
             type: 'ordinaertArbeidsforhold',
             varslingskode: null,
             yrke: '3231109',
@@ -107,9 +107,9 @@ const OrganisasjonerResponse = {
             opplysningspliktig: {
                 type: 'Organisasjon'
             },
-            permisjonPermitteringsprosent: null,
+            permisjonPermitteringsprosent: "10",
             sistBekreftet: '2019-12-06T10:46:40',
-            stillingsprosent: '100',
+            stillingsprosent: "60",
             type: 'ordinaertArbeidsforhold',
             varslingskode: "EROPPH",
             yrke: '3231109',
@@ -133,9 +133,9 @@ const OrganisasjonerResponse = {
             opplysningspliktig: {
                 type: 'Organisasjon'
             },
-            permisjonPermitteringsprosent: null,
+            permisjonPermitteringsprosent: "0",
             sistBekreftet: '2019-12-03T10:57:36',
-            stillingsprosent: '100',
+            stillingsprosent: "100",
             type: 'ordinaertArbeidsforhold',
             varslingskode: null,
             yrke: '3431129',

@@ -1,10 +1,13 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, {FunctionComponent, SyntheticEvent, useEffect, useState} from 'react';
 import './MineAnsatte.less';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
-import { filtrerAktiveOgAvsluttede, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
+import {
+    filtrerAktiveOgAvsluttede,
+    sorterArbeidsforhold, tellAntallAktiveOgInaktiveArbeidsforhold
+} from './sorteringOgFiltreringsFunksjoner';
 
 import {
     regnUtantallSider,
@@ -14,12 +17,13 @@ import {
 import { ObjektFraAAregisteret } from '../Objekter/ObjektFraAAreg';
 import Sokefelt from './Sokefelt/Sokefelt';
 import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
-import NedtrekksMenyForFiltrering from './NedtrekksMenyForFiltrering/NedtrekksMenyForFiltrering';
 import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import ExcelEksport from './ExcelEksport/ExcelEksport';
 import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
+import {ToggleKnappPureProps} from 'nav-frontend-toggle';
+import Filtervalg from "./Filtervalg/Filtervalg";
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 
 export enum SorteringsAttributt {
@@ -28,7 +32,9 @@ export enum SorteringsAttributt {
     YRKE,
     STARTDATO,
     SLUTTDATO,
-    VARSEL
+    VARSEL,
+    PERMITTERINGSPROSENT,
+    STILLINGSPROSENT
 }
 
 export declare interface MineAnsatteProps {
@@ -53,17 +59,37 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         reversSortering: false
     };
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
-    const [filterState, setFilterState] = useState('visAlle');
+    const [filterState, setFilterState] = useState('Alle');
     const [soketekst, setSoketekst] = useState('');
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
+    const [erFiltrertPaVarsler, setErFiltrertPaVarsler] = useState(false);
     const arbeidsforholdPerSide = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
         setnaVarendeSidetall(indeks);
     };
+    const filtreringValgt = (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]) => {
+        toggles.forEach(toggle => {
+            if (toggle.pressed === true && toggle.children) {
+                const includesString: boolean = true;
+                switch (includesString) {
+                    case (toggle.children.toString().startsWith("Alle")):
+                        setFilterState("Alle");
+                        break;
+                    case (toggle.children.toString().startsWith("Aktive")):
+                        setFilterState("Aktive");
+                        break;
+                    case (toggle.children.toString().startsWith("Avsluttede")):
+                        setFilterState("Avsluttede");
+                        break;
+                    default:
+                        break;
+                }
+                ;
 
-    const filtreringValgt = (value: any, event: any) => {
-        setFilterState(value);
+            }
+            ;
+        })
     };
 
     const onSoketekstChange = (soketekst: string) => {
@@ -82,7 +108,11 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             props.valgtOrganisasjon.OrganizationNumber !== '' &&
             props.valgtOrganisasjon.ParentOrganizationNumber !== ''
         ) {
-            hentogSettArbeidsforhold().then(responsAareg => setListeFraAareg(responsAareg.arbeidsforholdoversikter));
+            hentogSettArbeidsforhold().then(responsAareg => {
+                setListeFraAareg(responsAareg.arbeidsforholdoversikter);
+
+
+            });
         }
     }, [props.valgtOrganisasjon]);
 
@@ -99,8 +129,8 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         if (navarendeKolonne.reversSortering) {
             sortertListe = sortertListe.reverse();
         }
-        if (filterState !== 'visAlle') {
-            const visAktive = filterState === 'aktive';
+        if (filterState !== 'Alle') {
+            const visAktive = filterState === 'Aktive';
             sortertListe = filtrerAktiveOgAvsluttede(sortertListe, visAktive);
         }
         setAntallSider(regnUtantallSider(arbeidsforholdPerSide, sortertListe.length));
@@ -120,8 +150,21 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [listeMedArbeidsForhold, naVarendeSidetall, navarendeKolonne, filterState, antallSider]);
 
     useEffect(() => {
+        const filtrertPaVarsler = listeFraAareg.filter(forhold => {
+                if (forhold.varslingskode && erFiltrertPaVarsler ) {
+                    if (forhold.varslingskode.length) {
+                        return forhold
+                    }
+                }
+                if (!erFiltrertPaVarsler) {
+                    return forhold
+                }
+                return null
+            }
+        );
+        setListeMedArbeidsForhold(filtrertPaVarsler);
         setnaVarendeSidetall(1);
-    }, [navarendeKolonne, soketekst]);
+    }, [erFiltrertPaVarsler,listeFraAareg]);
 
     return (
         <div className={'mine-ansatte'}>
@@ -135,23 +178,24 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     orgnrBedrift={props.valgtOrganisasjon.OrganizationNumber}
                 />
             </div>
+            <Normaltekst>Arbeidsforhold</Normaltekst>
             <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Hvis du finner feil i oversikten skal disse rapporteres inn via A-meldingen. </AlertStripeInfo>
             <div className={'mine-ansatte__sok-og-filter'}>
-                <NedtrekksMenyForFiltrering onFiltrering={filtreringValgt} />
+                { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={filtreringValgt} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)} setfiltrerPaVarsler={() => setErFiltrertPaVarsler(!erFiltrertPaVarsler)}/>
+          }
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
             </div>
             <div className={'mine-ansatte__topp'}>
                 <div tabIndex={0} className={'mine-ansatte__antall-forhold'}>
                     <Normaltekst>{listeMedArbeidsForhold.length} arbeidsforhold</Normaltekst>
                 </div>
-                <SideBytter
+                {antallSider > 1 && <SideBytter
                     className={'sidebytter'}
                     byttSide={setIndeksOgGenererListe}
                     antallSider={antallSider}
                     naVarendeSidetall={naVarendeSidetall}
-                />
+                />}
             </div>
-
             <TabellMineAnsatte
                 className={'mine-ansatte__table'}
                 listeMedArbeidsForhold={ansattForholdPaSiden}
