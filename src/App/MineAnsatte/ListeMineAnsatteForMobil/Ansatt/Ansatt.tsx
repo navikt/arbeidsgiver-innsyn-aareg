@@ -55,6 +55,8 @@ const Ansatt: FunctionComponent<Props> = props => {
                 <AttributtVisning attributt="Yrke" attributtVerdi={props.yrke} />
                 <AttributtVisning attributt="Startet" attributtVerdi={props.fom} />
                 <AttributtVisning attributt="Slutter" attributtVerdi={props.tom} />
+                <AttributtVisning attributt="Yrke" attributtVerdi={props.yrke} />
+                <AttributtVisning attributt="Permitteringsprosent" attributtVerdi={props.yrke} />
                 <AttributtVisning attributt="Varsling" attributtVerdi="9" />
             </ul>
         </li>
