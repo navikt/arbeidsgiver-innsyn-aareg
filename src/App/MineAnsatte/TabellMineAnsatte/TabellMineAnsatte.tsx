@@ -21,7 +21,7 @@ interface Props {
 }
 
 const TabellMineAnsatte: FunctionComponent<Props> = props => {
-    const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
+
     function oppdaterValgtArbeidsgiver(fnr: string, navn: string) {
         const fnrSomheltall: number = parseInt(fnr);
         props.settValgtArbeidsgiver({ fnr: fnrSomheltall, navn: navn });
@@ -57,11 +57,7 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
                 <td className={'td'}>
                     {arbeidsforhold.varslingskode && arbeidsforhold.varslingskodeForklaring &&
                     <div>
-                        <img src={varselikon} alt="Varsel om maskinell sluttdato" onMouseEnter={(e: any) => setAnker(e.currentTarget)}
-                             onMouseLeave={(e: any) => setAnker(undefined)}/>
-                        <Popover ankerEl={anker}>
-                            <p style={{padding: '1rem'}}>{arbeidsforhold.varslingskodeForklaring}</p>
-                        </Popover>
+             <VarslingPopover  tekst={arbeidsforhold.varslingskodeForklaring}/>
                     </div>
                     }
                 </td>
