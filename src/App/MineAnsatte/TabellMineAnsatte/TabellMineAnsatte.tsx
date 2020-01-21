@@ -54,9 +54,7 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
                 <td className={'td'}>{arbeidsforhold.ansattTom}</td>
                 <td className={'td'}>{arbeidsforhold.stillingsprosent}</td>
                 <td className={'td'}>
-                    <div>
                         <YrkesbeskrivelsePopover className={"yrkesbeskrivelse"}  tekst={arbeidsforhold.yrke}/>
-                    </div>
                 </td>
                 <td className={'td'}>{arbeidsforhold.permisjonPermitteringsprosent}</td>
                 <td className={'td'}>
