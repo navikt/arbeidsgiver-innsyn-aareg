@@ -15,9 +15,9 @@ export interface Arbeidsforhold {
     opplysningspliktig: {
         type: string;
     };
-    permisjonPermitteringsprosent: string;
+    permisjonPermitteringsprosent: number;
     sistBekreftet: string;
-    stillingsprosent: string;
+    stillingsprosent: number;
     type: string;
     varslingskode?: string;
     yrke: string;

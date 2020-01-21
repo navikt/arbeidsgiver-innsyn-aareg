@@ -28,7 +28,9 @@ export enum SorteringsAttributt {
     YRKE,
     STARTDATO,
     SLUTTDATO,
-    VARSEL
+    VARSEL,
+    PERMITTERINGSPROSENT,
+    STILLINGSPROSENT
 }
 
 export declare interface MineAnsatteProps {
