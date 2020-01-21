@@ -24,6 +24,7 @@ const ListeMedAnsatteForMobil: FunctionComponent<Props> = (props:Props) => {
             settValgtArbeidsgiver={props.settValgtArbeidsgiver}
             valgtBedrift={props.valgtBedrift}
             arbeidsforhold={forhold}
+            varselBeskrivelse={forhold.varslingskodeForklaring}
         />
     ));
     return <ul className={props.className}> {rader} </ul>;

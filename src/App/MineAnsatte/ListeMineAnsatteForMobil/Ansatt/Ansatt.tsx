@@ -16,6 +16,7 @@ interface Props {
     arbeidsforhold:Arbeidsforhold
     settValgtArbeidsgiver: (valgtArbeidstaker: Arbeidstaker) => void;
     valgtBedrift: string;
+    varselBeskrivelse: string|undefined;
 }
 
 const Ansatt: FunctionComponent<Props> = props => {
@@ -55,7 +56,9 @@ const Ansatt: FunctionComponent<Props> = props => {
                 <AttributtVisning attributt="Yrke" attributtVerdi={props.yrke} />
                 <AttributtVisning attributt="Startet" attributtVerdi={props.fom} />
                 <AttributtVisning attributt="Slutter" attributtVerdi={props.tom} />
-                <AttributtVisning attributt="Varsling" attributtVerdi="9" />
+                {props.varselBeskrivelse &&
+                <AttributtVisning attributt="Varsling" attributtVerdi={props.varselBeskrivelse}/>
+                }
             </ul>
         </li>
     );
