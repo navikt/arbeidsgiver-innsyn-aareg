@@ -38,7 +38,7 @@ const KolonnerFullSkjerm: FunctionComponent<Props> = props => {
                 />
                 <Kolonne
                     setNavarendeKolonne={props.setNavarendeKolonne}
-                    label={'Stillingsprosent %'}
+                    label={'Stilling %'}
                     attributt={SorteringsAttributt.STILLINGSPROSENT}
                     navarendeKolonne={props.navarendeKolonne}
                 />
