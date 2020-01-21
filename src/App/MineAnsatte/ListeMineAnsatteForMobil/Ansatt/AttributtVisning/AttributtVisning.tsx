@@ -4,7 +4,7 @@ import './AttributtVisning.less';
 interface Props {
     className?: string;
     attributt: string;
-    attributtVerdi: string;
+    attributtVerdi: any;
 }
 
 const AttributtVisning: FunctionComponent<Props> = props => {
