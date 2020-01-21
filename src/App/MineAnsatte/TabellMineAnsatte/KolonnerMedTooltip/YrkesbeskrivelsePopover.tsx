@@ -1,4 +1,4 @@
-import Popover from 'nav-frontend-popover';
+import Popover, {PopoverOrientering} from 'nav-frontend-popover';
 import React, {FunctionComponent, useState} from 'react';
 import {Normaltekst} from "nav-frontend-typografi";
 
@@ -14,8 +14,8 @@ const YrkesbeskrivelsePopover: FunctionComponent<PopoverProps> = (props:PopoverP
         <div>
             <Normaltekst className={props.className} onMouseEnter={(e: any) => setAnker(e.currentTarget)}
                  onMouseLeave={(e: any) => setAnker(undefined)}>{props.tekst}</Normaltekst>
-            <Popover ankerEl={anker}>
-                <p style={{padding: '1rem'}}>{props.tekst}</p>
+            <Popover ankerEl={anker} orientering={PopoverOrientering.Over}>
+                <p  style={{padding: '1rem'}} >{props.tekst} </p>
             </Popover>
         </div>
     );
