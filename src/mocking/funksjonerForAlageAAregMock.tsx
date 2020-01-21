@@ -13,7 +13,7 @@ export const fodselsNr: string []= ["04015226825","15119702590","30067234940","2
 
 export const varlingskoder: string[] = ["ERKONK", "EROPPH", "ERVIRK", "IBARBG","IBKAOR"];
 
-export const prosent: number[] = [10,20,30,80,100];
+export const prosent: string[] = ["10","20","30","80","100"];
 
 const tomtArbeidsForhold: Arbeidsforhold = {
   ansattFom: '',
@@ -32,9 +32,9 @@ const tomtArbeidsForhold: Arbeidsforhold = {
   opplysningspliktig: {
     type: '',
   },
-  permisjonPermitteringsprosent: 100,
+  permisjonPermitteringsprosent: "100",
   sistBekreftet: '',
-  stillingsprosent: 100,
+  stillingsprosent: "100",
   type: '',
   varslingskode: '',
   yrke: '',
@@ -53,7 +53,7 @@ const setNavn = (): string => {
   return(listeMedFornavn[indeksFornavn] + " " + listeMedEtterNavn[indeksEtternavn]);
 };
 
-const setProsent = (): number => {
+const setProsent = (): string => {
   const indeks = genererRandomIndex(prosent.length);
   return prosent[indeks];
 };
