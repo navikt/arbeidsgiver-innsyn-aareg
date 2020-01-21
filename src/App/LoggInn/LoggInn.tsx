@@ -31,7 +31,7 @@ const LoggInn: FunctionComponent = () => {
                         <Sidetittel className={'innloggingsside__sidetittel'}>
                            Innsyn i Aa-registeret
                         </Sidetittel>
-                        <Ingress >Se alle arbeidsforhold du som arbeidsgiver rapporert inn via A-medlingen </Ingress>
+                        <Ingress >Oversikt over alle arbeidsforhold rapportert inn via A-meldingen. </Ingress>
                        <div className={'innloggingsside__margintop'} >
                         <TilgangsStyringInfoTekst />
                        </div>
