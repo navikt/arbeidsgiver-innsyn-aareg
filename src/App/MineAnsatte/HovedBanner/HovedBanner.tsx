@@ -20,12 +20,14 @@ const Banner: FunctionComponent<Props> = props => {
     };
 
     return (
+        <div className={"hovebanner"}>
         <Bedriftsmeny
             sidetittel="Arbeidsforhold"
             organisasjonstre={props.organisasjonstre}
             onOrganisasjonChange={onOrganisasjonChange}
             history={history}
         />
+        </div>
     );
 };
 
