@@ -7,8 +7,8 @@ import { KolonneState } from '../MineAnsatte';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { Link } from 'react-router-dom';
 import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
-import VarslingPopover from './VarslingPopover/VarslingPopover';
-import {Normaltekst} from "nav-frontend-typografi";
+import VarslingPopover from './KolonnerMedTooltip/VarslingPopover';
+import YrkesbeskrivelsePopover from "./KolonnerMedTooltip/YrkesbeskrivelsePopover";
 
 interface Props {
     className?: string;
@@ -53,7 +53,11 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
                 <td className={'td'}>{arbeidsforhold.ansattFom}</td>
                 <td className={'td'}>{arbeidsforhold.ansattTom}</td>
                 <td className={'td'}>{arbeidsforhold.stillingsprosent}</td>
-                <td className={'td'}>{<Normaltekst className={"yrkesbeskrivelse"}>{arbeidsforhold.yrke}</Normaltekst>}</td>
+                <td className={'td'}>
+                    <div>
+                        <YrkesbeskrivelsePopover className={"yrkesbeskrivelse"}  tekst={arbeidsforhold.yrke}/>
+                    </div>
+                </td>
                 <td className={'td'}>{arbeidsforhold.permisjonPermitteringsprosent}</td>
                 <td className={'td'}>
                     {arbeidsforhold.varslingskode && arbeidsforhold.varslingskodeForklaring &&
