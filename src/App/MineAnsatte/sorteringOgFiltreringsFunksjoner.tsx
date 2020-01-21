@@ -41,6 +41,25 @@ const sorterBasertPaNavn = (arbeidsforhold: Arbeidsforhold[]) => {
     return sortert;
 };
 
+const sorterBasertPaProsent = (arbeidsforhold: Arbeidsforhold[], sorterPaStillingsprosent: boolean, sorterPaPermisjonsprosent: boolean) => {
+    const sortert = arbeidsforhold.sort((a, b) => {
+        if (sorterPaStillingsprosent) {
+            if (Number(a.stillingsprosent) > Number(b.stillingsprosent)) {
+                return 1;
+            } else return -1;
+        }
+        if (sorterPaPermisjonsprosent) {
+            if (Number(a.permisjonPermitteringsprosent )> Number(b.permisjonPermitteringsprosent)) {
+                return 1;
+            } else return -1;
+        }
+        else{
+            return 1
+        }
+    });
+    return sortert;
+};
+
 const sorterBasertPaKode = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
         if(!a.varslingskode) {
@@ -91,7 +110,10 @@ export const sorterArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], atributt:
             return sorterBasertPaYrke(arbeidsforhold);
         case SorteringsAttributt.VARSEL:
             return sorterBasertPaKode(arbeidsforhold);
-
+        case SorteringsAttributt.PERMITTERINGSPROSENT:
+            return sorterBasertPaProsent(arbeidsforhold,false,true);
+        case SorteringsAttributt.STILLINGSPROSENT:
+            return sorterBasertPaProsent(arbeidsforhold,true,false);
         default:
             return arbeidsforhold;
     }
