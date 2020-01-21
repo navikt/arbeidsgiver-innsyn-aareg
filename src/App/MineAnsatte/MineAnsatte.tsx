@@ -25,6 +25,8 @@ import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
 import {ToggleKnappPureProps} from 'nav-frontend-toggle';
 import Filtervalg from "./Filtervalg/Filtervalg";
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import Lenke from "nav-frontend-lenker";
+import {linkTilMinSideArbeidsgiver} from "../lenker";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -165,6 +167,8 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [erFiltrertPaVarsler,listeFraAareg]);
 
     return (
+        <div className={"bakgrunnsside"}>
+            <Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>Min side – arbeidsgiver</Lenke>
         <div className={'mine-ansatte'}>
             <div className={'mine-ansatte__header'}>
                 <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
@@ -210,6 +214,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
             />
         </div>
+            </div>
     );
 };
 
