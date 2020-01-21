@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent} from 'react';
 import KolonnerFullSkjerm from './Kolonner/Kolonner';
 
 import './TabellMineAnsatte.less';
@@ -8,8 +8,7 @@ import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { Link } from 'react-router-dom';
 import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
 import VarslingPopover from './VarslingPopover/VarslingPopover';
-import Popover from 'nav-frontend-popover';
-import varselikon from "./varselikon.svg";
+
 interface Props {
     className?: string;
     listeMedArbeidsForhold: Arbeidsforhold[];
