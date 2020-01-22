@@ -10,14 +10,15 @@ type PopoverProps = {
 
 const YrkesbeskrivelsePopover: FunctionComponent<PopoverProps> = (props:PopoverProps) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
-    const [skalVisePopover, setSkalVisePopover] = useState(false);
+    const [skalVisePopover, setSkalVisePopover] = useState(true);
     const maxBreddeAvKolonne = 160;
 
     useEffect(() => {
+        console.log("useEffect kallt");
         if (anker){
-            console.log(anker.offsetWidth, "Har hoyden", "sjekket høyde" );
-            if (anker.offsetWidth>=maxBreddeAvKolonne) {
-                setSkalVisePopover(true);}
+            console.log(anker.offsetWidth, "Har hoyden", "sjekket høyde", "referanse definert" );
+            if (anker.offsetWidth<maxBreddeAvKolonne) {
+                setSkalVisePopover(false);}
         }
         }, [anker]);
 
@@ -25,7 +26,7 @@ const YrkesbeskrivelsePopover: FunctionComponent<PopoverProps> = (props:PopoverP
 
         <div className={"yrkesbeskrivelse-container"}>
             <Normaltekst  className={props.className} onMouseEnter={(e: any) => {setAnker(e.currentTarget);
-            console.log(e.currentTarget, "anker")}}
+            }}
                  onMouseLeave={(e: any) => setAnker(undefined)}>{props.tekst}</Normaltekst>
             {skalVisePopover&&<Popover ankerEl={anker} orientering={PopoverOrientering.Over}>
                 <p  style={{padding: '1rem'}} >{props.tekst} </p>
