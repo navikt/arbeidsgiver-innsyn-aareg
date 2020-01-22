@@ -1,5 +1,5 @@
 import Popover, {PopoverOrientering} from 'nav-frontend-popover';
-import React, {FunctionComponent, useState} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import {Normaltekst} from "nav-frontend-typografi";
 
 type PopoverProps = {
@@ -10,15 +10,16 @@ type PopoverProps = {
 
 const YrkesbeskrivelsePopover: FunctionComponent<PopoverProps> = (props:PopoverProps) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
-    console.log(anker);
+    const [skalVisePopover, setSkalVisePopover] = useState(false);
+    const maxBreddeAvKolonne = 160;
 
-
-        const ref = React.createRef<HTMLDivElement>();
+    useEffect(() => {
         if (anker){
             console.log(anker.offsetWidth, "Har hoyden", "sjekket høyde" );
+            if (anker.offsetWidth>=maxBreddeAvKolonne) {
+                setSkalVisePopover(true);}
         }
-        console.log(ref, ref.current);
-
+        }, [anker]);
 
     return (
 
@@ -26,9 +27,9 @@ const YrkesbeskrivelsePopover: FunctionComponent<PopoverProps> = (props:PopoverP
             <Normaltekst  className={props.className} onMouseEnter={(e: any) => {setAnker(e.currentTarget);
             console.log(e.currentTarget, "anker")}}
                  onMouseLeave={(e: any) => setAnker(undefined)}>{props.tekst}</Normaltekst>
-            <Popover ankerEl={anker} orientering={PopoverOrientering.Over}>
+            {skalVisePopover&&<Popover ankerEl={anker} orientering={PopoverOrientering.Over}>
                 <p  style={{padding: '1rem'}} >{props.tekst} </p>
-            </Popover>
+            </Popover>}
         </div>
 
     );
