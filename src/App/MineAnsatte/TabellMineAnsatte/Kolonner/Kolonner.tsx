@@ -50,12 +50,6 @@ const KolonnerFullSkjerm: FunctionComponent<Props> = props => {
                 />
                 <Kolonne
                     setNavarendeKolonne={props.setNavarendeKolonne}
-                    label={'Perm- %'}
-                    attributt={SorteringsAttributt.PERMITTERINGSPROSENT}
-                    navarendeKolonne={props.navarendeKolonne}
-                />
-                <Kolonne
-                    setNavarendeKolonne={props.setNavarendeKolonne}
                     label={'Varsling'}
                     attributt={SorteringsAttributt.VARSEL}
                     navarendeKolonne={props.navarendeKolonne}
