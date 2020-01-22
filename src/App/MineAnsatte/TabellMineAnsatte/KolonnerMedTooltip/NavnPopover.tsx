@@ -4,15 +4,12 @@ import {Normaltekst} from "nav-frontend-typografi";
 import {Arbeidstaker} from "../../../Objekter/Arbeidstaker";
 import {Link} from "react-router-dom";
 import {Arbeidsforhold} from "../../../Objekter/ArbeidsForhold";
-import {Organisasjon} from "../../../Objekter/OrganisasjonFraAltinn";
 import './PopOverStyling.less';
 
 type PopoverProps = {
-    tekst: string
-    className?: string;
     settValgtArbeidsgiver: (valgtArbeidstaker: Arbeidstaker) => void;
     arbeidsforhold: Arbeidsforhold;
-    valgtBedrift: Organisasjon;
+    valgtBedrift: string;
 
 }
 
@@ -42,7 +39,7 @@ const NavnPopover: FunctionComponent<PopoverProps> = (props:PopoverProps) => {
                     )
                 }
             >
-                <Link className={"pop-over"}
+                <Link
                     to={
                         'enkeltarbeidsforhold/?bedrift=' +
                         props.valgtBedrift +
@@ -50,11 +47,11 @@ const NavnPopover: FunctionComponent<PopoverProps> = (props:PopoverProps) => {
                         props.arbeidsforhold.navArbeidsforholdId
                     }
                 >
-                    <Normaltekst  className={props.className} onMouseEnter={(e: any) => {setAnker(e.currentTarget);
+                    <Normaltekst className={"pop-over"} onMouseEnter={(e: any) => {setAnker(e.currentTarget);
                     }}
-                                  onMouseLeave={(e: any) => setAnker(undefined)}>{props.tekst}</Normaltekst>
-                    <Popover ankerEl={anker} orientering={PopoverOrientering.Over}>
-                        <p  style={{padding: '1rem'}} >{props.tekst} </p> </Popover>
+                                  onMouseLeave={(e: any) => setAnker(undefined)}>{props.arbeidsforhold.arbeidstaker.navn}</Normaltekst>
+                    { skalVisePopover && <Popover ankerEl={anker} orientering={PopoverOrientering.Over}>
+                        <p  style={{padding: '1rem'}} >{props.arbeidsforhold.arbeidstaker.navn} </p> </Popover>}
 
                 </Link>
             </div>

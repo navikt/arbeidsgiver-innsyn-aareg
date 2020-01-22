@@ -1,7 +1,7 @@
 import {Arbeidsforhold} from "../App/Objekter/ArbeidsForhold";
 import {ObjektFraAAregisteret, tomResponsFraAareg} from "../App/Objekter/ObjektFraAAreg";
 
-export const listeMedFornavn: string[]= ["Ingrid Alexandra", "Håkon", "Mette Marit", "Harald", "Sonja", "Olav","Lars Andreas", "Bendik", "Thomas", "Hanna", "Silje", "Anders", "Vera", "Jonathan", "Lilly", "Helene", "Tobias", "Gabriel", "Henriette", "Trude", "Gudrun", "Elina", "Kaia", "Knut", "Jenny", "Petter", "Martin", "Marie", "Herman", "Alfred", "Leif", "Inger", "Ivar", "Trond"];
+export const listeMedFornavn: string[]= ["AAAAAAAAAAAAAAAltfor langt navn","Ingrid Alexandra", "Håkon", "Mette Marit", "Harald", "Sonja", "Olav","Lars Andreas", "Bendik", "Thomas", "Hanna", "Silje", "Anders", "Vera", "Jonathan", "Lilly", "Helene", "Tobias", "Gabriel", "Henriette", "Trude", "Gudrun", "Elina", "Kaia", "Knut", "Jenny", "Petter", "Martin", "Marie", "Herman", "Alfred", "Leif", "Inger", "Ivar", "Trond"];
 
 export const listeMedEtterNavn: string[] = ["Murphy", "Behn", "Lengali", "Pedersen", "Blåklokke", "Rivehjern", "Olavsson", "Hammerseng", "Northug", "Rishovd", "Knutsen", "Ludvigsen", "Solberg", "Stoltenberg", "Støre", "Ibsen", "Munch", "Vang", "Nesbø", "Morgenstierne"];
 
