@@ -23,7 +23,7 @@ const YrkesbeskrivelsePopover: FunctionComponent<PopoverProps> = (props:PopoverP
 
     return (
 
-        <div>
+        <div className={"yrkesbeskrivelse-container"}>
             <Normaltekst  className={props.className} onMouseEnter={(e: any) => {setAnker(e.currentTarget);
             console.log(e.currentTarget, "anker")}}
                  onMouseLeave={(e: any) => setAnker(undefined)}>{props.tekst}</Normaltekst>
