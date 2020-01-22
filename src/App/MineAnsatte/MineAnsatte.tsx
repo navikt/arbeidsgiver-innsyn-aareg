@@ -25,6 +25,8 @@ import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
 import {ToggleKnappPureProps} from 'nav-frontend-toggle';
 import Filtervalg from "./Filtervalg/Filtervalg";
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import Lenke from "nav-frontend-lenker";
+import {linkTilMinSideArbeidsgiver} from "../lenker";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -110,8 +112,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         ) {
             hentogSettArbeidsforhold().then(responsAareg => {
                 setListeFraAareg(responsAareg.arbeidsforholdoversikter);
-
-
             });
         }
     }, [props.valgtOrganisasjon]);
@@ -167,6 +167,8 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [erFiltrertPaVarsler,listeFraAareg]);
 
     return (
+        <div className={"bakgrunnsside"}>
+            <Normaltekst><Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>Min side – arbeidsgiver</Lenke> /arbeidsforhold /</Normaltekst>
         <div className={'mine-ansatte'}>
             <div className={'mine-ansatte__header'}>
                 <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
@@ -178,9 +180,9 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     orgnrBedrift={props.valgtOrganisasjon.OrganizationNumber}
                 />
             </div>
-            <Normaltekst>Arbeidsforhold</Normaltekst>
             <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Hvis du finner feil i oversikten skal disse rapporteres inn via A-meldingen. </AlertStripeInfo>
             <div className={'mine-ansatte__sok-og-filter'}>
+                <Normaltekst>Arbeidsforhold</Normaltekst>
                 { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={filtreringValgt} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)} setfiltrerPaVarsler={() => setErFiltrertPaVarsler(!erFiltrertPaVarsler)}/>
           }
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
@@ -211,7 +213,14 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 settValgtArbeidsgiver={props.setValgtArbeidstaker}
                 valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
             />
+            {antallSider > 1 && <SideBytter
+                className={'nedre-sidebytter'}
+                byttSide={setIndeksOgGenererListe}
+                antallSider={antallSider}
+                naVarendeSidetall={naVarendeSidetall}
+            />}
         </div>
+            </div>
     );
 };
 
