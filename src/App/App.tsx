@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { basename } from './paths';
+import './App.less';
 import LoginBoundary from './LoggInnBoundary';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
 import { EnkeltArbeidsforhold } from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
@@ -33,7 +34,7 @@ const App: FunctionComponent = () => {
     }, []);
 
     return (
-        <div>
+        <div className={"app"}>
             <LoginBoundary>
                 <Router basename={basename}>
                     <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjonstre={organisasjonstre} />
