@@ -14,9 +14,7 @@ const YrkesbeskrivelsePopover: FunctionComponent<PopoverProps> = (props:PopoverP
     const maxBreddeAvKolonne = 160;
 
     useEffect(() => {
-        console.log("useEffect kallt");
         if (anker){
-            console.log(anker.offsetWidth, "Har hoyden", "sjekket høyde", "referanse definert" );
             if (anker.offsetWidth<maxBreddeAvKolonne) {
                 setSkalVisePopover(false);}
         }
