@@ -7,7 +7,7 @@ export const listeMedEtterNavn: string[] = ["Murphy", "Behn", "Lengali", "Peders
 
 export const datoer: string[] = ["1996-01-29", "1999-04-01", "1998-12-01", "1990-04-18", "1990-02-14", "1980-05-01", "2000-05-17", "1814-05-17","2020-04-29", "2021-08-13", "2024-12-17", "2020-01-28", "2021-02-15", "2025-05-01", "2020-12-24", "2020-03-03"];
 
-export const yrker: string[] = ["Systemutvikler", "Interasksjonsdesigner", "Sjåfør", "Togfører", "Billettkontrollør", "Kokk", "Au pair", "Tannlege", "Kirurg", "Psykolog", "Psykiater", "Redaktør", "Journalist", "Skribent", "Forfatter", "Ekspeditør", "Prsonalansvarlig", "Daglig leder", "Servitør", "Pianist", "Lektor", "Gymlærer", "Konsulent", "Produkteier", "Generalsekretær", "Arkitekt", "Slangetemmer", "Performer", "Torpedo"];
+export const yrker: string[] = ["aa dette er et langt yrkesnavn","Systemutvikler", "Interasksjonsdesigner", "Sjåfør", "Togfører", "Billettkontrollør", "Kokk", "Au pair", "Tannlege", "Kirurg", "Psykolog", "Psykiater", "Redaktør", "Journalist", "Skribent", "Forfatter", "Ekspeditør", "Prsonalansvarlig", "Daglig leder", "Servitør", "Pianist", "Lektor", "Gymlærer", "Konsulent", "Produkteier", "Generalsekretær", "Arkitekt", "Slangetemmer", "Performer", "Torpedo"];
 
 export const fodselsNr: string []= ["04015226825","15119702590","30067234940","22059007517","14039717019","08020285185","20106012971","20085624661","08024706711","26075014618","14117227856","03045013986","08114503186","19105737176","05037702090","14077541803","07106728814","28079345867","28077403517","23097011680","14109431703","03049219872","09037947773","21038137589","17123920384","06047414707","21123832989"];
 
