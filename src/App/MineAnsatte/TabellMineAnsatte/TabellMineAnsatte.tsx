@@ -53,7 +53,6 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
                 <td className={'td'}>{arbeidsforhold.ansattTom}</td>
                 <td className={'td'}>{arbeidsforhold.stillingsprosent}</td>
                 <td className={'td'}>{arbeidsforhold.yrke}</td>
-                <td className={'td'}>{arbeidsforhold.permisjonPermitteringsprosent}</td>
                 <td className={'td'}>
                     {arbeidsforhold.varslingskode && arbeidsforhold.varslingskodeForklaring &&
                     <div>
