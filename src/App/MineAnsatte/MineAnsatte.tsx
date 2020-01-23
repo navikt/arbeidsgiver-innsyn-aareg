@@ -6,8 +6,7 @@ import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatte
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import {
     byggListeBasertPaPArametere,
-    filtrerAktiveOgAvsluttede, filtrerPaVarsler,
-    sorterArbeidsforhold, tellAntallAktiveOgInaktiveArbeidsforhold
+    tellAntallAktiveOgInaktiveArbeidsforhold
 } from './sorteringOgFiltreringsFunksjoner';
 
 import {
@@ -17,7 +16,6 @@ import {
 } from './pagineringsFunksjoner';
 import { ObjektFraAAregisteret } from '../Objekter/ObjektFraAAreg';
 import Sokefelt from './Sokefelt/Sokefelt';
-import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
 import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
@@ -119,7 +117,8 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(listeFraAareg,navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler, soketekst);
-        setAnsattForholdPaSiden(regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,antallSider,oppdatertListe));
+        setAnsattForholdPaSiden(regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,regnUtantallSider(arbeidsforholdPerSide,oppdatertListe.length),oppdatertListe));
+        setAntallSider(regnUtantallSider(arbeidsforholdPerSide,oppdatertListe.length));
         setListeMedArbeidsForhold(oppdatertListe);
         visEllerSkjulChevroner(
             naVarendeSidetall,
@@ -127,7 +126,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             'sidebytter-chevron-venstre',
             'sidebytter-chevron-hoyre'
         );
-    }, [listeFraAareg, soketekst, naVarendeSidetall, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler ]);
+    }, [listeFraAareg, soketekst, naVarendeSidetall, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler, antallSider ]);
 
     return (
         <div className={"bakgrunnsside"}>
@@ -146,7 +145,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Hvis du finner feil i oversikten skal disse rapporteres inn via A-meldingen. </AlertStripeInfo>
             <div className={'mine-ansatte__sok-og-filter'}>
                 <Normaltekst>Arbeidsforhold</Normaltekst>
-                { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={filtreringValgt} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)} setfiltrerPaVarsler={() => setErFiltrertPaVarsler(!erFiltrertPaVarsler)}/>
+                { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={filtreringValgt} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)} setfiltrerPaVarsler={() => setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler)}/>
           }
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
             </div>

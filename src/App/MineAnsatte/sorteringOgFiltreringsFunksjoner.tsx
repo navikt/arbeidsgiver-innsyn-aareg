@@ -1,10 +1,9 @@
 import {KolonneState, SorteringsAttributt} from './MineAnsatte';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
-import {hentListeMedArbeidsforhold} from "@navikt/arbeidsforhold/dist/clients/apiClient";
 import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
 
-export const byggListeBasertPaPArametere = (originalListe: Arbeidsforhold[], naVarendeKolonne: KolonneState, skalFilteresPaAktiveAvsluttede: string, skalFiltrerePaVarsler: boolean, soketekst: string ) => {
-    let nyListe = filtrerAktiveOgAvsluttede(originalListe,skalFilteresPaAktiveAvsluttede);
+export const byggListeBasertPaPArametere = (originalListe: Arbeidsforhold[], naVarendeKolonne: KolonneState, filtrerPaAktiveAvsluttede: string, skalFiltrerePaVarsler: boolean, soketekst: string ) => {
+    let nyListe = filtrerAktiveOgAvsluttede(originalListe,filtrerPaAktiveAvsluttede);
     if (soketekst.length>0) {
         nyListe = byggArbeidsforholdSokeresultat(nyListe,soketekst);
     }
@@ -136,9 +135,9 @@ export const sorterArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], atributt:
     }
 };
 
-export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], sorterPa: string) => {
+export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], filtrerPa: string) => {
     const navarendeDato = new Date();
-    if (sorterPa === "Aktive") {
+    if (filtrerPa === "Aktive") {
         return arbeidsforhold.filter(forhold => {
             if(forhold.ansattTom) {
             const avslutningsdato = new Date(forhold.ansattTom);
@@ -146,7 +145,7 @@ export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], sort
             }else{return true}
         });
     }
-    if (sorterPa === "Avsluttede")
+    if (filtrerPa === "Avsluttede")
     return arbeidsforhold.filter(forhold => {
         if(forhold.ansattTom) {
         const avslutningsdato = new Date(forhold.ansattTom);
