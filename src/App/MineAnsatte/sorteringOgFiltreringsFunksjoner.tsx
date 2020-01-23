@@ -175,12 +175,12 @@ export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold:
 
 export const filtrerPaVarsler = (listeMedArbeidsforhold: Arbeidsforhold[], filtrerPaVarsler: boolean) => {
     const filtrertPaVarsler = listeMedArbeidsforhold.filter(forhold => {
-            if (forhold.varslingskode && filtrertPaVarsler) {
+            if (forhold.varslingskode && filtrerPaVarsler) {
                 if (forhold.varslingskode.length) {
                     return forhold
                 }
             }
-            if (!filtrertPaVarsler) {
+            if (!filtrerPaVarsler) {
                 return forhold
             }
             return null;
