@@ -20,31 +20,34 @@ const convertToDataset = (arbeidsforhold: Arbeidsforhold[]) => {
         const detteArbeidsforholdet: Array<string> = [];
         detteArbeidsforholdet.push(a.arbeidstaker.navn);
         detteArbeidsforholdet.push(a.arbeidstaker.offentligIdent);
-        detteArbeidsforholdet.push(a.yrke);
         detteArbeidsforholdet.push(a.ansattFom);
         detteArbeidsforholdet.push(a.ansattTom? a.ansattTom : "");
-        detteArbeidsforholdet.push(a.varslingskode? a.varslingskode : "");
-        detteArbeidsforholdet.push(a.varslingskodeForklaring? a.varslingskodeForklaring : "");
+        detteArbeidsforholdet.push(a.yrkesbeskrivelse + " (yrkeskode: " + a.yrke + ")");
+        detteArbeidsforholdet.push(a.stillingsprosent);
+        detteArbeidsforholdet.push(a.varslingskode? a.varslingskodeForklaring + " (varselkode: " + a.varslingskode+")" : "");
         arbeidsforholdDataset.push(detteArbeidsforholdet);
     });
     return arbeidsforholdDataset;
 };
 
 const kolonnerAktive = [
-    { title: 'Navn', width: { wch: 25 } }, //pixels width
-    { title: 'Fødselsnummer', width: { wch: 14 } }, //char width
-    { title: 'Yrke', width: { wch: 20 } },
+    { title: 'Navn', width: { wch: 25 } },
+    { title: 'Fødselsnummer', width: { wch: 14 } },
     { title: 'Startdato', width: { wch: 13 } },
     { title: 'Sluttdato', width: { wch: 13 } },
+    { title: 'Yrke', width: { wch: 35 } },
+    { title: 'Stilling %', width: { wch: 20 } },
+    { title: 'Varsel', width: { wch: 20 } },
 ];
 const kolonnerAvsluttede = [
-    { title: 'Navn', width: { wch: 25 } }, //pixels width
-    { title: 'Fødselsnummer', width: { wch: 14 } }, //char width
-    { title: 'Yrke', width: { wch: 20 } },
+    { title: 'Navn', width: { wch: 25 } },
+    { title: 'Fødselsnummer', width: { wch: 14 } },
     { title: 'Startdato', width: { wch: 13 } },
     { title: 'Sluttdato', width: { wch: 13 } },
-    { title: 'Varselkode', width: { wch: 13 } },
-    { title: 'Varsel beskrivelse', width: { wch: 25 } }
+    { title: 'Yrke', width: { wch: 35 } },
+    { title: 'Stilling %', width: { wch: 20 } },
+    { title: 'Varsel', width: { wch: 20 } },
+
 ];
 const infosideData = [
     {
