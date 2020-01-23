@@ -81,7 +81,6 @@ const OrganisasjonerResponse = {
             opplysningspliktig: {
                 type: 'Organisasjon'
             },
-            permisjonPermitteringsprosent: "40",
             sistBekreftet: '2019-12-06T10:46:50',
             stillingsprosent: "100",
             type: 'ordinaertArbeidsforhold',
@@ -107,7 +106,6 @@ const OrganisasjonerResponse = {
             opplysningspliktig: {
                 type: 'Organisasjon'
             },
-            permisjonPermitteringsprosent: "10",
             sistBekreftet: '2019-12-06T10:46:40',
             stillingsprosent: "60",
             type: 'ordinaertArbeidsforhold',

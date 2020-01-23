@@ -24,8 +24,7 @@ const convertToDataset = (arbeidsforhold: Arbeidsforhold[]) => {
         detteArbeidsforholdet.push(a.ansattTom? a.ansattTom : "");
         detteArbeidsforholdet.push(a.yrke);
         detteArbeidsforholdet.push(a.stillingsprosent);
-        detteArbeidsforholdet.push(a.varslingskode? a.varslingskode : "");
-        detteArbeidsforholdet.push(a.varslingskodeForklaring? a.varslingskodeForklaring : "");
+        detteArbeidsforholdet.push(a.varslingskode? a.varslingskodeForklaring + "(varselkode: " + a.varslingskode+")" : "");
         arbeidsforholdDataset.push(detteArbeidsforholdet);
     });
     return arbeidsforholdDataset;
@@ -38,8 +37,7 @@ const kolonnerAktive = [
     { title: 'Sluttdato', width: { wch: 13 } },
     { title: 'Yrke', width: { wch: 20 } },
     { title: 'Stilling %', width: { wch: 20 } },
-    { title: 'Varselkode', width: { wch: 13 } },
-    { title: 'Varsel beskrivelse', width: { wch: 25 } }
+    { title: 'Varsel', width: { wch: 13 } },
 ];
 const kolonnerAvsluttede = [
     { title: 'Navn', width: { wch: 25 } },
@@ -48,8 +46,8 @@ const kolonnerAvsluttede = [
     { title: 'Sluttdato', width: { wch: 13 } },
     { title: 'Yrke', width: { wch: 20 } },
     { title: 'Stilling %', width: { wch: 20 } },
-    { title: 'Varselkode', width: { wch: 13 } },
-    { title: 'Varsel beskrivelse', width: { wch: 25 } }
+    { title: 'Varsel', width: { wch: 13 } },
+
 ];
 const infosideData = [
     {
