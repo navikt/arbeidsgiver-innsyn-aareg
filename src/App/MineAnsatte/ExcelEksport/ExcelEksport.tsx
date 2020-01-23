@@ -65,9 +65,9 @@ const infosideData = [
 
 const ExcelEksport: FunctionComponent<ExcelEksportProps> = (props: ExcelEksportProps) => {
     const dagensDato: Date = new Date();
-    const aktiveArbeidsforhold = filtrerAktiveOgAvsluttede(props.arbeidsforholdListe, true);
+    const aktiveArbeidsforhold = filtrerAktiveOgAvsluttede(props.arbeidsforholdListe, "Aktive");
     const aktiveArbeidsforholdDataset = convertToDataset(aktiveArbeidsforhold);
-    const avsluttedeArbeidsforhold = filtrerAktiveOgAvsluttede(props.arbeidsforholdListe, false);
+    const avsluttedeArbeidsforhold = filtrerAktiveOgAvsluttede(props.arbeidsforholdListe, "Avsluttede");
     const avsluttedeArbeidsforholdDataset = convertToDataset(avsluttedeArbeidsforhold);
     const avsluttedeArbeidsforholdMultiDataSet = [
         {
