@@ -101,6 +101,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         const oppdatertListe = byggListeBasertPaPArametere(listeFraAareg,navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler, soketekst);
         setListeMedArbeidsForhold(oppdatertListe);
         setnaVarendeSidetall(1);
+        console.log(navarendeKolonne);
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler ]);
 
     useEffect(() => {
@@ -113,7 +114,9 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             'sidebytter-chevron-venstre',
             'sidebytter-chevron-hoyre'
         );
+        console.log(listeMedArbeidsForhold,"vises",ansattForholdPaSiden);
     }, [listeMedArbeidsForhold,naVarendeSidetall]);
+
 
     return (
         <div className={"bakgrunnsside"}>

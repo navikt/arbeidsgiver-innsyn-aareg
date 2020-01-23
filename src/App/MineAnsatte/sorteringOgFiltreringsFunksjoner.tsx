@@ -9,13 +9,14 @@ export const byggListeBasertPaPArametere = (originalListe: Arbeidsforhold[], naV
     if (soketekst.length>0) {
         nyListe = byggArbeidsforholdSokeresultat(nyListe,soketekst);
     }
+    if (skalFiltrerePaVarsler) {
+        nyListe = filtrerPaVarsler(nyListe,skalFiltrerePaVarsler);
+    }
     nyListe = sorterArbeidsforhold(nyListe,naVarendeKolonne.sorteringsAttributt);
     if (naVarendeKolonne.reversSortering) {
         nyListe = nyListe.reverse();
     }
-    if (skalFiltrerePaVarsler) {
-        nyListe = filtrerPaVarsler(nyListe,skalFiltrerePaVarsler);
-    }
+
     return nyListe
 };
 
@@ -133,6 +134,7 @@ export const sorterArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], atributt:
         case SorteringsAttributt.STILLINGSPROSENT:
             return sorterBasertPaProsent(arbeidsforhold,true,false);
         default:
+            console.log("nadde defaultcase");
             return arbeidsforhold;
     }
 };
