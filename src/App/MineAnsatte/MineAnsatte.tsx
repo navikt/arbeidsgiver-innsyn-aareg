@@ -5,7 +5,7 @@ import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import {
-    byggListeBasertPaPArametere,
+    byggListeBasertPaPArametere, filtreringValgt,
     tellAntallAktiveOgInaktiveArbeidsforhold
 } from './sorteringOgFiltreringsFunksjoner';
 
@@ -69,32 +69,14 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     const setIndeksOgGenererListe = (indeks: number) => {
         setnaVarendeSidetall(indeks);
     };
-    const filtreringValgt = (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]) => {
-        toggles.forEach(toggle => {
-            if (toggle.pressed === true && toggle.children) {
-                const includesString: boolean = true;
-                switch (includesString) {
-                    case (toggle.children.toString().startsWith("Alle")):
-                        setFiltrerPaAktiveAvsluttede("Alle");
-                        break;
-                    case (toggle.children.toString().startsWith("Aktive")):
-                        setFiltrerPaAktiveAvsluttede("Aktive");
-                        break;
-                    case (toggle.children.toString().startsWith("Avsluttede")):
-                        setFiltrerPaAktiveAvsluttede("Avsluttede");
-                        break;
-                    default:
-                        break;
-                }
-                ;
-
-            }
-            ;
-        })
-    };
 
     const onSoketekstChange = (soketekst: string) => {
         setSoketekst(soketekst);
+    };
+
+    const velgFiltrering = (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]) => {
+        const filtrering = filtreringValgt(event, toggles);
+        setFiltrerPaAktiveAvsluttede(filtrering);
     };
 
     useEffect(() => {
@@ -145,7 +127,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Hvis du finner feil i oversikten skal disse rapporteres inn via A-meldingen. </AlertStripeInfo>
             <div className={'mine-ansatte__sok-og-filter'}>
                 <Normaltekst>Arbeidsforhold</Normaltekst>
-                { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={filtreringValgt} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)} setfiltrerPaVarsler={() => setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler)}/>
+                { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={velgFiltrering} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)} setfiltrerPaVarsler={() => setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler)}/>
           }
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
             </div>
