@@ -136,6 +136,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     <Normaltekst>Viser {listeMedArbeidsForhold.length} av {listeFraAareg.length} arbeidsforhold</Normaltekst>
                 </div>
                 {antallSider > 1 && <SideBytter
+                    plassering={"overst"}
                     className={'sidebytter'}
                     byttSide={setIndeksOgGenererListe}
                     antallSider={antallSider}
@@ -158,6 +159,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
             />
             {antallSider > 1 && <SideBytter
+                plassering={"nederst"}
                 className={'nedre-sidebytter'}
                 byttSide={setIndeksOgGenererListe}
                 antallSider={antallSider}
