@@ -1,4 +1,4 @@
-import React, {FunctionComponent, SyntheticEvent} from 'react';
+import React, {FunctionComponent, SyntheticEvent, useState} from 'react';
 import {ToggleGruppe, ToggleKnappPure, ToggleKnappPureProps} from "nav-frontend-toggle";
 import './Filtervalg.less';
 
@@ -9,6 +9,13 @@ interface Props {
 }
 
 const Filtervalg: FunctionComponent<Props> = props => {
+
+    const klikkpaaFilterVarsel = ()=>{
+        props.setfiltrerPaVarsler();
+        setFiltrertpaaVarsel(!filtrertPaaVarsel);
+    };
+
+    const [filtrertPaaVarsel,setFiltrertpaaVarsel] = useState<boolean>(false);
         const arrayMedToggleTekst = ['Alle ' + props.overSiktOverAntallAktiveOgInaktive[0],'Aktive '+ props.overSiktOverAntallAktiveOgInaktive[1].toString(), 'Avsluttede ' +props.overSiktOverAntallAktiveOgInaktive[2].toString() ];
         return (
             <>
@@ -22,7 +29,7 @@ const Filtervalg: FunctionComponent<Props> = props => {
             minstEn
         />
         <div className={ "mine-ansatte__varsel-filter"}>
-            <ToggleKnappPure children = {"varslinger"} onClick={props.setfiltrerPaVarsler} />
+            <ToggleKnappPure children = {"varslinger"} onClick={klikkpaaFilterVarsel } pressed = {filtrertPaaVarsel}/>
             </div>
             </>
     );
