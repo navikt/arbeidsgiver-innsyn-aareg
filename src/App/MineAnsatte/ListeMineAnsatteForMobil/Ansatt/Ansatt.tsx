@@ -56,7 +56,7 @@ const Ansatt: FunctionComponent<Props> = props => {
                     attributt="Stillingsprosent %"
                     attributtVerdi={props.arbeidsforhold.stillingsprosent}
                 />
-                <AttributtVisning attributt="Yrke" attributtVerdi={props.arbeidsforhold.yrke} />
+                <AttributtVisning attributt="Yrke" attributtVerdi={props.arbeidsforhold.yrkesbeskrivelse} />
                 {props.arbeidsforhold.varslingskodeForklaring && (
                     <AttributtVisning
                         attributt="Varsling"
