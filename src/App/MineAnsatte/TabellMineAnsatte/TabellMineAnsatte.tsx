@@ -23,7 +23,6 @@ interface Props {
 
 const TabellMineAnsatte: FunctionComponent<Props> = props => {
     const rader = props.listeMedArbeidsForhold.map(arbeidsforhold => {
-        console.log(props.listeMedArbeidsForhold.length);
         return (
             <tr key={arbeidsforhold.navArbeidsforholdId}>
                 <td className={'td'}>
