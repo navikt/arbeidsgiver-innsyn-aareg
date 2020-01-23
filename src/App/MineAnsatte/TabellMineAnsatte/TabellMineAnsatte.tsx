@@ -6,9 +6,10 @@ import 'nav-frontend-tabell-style';
 import { KolonneState } from '../MineAnsatte';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
-import VarslingPopover from './KolonnerMedTooltip/VarslingPopover';
 import YrkesbeskrivelsePopover from "./KolonnerMedTooltip/YrkesbeskrivelsePopover";
 import NavnPopover from "./KolonnerMedTooltip/NavnPopover";
+import VarslingPopover from "./KolonnerMedTooltip/VarslingPopover";
+
 
 interface Props {
     className?: string;
@@ -22,6 +23,7 @@ interface Props {
 
 const TabellMineAnsatte: FunctionComponent<Props> = props => {
     const rader = props.listeMedArbeidsForhold.map(arbeidsforhold => {
+        console.log(props.listeMedArbeidsForhold.length);
         return (
             <tr key={arbeidsforhold.navArbeidsforholdId}>
                 <td className={'td'}>
@@ -32,7 +34,7 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
                 <td className={'td'}>{arbeidsforhold.ansattTom}</td>
                 <td className={'td'}>{arbeidsforhold.stillingsprosent}</td>
                 <td className={'td'}>
-                        <YrkesbeskrivelsePopover tekst={arbeidsforhold.yrke}/>
+                        <YrkesbeskrivelsePopover tekst={arbeidsforhold.yrkesbeskrivelse}/>
                 </td>
                 <td className={'td'}>{arbeidsforhold.permisjonPermitteringsprosent}</td>
                 <td className={'td'}>
