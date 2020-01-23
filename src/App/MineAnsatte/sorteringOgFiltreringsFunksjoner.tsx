@@ -1,5 +1,22 @@
-import { SorteringsAttributt } from './MineAnsatte';
+import {KolonneState, SorteringsAttributt} from './MineAnsatte';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
+import {hentListeMedArbeidsforhold} from "@navikt/arbeidsforhold/dist/clients/apiClient";
+import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
+
+export const byggListeBasertPaPArametere = (originalListe: Arbeidsforhold[], naVarendeKolonne: KolonneState, skalFilteresPaAktiveAvsluttede: string, skalFiltrerePaVarsler: boolean, soketekst: string ) => {
+    let nyListe = filtrerAktiveOgAvsluttede(originalListe,skalFilteresPaAktiveAvsluttede);
+    if (soketekst.length>0) {
+        nyListe = byggArbeidsforholdSokeresultat(nyListe,soketekst);
+    }
+    nyListe = sorterArbeidsforhold(nyListe,naVarendeKolonne.sorteringsAttributt);
+    if (naVarendeKolonne.reversSortering) {
+        nyListe = nyListe.reverse();
+    }
+    if (skalFiltrerePaVarsler) {
+        nyListe = filtrerPaVarsler(nyListe,skalFiltrerePaVarsler);
+    }
+    return nyListe
+};
 
 export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => {
     const sortert: Arbeidsforhold[] = arbeidsforhold.sort((a, b) => {
@@ -119,9 +136,9 @@ export const sorterArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], atributt:
     }
 };
 
-export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], aktiv: boolean) => {
+export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], sorterPa: string) => {
     const navarendeDato = new Date();
-    if (aktiv) {
+    if (sorterPa === "Aktive") {
         return arbeidsforhold.filter(forhold => {
             if(forhold.ansattTom) {
             const avslutningsdato = new Date(forhold.ansattTom);
@@ -129,6 +146,7 @@ export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], akti
             }else{return true}
         });
     }
+    if (sorterPa === "Avsluttede")
     return arbeidsforhold.filter(forhold => {
         if(forhold.ansattTom) {
         const avslutningsdato = new Date(forhold.ansattTom);
@@ -136,6 +154,7 @@ export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], akti
         }
         else{return false}
     });
+    return arbeidsforhold;
 };
 
 export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold: Arbeidsforhold[]): number[] => {
@@ -154,3 +173,21 @@ export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold:
     });
     return antallOversikt;
 };
+
+export const filtrerPaVarsler = (listeMedArbeidsforhold: Arbeidsforhold[], filtrerPaVarsler: boolean) => {
+    const filtrertPaVarsler = listeMedArbeidsforhold.filter(forhold => {
+            if (forhold.varslingskode && filtrertPaVarsler) {
+                if (forhold.varslingskode.length) {
+                    return forhold
+                }
+            }
+            if (!filtrertPaVarsler) {
+                return forhold
+            }
+            return null;
+        }
+        );
+    return filtrertPaVarsler;
+};
+
+
