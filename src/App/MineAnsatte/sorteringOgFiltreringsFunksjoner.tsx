@@ -1,6 +1,8 @@
 import {KolonneState, SorteringsAttributt} from './MineAnsatte';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
+import {SyntheticEvent} from "react";
+import {ToggleKnappPureProps} from "nav-frontend-toggle";
 
 export const byggListeBasertPaPArametere = (originalListe: Arbeidsforhold[], naVarendeKolonne: KolonneState, filtrerPaAktiveAvsluttede: string, skalFiltrerePaVarsler: boolean, soketekst: string ) => {
     let nyListe = filtrerAktiveOgAvsluttede(originalListe,filtrerPaAktiveAvsluttede);
@@ -187,6 +189,31 @@ export const filtrerPaVarsler = (listeMedArbeidsforhold: Arbeidsforhold[], filtr
         }
         );
     return filtrertPaVarsler;
+};
+
+export const filtreringValgt = (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]): string => {
+    let valg = "Alle";
+     toggles.forEach(toggle => {
+        if (toggle.pressed === true && toggle.children) {
+            const includesString: boolean = true;
+            switch (includesString) {
+                case (toggle.children.toString().startsWith("Alle")):
+                    valg = "Alle";
+                    break;
+                case (toggle.children.toString().startsWith("Aktive")):
+                    valg = "Aktive";
+                    break;
+                case (toggle.children.toString().startsWith("Avsluttede")):
+                    valg = "Avsluttede";
+                    break;
+                default:
+                    break
+            }
+
+        };
+
+    });
+    return valg;
 };
 
 
