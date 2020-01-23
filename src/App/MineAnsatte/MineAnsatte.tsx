@@ -99,16 +99,21 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(listeFraAareg,navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler, soketekst);
-        setAnsattForholdPaSiden(regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,regnUtantallSider(arbeidsforholdPerSide,oppdatertListe.length),oppdatertListe));
-        setAntallSider(regnUtantallSider(arbeidsforholdPerSide,oppdatertListe.length));
         setListeMedArbeidsForhold(oppdatertListe);
+        setnaVarendeSidetall(1);
+    }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler ]);
+
+    useEffect(() => {
+        const antallSider = regnUtantallSider(arbeidsforholdPerSide,listeMedArbeidsForhold.length);
+        setAntallSider(antallSider);
+        setAnsattForholdPaSiden(regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,antallSider,listeMedArbeidsForhold));
         visEllerSkjulChevroner(
             naVarendeSidetall,
             antallSider,
             'sidebytter-chevron-venstre',
             'sidebytter-chevron-hoyre'
         );
-    }, [listeFraAareg, soketekst, naVarendeSidetall, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler, antallSider ]);
+    }, [listeMedArbeidsForhold,naVarendeSidetall]);
 
     return (
         <div className={"bakgrunnsside"}>
