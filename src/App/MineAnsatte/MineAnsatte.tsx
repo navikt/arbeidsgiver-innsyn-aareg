@@ -5,7 +5,8 @@ import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import {
-    filtrerAktiveOgAvsluttede,
+    byggListeBasertPaPArametere,
+    filtrerAktiveOgAvsluttede, filtrerPaVarsler,
     sorterArbeidsforhold, tellAntallAktiveOgInaktiveArbeidsforhold
 } from './sorteringOgFiltreringsFunksjoner';
 
@@ -61,10 +62,10 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         reversSortering: false
     };
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
-    const [filterState, setFilterState] = useState('Alle');
+    const [filtrerPaAktiveAvsluttede, setFiltrerPaAktiveAvsluttede] = useState('Alle');
     const [soketekst, setSoketekst] = useState('');
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
-    const [erFiltrertPaVarsler, setErFiltrertPaVarsler] = useState(false);
+    const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState(false);
     const arbeidsforholdPerSide = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
@@ -76,13 +77,13 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 const includesString: boolean = true;
                 switch (includesString) {
                     case (toggle.children.toString().startsWith("Alle")):
-                        setFilterState("Alle");
+                        setFiltrerPaAktiveAvsluttede("Alle");
                         break;
                     case (toggle.children.toString().startsWith("Aktive")):
-                        setFilterState("Aktive");
+                        setFiltrerPaAktiveAvsluttede("Aktive");
                         break;
                     case (toggle.children.toString().startsWith("Avsluttede")):
-                        setFilterState("Avsluttede");
+                        setFiltrerPaAktiveAvsluttede("Avsluttede");
                         break;
                     default:
                         break;
@@ -117,54 +118,16 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [props.valgtOrganisasjon]);
 
     useEffect(() => {
-        if (soketekst.length > 0) {
-            setListeMedArbeidsForhold(byggArbeidsforholdSokeresultat(listeFraAareg, soketekst));
-        } else {
-            setListeMedArbeidsForhold(listeFraAareg);
-        }
-    }, [soketekst, listeFraAareg]);
-
-    useEffect(() => {
-        let sortertListe = sorterArbeidsforhold(listeMedArbeidsForhold, navarendeKolonne.sorteringsAttributt);
-        if (navarendeKolonne.reversSortering) {
-            sortertListe = sortertListe.reverse();
-        }
-        if (filterState !== 'Alle') {
-            const visAktive = filterState === 'Aktive';
-            sortertListe = filtrerAktiveOgAvsluttede(sortertListe, visAktive);
-        }
-        setAntallSider(regnUtantallSider(arbeidsforholdPerSide, sortertListe.length));
-        const ansattForholdPaNavarendeSide: Arbeidsforhold[] = regnUtArbeidsForholdSomSkalVisesPaEnSide(
-            naVarendeSidetall,
-            arbeidsforholdPerSide,
-            antallSider,
-            sortertListe
-        );
-        setAnsattForholdPaSiden(ansattForholdPaNavarendeSide);
+        const oppdatertListe = byggListeBasertPaPArametere(listeFraAareg,navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler, soketekst);
+        setAnsattForholdPaSiden(regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,antallSider,oppdatertListe));
+        setListeMedArbeidsForhold(oppdatertListe);
         visEllerSkjulChevroner(
             naVarendeSidetall,
             antallSider,
             'sidebytter-chevron-venstre',
             'sidebytter-chevron-hoyre'
         );
-    }, [listeMedArbeidsForhold, naVarendeSidetall, navarendeKolonne, filterState, antallSider]);
-
-    useEffect(() => {
-        const filtrertPaVarsler = listeFraAareg.filter(forhold => {
-                if (forhold.varslingskode && erFiltrertPaVarsler ) {
-                    if (forhold.varslingskode.length) {
-                        return forhold
-                    }
-                }
-                if (!erFiltrertPaVarsler) {
-                    return forhold
-                }
-                return null
-            }
-        );
-        setListeMedArbeidsForhold(filtrertPaVarsler);
-        setnaVarendeSidetall(1);
-    }, [erFiltrertPaVarsler,listeFraAareg]);
+    }, [listeFraAareg, soketekst, naVarendeSidetall, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler ]);
 
     return (
         <div className={"bakgrunnsside"}>
@@ -189,7 +152,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             </div>
             <div className={'mine-ansatte__topp'}>
                 <div tabIndex={0} className={'mine-ansatte__antall-forhold'}>
-                    <Normaltekst>{listeMedArbeidsForhold.length} arbeidsforhold</Normaltekst>
+                    <Normaltekst>Viser {listeMedArbeidsForhold.length} av {listeFraAareg.length} arbeidsforhold</Normaltekst>
                 </div>
                 {antallSider > 1 && <SideBytter
                     className={'sidebytter'}
