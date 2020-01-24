@@ -17,7 +17,7 @@ const SideBytter: FunctionComponent<Props> = props => {
     const { byttSide } = props;
 
     return (
-        <nav role="navigation" aria-label="Pagination Navigation">
+        <nav role="navigation" aria-label="Pagination Navigation" className={props.className}>
             <div className="sidebytter">
                 <button
                     className="sidebytter__chevron"
