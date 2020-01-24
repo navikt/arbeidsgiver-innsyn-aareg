@@ -105,6 +105,9 @@ const setVarslingskode = (): Varsel[]|undefined  => {
   if(skalHaVarslingskode) {
     const varselArray = [];
     varselArray.push(genererTilfeldigVarsel(genererRandomIndex(varlingskoder.length)));
+    if(Math.random() >= 0.5){
+      varselArray.push(genererTilfeldigVarsel(genererRandomIndex(varlingskoder.length)));
+    }
     return varselArray;
   }
   return undefined;
