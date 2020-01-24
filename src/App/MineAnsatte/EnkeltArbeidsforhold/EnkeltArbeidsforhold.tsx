@@ -18,9 +18,9 @@ const miljo = () => {
 
 const apiURL = () => {
     if (environment.MILJO === 'prod-sbs') {
-        return 'https://arbeidsgiver.nav.no/bedriftsoversikt-og-ansatte/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
+        return 'https://arbeidsgiver.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
     }
-    return 'https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
+    return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
 };
 
 export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> = (

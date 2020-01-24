@@ -41,15 +41,34 @@ const sorterBasertPaNavn = (arbeidsforhold: Arbeidsforhold[]) => {
     return sortert;
 };
 
-const sorterBasertPaKode = (arbeidsforhold: Arbeidsforhold[]) => {
+const sorterBasertPaProsent = (arbeidsforhold: Arbeidsforhold[], sorterPaStillingsprosent: boolean, sorterPaPermisjonsprosent: boolean) => {
     const sortert = arbeidsforhold.sort((a, b) => {
-        if(!a.varslingskode) {
-            return -1
+        if (sorterPaStillingsprosent) {
+            if (Number(a.stillingsprosent) > Number(b.stillingsprosent)) {
+                return 1;
+            } else return -1;
         }
-        if(!b.varslingskode) {
+        if (sorterPaPermisjonsprosent) {
+            if (Number(a.permisjonPermitteringsprosent )> Number(b.permisjonPermitteringsprosent)) {
+                return 1;
+            } else return -1;
+        }
+        else{
             return 1
         }
-        if (a.varslingskode > b.varslingskode) {
+    });
+    return sortert;
+};
+
+const sorterBasertPaKode = (arbeidsforhold: Arbeidsforhold[]) => {
+    const sortert = arbeidsforhold.sort((a, b) => {
+        if(!a.varsler) {
+            return -1
+        }
+        if(!b.varsler) {
+            return 1
+        }
+        if (a.varsler.length > b.varsler.length) {
             return 1;
         }
         return -1;
@@ -91,7 +110,10 @@ export const sorterArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], atributt:
             return sorterBasertPaYrke(arbeidsforhold);
         case SorteringsAttributt.VARSEL:
             return sorterBasertPaKode(arbeidsforhold);
-
+        case SorteringsAttributt.PERMITTERINGSPROSENT:
+            return sorterBasertPaProsent(arbeidsforhold,false,true);
+        case SorteringsAttributt.STILLINGSPROSENT:
+            return sorterBasertPaProsent(arbeidsforhold,true,false);
         default:
             return arbeidsforhold;
     }
@@ -114,4 +136,21 @@ export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], akti
         }
         else{return false}
     });
+};
+
+export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold: Arbeidsforhold[]): number[] => {
+    const antallOversikt: number[] = [listeMedArbeidsforhold.length,0,0];
+    const navarendeDato = new Date();
+    listeMedArbeidsforhold.forEach(forhold => {
+        if(forhold.ansattTom) {
+            const avslutningsdato = new Date(forhold.ansattTom);
+            if (avslutningsdato<navarendeDato) {
+                antallOversikt[2] ++;
+            }
+            else {
+                antallOversikt[1] ++;
+            }
+        }else{antallOversikt[1] ++}
+    });
+    return antallOversikt;
 };
