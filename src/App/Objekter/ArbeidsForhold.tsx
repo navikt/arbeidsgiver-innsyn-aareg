@@ -1,3 +1,5 @@
+import {Varsel} from "./Varsel";
+
 export interface Arbeidsforhold {
     ansattFom: string;
     ansattTom?: string;
@@ -19,8 +21,7 @@ export interface Arbeidsforhold {
     sistBekreftet: string;
     stillingsprosent: string;
     type: string;
-    varslingskode?: string;
+    varsler?: Varsel[];
     yrke: string;
     yrkesbeskrivelse: string;
-    varslingskodeForklaring?: string;
 }
