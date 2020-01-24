@@ -12,7 +12,7 @@ const veilarbStatusProxyConfig = {
     changeOrigin: true,
     target: veilarbStatus(),
     pathRewrite: {
-        '^/bedriftsoversikt-og-ansatte': ''
+        '^/arbeidsforhold': ''
     },
     secure: true,
     xfwd: true

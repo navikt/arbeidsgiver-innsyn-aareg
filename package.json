@@ -1,8 +1,8 @@
 {
-  "name": "bedriftsoversikt-og-ansatte",
+  "name": "arbeidsforhold",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/bedriftsoversikt-og-ansatte",
+  "homepage": "/arbeidsforhold",
   "dependencies": {
     "@craco/craco": "^5.5.0",
     "@jest/environment": "^24.9.0",

@@ -12,10 +12,10 @@ import handshake from './handshake.svg';
 const LoggInn: FunctionComponent = () => {
     const redirectTilLogin = () => {
         if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs') {
-            window.location.href = '/bedriftsoversikt-og-ansatte/redirect-til-login';
+            window.location.href = '/arbeidsforhold/redirect-til-login';
         } else {
             document.cookie = 'selvbetjening-idtoken =0123456789..*; path=/;';
-            window.location.href = '/bedriftsoversikt-og-ansatte/';
+            window.location.href = '/arbeidsforhold/';
         }
     };
 
