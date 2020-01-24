@@ -98,13 +98,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [props.valgtOrganisasjon]);
 
     useEffect(() => {
-        const oppdatertListe = byggListeBasertPaPArametere(listeFraAareg,navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler, soketekst);
-        setListeMedArbeidsForhold(oppdatertListe);
-        setnaVarendeSidetall(1);
-        console.log(navarendeKolonne);
-    }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler ]);
-
-    useEffect(() => {
         const antallSider = regnUtantallSider(arbeidsforholdPerSide,listeMedArbeidsForhold.length);
         setAntallSider(antallSider);
         setAnsattForholdPaSiden(regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,antallSider,listeMedArbeidsForhold));
@@ -116,6 +109,16 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         );
         console.log(listeMedArbeidsForhold,"vises",ansattForholdPaSiden);
     }, [listeMedArbeidsForhold,naVarendeSidetall]);
+
+    useEffect(() => {
+        console.log("navared, ",navarendeKolonne);
+        const oppdatertListe = byggListeBasertPaPArametere(listeFraAareg,navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler, soketekst);
+        setListeMedArbeidsForhold(oppdatertListe);
+        setnaVarendeSidetall(1);
+        console.log(navarendeKolonne);
+    }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler ]);
+
+
 
 
     return (
