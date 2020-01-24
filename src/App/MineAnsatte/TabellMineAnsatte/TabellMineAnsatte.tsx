@@ -5,9 +5,11 @@ import './TabellMineAnsatte.less';
 import 'nav-frontend-tabell-style';
 import { KolonneState } from '../MineAnsatte';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
-import { Link } from 'react-router-dom';
 import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
-import VarslingPopover from './VarslingPopover/VarslingPopover';
+import YrkesbeskrivelsePopover from "./KolonnerMedTooltip/YrkesbeskrivelsePopover";
+import NavnPopover from "./KolonnerMedTooltip/NavnPopover";
+import VarslingPopover from "./KolonnerMedTooltip/VarslingPopover";
+
 
 interface Props {
     className?: string;
@@ -20,43 +22,24 @@ interface Props {
 }
 
 const TabellMineAnsatte: FunctionComponent<Props> = props => {
-
-    function oppdaterValgtArbeidsgiver(fnr: string, navn: string) {
-        const fnrSomheltall: number = parseInt(fnr);
-        props.settValgtArbeidsgiver({ fnr: fnrSomheltall, navn: navn });
-    }
     const rader = props.listeMedArbeidsForhold.map(arbeidsforhold => {
+        console.log(props.listeMedArbeidsForhold.length);
         return (
             <tr key={arbeidsforhold.navArbeidsforholdId}>
                 <td className={'td'}>
-                    <div
-                        onClick={() =>
-                            oppdaterValgtArbeidsgiver(
-                                arbeidsforhold.arbeidstaker.offentligIdent,
-                                arbeidsforhold.arbeidstaker.navn
-                            )
-                        }
-                    >
-                        <Link
-                            to={
-                                'enkeltarbeidsforhold/?bedrift=' +
-                                props.valgtBedrift +
-                                '&arbeidsforhold=' +
-                                arbeidsforhold.navArbeidsforholdId
-                            }
-                        >
-                            {arbeidsforhold.arbeidstaker.navn}
-                        </Link>
-                    </div>
+                    <NavnPopover arbeidsforhold={arbeidsforhold} settValgtArbeidsgiver={props.settValgtArbeidsgiver} valgtBedrift={props.valgtBedrift} />
                 </td>
                 <td className={'td'}>{arbeidsforhold.arbeidstaker.offentligIdent}</td>
-                <td className={'td'}>{arbeidsforhold.yrke}</td>
                 <td className={'td'}>{arbeidsforhold.ansattFom}</td>
                 <td className={'td'}>{arbeidsforhold.ansattTom}</td>
+                <td className={'td'}>{arbeidsforhold.stillingsprosent}</td>
                 <td className={'td'}>
-                    {arbeidsforhold.varslingskode && arbeidsforhold.varslingskodeForklaring &&
+                        <YrkesbeskrivelsePopover tekst={arbeidsforhold.yrkesbeskrivelse}/>
+                </td>
+                <td className={'td'}>
+                    {arbeidsforhold.varsler &&
                     <div>
-             <VarslingPopover  tekst={arbeidsforhold.varslingskodeForklaring}/>
+             <VarslingPopover  varsler={arbeidsforhold.varsler}/>
                     </div>
                     }
                 </td>
