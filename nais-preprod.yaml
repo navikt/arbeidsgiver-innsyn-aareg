@@ -10,12 +10,12 @@ spec:
   team: {{team}}
   port: 3000
   ingresses:
-    - https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/
+    - https://arbeidsgiver-q.nav.no/arbeidsforhold/
   liveness:
-    path: /bedriftsoversikt-og-ansatte/internal/isAlive
+    path: /arbeidsforhold/internal/isAlive
     initialDelay: 20
   readiness:
-    path: /bedriftsoversikt-og-ansatte/internal/isReady
+    path: /arbeidsforhold/internal/isReady
     initialDelay: 20
   vault:
     enabled: true
@@ -26,4 +26,4 @@ spec:
     - name: APIGW_URL
       value: https://api-gw-q1.oera.no
     - name: LOGIN_URL
-      value: https://loginservice-q.nav.no/login?redirect=https://arbeidsgiver-q.nav.no/bedriftsoversikt-og-ansatte/
+      value: https://loginservice-q.nav.no/login?redirect=https://arbeidsgiver-q.nav.no/arbeidsforhold/
