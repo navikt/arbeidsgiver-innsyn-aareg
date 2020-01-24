@@ -98,14 +98,23 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(listeFraAareg,navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler, soketekst);
         setListeMedArbeidsForhold(oppdatertListe);
+        setnaVarendeSidetall(1);
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler ]);
 
 
     const antallSider = regnUtantallSider(arbeidsforholdPerSide,listeMedArbeidsForhold.length);
    const forholdPaEnSide =regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,antallSider,listeMedArbeidsForhold);
 
+    useEffect(() => {
+        visEllerSkjulChevroner(
+            naVarendeSidetall,
+            antallSider,
+            'sidebytter-chevron-venstre',
+            'sidebytter-chevron-hoyre'
+        );
+    }, [antallSider,naVarendeSidetall]);
 
-   return (
+    return (
         <div className={"bakgrunnsside"}>
             <Normaltekst><Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>Min side – arbeidsgiver</Lenke> /arbeidsforhold /</Normaltekst>
         <div className={'mine-ansatte'}>
