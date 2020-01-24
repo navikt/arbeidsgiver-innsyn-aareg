@@ -5,6 +5,7 @@ import './SideBytter.less';
 import TreForste from './Pagingknapper/ForsteDel';
 import TreSiste from './Pagingknapper/SisteDel';
 import Midtdel from './Pagingknapper/Midtdel';
+import {visEllerSkjulChevroner} from "../pagineringsFunksjoner";
 
 interface Props {
     className?: string;
@@ -16,6 +17,13 @@ interface Props {
 
 const SideBytter: FunctionComponent<Props> = props => {
     const { byttSide } = props;
+
+    visEllerSkjulChevroner(
+        props.naVarendeSidetall,
+        props.antallSider,
+        'sidebytter-chevron-venstre',
+        'sidebytter-chevron-hoyre'
+    );
 
     return (
         <nav role="navigation" aria-label="Pagination Navigation" className={props.className}>
