@@ -3,7 +3,7 @@ const delay = new Promise(res => setTimeout(res, 500));
 
 fetchMock
     .get(
-        'bedriftsoversikt-og-ansatte/api/arbeidsforhold',
+        'arbeidsforhold/api/arbeidsforhold',
         delay.then(() => {
             return OrganisasjonerResponse;
         })
