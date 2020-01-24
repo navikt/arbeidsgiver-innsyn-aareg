@@ -12,7 +12,7 @@ const enkeltArbeidsforholdProxyConfig = {
     changeOrigin: true,
     target: enkeltArbeidsforhold(),
     pathRewrite: {
-        '^/bedriftsoversikt-og-ansatte': ''
+        '^/arbeidsforhold': ''
     },
     secure: true,
     xfwd: true
