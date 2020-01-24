@@ -50,7 +50,6 @@ export interface KolonneState {
 }
 
 const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProps) => {
-    const [antallSider, setAntallSider] = useState(0);
     const [naVarendeSidetall, setnaVarendeSidetall] = useState(1);
     const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
     const initialKolonne: KolonneState = {
@@ -64,7 +63,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState(false);
     const arbeidsforholdPerSide = 25;
-
     const setIndeksOgGenererListe = (indeks: number) => {
         setnaVarendeSidetall(indeks);
     };
@@ -102,12 +100,10 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         setListeMedArbeidsForhold(oppdatertListe);
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler ]);
 
-    useEffect(() => {
-        const antallSider = regnUtantallSider(arbeidsforholdPerSide,listeMedArbeidsForhold.length);
-        setAntallSider(antallSider);
-    }, [listeMedArbeidsForhold]);
 
+    const antallSider = regnUtantallSider(arbeidsforholdPerSide,listeMedArbeidsForhold.length);
    const forholdPaEnSide =regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,antallSider,listeMedArbeidsForhold);
+
 
    return (
         <div className={"bakgrunnsside"}>
