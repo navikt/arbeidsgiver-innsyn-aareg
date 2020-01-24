@@ -1,10 +1,10 @@
-import {KolonneState, SorteringsAttributt} from './MineAnsatte';
+import { SorteringsAttributt} from './MineAnsatte';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
 import {SyntheticEvent} from "react";
 import {ToggleKnappPureProps} from "nav-frontend-toggle";
 
-export const byggListeBasertPaPArametere = (originalListe: Arbeidsforhold[], naVarendeKolonne: KolonneState, filtrerPaAktiveAvsluttede: string, skalFiltrerePaVarsler: boolean, soketekst: string ) => {
+export const byggListeBasertPaPArametere = (originalListe: Arbeidsforhold[], filtrerPaAktiveAvsluttede: string, skalFiltrerePaVarsler: boolean, soketekst: string ) => {
     let nyListe = filtrerAktiveOgAvsluttede(originalListe,filtrerPaAktiveAvsluttede);
     if (soketekst.length>0) {
         nyListe = byggArbeidsforholdSokeresultat(nyListe,soketekst);
@@ -12,11 +12,6 @@ export const byggListeBasertPaPArametere = (originalListe: Arbeidsforhold[], naV
     if (skalFiltrerePaVarsler) {
         nyListe = filtrerPaVarsler(nyListe,skalFiltrerePaVarsler);
     }
-    nyListe = sorterArbeidsforhold(nyListe,naVarendeKolonne.sorteringsAttributt);
-    if (naVarendeKolonne.reversSortering) {
-        nyListe = nyListe.reverse();
-    }
-
     return nyListe
 };
 
@@ -107,7 +102,7 @@ const sorterBasertPaFnr = (arbeidsforhold: Arbeidsforhold[]) => {
 
 const sorterBasertPaYrke = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
-        if (a.yrke > b.yrke) {
+        if (a.yrkesbeskrivelse > b.yrkesbeskrivelse) {
             return 1;
         }
         return -1;

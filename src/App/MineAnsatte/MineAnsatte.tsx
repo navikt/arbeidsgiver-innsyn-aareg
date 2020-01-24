@@ -96,7 +96,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [props.valgtOrganisasjon]);
 
     useEffect(() => {
-        const oppdatertListe = byggListeBasertPaPArametere(listeFraAareg,navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler, soketekst);
+        const oppdatertListe = byggListeBasertPaPArametere(listeFraAareg, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler, soketekst);
         setListeMedArbeidsForhold(oppdatertListe);
         setnaVarendeSidetall(1);
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler ]);
