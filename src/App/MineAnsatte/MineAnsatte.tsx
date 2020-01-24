@@ -50,7 +50,6 @@ export interface KolonneState {
 }
 
 const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProps) => {
-    const [ansattForholdPaSiden, setAnsattForholdPaSiden] = useState(Array<Arbeidsforhold>());
     const [antallSider, setAntallSider] = useState(0);
     const [naVarendeSidetall, setnaVarendeSidetall] = useState(1);
     const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
@@ -76,6 +75,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
 
     const velgFiltrering = (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]) => {
         const filtrering = filtreringValgt(event, toggles);
+        console.log("filtrering: ", filtrering);
         setFiltrerPaAktiveAvsluttede(filtrering);
     };
 
@@ -98,30 +98,18 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [props.valgtOrganisasjon]);
 
     useEffect(() => {
-        const antallSider = regnUtantallSider(arbeidsforholdPerSide,listeMedArbeidsForhold.length);
-        setAntallSider(antallSider);
-        setAnsattForholdPaSiden(regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,antallSider,listeMedArbeidsForhold));
-        visEllerSkjulChevroner(
-            naVarendeSidetall,
-            antallSider,
-            'sidebytter-chevron-venstre',
-            'sidebytter-chevron-hoyre'
-        );
-        console.log(listeMedArbeidsForhold,"vises",ansattForholdPaSiden);
-    }, [listeMedArbeidsForhold,naVarendeSidetall]);
-
-    useEffect(() => {
-        console.log("navared, ",navarendeKolonne);
         const oppdatertListe = byggListeBasertPaPArametere(listeFraAareg,navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler, soketekst);
         setListeMedArbeidsForhold(oppdatertListe);
-        setnaVarendeSidetall(1);
-        console.log(navarendeKolonne);
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler ]);
 
+    useEffect(() => {
+        const antallSider = regnUtantallSider(arbeidsforholdPerSide,listeMedArbeidsForhold.length);
+        setAntallSider(antallSider);
+    }, [listeMedArbeidsForhold]);
 
+   const forholdPaEnSide =regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,antallSider,listeMedArbeidsForhold);
 
-
-    return (
+   return (
         <div className={"bakgrunnsside"}>
             <Normaltekst><Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>Min side – arbeidsgiver</Lenke> /arbeidsforhold /</Normaltekst>
         <div className={'mine-ansatte'}>
@@ -156,7 +144,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             </div>
             <TabellMineAnsatte
                 className={'mine-ansatte__table'}
-                listeMedArbeidsForhold={ansattForholdPaSiden}
+                listeMedArbeidsForhold={forholdPaEnSide}
                 setNavarendeKolonne={setNavarendeKolonne}
                 byttSide={setIndeksOgGenererListe}
                 navarendeKolonne={navarendeKolonne}
@@ -164,7 +152,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
             />
             <ListeMedAnsatteForMobil
-                listeMedArbeidsForhold={ansattForholdPaSiden}
+                listeMedArbeidsForhold={forholdPaEnSide}
                 className={'mine-ansatte__liste'}
                 settValgtArbeidsgiver={props.setValgtArbeidstaker}
                 valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
