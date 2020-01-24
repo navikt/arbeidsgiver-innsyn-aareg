@@ -151,8 +151,8 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
 
     useEffect(() => {
         const filtrertPaVarsler = listeFraAareg.filter(forhold => {
-                if (forhold.varslingskode && erFiltrertPaVarsler ) {
-                    if (forhold.varslingskode.length) {
+                if (forhold.varsler && erFiltrertPaVarsler ) {
+                    if (forhold.varsler.length) {
                         return forhold
                     }
                 }
