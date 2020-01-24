@@ -1,1 +1,1 @@
-export const basename = '/bedriftsoversikt-og-ansatte';
+export const basename = '/arbeidsforhold';

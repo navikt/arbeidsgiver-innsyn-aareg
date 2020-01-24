@@ -1,6 +1,6 @@
 import environment from '../utils/environment';
 
-const landingsURL = '/bedriftsoversikt-og-ansatte/';
+const landingsURL = '/arbeidsforhold/';
 
 export const hentArbeidsforholdLink = () => {
     return landingsURL + 'api/arbeidsforhold';
