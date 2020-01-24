@@ -24,7 +24,7 @@ const convertToDataset = (arbeidsforhold: Arbeidsforhold[]) => {
         detteArbeidsforholdet.push(a.ansattTom? a.ansattTom : "");
         detteArbeidsforholdet.push(a.yrkesbeskrivelse + " (yrkeskode: " + a.yrke + ")");
         detteArbeidsforholdet.push(a.stillingsprosent);
-        detteArbeidsforholdet.push(a.varslingskode? a.varslingskodeForklaring + " (varselkode: " + a.varslingskode+")" : "");
+        detteArbeidsforholdet.push(a.varsler? a.varsler[0].varslingskodeForklaring + " (varselkode: " + a.varsler[0].varslingskode+")" : "");
         arbeidsforholdDataset.push(detteArbeidsforholdet);
     });
     return arbeidsforholdDataset;
