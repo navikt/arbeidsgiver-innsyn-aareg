@@ -5,7 +5,7 @@ import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import {
-    byggListeBasertPaPArametere, filtreringValgt,
+    byggListeBasertPaPArametere, filtreringValgt, sorterArbeidsforhold,
     tellAntallAktiveOgInaktiveArbeidsforhold
 } from './sorteringOgFiltreringsFunksjoner';
 
@@ -101,9 +101,14 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         setnaVarendeSidetall(1);
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler ]);
 
-
     const antallSider = regnUtantallSider(arbeidsforholdPerSide,listeMedArbeidsForhold.length);
-   const forholdPaEnSide =regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,antallSider,listeMedArbeidsForhold);
+    let forholdPaEnSide: Arbeidsforhold[] = [];
+    if (navarendeKolonne.reversSortering) {
+        forholdPaEnSide =regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,antallSider,sorterArbeidsforhold(listeMedArbeidsForhold, navarendeKolonne.sorteringsAttributt).reverse());
+    }
+    else {
+        forholdPaEnSide =regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,antallSider,sorterArbeidsforhold(listeMedArbeidsForhold, navarendeKolonne.sorteringsAttributt));
+    }
 
     useEffect(() => {
         visEllerSkjulChevroner(
