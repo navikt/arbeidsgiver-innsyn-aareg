@@ -39,7 +39,7 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
                 <td className={'td'}>
                     {arbeidsforhold.varsler &&
                     <div>
-             <VarslingPopover  tekst={arbeidsforhold.varsler[0].varslingskodeForklaring||""}/>
+             <VarslingPopover  varsler={arbeidsforhold.varsler}/>
                     </div>
                     }
                 </td>
