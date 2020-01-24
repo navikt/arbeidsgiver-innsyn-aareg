@@ -73,7 +73,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
 
     const velgFiltrering = (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]) => {
         const filtrering = filtreringValgt(event, toggles);
-        console.log("filtrering: ", filtrering);
         setFiltrerPaAktiveAvsluttede(filtrering);
     };
 
