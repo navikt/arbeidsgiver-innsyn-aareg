@@ -132,7 +132,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     orgnrBedrift={props.valgtOrganisasjon.OrganizationNumber}
                 />
             </div>
-            <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Hvis du finner feil i oversikten skal disse rapporteres inn via A-meldingen. </AlertStripeInfo>
+            <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Dersom du finner feil eller mangler i oversikten skal disse korrigeres/rapporteres inn via a-meldingen. </AlertStripeInfo>
             <div className={'mine-ansatte__sok-og-filter'}>
                 <Normaltekst>Arbeidsforhold</Normaltekst>
                 { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={velgFiltrering} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)} setfiltrerPaVarsler={() => setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler)}/>
