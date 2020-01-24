@@ -5,8 +5,12 @@ import AlertStripe from 'nav-frontend-alertstriper';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
 import './EnkeltArbeidsforhold.less';
+import Lenke from "nav-frontend-lenker";
+import {linkTilMinSideArbeidsgiver} from "../../lenker";
+import {Organisasjon} from "../../Objekter/OrganisasjonFraAltinn";
 export declare type EnkeltArbeidsforholdProps = {
     valgtArbeidstaker: Arbeidstaker | null;
+    valgtOrganisasjon: Organisasjon;
 };
 
 const miljo = () => {
@@ -31,6 +35,8 @@ export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> 
     if (arbeidsforholdIdFraUrl && props.valgtArbeidstaker) {
         const arbeidsforholdId = parseInt(arbeidsforholdIdFraUrl);
         return (
+            <div className="enkelt-arbeidsforhold-container" >
+                <Normaltekst><Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>Min side – arbeidsgiver</Lenke> /arbeidsforhold /enkeltarbeidsforhold</Normaltekst>
             <div className="enkelt-arbeidsforhold">
                 <div className="af-detaljert__header">
                     <span className="af-detaljert__kolonne">
@@ -57,6 +63,7 @@ export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> 
                     customApiUrl={apiURL()}
                 />
             </div>
+                </div>
         );
     }
     return (
