@@ -62,13 +62,13 @@ const sorterBasertPaProsent = (arbeidsforhold: Arbeidsforhold[], sorterPaStillin
 
 const sorterBasertPaKode = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
-        if(!a.varslingskode) {
+        if(!a.varsler) {
             return -1
         }
-        if(!b.varslingskode) {
+        if(!b.varsler) {
             return 1
         }
-        if (a.varslingskode > b.varslingskode) {
+        if (a.varsler.length > b.varsler.length) {
             return 1;
         }
         return -1;
