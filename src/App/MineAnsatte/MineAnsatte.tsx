@@ -28,6 +28,7 @@ import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import amplitude from "../../utils/amplitude";
 import Lenke from "nav-frontend-lenker";
 import {linkTilMinSideArbeidsgiver} from "../lenker";
+import environment from "../../utils/environment";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -113,7 +114,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         ) {
             hentogSettArbeidsforhold().then(responsAareg => {
                 setListeFraAareg(responsAareg.arbeidsforholdoversikter);
-                    amplitude.logEvent("hentet: " + responsAareg.arbeidsforholdoversikter.length + " arbeidsforhold")
+                    amplitude.logEvent("hentet: " + responsAareg.arbeidsforholdoversikter.length + " arbeidsforhold i miljøet " + environment.MILJO)
             }
             );
         }
