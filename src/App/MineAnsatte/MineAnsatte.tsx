@@ -39,11 +39,6 @@ export enum SorteringsAttributt {
     STILLINGSPROSENT
 }
 
-export enum LASTERSTATE {
-    LASTER,
-    FERDIG
-}
-
 export declare interface MineAnsatteProps {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
     valgtOrganisasjon: Organisasjon;
@@ -84,6 +79,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     };
 
     useEffect(() => {
+        setFerdiglastet(false);
         const hentogSettArbeidsforhold = async () => {
             const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg(
                 props.valgtOrganisasjon.OrganizationNumber,
