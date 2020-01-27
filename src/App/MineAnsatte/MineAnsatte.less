@@ -10,11 +10,14 @@
 
 .mine-ansatte {
     background-color: white;
-    padding: 1.5rem 5rem 5rem 5rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.5rem 5rem 1.5rem;
     border-radius: 4px;
     margin-top: 2rem;
     position: relative;
     max-width: 70rem;
+    min-width:56rem;
 
     &__header{
         display: flex;
@@ -38,6 +41,19 @@
 
     &__informasjon {
         max-width: 37rem;
+    }
+
+    &__spinner-container {
+       display: flex;
+        align-self: center;
+        margin: 4rem;
+        flex-direction: column;
+        align-items: center;
+
+    }
+
+    &__spinner {
+        margin-top: 2rem;
     }
 
     &__table {
@@ -70,7 +86,7 @@
 
 @media (max-width: @screen-md) {
     .mine-ansatte {
-        margin: 3rem;
+        min-width: initial;
 
         &__table {
             display: none;
@@ -84,7 +100,8 @@
 
 @media (max-width: @screen-sm) {
     .mine-ansatte {
-        margin: 0;
+        min-width: initial;
+        padding: 1rem;
 
         &__topp {
             flex-direction: column;
