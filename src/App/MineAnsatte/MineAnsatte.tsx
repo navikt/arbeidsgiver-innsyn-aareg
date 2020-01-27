@@ -26,6 +26,7 @@ import Filtervalg from "./Filtervalg/Filtervalg";
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import Lenke from "nav-frontend-lenker";
 import {linkTilMinSideArbeidsgiver} from "../lenker";
+import NavFrontendSpinner from "nav-frontend-spinner";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -36,6 +37,11 @@ export enum SorteringsAttributt {
     VARSEL,
     PERMITTERINGSPROSENT,
     STILLINGSPROSENT
+}
+
+export enum LASTERSTATE {
+    LASTER,
+    FERDIG
 }
 
 export declare interface MineAnsatteProps {
@@ -62,6 +68,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     const [soketekst, setSoketekst] = useState('');
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState(false);
+    const [ferdiglastet, setFerdiglastet] = useState(false);
     const arbeidsforholdPerSide = 25;
     const setIndeksOgGenererListe = (indeks: number) => {
         setnaVarendeSidetall(indeks);
@@ -90,6 +97,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         ) {
             hentogSettArbeidsforhold().then(responsAareg => {
                 setListeFraAareg(responsAareg.arbeidsforholdoversikter);
+                setFerdiglastet(true);
             });
         }
     }, [props.valgtOrganisasjon]);
@@ -151,7 +159,8 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     naVarendeSidetall={naVarendeSidetall}
                 />}
             </div>
-            <TabellMineAnsatte
+            { !ferdiglastet && <div className={"mine-ansatte__spinner-container"}> Henter arbeidsforhold<NavFrontendSpinner className={"mine-ansatte__spinner"}/></div>}
+            { ferdiglastet && <><TabellMineAnsatte
                 className={'mine-ansatte__table'}
                 listeMedArbeidsForhold={forholdPaEnSide}
                 setNavarendeKolonne={setNavarendeKolonne}
@@ -166,6 +175,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 settValgtArbeidsgiver={props.setValgtArbeidstaker}
                 valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
             />
+            </>}
             {antallSider > 1 && <SideBytter
                 plassering={"nederst"}
                 className={'nedre-sidebytter'}
