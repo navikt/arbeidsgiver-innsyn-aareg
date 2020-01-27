@@ -37,7 +37,7 @@ export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> 
         const arbeidsforholdId = parseInt(arbeidsforholdIdFraUrl);
         return (
             <div className="enkelt-arbeidsforhold-container" >
-                <Normaltekst><Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>Min side – arbeidsgiver</Lenke> /<Lenke href={basename}>arbeidsforhold</Lenke> /enkeltarbeidsforhold</Normaltekst>
+                <Normaltekst><Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>Min side – arbeidsgiver</Lenke> /<Lenke href={basename + "/"}>arbeidsforhold</Lenke> /enkeltarbeidsforhold</Normaltekst>
             <div className="enkelt-arbeidsforhold">
                 <div className="af-detaljert__header">
                     <span className="af-detaljert__kolonne">
