@@ -39,7 +39,7 @@ const App: FunctionComponent = () => {
                 <Router basename={basename}>
                     <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjonstre={organisasjonstre} />
                     <Route exact path="/enkeltArbeidsforhold">
-                        <EnkeltArbeidsforhold valgtArbeidstaker={valgtArbeidstaker} />
+                        <EnkeltArbeidsforhold valgtArbeidstaker={valgtArbeidstaker} valgtOrganisasjon={valgtOrganisasjon} />
                     </Route>
                     <Route exact path="/">
                         <MineAnsatte
