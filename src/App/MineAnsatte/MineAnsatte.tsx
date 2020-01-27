@@ -111,9 +111,10 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             props.valgtOrganisasjon.OrganizationNumber !== '' &&
             props.valgtOrganisasjon.ParentOrganizationNumber !== ''
         ) {
+        const startTtid = new Date();
             hentogSettArbeidsforhold().then(responsAareg => {
                 setListeFraAareg(responsAareg.arbeidsforholdoversikter);
-                amplitude.logEvent("hentet arbeidsforhold, antall ", responsAareg.arbeidsforholdoversikter.length)
+                    amplitude.logEvent("hentet: " + responsAareg.arbeidsforholdoversikter.length + " arbeidsforhold")
             }
             );
         }
