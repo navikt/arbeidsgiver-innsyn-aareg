@@ -24,18 +24,27 @@ export const visEllerSkjulChevroner = (
     stringIDVenstreChevron: string,
     stringIDChevronHoyre: string
 ) => {
-    const idChevronHoyre = document.getElementById(stringIDChevronHoyre);
-    const idChevronVenstre = document.getElementById(stringIDVenstreChevron);
-    if (idChevronHoyre && idChevronVenstre) {
+    const idChevronHoyreOvre = document.getElementById(stringIDChevronHoyre+"-overst");
+    const idChevronVenstreOvre = document.getElementById(stringIDVenstreChevron+"-overst");
+    const idChevronHoyreNedre = document.getElementById(stringIDChevronHoyre+"-nederst");
+    const idChevronVenstreNedre = document.getElementById(stringIDVenstreChevron+"-nederst");
+
+    if (idChevronHoyreNedre && idChevronHoyreOvre && idChevronVenstreNedre && idChevronVenstreOvre) {
         if (naVarendeSidetall === antallSiderTilsammen) {
-            idChevronHoyre.style.visibility = 'hidden';
-            idChevronVenstre.style.display = 'initial';
+            idChevronHoyreOvre.style.visibility = 'hidden';
+            idChevronVenstreOvre.style.display = 'initial';
+            idChevronHoyreNedre.style.visibility = 'hidden';
+            idChevronVenstreNedre.style.display = 'initial';
         } else if (naVarendeSidetall === 1) {
-            idChevronHoyre.style.visibility = 'initial';
-            idChevronVenstre.style.display = 'none';
+            idChevronHoyreOvre.style.visibility = 'initial';
+            idChevronVenstreOvre.style.display = 'none';
+            idChevronHoyreNedre.style.visibility = 'initial';
+            idChevronVenstreNedre.style.display = 'none';
         } else {
-            idChevronHoyre.style.visibility = 'initial';
-            idChevronVenstre.style.display = 'initial';
+            idChevronHoyreOvre.style.visibility = 'initial';
+            idChevronVenstreOvre.style.display = 'initial';
+            idChevronHoyreNedre.style.visibility = 'initial';
+            idChevronVenstreNedre.style.display = 'initial';
         }
     }
 };

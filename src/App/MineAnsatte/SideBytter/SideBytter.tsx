@@ -11,6 +11,7 @@ interface Props {
     antallSider: number;
     byttSide: (indeks: number) => void;
     naVarendeSidetall: number;
+    plassering: string;
 }
 
 const SideBytter: FunctionComponent<Props> = props => {
@@ -21,7 +22,7 @@ const SideBytter: FunctionComponent<Props> = props => {
             <div className="sidebytter">
                 <button
                     className="sidebytter__chevron"
-                    id="sidebytter-chevron-venstre"
+                    id={"sidebytter-chevron-venstre-"+props.plassering}
                     onClick={() => {
                         props.byttSide(props.naVarendeSidetall - 1);
                     }}
@@ -58,7 +59,7 @@ const SideBytter: FunctionComponent<Props> = props => {
                     className={'sidebytter__chevron'}
                     onClick={() => props.byttSide(props.naVarendeSidetall + 1)}
                     aria-label={'Goto Page ' + (props.naVarendeSidetall - 1).toString()}
-                    id="sidebytter-chevron-hoyre"
+                    id={"sidebytter-chevron-hoyre-"+props.plassering}
                 >
                     <HoyreChevron />
                 </button>
