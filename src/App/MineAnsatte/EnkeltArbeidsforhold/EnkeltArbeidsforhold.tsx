@@ -10,6 +10,9 @@ export declare type EnkeltArbeidsforholdProps = {
 };
 
 const miljo = () => {
+    if (environment.MILJO === 'prod-sbs') {
+        return 'PROD';
+    }
     if (environment.MILJO === 'dev-sbs') {
         return 'Q0';
     }
