@@ -1,5 +1,19 @@
-import { SorteringsAttributt } from './MineAnsatte';
+import { SorteringsAttributt} from './MineAnsatte';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
+import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
+import {SyntheticEvent} from "react";
+import {ToggleKnappPureProps} from "nav-frontend-toggle";
+
+export const byggListeBasertPaPArametere = (originalListe: Arbeidsforhold[], filtrerPaAktiveAvsluttede: string, skalFiltrerePaVarsler: boolean, soketekst: string ) => {
+    let nyListe = filtrerAktiveOgAvsluttede(originalListe,filtrerPaAktiveAvsluttede);
+    if (soketekst.length>0) {
+        nyListe = byggArbeidsforholdSokeresultat(nyListe,soketekst);
+    }
+    if (skalFiltrerePaVarsler) {
+        nyListe = filtrerPaVarsler(nyListe,skalFiltrerePaVarsler);
+    }
+    return nyListe
+};
 
 export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => {
     const sortert: Arbeidsforhold[] = arbeidsforhold.sort((a, b) => {
@@ -88,7 +102,7 @@ const sorterBasertPaFnr = (arbeidsforhold: Arbeidsforhold[]) => {
 
 const sorterBasertPaYrke = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
-        if (a.yrke > b.yrke) {
+        if (a.yrkesbeskrivelse > b.yrkesbeskrivelse) {
             return 1;
         }
         return -1;
@@ -115,13 +129,14 @@ export const sorterArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], atributt:
         case SorteringsAttributt.STILLINGSPROSENT:
             return sorterBasertPaProsent(arbeidsforhold,true,false);
         default:
+            console.log("nadde defaultcase");
             return arbeidsforhold;
     }
 };
 
-export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], aktiv: boolean) => {
+export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], filtrerPa: string) => {
     const navarendeDato = new Date();
-    if (aktiv) {
+    if (filtrerPa === "Aktive") {
         return arbeidsforhold.filter(forhold => {
             if(forhold.ansattTom) {
             const avslutningsdato = new Date(forhold.ansattTom);
@@ -129,6 +144,7 @@ export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], akti
             }else{return true}
         });
     }
+    if (filtrerPa === "Avsluttede")
     return arbeidsforhold.filter(forhold => {
         if(forhold.ansattTom) {
         const avslutningsdato = new Date(forhold.ansattTom);
@@ -136,6 +152,7 @@ export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], akti
         }
         else{return false}
     });
+    return arbeidsforhold;
 };
 
 export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold: Arbeidsforhold[]): number[] => {
@@ -154,3 +171,46 @@ export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold:
     });
     return antallOversikt;
 };
+
+export const filtrerPaVarsler = (listeMedArbeidsforhold: Arbeidsforhold[], filtrerPaVarsler: boolean) => {
+    const filtrertPaVarsler = listeMedArbeidsforhold.filter(forhold => {
+            if (forhold.varsler && filtrerPaVarsler) {
+                if (forhold.varsler.length) {
+                    return forhold
+                }
+            }
+            if (!filtrerPaVarsler) {
+                return forhold
+            }
+            return null;
+        }
+        );
+    return filtrertPaVarsler;
+};
+
+export const filtreringValgt = (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]): string => {
+    let valg = "Alle";
+     toggles.forEach(toggle => {
+        if (toggle.pressed === true && toggle.children) {
+            const includesString: boolean = true;
+            switch (includesString) {
+                case (toggle.children.toString().startsWith("Alle")):
+                    valg = "Alle";
+                    break;
+                case (toggle.children.toString().startsWith("Aktive")):
+                    valg = "Aktive";
+                    break;
+                case (toggle.children.toString().startsWith("Avsluttede")):
+                    valg = "Avsluttede";
+                    break;
+                default:
+                    break
+            }
+
+        };
+
+    });
+    return valg;
+};
+
+
