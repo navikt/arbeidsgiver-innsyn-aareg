@@ -7147,6 +7147,16 @@ nav-frontend-core@^4.0.11:
   resolved "https://registry.yarnpkg.com/nav-frontend-core/-/nav-frontend-core-4.0.11.tgz#826a242141fedfee54337cbf1578d1d7be7da3e2"
   integrity sha512-sm9ZX2EFRBJbBkkr6uDvGkg5KT2GXJPIfmkkqrADqWkBu1SsEiy9p8qzLYQE3EE1pK1bt19kZmadGVkDyQXmvQ==
 
+nav-frontend-ekspanderbartpanel-style@^0.3.23:
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/nav-frontend-ekspanderbartpanel-style/-/nav-frontend-ekspanderbartpanel-style-0.3.23.tgz#dbe5328069958d55018f23effc3312a81989be90"
+  integrity sha512-RaWYBPgLfChmOnkFzo6DmfwuHm5n9rcSWEn1hO+vR6mpNCrABViaUdszg+AE9fq1OECoEAB9bE138GsNkPxkGg==
+
+nav-frontend-ekspanderbartpanel@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/nav-frontend-ekspanderbartpanel/-/nav-frontend-ekspanderbartpanel-2.0.2.tgz#21ba43a54f89bf98d12e4b4ff2b138dc4ad7b440"
+  integrity sha512-q9zjjamYjfyMEVH8JvVq0Nf1Z4r2ItkTDNivg8huL7jAswNWmtt+2tjyt8X9hpx94htI8YbH+TwRoDnApAsqdQ==
+
 nav-frontend-hjelpetekst-style@^2.0.14:
   version "2.0.21"
   resolved "https://registry.yarnpkg.com/nav-frontend-hjelpetekst-style/-/nav-frontend-hjelpetekst-style-2.0.21.tgz#202e759dd02feed537ecac011091315c02b3de12"
@@ -9005,6 +9015,11 @@ react-aria-menubutton@^6.2.0:
     focus-group "^0.3.1"
     prop-types "^15.6.0"
     teeny-tap "^0.2.0"
+
+react-collapse@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/react-collapse/-/react-collapse-5.0.1.tgz#f763b7207aee73baa1ff778b2d0b4ffb49d900a0"
+  integrity sha512-cN2tkxBWizhPQ2JHfe0aUSJtmMthKA17NZkTElpiQ2snQAAi1hssXZ2fv88rAPNNvG5ss4t0PbOZT0TIl9Lk3Q==
 
 react-data-export@^0.5.0:
   version "0.5.0"
