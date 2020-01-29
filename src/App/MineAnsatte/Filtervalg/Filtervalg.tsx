@@ -16,7 +16,7 @@ const Filtervalg: FunctionComponent<Props> = props => {
     };
 
     const [filtrertPaaVarsel,setFiltrertpaaVarsel] = useState<boolean>(false);
-        const arrayMedToggleTekst = ['Alle ' + props.overSiktOverAntallAktiveOgInaktive[0],'Aktive '+ props.overSiktOverAntallAktiveOgInaktive[1].toString(), 'Avsluttede ' +props.overSiktOverAntallAktiveOgInaktive[2].toString() ];
+        const arrayMedToggleTekst = ['Alle (' + props.overSiktOverAntallAktiveOgInaktive[0] + ')','Aktive ('+ props.overSiktOverAntallAktiveOgInaktive[1].toString()+ ')', 'Avsluttede (' +props.overSiktOverAntallAktiveOgInaktive[2].toString()+ ')' ];
         return (
             <>
         <ToggleGruppe
