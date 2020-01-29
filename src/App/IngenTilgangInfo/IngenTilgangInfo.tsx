@@ -11,6 +11,7 @@ export type TilgangsInfoProps = {
     bedrifterMedTilgang: Array<Organisasjon> | null;
 };
 
+
 const IngenTilgangInfo: FunctionComponent<TilgangsInfoProps> = props => {
     return (
         <div className={'ingen-tilgang-info-container'}>
@@ -23,8 +24,9 @@ const IngenTilgangInfo: FunctionComponent<TilgangsInfoProps> = props => {
                     />
                     <Innholdstittel>Du mangler rettigheter i Altinn</Innholdstittel>
                 </div>
-                {props.bedrifterMedTilgang && (
-                    <div className={'ingen-tilgang-info-hovedinnhold'}>
+                <div className={'ingen-tilgang-info-hovedinnhold'}>
+                {props.bedrifterMedTilgang && props.bedrifterMedTilgang.length >0 &&
+                   <div>
                         <Normaltekst>
                             Du har valgt en virksomhet der du mangler rettigheter for å se arbeidsforhold. Velg en
                             virksomhet der du har tilgang.
@@ -41,6 +43,15 @@ const IngenTilgangInfo: FunctionComponent<TilgangsInfoProps> = props => {
                                 ))}
                             </ul>
                         </Ekspanderbartpanel>
+                   </div>
+                }
+                {(!props.bedrifterMedTilgang || props.bedrifterMedTilgang.length === 0)&& (
+                    <div   className={'ingen-tilgang-info-hovedinnhold__bedrifter-med-tilgang-panel'}>
+                        <Normaltekst>
+                            Det finnes ingen virksomheter der du har rettigheter til å se arbeidsforhold.
+                        </Normaltekst>
+                    </div>
+                )}
                         <Undertittel>Denne enkelttjenesten i Altinn gir deg tilgang</Undertittel>
                         <ul className={'ingen-tilgang-info-hovedinnhold__panelinnhold'}>
                             <li>Innsyn i AA-registeret</li>
@@ -65,16 +76,9 @@ const IngenTilgangInfo: FunctionComponent<TilgangsInfoProps> = props => {
                             </Lenke>
                         </p>
                     </div>
-                )}
-                {!props.bedrifterMedTilgang && (
-                    <div className={'ingen-tilgang-info-hovedinnhold'}>
-                        <Normaltekst>
-                            Det finnes ingen virksomheter der du har rettigheter til å se arbeidsforhold.
-                        </Normaltekst>
-                    </div>
-                )}
             </div>
         </div>
+
     );
 };
 
