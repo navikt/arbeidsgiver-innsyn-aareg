@@ -8,15 +8,21 @@ import { EnkeltArbeidsforhold } from './MineAnsatte/EnkeltArbeidsforhold/EnkeltA
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import { JuridiskEnhetMedUnderEnheterArray } from './Objekter/JuridiskEnhetMedUnderenhetArray';
 import { Organisasjon, tomaAltinnOrganisasjon } from './Objekter/OrganisasjonFraAltinn';
-import { hentOrganisasjonerFraAltinn } from '../api/altinnApi';
+import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
 import { byggOrganisasjonstre } from './MineAnsatte/HovedBanner/byggOrganisasjonsTre';
 import { Arbeidstaker } from './Objekter/Arbeidstaker';
+import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 
 const App: FunctionComponent = () => {
+    const SERVICEKODEINNSYNAAREGISTERET = '5441';
+    const SERVICEEDITIONINNSYNAAREGISTERET = '1';
+
     const [organisasjonstre, setorganisasjonstre] = useState(Array<JuridiskEnhetMedUnderEnheterArray>());
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
     const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
-
+    const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
+    //const organisasjonerMedTilgang = hentOrganisasjonerMedTilgangTilAltinntjeneste(SERVICEKODEINNSYNAAREGISTERET,SERVICEEDITIONINNSYNAAREGISTERET);
+    const [harTilgangMedValgtOrg, setHarTilgangMedValgtOrg] = useState(false);
     useEffect(() => {
         const hentOgSettOrganisasjoner = async () => {
             const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
@@ -31,22 +37,48 @@ const App: FunctionComponent = () => {
         hentOgSettOrganisasjoner().then(organisasjoner => {
             lagOgSettTre(organisasjoner).then(juridiskeenheterMedBarn => setorganisasjonstre(juridiskeenheterMedBarn));
         });
+        hentOrganisasjonerMedTilgangTilAltinntjeneste(
+            SERVICEKODEINNSYNAAREGISTERET,
+            SERVICEEDITIONINNSYNAAREGISTERET
+        ).then(organisasjonerMedTilgangFraAltinn => {
+            setOrganisasjonerMedTilgang(organisasjonerMedTilgangFraAltinn);
+        });
     }, []);
 
+    useEffect(() => {
+        setHarTilgangMedValgtOrg(false);
+        if (organisasjonerMedTilgang) {
+            if (
+                organisasjonerMedTilgang.filter(organisasjonMedTilgang => {
+                    return organisasjonMedTilgang.OrganizationNumber === valgtOrganisasjon.OrganizationNumber;
+                }).length >= 1
+            ) {
+                setHarTilgangMedValgtOrg(true);
+            }
+        }
+    }, [valgtOrganisasjon, organisasjonerMedTilgang]);
+
     return (
-        <div className={"app"}>
+        <div className={'app'}>
             <LoginBoundary>
                 <Router basename={basename}>
                     <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjonstre={organisasjonstre} />
+                    {!harTilgangMedValgtOrg && <IngenTilgangInfo bedrifterMedTilgang={organisasjonerMedTilgang} />}
+
                     <Route exact path="/enkeltArbeidsforhold">
-                        <EnkeltArbeidsforhold valgtArbeidstaker={valgtArbeidstaker} valgtOrganisasjon={valgtOrganisasjon} />
-                    </Route>
-                    <Route exact path="/">
-                        <MineAnsatte
-                            setValgtArbeidstaker={setValgtArbeidstaker}
+                        <EnkeltArbeidsforhold
+                            valgtArbeidstaker={valgtArbeidstaker}
                             valgtOrganisasjon={valgtOrganisasjon}
                         />
                     </Route>
+                    {harTilgangMedValgtOrg && (
+                        <Route exact path="/">
+                            <MineAnsatte
+                                setValgtArbeidstaker={setValgtArbeidstaker}
+                                valgtOrganisasjon={valgtOrganisasjon}
+                            />
+                        </Route>
+                    )}
                 </Router>
             </LoginBoundary>
         </div>
