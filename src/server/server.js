@@ -15,18 +15,18 @@ const buildPath = path.join(__dirname, '../../build');
 const port = process.env.PORT || 3000;
 
 
-server.use(BASE_PATH, express.static(path.join(__dirname, '../../build')));
 server.use(`${BASE_PATH}/api`, sonekrysning);
 server.use(`${BASE_PATH}/veilarbstepup/status`, veilarbStatusProxyConfig);
 server.use(
     `${BASE_PATH}/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver`,
     enkeltArbeidsforholdProxyConfig
 );
-createEnvSettingsFile(path.resolve(`${buildPath}/static/js/settings.js`));
 
 server.engine('html', mustacheExpress());
 server.set('view engine', 'mustache');
 server.set('views', buildPath);
+
+createEnvSettingsFile(path.resolve(`${buildPath}/static/js/settings.js`));
 
 server.get(`${BASE_PATH}/redirect-til-login`, (req, res) => {
     const loginUrl =
