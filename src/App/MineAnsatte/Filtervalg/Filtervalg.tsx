@@ -18,7 +18,9 @@ const Filtervalg: FunctionComponent<Props> = props => {
     const [filtrertPaaVarsel,setFiltrertpaaVarsel] = useState<boolean>(false);
         const arrayMedToggleTekst = ['Alle (' + props.overSiktOverAntallAktiveOgInaktive[0] + ')','Aktive ('+ props.overSiktOverAntallAktiveOgInaktive[1].toString()+ ')', 'Avsluttede (' +props.overSiktOverAntallAktiveOgInaktive[2].toString()+ ')' ];
         return (
+
             <>
+                <div className={'togglecontainer'}>
         <ToggleGruppe
             onChange={props.filtreringValgt}
             defaultToggles={[
@@ -28,10 +30,12 @@ const Filtervalg: FunctionComponent<Props> = props => {
             ]}
             minstEn
         />
-        <div className={ "mine-ansatte__varsel-filter"}>
+        <div  className={'varselKnapp'} >
             <ToggleKnappPure children = {"varslinger"} onClick={klikkpaaFilterVarsel } pressed = {filtrertPaaVarsel}/>
+        </div>
             </div>
             </>
+
     );
 };
 
