@@ -126,17 +126,20 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         <div className={"bakgrunnsside"}>
             <Normaltekst><Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>Min side – arbeidsgiver</Lenke> /arbeidsforhold /</Normaltekst>
         <div className={'mine-ansatte'}>
-            <div className={'mine-ansatte__header'}>
+
                 <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
                     Opplysninger fra Aa-registeret
                 </Undertittel>
+
+
+            <div className={'mine-ansatte__header'}>
+            <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Dersom du finner feil eller mangler i oversikten skal disse korrigeres/rapporteres inn via a-meldingen. </AlertStripeInfo>
                 <ExcelEksport
                     arbeidsforholdListe={listeMedArbeidsForhold}
                     navnBedrift={props.valgtOrganisasjon.Name}
                     orgnrBedrift={props.valgtOrganisasjon.OrganizationNumber}
                 />
             </div>
-            <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Dersom du finner feil eller mangler i oversikten skal disse korrigeres/rapporteres inn via a-meldingen. </AlertStripeInfo>
             <div className={'mine-ansatte__sok-og-filter'}>
                 <Normaltekst>Arbeidsforhold</Normaltekst>
                 { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={velgFiltrering} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)} setfiltrerPaVarsler={() => setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler)}/>
