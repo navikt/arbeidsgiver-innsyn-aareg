@@ -1,8 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App/App';
+import { init as Sentry, Integrations } from '@sentry/browser';
 import 'core-js';
 import 'unorm/lib/unorm';
+
+
+
+Sentry({
+    dsn: 'https://037b93dd39294cddb53ee3d9fad4727c@sentry.gc.nav.no/12',
+    release: process.env.GIT_COMMIT_HASH || 'unknown',
+    environment: window.location.hostname,
+    integrations: [new Integrations.Breadcrumbs({ console: false })],
+});
 
 if (process.env.REACT_APP_MOCK) {
     console.log('========================================');
