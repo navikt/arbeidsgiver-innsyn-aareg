@@ -9,6 +9,7 @@
     "@jest/environment": "^24.9.0",
     "@navikt/arbeidsforhold": "^1.1.18",
     "@navikt/bedriftsmeny": "^1.0.15",
+    "@sentry/browser": "^5.11.2",
     "@types/file-saver": "^2.0.1",
     "@types/jest": "24.0.23",
     "@types/node": "12.12.11",
