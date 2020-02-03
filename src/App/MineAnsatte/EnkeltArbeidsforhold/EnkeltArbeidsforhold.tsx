@@ -44,7 +44,7 @@ export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> 
                     <Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>
                         Min side – arbeidsgiver
                     </Lenke>{' '}
-                    /<Lenke href={basename + '/'}>arbeidsforhold</Lenke> /enkeltarbeidsforhold
+                    /<Lenke href={basename + '/?bedrift='+props.valgtOrganisasjon.OrganizationNumber}>arbeidsforhold</Lenke> /enkeltarbeidsforhold
                 </Normaltekst>
                 <div className="enkelt-arbeidsforhold">
                     <div className="af-detaljert__header">
