@@ -42,6 +42,7 @@ export enum SorteringsAttributt {
 export declare interface MineAnsatteProps {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
     valgtOrganisasjon: Organisasjon;
+
 }
 
 export interface KolonneState {
