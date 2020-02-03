@@ -62,23 +62,26 @@ const App: FunctionComponent = () => {
         <div className={'app'}>
             <LoginBoundary>
                 <Router basename={basename}>
-                    <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjonstre={organisasjonstre} />
-                    {!harTilgangMedValgtOrg && <IngenTilgangInfo bedrifterMedTilgang={organisasjonerMedTilgang} />}
 
                     <Route exact path="/enkeltArbeidsforhold">
+                        <HovedBanner byttOrganisasjon={()=>{}} organisasjonstre={[]} />
                         <EnkeltArbeidsforhold
                             valgtArbeidstaker={valgtArbeidstaker}
                             valgtOrganisasjon={valgtOrganisasjon}
                         />
                     </Route>
-                    {harTilgangMedValgtOrg && (
+
                         <Route exact path="/">
+                            <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjonstre={organisasjonstre} />
+                            {!harTilgangMedValgtOrg && <IngenTilgangInfo bedrifterMedTilgang={organisasjonerMedTilgang} />}
+                            {harTilgangMedValgtOrg && (
                             <MineAnsatte
                                 setValgtArbeidstaker={setValgtArbeidstaker}
                                 valgtOrganisasjon={valgtOrganisasjon}
                             />
+                            )}
                         </Route>
-                    )}
+
                 </Router>
             </LoginBoundary>
         </div>
