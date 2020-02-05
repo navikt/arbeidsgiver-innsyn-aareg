@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold/dist';
 import environment from '../../../utils/environment';
-import AlertStripe from 'nav-frontend-alertstriper';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
 import './EnkeltArbeidsforhold.less';
@@ -36,6 +35,10 @@ export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> 
 ) => {
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
+    if (!arbeidsforholdIdFraUrl || !props.valgtArbeidstaker){
+        window.location.href=basename + '/?bedrift=' + props.valgtOrganisasjon.OrganizationNumber;
+    }
+
     if (arbeidsforholdIdFraUrl && props.valgtArbeidstaker) {
         const arbeidsforholdId = parseInt(arbeidsforholdIdFraUrl);
         return (
@@ -44,7 +47,11 @@ export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> 
                     <Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>
                         Min side – arbeidsgiver
                     </Lenke>{' '}
-                    /<Lenke href={basename + '/?bedrift='+props.valgtOrganisasjon.OrganizationNumber}>arbeidsforhold</Lenke> /enkeltarbeidsforhold
+                    /
+                    <Lenke href={basename + '/?bedrift=' + props.valgtOrganisasjon.OrganizationNumber}>
+                        arbeidsforhold
+                    </Lenke>{' '}
+                    /enkeltarbeidsforhold
                 </Normaltekst>
                 <div className="enkelt-arbeidsforhold">
                     <div className="af-detaljert__header">
@@ -76,10 +83,6 @@ export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> 
         );
     }
     return (
-        <div>
-            <AlertStripe type={'feil'}>
-                Mangler gyldig arbeidsforholdsId eller fødselsnummer på arbeidstaker.
-            </AlertStripe>
-        </div>
+        <div></div>
     );
 };
