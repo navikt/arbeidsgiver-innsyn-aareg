@@ -7,10 +7,13 @@ import { TilgangsStyringInfoTekst } from './TilgangsStyringInfoTekst/TilgangsSty
 import environment from "../../utils/environment";
 import {Hovedknapp} from "nav-frontend-knapper";
 import handshake from './handshake.svg';
+import amplitude from "../../utils/amplitude";
 
 
 const LoggInn: FunctionComponent = () => {
+
     const redirectTilLogin = () => {
+        amplitude.logEvent("#arbeidsforhold bruker klikket på log-in via forside ");
         if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs') {
             window.location.href = '/arbeidsforhold/redirect-til-login';
         } else {
