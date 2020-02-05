@@ -25,4 +25,3 @@ if (process.env.REACT_APP_MOCK) {
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));
-
