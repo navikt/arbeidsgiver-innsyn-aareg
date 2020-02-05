@@ -24,8 +24,10 @@ import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
 import {ToggleKnappPureProps} from 'nav-frontend-toggle';
 import Filtervalg from "./Filtervalg/Filtervalg";
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import amplitude from "../../utils/amplitude";
 import Lenke from "nav-frontend-lenker";
 import {linkTilMinSideArbeidsgiver} from "../lenker";
+import environment from "../../utils/environment";
 import NavFrontendSpinner from "nav-frontend-spinner";
 
 export enum SorteringsAttributt {
@@ -94,8 +96,10 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         ) {
             hentogSettArbeidsforhold().then(responsAareg => {
                 setListeFraAareg(responsAareg.arbeidsforholdoversikter);
-                setFerdiglastet(true);
-            });
+                    amplitude.logEvent(" #arbeidsforhold hentet: " + responsAareg.arbeidsforholdoversikter.length + " arbeidsforhold i miljøet " + environment.MILJO);
+                    setFerdiglastet(true);
+            }
+            );
         }
     }, [props.valgtOrganisasjon]);
 

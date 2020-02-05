@@ -68,7 +68,6 @@ const setTom = (datoFom: string): string => {
   }
   const nyDatoTom = datoTom;
   return nyDatoTom;
-
 };
 
 const setFom = (): string => {
@@ -78,8 +77,7 @@ const setFom = (): string => {
 
 const setYrke = (): string => {
   const indeks = genererRandomIndex(yrker.length);
-  return yrker[indeks];
-
+  return yrker[indeks].toUpperCase();
 };
 
 const setFnr = (): string => {
@@ -121,7 +119,7 @@ const lagAnsattForhold = (): Arbeidsforhold => {
     ...tomtArbeidsForhold,
     ansattFom: fomDato,
     ansattTom: tomDato,
-    yrke:setYrke(),
+    yrkesbeskrivelse:setYrke(),
     varsler: setVarslingskode(),
     permisjonPermitteringsprosent: setProsent(),
     stillingsprosent: setProsent(),
