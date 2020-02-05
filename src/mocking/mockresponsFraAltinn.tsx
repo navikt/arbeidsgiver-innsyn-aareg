@@ -189,3 +189,29 @@ export const testRespons: Organisasjon[] = [
         Status: 'Active'
     }
 ];
+export const tilgangTilAtinntjenesteRespons: Organisasjon[] = [
+    {
+        Name: 'MALMEFJORDEN OG RIDABU REGNSKAP',
+        Type: 'Enterprise',
+        ParentOrganizationNumber: null,
+        OrganizationNumber: '810825472',
+        OrganizationForm: 'AS',
+        Status: 'Active'
+    },
+    {
+        Name: 'MAURA OG KOLBU REGNSKAP',
+        Type: 'Business',
+        ParentOrganizationNumber: '810825472',
+        OrganizationNumber: '910825518',
+        OrganizationForm: 'BEDR',
+        Status: 'Active'
+    },
+    {
+        Name: 'GAMLE FREDRIKSTAD OG RAMNES REGNSKAP',
+        Type: 'Business',
+        ParentOrganizationNumber: '810825472',
+        OrganizationNumber: '910825526',
+        OrganizationForm: 'BEDR',
+        Status: 'Active'
+    }
+];
