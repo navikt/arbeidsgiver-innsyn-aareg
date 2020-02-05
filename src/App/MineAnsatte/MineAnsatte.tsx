@@ -28,6 +28,7 @@ import amplitude from "../../utils/amplitude";
 import Lenke from "nav-frontend-lenker";
 import {linkTilMinSideArbeidsgiver} from "../lenker";
 import environment from "../../utils/environment";
+import NavFrontendSpinner from "nav-frontend-spinner";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -64,6 +65,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     const [soketekst, setSoketekst] = useState('');
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState(false);
+    const [ferdiglastet, setFerdiglastet] = useState(false);
     const arbeidsforholdPerSide = 25;
     const setIndeksOgGenererListe = (indeks: number) => {
         setnaVarendeSidetall(indeks);
@@ -79,6 +81,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     };
 
     useEffect(() => {
+        setFerdiglastet(false);
         const hentogSettArbeidsforhold = async () => {
             const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg(
                 props.valgtOrganisasjon.OrganizationNumber,
@@ -92,7 +95,8 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         ) {
             hentogSettArbeidsforhold().then(responsAareg => {
                 setListeFraAareg(responsAareg.arbeidsforholdoversikter);
-                    amplitude.logEvent(" #arbeidsforhold hentet: " + responsAareg.arbeidsforholdoversikter.length + " arbeidsforhold i miljøet " + environment.MILJO)
+                    amplitude.logEvent(" #arbeidsforhold hentet: " + responsAareg.arbeidsforholdoversikter.length + " arbeidsforhold i miljøet " + environment.MILJO);
+                    setFerdiglastet(true);
             }
             );
         }
@@ -155,7 +159,8 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     naVarendeSidetall={naVarendeSidetall}
                 />}
             </div>
-            <TabellMineAnsatte
+            { !ferdiglastet && <div className={"mine-ansatte__spinner-container"}> Henter arbeidsforhold<NavFrontendSpinner className={"mine-ansatte__spinner"}/></div>}
+            { ferdiglastet && <><TabellMineAnsatte
                 className={'mine-ansatte__table'}
                 listeMedArbeidsForhold={forholdPaEnSide}
                 setNavarendeKolonne={setNavarendeKolonne}
@@ -170,6 +175,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 settValgtArbeidsgiver={props.setValgtArbeidstaker}
                 valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
             />
+            </>}
             {antallSider > 1 && <SideBytter
                 plassering={"nederst"}
                 className={'nedre-sidebytter'}
