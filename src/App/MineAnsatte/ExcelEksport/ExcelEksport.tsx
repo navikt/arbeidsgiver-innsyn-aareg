@@ -84,7 +84,7 @@ const ExcelEksport: FunctionComponent<ExcelEksportProps> = (props: ExcelEksportP
     return (
         <div className={props.className}>
             <ExcelFile
-                element={<Hovedknapp>Last Ned</Hovedknapp>}
+                element={<Hovedknapp>Last ned som excelfil</Hovedknapp>}
                 filename={
                     'ANSATTFORHOLD_' +
                     props.navnBedrift +
