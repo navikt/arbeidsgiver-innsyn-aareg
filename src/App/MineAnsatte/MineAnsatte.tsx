@@ -167,7 +167,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 />}
             </div>
             { !ferdiglastet && <div className={"mine-ansatte__spinner-container"}> Henter arbeidsforhold<NavFrontendSpinner className={"mine-ansatte__spinner"}/></div>}
-            { ferdiglastet && <><TabellMineAnsatte
+            { ferdiglastet && <>  <TabellMineAnsatte
                 className={'mine-ansatte__table'}
                 listeMedArbeidsForhold={forholdPaEnSide}
                 setNavarendeKolonne={setNavarendeKolonne}
@@ -182,7 +182,9 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 settValgtArbeidsgiver={props.setValgtArbeidstaker}
                 valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
             />
-            </>}
+             {listeMedArbeidsForhold.length===0 && listeFraAareg.length>0 && "Finner ingen arbeidsforhold under disse søk- og filtreringsvalgene. Prøv å endre søkeord eller bytt filtreringsvalg."}
+            </>
+            }
             {antallSider > 1 && <SideBytter
                 plassering={"nederst"}
                 className={'nedre-sidebytter'}
