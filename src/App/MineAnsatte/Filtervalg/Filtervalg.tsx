@@ -6,6 +6,7 @@ interface Props {
     filtreringValgt: (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]) => void;
     overSiktOverAntallAktiveOgInaktive: number[]
     setfiltrerPaVarsler: () => void
+    anallVarsler: number;
 }
 
 const Filtervalg: FunctionComponent<Props> = props => {
@@ -31,7 +32,7 @@ const Filtervalg: FunctionComponent<Props> = props => {
             minstEn
         />
         <div  className={'varselKnapp'} >
-            <ToggleKnappPure children = {"varslinger"} onClick={klikkpaaFilterVarsel } pressed = {filtrertPaaVarsel}/>
+            <ToggleKnappPure children = {"varslinger (" + props.anallVarsler.toString() + ")"} onClick={klikkpaaFilterVarsel } pressed = {filtrertPaaVarsel}/>
         </div>
             </div>
             </>

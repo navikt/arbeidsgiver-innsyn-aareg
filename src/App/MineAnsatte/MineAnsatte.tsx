@@ -118,6 +118,9 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         forholdPaEnSide =regnUtArbeidsForholdSomSkalVisesPaEnSide(naVarendeSidetall,arbeidsforholdPerSide,antallSider,sorterArbeidsforhold(listeMedArbeidsForhold, navarendeKolonne.sorteringsAttributt));
     }
 
+    const antallVarsler = listeMedArbeidsForhold.filter(forhold => {
+        return forhold.varsler;}).length;
+
     useEffect(() => {
         visEllerSkjulChevroner(
             naVarendeSidetall,
@@ -147,7 +150,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             </div>
             <div className={'mine-ansatte__sok-og-filter'}>
                 <Normaltekst>Arbeidsforhold</Normaltekst>
-                { listeFraAareg.length > 0 && <Filtervalg filtreringValgt={velgFiltrering} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)} setfiltrerPaVarsler={() => setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler)}/>
+                { listeFraAareg.length > 0 && <Filtervalg anallVarsler={antallVarsler} filtreringValgt={velgFiltrering} overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(listeFraAareg)} setfiltrerPaVarsler={() => setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler)}/>
           }
                 <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
             </div>
