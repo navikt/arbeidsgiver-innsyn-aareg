@@ -14,7 +14,6 @@ const enkeltArbeidsforholdProxyConfig = require('./enkeltArbeidsforholdProxy');
 const buildPath = path.join(__dirname, '../../build');
 const port = process.env.PORT || 3000;
 
-
 server.use(`${BASE_PATH}/api`, sonekrysning);
 server.use(`${BASE_PATH}/veilarbstepup/status`, veilarbStatusProxyConfig);
 server.use(
@@ -45,7 +44,6 @@ const renderApp = decoratorFragments =>
             }
         });
     });
-
 
 const startServer = html => {
     console.log('start server');
@@ -90,5 +88,5 @@ if (process.env.REACT_APP_MOCK) {
         .then(startServer, error => {
             console.error('Kunne ikke rendre app ', error);
             process.exit(1);
-        })
+        });
 }
