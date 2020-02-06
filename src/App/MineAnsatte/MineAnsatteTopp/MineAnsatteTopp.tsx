@@ -42,7 +42,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({ setSoketekst, responsFraAar
 
     return (
     <>
-    {((responsFraAaregisteret.length === 0 && "Det finnes ingen arbeidsforhold rapportert inn til Aa-registret etter 01.01.2015 for valgt underenhet. Dersom dette er feil må det rettes opp via a-meldingen.")
+    {((responsFraAaregisteret.length === 0 && <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Det finnes ingen arbeidsforhold rapportert inn til Aa-registret etter 01.01.2015 for valgt underenhet. Dersom dette er feil må det rettes opp via a-meldingen.</AlertStripeInfo>)
         || (responsFraAaregisteret.length > 0 && <> <div className={'mine-ansatte__header'}>
             <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Dersom du finner feil eller mangler i oversikten skal disse korrigeres/rapporteres inn via a-meldingen. </AlertStripeInfo>
             <ExcelEksport
