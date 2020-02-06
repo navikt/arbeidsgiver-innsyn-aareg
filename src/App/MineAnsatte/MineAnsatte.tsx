@@ -134,14 +134,12 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         <div className={"bakgrunnsside"}>
             <Normaltekst><Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>Min side – arbeidsgiver</Lenke> /arbeidsforhold /</Normaltekst>
         <div className={'mine-ansatte'}>
-
-                <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
+            <Undertittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
                     Opplysninger fra Aa-registeret
                 </Undertittel>
-
-
-            <div className={'mine-ansatte__header'}>
-            <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Dersom du finner feil eller mangler i oversikten skal disse korrigeres/rapporteres inn via a-meldingen. </AlertStripeInfo>
+            {((listeFraAareg.length === 0 && "Det finnes ingen arbeidsforhold rapportert inn til Aa-registret etter 01.01.2015 for valgt underenhet. Dersom dette er feil må det rettes opp via a-meldingen.")
+             || (listeFraAareg.length > 0 && <> <div className={'mine-ansatte__header'}>
+                <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Dersom du finner feil eller mangler i oversikten skal disse korrigeres/rapporteres inn via a-meldingen. </AlertStripeInfo>
                 <ExcelEksport
                     arbeidsforholdListe={listeMedArbeidsForhold}
                     navnBedrift={props.valgtOrganisasjon.Name}
@@ -166,6 +164,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     naVarendeSidetall={naVarendeSidetall}
                 />}
             </div>
+            </>))} {( listeFraAareg.length>0 && listeMedArbeidsForhold.length === 0 && "Finner ingen arbeidsforhold under disse søk- og filtreringsvalgene. Prøv å endre søkeord eller bytt filtreringsvalg.")}
             { !ferdiglastet && <div className={"mine-ansatte__spinner-container"}> Henter arbeidsforhold<NavFrontendSpinner className={"mine-ansatte__spinner"}/></div>}
             { ferdiglastet && <>  <TabellMineAnsatte
                 className={'mine-ansatte__table'}
@@ -182,7 +181,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                 settValgtArbeidsgiver={props.setValgtArbeidstaker}
                 valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
             />
-             {listeMedArbeidsForhold.length===0 && listeFraAareg.length>0 && "Finner ingen arbeidsforhold under disse søk- og filtreringsvalgene. Prøv å endre søkeord eller bytt filtreringsvalg."}
             </>
             }
             {antallSider > 1 && <SideBytter
