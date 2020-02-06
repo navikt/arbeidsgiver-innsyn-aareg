@@ -1,0 +1,39 @@
+@import '../../../../node_modules/nav-frontend-core/less/_variabler';
+
+.mine-ansatte {
+
+  &__header{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+
+  }
+
+  &__topp {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  &__sok-og-filter {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+  }
+
+  &__antall-forhold {
+    margin: 0;
+  }
+
+}
+
+@media (max-width: @screen-sm) {
+  .mine-ansatte {
+
+    &__antall-forhold {
+      margin: 0 0.6rem 1rem 0.5rem;
+    }
+
+  }
+
+}
