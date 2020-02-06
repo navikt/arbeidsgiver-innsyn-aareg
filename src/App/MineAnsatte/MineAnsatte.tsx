@@ -1,11 +1,11 @@
-import React, {FunctionComponent, SyntheticEvent, useEffect, useState} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import './MineAnsatte.less';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import {
-    byggListeBasertPaPArametere, filtreringValgt, sorterArbeidsforhold,
+    byggListeBasertPaPArametere, sorterArbeidsforhold,
 } from './sorteringOgFiltreringsFunksjoner';
 
 import {
@@ -18,7 +18,6 @@ import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
-import {ToggleKnappPureProps} from 'nav-frontend-toggle';
 import amplitude from "../../utils/amplitude";
 import Lenke from "nav-frontend-lenker";
 import {linkTilMinSideArbeidsgiver} from "../lenker";
@@ -66,15 +65,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     const arbeidsforholdPerSide = 25;
     const setIndeksOgGenererListe = (indeks: number) => {
         setnaVarendeSidetall(indeks);
-    };
-
-    const onSoketekstChange = (soketekst: string) => {
-        setSoketekst(soketekst);
-    };
-
-    const velgFiltrering = (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]) => {
-        const filtrering = filtreringValgt(event, toggles);
-        setFiltrerPaAktiveAvsluttede(filtrering);
     };
 
     useEffect(() => {
@@ -134,8 +124,8 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     Opplysninger fra Aa-registeret
                 </Undertittel>
             <MineAnsatteTopp valgtOrganisasjon={props.valgtOrganisasjon } setIndeksOgGenererListe={setIndeksOgGenererListe}
-                             onSoketekstChange={onSoketekstChange} antallSider={antallSider} antallVarsler={antallVarsler} lengdeResponsFiltrertListe={listeMedArbeidsForhold.length} velgFiltrering={velgFiltrering}
-                             listeMedArbeidsforhold={listeMedArbeidsForhold} naVarendeSidetall={naVarendeSidetall} responsFraAaregisteret={listeFraAareg} soketekst={soketekst} setSkalFiltrerePaVarsler={setSkalFiltrerePaVarsler} skalFiltrerePaVarsler={skalFiltrerePaVarsler}  />
+                             setSoketekst={setSoketekst}  antallSider={antallSider} antallVarsler={antallVarsler} lengdeResponsFiltrertListe={listeMedArbeidsForhold.length}
+                             listeMedArbeidsforhold={listeMedArbeidsForhold} naVarendeSidetall={naVarendeSidetall} responsFraAaregisteret={listeFraAareg} soketekst={soketekst} setSkalFiltrerePaVarsler={setSkalFiltrerePaVarsler} skalFiltrerePaVarsler={skalFiltrerePaVarsler} setFiltrerPaAktiveAvsluttede={setFiltrerPaAktiveAvsluttede}  />
             { !ferdiglastet && <div className={"mine-ansatte__spinner-container"}> Henter arbeidsforhold<NavFrontendSpinner className={"mine-ansatte__spinner"}/></div>}
             { ferdiglastet && <>  <TabellMineAnsatte
                 className={'mine-ansatte__table'}
