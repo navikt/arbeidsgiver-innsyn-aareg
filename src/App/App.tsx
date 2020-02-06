@@ -13,7 +13,7 @@ import { byggOrganisasjonstre } from './MineAnsatte/HovedBanner/byggOrganisasjon
 import { Arbeidstaker } from './Objekter/Arbeidstaker';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 
-enum TILGANSSTATE {
+enum TILGANGSSTATE {
     LASTER,
     TILGANG,
     IKKE_TILGANG,
@@ -22,14 +22,14 @@ enum TILGANSSTATE {
 const App: FunctionComponent = () => {
     const SERVICEKODEINNSYNAAREGISTERET = '5441';
     const SERVICEEDITIONINNSYNAAREGISTERET = '1';
-    const [tilgangState, setTilgangState] = useState(TILGANSSTATE.LASTER);
+    const [tilgangState, setTilgangState] = useState(TILGANGSSTATE.LASTER);
     const [organisasjonstre, setorganisasjonstre] = useState(Array<JuridiskEnhetMedUnderEnheterArray>());
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
     const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
     const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
 
     useEffect(() => {
-        setTilgangState(TILGANSSTATE.LASTER);
+        setTilgangState(TILGANGSSTATE.LASTER);
         const hentOgSettOrganisasjoner = async () => {
             const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
             return organisasjonliste;
@@ -52,17 +52,17 @@ const App: FunctionComponent = () => {
     }, []);
 
     useEffect(() => {
-        setTilgangState(TILGANSSTATE.LASTER);
+        setTilgangState(TILGANGSSTATE.LASTER);
         if (organisasjonerMedTilgang && valgtOrganisasjon !== tomaAltinnOrganisasjon) {
             if (
                 organisasjonerMedTilgang.filter(organisasjonMedTilgang => {
                     return organisasjonMedTilgang.OrganizationNumber === valgtOrganisasjon.OrganizationNumber;
                 }).length >= 1
             ) {
-                setTilgangState(TILGANSSTATE.TILGANG);
+                setTilgangState(TILGANGSSTATE.TILGANG);
             }
             else {
-                setTilgangState(TILGANSSTATE.IKKE_TILGANG);
+                setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
             }
         }
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
@@ -70,8 +70,7 @@ const App: FunctionComponent = () => {
     return (
         <div className={'app'}>
             <LoginBoundary>
-
-                    <Router basename={basename}>
+                <Router basename={basename}>
                         <Route exact path="/enkeltArbeidsforhold">
                             <HovedBanner byttOrganisasjon={() => {
                             }} organisasjonstre={[]}/>
@@ -83,10 +82,10 @@ const App: FunctionComponent = () => {
 
                         <Route exact path="/">
                             <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjonstre={organisasjonstre}/>
-                            { tilgangState !== TILGANSSTATE.LASTER && <>
-                            { tilgangState === TILGANSSTATE.IKKE_TILGANG &&
+                            { tilgangState !== TILGANGSSTATE.LASTER && <>
+                            { tilgangState === TILGANGSSTATE.IKKE_TILGANG &&
                                 <IngenTilgangInfo bedrifterMedTilgang={organisasjonerMedTilgang}/> }
-                            { tilgangState === TILGANSSTATE.TILGANG && <MineAnsatte
+                            { tilgangState === TILGANGSSTATE.TILGANG && <MineAnsatte
                                 setValgtArbeidstaker={setValgtArbeidstaker}
                                 valgtOrganisasjon={valgtOrganisasjon}
                             />}
