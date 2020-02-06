@@ -10,7 +10,7 @@ import {Normaltekst} from "nav-frontend-typografi";
 import Sokefelt from "../Sokefelt/Sokefelt";
 import Filtervalg from "../Filtervalg/Filtervalg";
 import SideBytter from "../SideBytter/SideBytter";
-import {tellAntallAktiveOgInaktiveArbeidsforhold} from "../sorteringOgFiltreringsFunksjoner";
+import {filtreringValgt, tellAntallAktiveOgInaktiveArbeidsforhold} from "../sorteringOgFiltreringsFunksjoner";
 
 interface Props {
     responsFraAaregisteret: Arbeidsforhold[];
@@ -19,17 +19,27 @@ interface Props {
     valgtOrganisasjon: Organisasjon;
     antallSider: number;
     soketekst: string;
-    onSoketekstChange: (soketekst: string) => void;
+    setSoketekst: (soketekst: string) => void;
     antallVarsler: number;
-    velgFiltrering: (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]) => void;
    setIndeksOgGenererListe:  (indeks: number) => void;
     naVarendeSidetall: number;
     setSkalFiltrerePaVarsler: (skalFiltrerePaVarsler: boolean) => void;
     skalFiltrerePaVarsler: boolean
+    setFiltrerPaAktiveAvsluttede: (filtrering: string) => void;
 };
 
 
-const MineAnsatteTopp: FunctionComponent<Props> = ({ responsFraAaregisteret, lengdeResponsFiltrertListe,listeMedArbeidsforhold, valgtOrganisasjon, onSoketekstChange, soketekst, antallVarsler, velgFiltrering, antallSider ,setIndeksOgGenererListe, setSkalFiltrerePaVarsler, skalFiltrerePaVarsler}, naVarendeSidetall) => {
+const MineAnsatteTopp: FunctionComponent<Props> = ({ setSoketekst, responsFraAaregisteret, lengdeResponsFiltrertListe,listeMedArbeidsforhold, valgtOrganisasjon, soketekst, antallVarsler, setFiltrerPaAktiveAvsluttede, antallSider ,setIndeksOgGenererListe, setSkalFiltrerePaVarsler, skalFiltrerePaVarsler}, naVarendeSidetall) => {
+
+    const onSoketekstChange = (soketekst: string) => {
+        setSoketekst(soketekst);
+    };
+
+    const velgFiltrering = (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]) => {
+        const filtrering = filtreringValgt(event, toggles);
+        setFiltrerPaAktiveAvsluttede(filtrering);
+    };
+
     return (
     <>
     {((responsFraAaregisteret.length === 0 && "Det finnes ingen arbeidsforhold rapportert inn til Aa-registret etter 01.01.2015 for valgt underenhet. Dersom dette er feil må det rettes opp via a-meldingen.")
