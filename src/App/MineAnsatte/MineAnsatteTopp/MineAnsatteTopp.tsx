@@ -22,8 +22,6 @@ interface Props {
     onSoketekstChange: (soketekst: string) => void;
     antallVarsler: number;
     velgFiltrering: (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]) => void;
-    overSiktOverAntallAktiveOgInaktive: number[];
-    setfiltrerPaVarsler: () => void;
    setIndeksOgGenererListe:  (indeks: number) => void;
     naVarendeSidetall: number;
     setSkalFiltrerePaVarsler: (skalFiltrerePaVarsler: boolean) => void;
