@@ -1,16 +1,16 @@
 
 import './MineAnsatteTopp.less';
 import React, {FunctionComponent, SyntheticEvent} from "react";
-import {AlertStripeInfo} from "nav-frontend-alertstriper";
-import ExcelEksport from "../../ExcelEksport/ExcelEksport";
-import {Normaltekst} from "nav-frontend-typografi";
-import Filtervalg from "../../Filtervalg/Filtervalg";
-import {tellAntallAktiveOgInaktiveArbeidsforhold} from "../../sorteringOgFiltreringsFunksjoner";
-import Sokefelt from "../Sokefelt";
-import SideBytter from "../../SideBytter/SideBytter";
-import {Arbeidsforhold} from "../../../Objekter/ArbeidsForhold";
-import {Organisasjon} from "../../../Objekter/OrganisasjonFraAltinn";
 import {ToggleKnappPureProps} from "nav-frontend-toggle";
+import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
+import {Organisasjon} from "@navikt/bedriftsmeny/lib/Organisasjon";
+import {AlertStripeInfo} from "nav-frontend-alertstriper";
+import ExcelEksport from "../ExcelEksport/ExcelEksport";
+import {Normaltekst} from "nav-frontend-typografi";
+import Sokefelt from "../Sokefelt/Sokefelt";
+import Filtervalg from "../Filtervalg/Filtervalg";
+import SideBytter from "../SideBytter/SideBytter";
+import {tellAntallAktiveOgInaktiveArbeidsforhold} from "../sorteringOgFiltreringsFunksjoner";
 
 interface Props {
     responsFraAaregisteret: Arbeidsforhold[];
