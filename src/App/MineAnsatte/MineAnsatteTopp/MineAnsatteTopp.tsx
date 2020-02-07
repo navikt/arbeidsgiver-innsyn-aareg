@@ -6,7 +6,7 @@ import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
 import {Organisasjon} from "@navikt/bedriftsmeny/lib/Organisasjon";
 import {AlertStripeInfo} from "nav-frontend-alertstriper";
 import ExcelEksport from "../ExcelEksport/ExcelEksport";
-import {Normaltekst} from "nav-frontend-typografi";
+import {Ingress, Normaltekst, Systemtittel} from "nav-frontend-typografi";
 import Sokefelt from "../Sokefelt/Sokefelt";
 import Filtervalg from "../Filtervalg/Filtervalg";
 import SideBytter from "../SideBytter/SideBytter";
@@ -69,7 +69,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({ setSoketekst, responsFraAar
                     naVarendeSidetall={naVarendeSidetall}
                 />}
             </div>
-        </>))} {( responsFraAaregisteret.length >0 && lengdeResponsFiltrertListe === 0 && "Finner ingen arbeidsforhold under disse søk- og filtreringsvalgene. Prøv å endre søkeord eller bytt filtreringsvalg.")}
+        </>))} {( responsFraAaregisteret.length >0 && lengdeResponsFiltrertListe === 0 && <div className={"mine-ansatte__bytt-filtrering"}><Systemtittel>Finner ingen arbeidsforhold.</Systemtittel> <Ingress>Prøv å endre søkeord eller bytt filtreringsvalg.</Ingress></div>)}
         </>
 
 );
