@@ -12,6 +12,8 @@ import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjene
 import { byggOrganisasjonstre } from './MineAnsatte/HovedBanner/byggOrganisasjonsTre';
 import { Arbeidstaker } from './Objekter/Arbeidstaker';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
+import amplitude from "../utils/amplitude";
+import environment from "../utils/environment";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -27,6 +29,8 @@ const App: FunctionComponent = () => {
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
     const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
     const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
+
+    amplitude.logEvent("#arbeidsforhold logget pa i" + environment.MILJO);
 
     useEffect(() => {
         setTilgangState(TILGANGSSTATE.LASTER);
