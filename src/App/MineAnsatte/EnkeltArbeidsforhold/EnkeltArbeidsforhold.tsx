@@ -35,8 +35,10 @@ export const EnkeltArbeidsforhold: FunctionComponent<EnkeltArbeidsforholdProps> 
 ) => {
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
+    const bedriftFraUrl = new URL(window.location.href).searchParams.get('bedrift');
     if (!arbeidsforholdIdFraUrl || !props.valgtArbeidstaker){
-        window.location.href=basename + '/?bedrift=' + props.valgtOrganisasjon.OrganizationNumber;
+        console.log("redirect til ",basename + '/?bedrift=' + props.valgtOrganisasjon.OrganizationNumber);
+        window.location.href=basename + '/?bedrift=' + bedriftFraUrl;
     }
 
     if (arbeidsforholdIdFraUrl && props.valgtArbeidstaker) {
