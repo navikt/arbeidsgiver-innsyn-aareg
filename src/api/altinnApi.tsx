@@ -19,7 +19,6 @@ export async function hentOrganisasjonerMedTilgangTilAltinntjeneste(
     );
     if (respons.ok) {
         return await respons.json();
-    } else {
-        return [];
     }
+    return [];
 }
