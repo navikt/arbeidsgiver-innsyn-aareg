@@ -6,7 +6,7 @@ import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
 import {Organisasjon} from "@navikt/bedriftsmeny/lib/Organisasjon";
 import {AlertStripeInfo} from "nav-frontend-alertstriper";
 import ExcelEksport from "../ExcelEksport/ExcelEksport";
-import {Normaltekst} from "nav-frontend-typografi";
+import {Ingress, Normaltekst, Systemtittel} from "nav-frontend-typografi";
 import Sokefelt from "../Sokefelt/Sokefelt";
 import Filtervalg from "../Filtervalg/Filtervalg";
 import SideBytter from "../SideBytter/SideBytter";
@@ -42,14 +42,14 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({ setSoketekst, responsFraAar
 
     return (
     <>
-    {((responsFraAaregisteret.length === 0 && "Det finnes ingen arbeidsforhold rapportert inn til Aa-registret etter 01.01.2015 for valgt underenhet. Dersom dette er feil må det rettes opp via a-meldingen.")
+    {((responsFraAaregisteret.length === 0 && <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Det finnes ingen arbeidsforhold rapportert inn til Aa-registret etter 01.01.2015 for valgt underenhet. Dersom dette er feil må det rettes opp via a-meldingen.</AlertStripeInfo>)
         || (responsFraAaregisteret.length > 0 && <> <div className={'mine-ansatte__header'}>
             <AlertStripeInfo className = {"mine-ansatte__informasjon"}>Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Dersom du finner feil eller mangler i oversikten skal disse korrigeres/rapporteres inn via a-meldingen. </AlertStripeInfo>
-            <ExcelEksport
+            {lengdeResponsFiltrertListe>0 && <ExcelEksport
                 arbeidsforholdListe={listeMedArbeidsforhold}
                 navnBedrift={valgtOrganisasjon.Name}
                 orgnrBedrift={valgtOrganisasjon.OrganizationNumber}
-            />
+            />}
         </div>
             <div className={'mine-ansatte__sok-og-filter'}>
                 <Normaltekst>Arbeidsforhold</Normaltekst>
@@ -69,7 +69,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({ setSoketekst, responsFraAar
                     naVarendeSidetall={naVarendeSidetall}
                 />}
             </div>
-        </>))} {( responsFraAaregisteret.length >0 && lengdeResponsFiltrertListe === 0 && "Finner ingen arbeidsforhold under disse søk- og filtreringsvalgene. Prøv å endre søkeord eller bytt filtreringsvalg.")}
+        </>))} {( responsFraAaregisteret.length >0 && lengdeResponsFiltrertListe === 0 && <div className={"mine-ansatte__bytt-filtrering"}><Systemtittel>Finner ingen arbeidsforhold.</Systemtittel> <Ingress>Prøv å endre søkeord eller bytt filtreringsvalg.</Ingress></div>)}
         </>
 
 );
