@@ -33,7 +33,6 @@ const App: FunctionComponent = () => {
     amplitude.logEvent("#arbeidsforhold logget pa i" + environment.MILJO);
 
     useEffect(() => {
-        setTilgangState(TILGANGSSTATE.LASTER);
         const hentOgSettOrganisasjoner = async () => {
             const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
             return organisasjonliste;
@@ -65,10 +64,13 @@ const App: FunctionComponent = () => {
             ) {
                 setTilgangState(TILGANGSSTATE.TILGANG);
             }
-            else {
-                setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
+            else {setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
             }
         }
+        if (organisasjonerMedTilgang && organisasjonerMedTilgang.length === 0) {
+            setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
+        }
+
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
 
     return (
