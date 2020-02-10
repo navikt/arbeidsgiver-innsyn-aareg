@@ -92,7 +92,7 @@ const App: FunctionComponent = () => {
                                 }
                         </Route>
                     </Router>
-                }
+
             </LoginBoundary>
         </div>
     );
