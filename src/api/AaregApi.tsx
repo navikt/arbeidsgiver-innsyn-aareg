@@ -24,7 +24,7 @@ export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: stri
         return jsonRespons;
     } else {
         amplitude.logEvent(" #arbeidsforhold klarte ikke hente ut arbeidsforhold");
-        amplitude.logEvent(" #arbeidsforhold tok: " + (new Date().getTime() - startTtid.getTime()) / 1000 + " før kallet feilet i miljøet " + environment.MILJO);
+        amplitude.logEvent(" #arbeidsforhold tok: " + (new Date().getTime() - startTtid.getTime()) * 1000 + " før kallet feilet i miljøet " + environment.MILJO);
         return tomResponsFraAareg;
     }
 }
