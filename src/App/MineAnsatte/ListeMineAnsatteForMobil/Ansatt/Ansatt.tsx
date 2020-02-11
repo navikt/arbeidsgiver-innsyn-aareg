@@ -15,8 +15,7 @@ interface Props {
 
 const Ansatt: FunctionComponent<Props> = props => {
     function oppdaterValgtArbeidsgiver(fnr: string, navn: string) {
-        const fnrSomheltall: number = parseInt(fnr);
-        props.settValgtArbeidsgiver({ fnr: fnrSomheltall, navn: navn });
+        props.settValgtArbeidsgiver({ fnr: fnr, navn: navn });
     }
 
     return (
