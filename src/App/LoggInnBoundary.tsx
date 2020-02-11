@@ -40,7 +40,6 @@ const LoginBoundary: FunctionComponent = props => {
     }, []);
 
     if (innlogget === Tilgang.TILGANG) {
-        amplitude.logEvent("#arbeidsforhold bruker er innlogget ");
         return <> {props.children} </>;
     }
     if (innlogget === Tilgang.IKKE_TILGANG) {
