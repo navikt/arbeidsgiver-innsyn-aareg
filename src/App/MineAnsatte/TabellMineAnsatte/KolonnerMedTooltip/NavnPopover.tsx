@@ -19,8 +19,8 @@ const NavnPopover: FunctionComponent<PopoverProps> = (props:PopoverProps) => {
     const maxBreddeAvKolonne = 160;
 
     const oppdaterValgtArbeidsgiver = (fnr: string, navn: string) => {
-        const fnrSomheltall: number = parseInt(fnr);
-        props.settValgtArbeidsgiver({ fnr: fnrSomheltall, navn: navn });
+
+        props.settValgtArbeidsgiver({ fnr: fnr, navn: navn });
     };
 
     useEffect(() => {

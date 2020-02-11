@@ -1137,9 +1137,9 @@
     glob-to-regexp "^0.3.0"
 
 "@navikt/arbeidsforhold@^1.1.18":
-  version "1.1.23"
-  resolved "https://registry.yarnpkg.com/@navikt/arbeidsforhold/-/arbeidsforhold-1.1.23.tgz#43e60c95e27b2bfb809180edde2ac8d119202039"
-  integrity sha512-pAWmF4SgEvROedYwQR0r+4gFvLsjIHgVoZ1PPWJS5Gev0nq67ICfNnAW1DbuMJLMoe0VGH0M/7cQjT1rY2hqSg==
+  version "1.1.25"
+  resolved "https://registry.yarnpkg.com/@navikt/arbeidsforhold/-/arbeidsforhold-1.1.25.tgz#0e742dc0f112b2e3fbf0f92cb6e55db0536fc07e"
+  integrity sha512-VFnSbAQmnmB7f1jM8Gv7Gy3WGY34Y4ckVc81hcoFYsElsN3GDVt8uuYsIxivo4OgOil913KgtUcHS1g+yV+19g==
 
 "@navikt/bedriftsmeny@^1.0.15":
   version "1.0.15"
