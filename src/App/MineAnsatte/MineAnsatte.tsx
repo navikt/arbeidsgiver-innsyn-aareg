@@ -82,7 +82,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         ) {
             hentogSettArbeidsforhold().then(responsAareg => {
                 setListeFraAareg(responsAareg.arbeidsforholdoversikter);
-                    amplitude.logEvent(" #arbeidsforhold hentet: " + responsAareg.arbeidsforholdoversikter.length + " arbeidsforhold i miljøet " + environment.MILJO);
                     setFerdiglastet(true);
             }
             );
