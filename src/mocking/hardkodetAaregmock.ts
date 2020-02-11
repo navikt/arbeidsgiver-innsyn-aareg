@@ -22,7 +22,7 @@ const OrganisasjonerResponse = {
                 navn: 'OLA NORDMANN',
                 type: 'Person',
                 aktoerId: '1157442896316',
-                offentligIdent: '28078523168'
+                offentligIdent: '08078523168'
             },
             innrapportertEtterAOrdningen: 'true',
             navArbeidsforholdId: '49119204',
