@@ -2,6 +2,7 @@ import { hentArbeidsforholdLink } from '../App/lenker';
 import { ObjektFraAAregisteret, tomResponsFraAareg } from '../App/Objekter/ObjektFraAAreg';
 import amplitude from "../utils/amplitude";
 import environment from "../utils/environment";
+import {loggAntallAnsatte, loggSnittTidPerArbeidsforhold, loggTidForAlleArbeidsforhold} from "../App/amplitudeLogging";
 
 export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string): Promise<ObjektFraAAregisteret> {
     const headere = new Headers();
@@ -10,8 +11,12 @@ export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: stri
     const startTtid = new Date();
     let respons = await fetch(hentArbeidsforholdLink(), { headers: headere });
     if (respons.ok) {
-        amplitude.logEvent(" #arbeidsforhold tok: " + (new Date().getTime() - startTtid.getTime()) / 1000 + " sekunder å hente arbeidsforhold i miljoet: " + environment.MILJO);
-        return await respons.json();
+        const jsonRespons: ObjektFraAAregisteret  = await respons.json();
+        loggAntallAnsatte(jsonRespons.arbeidsforholdoversikter.length);
+        const tid = (new Date().getTime() - startTtid.getTime()) / 1000;
+        loggSnittTidPerArbeidsforhold(jsonRespons.arbeidsforholdoversikter.length,tid);
+        loggTidForAlleArbeidsforhold(tid);
+        return jsonRespons;
     } else {
         amplitude.logEvent(" #arbeidsforhold klarte ikke hente ut arbeidsforhold");
         amplitude.logEvent(" #arbeidsforhold tok: " + (new Date().getTime() - startTtid.getTime()) / 1000 + " før kallet feilet i miljøet " + environment.MILJO);
