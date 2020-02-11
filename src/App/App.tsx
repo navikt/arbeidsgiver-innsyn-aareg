@@ -30,8 +30,6 @@ const App: FunctionComponent = () => {
     const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
     const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
 
-    amplitude.logEvent("#arbeidsforhold logget pa i" + environment.MILJO);
-
     useEffect(() => {
         const hentOgSettOrganisasjoner = async () => {
             const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
