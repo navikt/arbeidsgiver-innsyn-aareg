@@ -18,7 +18,7 @@ export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: stri
     if (respons.ok) {
         const jsonRespons: ObjektFraAAregisteret  = await respons.json();
         loggAntallAnsatte(jsonRespons.arbeidsforholdoversikter.length);
-        const tid = (new Date().getTime() - startTtid.getTime()) / 1000;
+        const tid = (new Date().getTime() - startTtid.getTime()) * 1000;
         loggSnittTidPerArbeidsforhold(jsonRespons.arbeidsforholdoversikter.length,tid);
         loggTidForAlleArbeidsforhold(tid);
         return jsonRespons;
