@@ -2,7 +2,12 @@ import { hentArbeidsforholdLink } from '../App/lenker';
 import { ObjektFraAAregisteret, tomResponsFraAareg } from '../App/Objekter/ObjektFraAAreg';
 import amplitude from "../utils/amplitude";
 import environment from "../utils/environment";
-import {loggAntallAnsatte, loggSnittTidPerArbeidsforhold, loggTidForAlleArbeidsforhold} from "../App/amplitudeLogging";
+import {
+    loggAntallAnsatte,
+    loggSnittTidPerArbeidsforhold,
+    loggTidForAlleArbeidsforhold
+} from "../App/amplitudefunksjonerForLogging";
+
 
 export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string): Promise<ObjektFraAAregisteret> {
     const headere = new Headers();
