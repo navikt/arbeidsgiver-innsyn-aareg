@@ -78,7 +78,7 @@ export const loggTidForAlleArbeidsforhold = (tid: number) => {
                 logg += "mindre enn fem sekunder";
                 break;
             case (tid > 20):
-                logg += "500 og 1000";
+                logg += "mellom 500 og 1000";
                 break;
             case (tid >= 60):
                 logg += "over 60";
