@@ -3,7 +3,6 @@ import environment from '../utils/environment';
 import hentVeilarbStatus from '../api/veilarbApi';
 import LoggInn from './LoggInn/LoggInn';
 import React from 'react';
-import amplitude from "../utils/amplitude";
 
 export enum Tilgang {
     LASTER,

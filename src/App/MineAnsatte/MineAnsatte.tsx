@@ -18,10 +18,8 @@ import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
-import amplitude from "../../utils/amplitude";
 import Lenke from "nav-frontend-lenker";
 import {linkTilMinSideArbeidsgiver} from "../lenker";
-import environment from "../../utils/environment";
 import NavFrontendSpinner from "nav-frontend-spinner";
 import MineAnsatteTopp from "./MineAnsatteTopp/MineAnsatteTopp";
 
