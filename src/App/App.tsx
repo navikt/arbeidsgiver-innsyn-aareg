@@ -12,8 +12,6 @@ import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjene
 import { byggOrganisasjonstre } from './MineAnsatte/HovedBanner/byggOrganisasjonsTre';
 import { Arbeidstaker } from './Objekter/Arbeidstaker';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
-import amplitude from "../utils/amplitude";
-import environment from "../utils/environment";
 
 enum TILGANGSSTATE {
     LASTER,
