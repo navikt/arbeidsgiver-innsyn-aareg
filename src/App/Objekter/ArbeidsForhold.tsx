@@ -1,4 +1,4 @@
-import {Varsel} from "./Varsel";
+import { Varsel } from './Varsel';
 
 export interface Arbeidsforhold {
     ansattFom: string;

@@ -1,17 +1,17 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { basename } from './paths';
-import './App.less';
+import { JuridiskEnhetMedUnderEnheterArray } from './Objekter/JuridiskEnhetMedUnderenhetArray';
+import { Organisasjon, tomaAltinnOrganisasjon } from './Objekter/OrganisasjonFraAltinn';
+import { Arbeidstaker } from './Objekter/Arbeidstaker';
 import LoginBoundary from './LoggInnBoundary';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
 import { EnkeltArbeidsforhold } from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
-import { JuridiskEnhetMedUnderEnheterArray } from './Objekter/JuridiskEnhetMedUnderenhetArray';
-import { Organisasjon, tomaAltinnOrganisasjon } from './Objekter/OrganisasjonFraAltinn';
 import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
 import { byggOrganisasjonstre } from './MineAnsatte/HovedBanner/byggOrganisasjonsTre';
-import { Arbeidstaker } from './Objekter/Arbeidstaker';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
+import './App.less';
 
 const App: FunctionComponent = () => {
     const SERVICEKODEINNSYNAAREGISTERET = '5441';
@@ -21,22 +21,26 @@ const App: FunctionComponent = () => {
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
     const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
     const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
-    //const organisasjonerMedTilgang = hentOrganisasjonerMedTilgangTilAltinntjeneste(SERVICEKODEINNSYNAAREGISTERET,SERVICEEDITIONINNSYNAAREGISTERET);
+    // const organisasjonerMedTilgang = hentOrganisasjonerMedTilgangTilAltinntjeneste(SERVICEKODEINNSYNAAREGISTERET,SERVICEEDITIONINNSYNAAREGISTERET);
     const [harTilgangMedValgtOrg, setHarTilgangMedValgtOrg] = useState(false);
+
     useEffect(() => {
         const hentOgSettOrganisasjoner = async () => {
             const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
             return organisasjonliste;
         };
+
         const lagOgSettTre = async (organisasjoner: Organisasjon[]) => {
             const juridiskeenheterMedBarn: JuridiskEnhetMedUnderEnheterArray[] = await byggOrganisasjonstre(
                 organisasjoner
             );
             return juridiskeenheterMedBarn;
         };
+
         hentOgSettOrganisasjoner().then(organisasjoner => {
             lagOgSettTre(organisasjoner).then(juridiskeenheterMedBarn => setorganisasjonstre(juridiskeenheterMedBarn));
         });
+
         hentOrganisasjonerMedTilgangTilAltinntjeneste(
             SERVICEKODEINNSYNAAREGISTERET,
             SERVICEEDITIONINNSYNAAREGISTERET
@@ -63,8 +67,17 @@ const App: FunctionComponent = () => {
             <LoginBoundary>
                 <Router basename={basename}>
                     <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjonstre={organisasjonstre} />
-                    {!harTilgangMedValgtOrg && <IngenTilgangInfo bedrifterMedTilgang={organisasjonerMedTilgang} />}
-
+                    {!harTilgangMedValgtOrg && (
+                        <IngenTilgangInfo
+                            valgtOrganisasjon={valgtOrganisasjon}
+                            bedrifterMedTilgang={
+                                organisasjonerMedTilgang &&
+                                organisasjonerMedTilgang.filter(organisasjonMedTilgang => {
+                                    return organisasjonMedTilgang.OrganizationForm === 'BEDR';
+                                })
+                            }
+                        />
+                    )}
                     <Route exact path="/enkeltArbeidsforhold">
                         <EnkeltArbeidsforhold
                             valgtArbeidstaker={valgtArbeidstaker}
