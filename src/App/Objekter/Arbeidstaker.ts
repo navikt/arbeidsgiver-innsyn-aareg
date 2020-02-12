@@ -1,4 +1,4 @@
 export type Arbeidstaker = {
-    fnr: number;
+    fnr: string;
     navn: string;
 };
