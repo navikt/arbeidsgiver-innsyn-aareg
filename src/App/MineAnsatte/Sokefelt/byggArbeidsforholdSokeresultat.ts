@@ -1,6 +1,5 @@
 import fuzzysort from 'fuzzysort';
-import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
-
+import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 
 const fuzzysortConfig = {
     keys: ['arbeidstaker.offentligIdent', 'arbeidstaker.navn'],
