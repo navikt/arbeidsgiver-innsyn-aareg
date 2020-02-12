@@ -19,10 +19,10 @@ const OrganisasjonerResponse = {
                 type: 'Organisasjon'
             },
             arbeidstaker: {
-                navn: 'Ola Normann',
+                navn: 'OLA NORDMANN',
                 type: 'Person',
                 aktoerId: '1157442896316',
-                offentligIdent: '28078523168'
+                offentligIdent: '08078523168'
             },
             innrapportertEtterAOrdningen: 'true',
             navArbeidsforholdId: '49119204',
@@ -44,7 +44,7 @@ const OrganisasjonerResponse = {
                 type: 'Organisasjon'
             },
             arbeidstaker: {
-                navn: 'Ola Normann',
+                navn: 'GRO BRUNDTLAND',
                 type: 'Person',
                 aktoerId: '1157483674881',
                 offentligIdent: '22107627085'
@@ -69,7 +69,7 @@ const OrganisasjonerResponse = {
                 type: 'Organisasjon'
             },
             arbeidstaker: {
-                navn: 'Ola Normann',
+                navn: 'JENS JENSEN',
                 type: 'Person',
                 aktoerId: '1456663112394',
                 offentligIdent: '31087426516'
@@ -105,7 +105,7 @@ const OrganisasjonerResponse = {
                 type: 'Organisasjon'
             },
             arbeidstaker: {
-                navn: 'Ola Normann',
+                navn: 'KARI FOLKELIG',
                 type: 'Person',
                 aktoerId: '1493857494038',
                 offentligIdent: '09118524109'
@@ -130,7 +130,7 @@ const OrganisasjonerResponse = {
                 type: 'Organisasjon'
             },
             arbeidstaker: {
-                navn: 'Ola Normann',
+                navn: 'HERMANN OLSEN',
                 type: 'Person',
                 aktoerId: '1510920886509',
                 offentligIdent: '31087923897'
@@ -155,7 +155,7 @@ const OrganisasjonerResponse = {
                 type: 'Organisasjon'
             },
             arbeidstaker: {
-                navn: 'Ola Normann',
+                navn: 'OLE JØRGEN HAMMERSBORG HAMMER',
                 type: 'Person',
                 aktoerId: '1560993039264',
                 offentligIdent: '19028023262'
@@ -211,7 +211,7 @@ const OrganisasjonerResponse = {
                 type: 'Organisasjon'
             },
             arbeidstaker: {
-                navn: 'Ola Normann',
+                navn: 'PER JØRGENSEN HARLEM',
                 type: 'Person',
                 aktoerId: '1810524547525',
                 offentligIdent: '26107924360'
@@ -236,7 +236,7 @@ const OrganisasjonerResponse = {
                 type: 'Organisasjon'
             },
             arbeidstaker: {
-                navn: 'Ola Normann',
+                navn: 'TOVE ANNIKEN ANDERSEN',
                 type: 'Person',
                 aktoerId: '1848399481177',
                 offentligIdent: '15016629127'
@@ -286,7 +286,7 @@ const OrganisasjonerResponse = {
                 type: 'Organisasjon'
             },
             arbeidstaker: {
-                navn: 'Ola Normann',
+                navn: 'HELGA RADMILLA GUNDERSTAD',
                 type: 'Person',
                 aktoerId: '1913689789684',
                 offentligIdent: '27106124243'
@@ -311,7 +311,7 @@ const OrganisasjonerResponse = {
                 type: 'Organisasjon'
             },
             arbeidstaker: {
-                navn: 'Ola Normann',
+                navn: 'FRANK BORGEN JANSSON',
                 type: 'Person',
                 aktoerId: '1915849924050',
                 offentligIdent: '21066027276'
