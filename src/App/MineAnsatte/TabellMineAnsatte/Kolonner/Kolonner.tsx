@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
-
 import Kolonne from './Kolonne/Kolonne';
-import {KolonneState, SorteringsAttributt} from "../../MineAnsatte";
+import { KolonneState, SorteringsAttributt } from '../../MineAnsatte';
 
 interface Props {
     navarendeKolonne: KolonneState;
@@ -14,7 +13,7 @@ const KolonnerFullSkjerm: FunctionComponent<Props> = props => {
             <tr>
                 <Kolonne
                     setNavarendeKolonne={props.setNavarendeKolonne}
-                    label={'navn'}
+                    label={'Navn'}
                     attributt={SorteringsAttributt.NAVN}
                     navarendeKolonne={props.navarendeKolonne}
                 />

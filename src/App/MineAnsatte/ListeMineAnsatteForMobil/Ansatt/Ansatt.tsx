@@ -1,10 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import './Ansatt.less';
-
-import AttributtVisning from './AttributtVisning/AttributtVisning';
 import { Link } from 'react-router-dom';
 import { Arbeidstaker } from '../../../Objekter/Arbeidstaker';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
+import AttributtVisning from './AttributtVisning/AttributtVisning';
 
 interface Props {
     className?: string;
@@ -22,30 +21,29 @@ const Ansatt: FunctionComponent<Props> = props => {
     return (
         <li className="arbeidsforhold">
             <ul className="arbeidsforhold__liste">
-                <div>
-                    <li className="attributt">
-                        <div className={'attributt__navn'}> Navn</div>
-                        <div
-                            onClick={() =>
-                                oppdaterValgtArbeidsgiver(
-                                    props.arbeidsforhold.arbeidstaker.offentligIdent,
-                                    props.arbeidsforhold.arbeidstaker.navn
-                                )
+                <li className="attributt">
+                    <div className="attributt__navn">Navn</div>
+                    <div
+                        className="attributt__verdi"
+                        onClick={() =>
+                            oppdaterValgtArbeidsgiver(
+                                props.arbeidsforhold.arbeidstaker.offentligIdent,
+                                props.arbeidsforhold.arbeidstaker.navn
+                            )
+                        }
+                    >
+                        <Link
+                            to={
+                                'enkeltarbeidsforhold/?bedrift=' +
+                                props.valgtBedrift +
+                                '&arbeidsforhold=' +
+                                props.arbeidsforhold.navArbeidsforholdId
                             }
                         >
-                            <Link
-                                to={
-                                    'enkeltarbeidsforhold/?bedrift=' +
-                                    props.valgtBedrift +
-                                    '&arbeidsforhold=' +
-                                    props.arbeidsforhold.navArbeidsforholdId
-                                }
-                            >
-                                {props.arbeidsforhold.arbeidstaker.navn}
-                            </Link>
-                        </div>
-                    </li>
-                </div>
+                            {props.arbeidsforhold.arbeidstaker.navn}
+                        </Link>
+                    </div>
+                </li>
                 <AttributtVisning
                     attributt="Offentlig Ident"
                     attributtVerdi={props.arbeidsforhold.arbeidstaker.offentligIdent}

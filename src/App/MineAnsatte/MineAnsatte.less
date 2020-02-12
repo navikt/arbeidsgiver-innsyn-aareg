@@ -1,119 +1,122 @@
 @import '../../../node_modules/nav-frontend-core/less/_variabler';
 
 .bakgrunnsside {
-    background-color: transparent;
-    display: flex;
-    flex-direction: column;
-    align-self: center;
-    padding-top: 2rem;
-}
-
-.mine-ansatte {
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem 1.5rem 5rem 1.5rem;
-    border-radius: 4px;
-    margin-top: 2rem;
-    position: relative;
-    max-width: 70rem;
-    min-width:56rem;
-
-    &__header{
-        display: flex;
-        flex-direction: row;
-        justify-content:space-between;
-
-    }
-    &__systemtittel {
-        margin-bottom: 1.5rem;
+    @media (min-width: @screen-md) {
+        padding-bottom: 1rem;
     }
 
-    &__topp {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-    }
+    .innhold-container {
 
-    &__antall-forhold {
-        margin: 0;
-    }
-
-    &__informasjon {
-        max-width: 37rem;
-    }
-
-    &__spinner-container {
-       display: flex;
-        align-self: center;
-        margin: 4rem;
-        flex-direction: column;
-        align-items: center;
-
-    }
-
-    &__spinner {
-        margin-top: 2rem;
-    }
-
-    &__table {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        text-align: left;
-        background-color: white;
-        color: @navGra80;
-        width: 90%;
-        border-collapse: collapse;
-        justify-self: center;
-        margin-left: 2rem;
-        margin-top: 1rem;
-    }
-
-    &__sok-og-filter {
-        display: flex;
-        flex-direction: column;
-        margin-top: 1rem;
-    }
-
-    &__filter {
-        margin-bottom: 1.5rem;
-    }
-
-    &__liste {
-        display: none;
-    }
-}
-
-@media (max-width: @screen-md) {
-    .mine-ansatte {
-        min-width: initial;
-
-        &__table {
-            display: none;
+        @media (min-width: @screen-md) {
+            margin: 0 auto;
+            max-width: 62rem;
+            min-width: 56rem;
         }
 
-        &__liste {
-            display: initial;
-        }
-    }
-}
+        .brodsmule {
+            padding: 1.5rem 0 1.5rem 1rem;
 
-@media (max-width: @screen-sm) {
-    .mine-ansatte {
-        min-width: initial;
-        padding: 1rem;
-
-        &__topp {
-            flex-direction: column;
-            padding-left: 1.2rem;
+            @media (min-width: @screen-sm) {
+                padding: 1.5rem 0 2rem 2rem;
+            }
+            @media (min-width: @screen-md) {
+                padding: 1.5rem 0;
+            }
         }
 
-        &__antall-forhold {
-            margin: 0 0.6rem 1rem 0.5rem;
-        }
+        .mine-ansatte {
+            padding: 1rem;
+            background-color: white;
+            margin-bottom: 3rem;
 
-        &__systemtittel {
-            margin-left: 1.8rem;
+            &__systemtittel {
+                margin: 0.5rem 0 1.5rem;
+            }
+
+            &__header {
+                margin-bottom: 1.5rem;
+
+                .excel-export {
+                    margin-bottom: 1.5rem;
+                }
+            }
+
+            &__sok-og-filter {
+                .arbeidsforhold-overskrift {
+                    margin-bottom: 1rem;
+                }
+            }
+
+            &__topp {
+                margin-bottom: 0.5rem;
+            }
+
+            &__table {
+                display: none;
+            }
+
+            @media (min-width: @screen-sm) {
+                padding: 2rem;
+                &__topp {
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+
+            @media (min-width: @screen-md) {
+                display: flex;
+                flex-direction: column;
+                padding: 2rem 2rem 5rem;
+                border-radius: 4px;
+                position: relative;
+
+                &__header {
+                    display: flex;
+                    flex-direction: row-reverse;
+                    justify-content: space-between;
+
+                    .excel-export {
+                        margin-bottom: 0;
+                    }
+
+                    .informasjon {
+                        max-width: 37rem;
+                    }
+                }
+
+                &__sok-og-filter {
+                    display: flex;
+                    flex-direction: column;
+                    margin-top: 1rem;
+                }
+
+                &__spinner-container {
+                    display: flex;
+                    align-self: center;
+                    margin: 4rem;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                &__spinner {
+                    margin-top: 2rem;
+                }
+
+                &__table {
+                    padding: 0.75rem 0;
+                    text-align: left;
+                    color: @navGra80;
+                    width: 90%;
+                    border-collapse: collapse;
+                    justify-self: center;
+                    margin-left: 2rem;
+                    margin-top: 1rem;
+                }
+
+                &__liste {
+                    display: none;
+                }
+            }
         }
     }
 }

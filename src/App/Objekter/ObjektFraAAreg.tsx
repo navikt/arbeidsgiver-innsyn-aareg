@@ -1,4 +1,4 @@
-import {Arbeidsforhold} from "./ArbeidsForhold";
+import { Arbeidsforhold } from './ArbeidsForhold';
 
 export interface enkelArbeidsforhold {
     arbeidsavtaler: Array<enkelArbeidsavtale>;
@@ -33,7 +33,6 @@ export interface ObjektFraAAregisteret {
     startrad: string;
     totalAntall: string;
 }
-
 
 export const tomResponsFraAareg: ObjektFraAAregisteret = {
     antall: '',

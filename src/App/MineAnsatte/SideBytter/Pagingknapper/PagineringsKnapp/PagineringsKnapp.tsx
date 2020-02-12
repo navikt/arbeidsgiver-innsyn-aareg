@@ -14,10 +14,10 @@ const GraSirkelMedNr: FunctionComponent<Props> = props => {
     let ariaLabel = 'Goto Page ' + props.sidetall.toString();
     let className = 'valg';
     const erNavarendeSide = props.naVarendeIndeks === props.sidetall;
+
     if (erNavarendeSide) {
         ariaLabel = 'Current Page, ' + props.naVarendeIndeks.toString();
-        className = className + " er-valgt";
-
+        className = className + ' er-valgt';
     }
 
     return (
@@ -35,14 +35,11 @@ const GraSirkelMedNr: FunctionComponent<Props> = props => {
                 transitionAppearTimeout={500}
                 transitionEnterTimeout={100}
                 transitionLeaveTimeout={0}
-
             >
-                <Element className={'valg__sidetall'}>{props.sidetall.toString()}</Element>
+                <Element className="valg__sidetall">{props.sidetall.toString()}</Element>
             </CSSTransitionGroup>
         </button>
     );
 };
 
 export default GraSirkelMedNr;
-
-

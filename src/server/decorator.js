@@ -3,13 +3,16 @@ const request = require('request');
 
 const { JSDOM } = jsdom;
 url = '';
-if (process.env.NAIS_CLUSTER_NAME === "prod-sbs") {
-    url ="https://appres.nav.no/common-html/v4/navno?header-withmenu=true&styles=true&scripts=true&footer-withmenu=true";
+
+if (process.env.NAIS_CLUSTER_NAME === 'prod-sbs') {
+    url =
+        'https://appres.nav.no/common-html/v4/navno?header-withmenu=true&styles=true&scripts=true&footer-withmenu=true';
 } else {
-    url = "https://appres-q1.nav.no/common-html/v4/navno?header-withmenu=true&styles=true&scripts=true&footer-withmenu=true";
+    url =
+        'https://appres-q1.nav.no/common-html/v4/navno?header-withmenu=true&styles=true&scripts=true&footer-withmenu=true';
 }
 
-const requestDecorator = (callback) => request(url, callback);
+const requestDecorator = callback => request(url, callback);
 
 const getDecorator = () =>
     new Promise((resolve, reject) => {
@@ -30,7 +33,6 @@ const getDecorator = () =>
                 reject(new Error(error));
             }
         };
-
         requestDecorator(callback);
     });
 

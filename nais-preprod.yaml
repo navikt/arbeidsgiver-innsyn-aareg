@@ -1,29 +1,29 @@
 apiVersion: 'nais.io/v1alpha1'
 kind: 'Application'
 metadata:
-  name: bedriftsoversikt-og-ansatte
-  namespace: default
-  labels:
-    team: {{team}}
+    name: bedriftsoversikt-og-ansatte
+    namespace: default
+    labels:
+        team: { { team } }
 spec:
-  image: {{version}}
-  team: {{team}}
-  port: 3000
-  ingresses:
-    - https://arbeidsgiver-q.nav.no/arbeidsforhold/
-  liveness:
-    path: /arbeidsforhold/internal/isAlive
-    initialDelay: 20
-  readiness:
-    path: /arbeidsforhold/internal/isReady
-    initialDelay: 20
-  vault:
-    enabled: true
-  webproxy: true
-  env:
-    - name: NODE_EXTRA_CA_CERTS
-      value: /etc/ssl/ca-bundle.pem
-    - name: APIGW_URL
-      value: https://api-gw-q1.oera.no
-    - name: LOGIN_URL
-      value: https://loginservice-q.nav.no/login?redirect=https://arbeidsgiver-q.nav.no/arbeidsforhold/
+    image: { { version } }
+    team: { { team } }
+    port: 3000
+    ingresses:
+        - https://arbeidsgiver-q.nav.no/arbeidsforhold/
+    liveness:
+        path: /arbeidsforhold/internal/isAlive
+        initialDelay: 20
+    readiness:
+        path: /arbeidsforhold/internal/isReady
+        initialDelay: 20
+    vault:
+        enabled: true
+    webproxy: true
+    env:
+        - name: NODE_EXTRA_CA_CERTS
+          value: /etc/ssl/ca-bundle.pem
+        - name: APIGW_URL
+          value: https://api-gw-q1.oera.no
+        - name: LOGIN_URL
+          value: https://loginservice-q.nav.no/login?redirect=https://arbeidsgiver-q.nav.no/arbeidsforhold/

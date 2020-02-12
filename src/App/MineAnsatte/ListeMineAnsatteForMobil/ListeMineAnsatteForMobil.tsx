@@ -1,9 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import './ListeMineAnsatteForMobil.less';
-
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
-import Ansatt from './Ansatt/Ansatt';
 import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
+import Ansatt from './Ansatt/Ansatt';
 
 interface Props {
     className?: string;
@@ -12,7 +11,7 @@ interface Props {
     valgtBedrift: string;
 }
 
-const ListeMedAnsatteForMobil: FunctionComponent<Props> = (props:Props) => {
+const ListeMedAnsatteForMobil: FunctionComponent<Props> = (props: Props) => {
     const rader = props.listeMedArbeidsForhold.map(forhold => (
         <Ansatt
             key={forhold.navArbeidsforholdId}
@@ -21,7 +20,8 @@ const ListeMedAnsatteForMobil: FunctionComponent<Props> = (props:Props) => {
             arbeidsforhold={forhold}
         />
     ));
-    return <ul className={props.className}> {rader} </ul>;
+
+    return <ul className={props.className}>{rader}</ul>;
 };
 
 export default ListeMedAnsatteForMobil;

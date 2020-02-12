@@ -15,11 +15,13 @@ interface Props {
 const Kolonne: FunctionComponent<Props> = props => {
     const erValgt = props.navarendeKolonne.sorteringsAttributt === props.attributt;
     const erReversSortert = erValgt && props.navarendeKolonne.reversSortering === true;
+
     let kolonneState: KolonneState = {
         erValgt: props.navarendeKolonne.sorteringsAttributt === props.attributt,
         sorteringsAttributt: props.attributt,
-        reversSortering: erReversSortert,
+        reversSortering: erReversSortert
     };
+
     let bildeSrc = sorteringsikon;
     if (erValgt) {
         if (erReversSortert) {
@@ -39,8 +41,8 @@ const Kolonne: FunctionComponent<Props> = props => {
 
     return (
         <th className={'kolonne__th'} onClick={() => setKolonneTilAktiv()}>
-            <button className="kolonne__sorteringsbutton"> {props.label}</button>
-            <img src={bildeSrc} className={'kolonne__sorteringspil'} alt="pil-opp" />
+            <button className="kolonne__sorteringsbutton">{props.label}</button>
+            <img src={bildeSrc} className="kolonne__sorteringspil" alt="pil-opp" />
         </th>
     );
 };

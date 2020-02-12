@@ -1,18 +1,23 @@
-import { SorteringsAttributt} from './MineAnsatte';
+import { SyntheticEvent } from 'react';
+import { ToggleKnappPureProps } from 'nav-frontend-toggle';
+import { SorteringsAttributt } from './MineAnsatte';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
-import {byggArbeidsforholdSokeresultat} from "./Sokefelt/byggArbeidsforholdSokeresultat";
-import {SyntheticEvent} from "react";
-import {ToggleKnappPureProps} from "nav-frontend-toggle";
+import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
 
-export const byggListeBasertPaPArametere = (originalListe: Arbeidsforhold[], filtrerPaAktiveAvsluttede: string, skalFiltrerePaVarsler: boolean, soketekst: string ) => {
-    let nyListe = filtrerAktiveOgAvsluttede(originalListe,filtrerPaAktiveAvsluttede);
-    if (soketekst.length>0) {
-        nyListe = byggArbeidsforholdSokeresultat(nyListe,soketekst);
+export const byggListeBasertPaPArametere = (
+    originalListe: Arbeidsforhold[],
+    filtrerPaAktiveAvsluttede: string,
+    skalFiltrerePaVarsler: boolean,
+    soketekst: string
+) => {
+    let nyListe = filtrerAktiveOgAvsluttede(originalListe, filtrerPaAktiveAvsluttede);
+    if (soketekst.length > 0) {
+        nyListe = byggArbeidsforholdSokeresultat(nyListe, soketekst);
     }
     if (skalFiltrerePaVarsler) {
-        nyListe = filtrerPaVarsler(nyListe,skalFiltrerePaVarsler);
+        nyListe = filtrerPaVarsler(nyListe, skalFiltrerePaVarsler);
     }
-    return nyListe
+    return nyListe;
 };
 
 export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => {
@@ -29,11 +34,11 @@ export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => 
 
 export const sorterBasertPaDatoTom = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
-        if(!a.ansattTom) {
-            return -1
+        if (!a.ansattTom) {
+            return -1;
         }
-        if(!b.ansattTom) {
-            return 1
+        if (!b.ansattTom) {
+            return 1;
         }
         const datoA = new Date(a.ansattTom);
         const datoB = new Date(b.ansattTom);
@@ -55,7 +60,11 @@ const sorterBasertPaNavn = (arbeidsforhold: Arbeidsforhold[]) => {
     return sortert;
 };
 
-const sorterBasertPaProsent = (arbeidsforhold: Arbeidsforhold[], sorterPaStillingsprosent: boolean, sorterPaPermisjonsprosent: boolean) => {
+const sorterBasertPaProsent = (
+    arbeidsforhold: Arbeidsforhold[],
+    sorterPaStillingsprosent: boolean,
+    sorterPaPermisjonsprosent: boolean
+) => {
     const sortert = arbeidsforhold.sort((a, b) => {
         if (sorterPaStillingsprosent) {
             if (Number(a.stillingsprosent) > Number(b.stillingsprosent)) {
@@ -63,12 +72,11 @@ const sorterBasertPaProsent = (arbeidsforhold: Arbeidsforhold[], sorterPaStillin
             } else return -1;
         }
         if (sorterPaPermisjonsprosent) {
-            if (Number(a.permisjonPermitteringsprosent )> Number(b.permisjonPermitteringsprosent)) {
+            if (Number(a.permisjonPermitteringsprosent) > Number(b.permisjonPermitteringsprosent)) {
                 return 1;
             } else return -1;
-        }
-        else{
-            return 1
+        } else {
+            return 1;
         }
     });
     return sortert;
@@ -76,11 +84,11 @@ const sorterBasertPaProsent = (arbeidsforhold: Arbeidsforhold[], sorterPaStillin
 
 const sorterBasertPaKode = (arbeidsforhold: Arbeidsforhold[]) => {
     const sortert = arbeidsforhold.sort((a, b) => {
-        if(!a.varsler) {
-            return -1
+        if (!a.varsler) {
+            return -1;
         }
-        if(!b.varsler) {
-            return 1
+        if (!b.varsler) {
+            return 1;
         }
         if (a.varsler.length > b.varsler.length) {
             return 1;
@@ -125,92 +133,90 @@ export const sorterArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], atributt:
         case SorteringsAttributt.VARSEL:
             return sorterBasertPaKode(arbeidsforhold);
         case SorteringsAttributt.PERMITTERINGSPROSENT:
-            return sorterBasertPaProsent(arbeidsforhold,false,true);
+            return sorterBasertPaProsent(arbeidsforhold, false, true);
         case SorteringsAttributt.STILLINGSPROSENT:
-            return sorterBasertPaProsent(arbeidsforhold,true,false);
+            return sorterBasertPaProsent(arbeidsforhold, true, false);
         default:
-            console.log("nadde defaultcase");
             return arbeidsforhold;
     }
 };
 
 export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], filtrerPa: string) => {
     const navarendeDato = new Date();
-    if (filtrerPa === "Aktive") {
+    if (filtrerPa === 'Aktive') {
         return arbeidsforhold.filter(forhold => {
-            if(forhold.ansattTom) {
-            const avslutningsdato = new Date(forhold.ansattTom);
-            return avslutningsdato > navarendeDato;
-            }else{return true}
+            if (forhold.ansattTom) {
+                const avslutningsdato = new Date(forhold.ansattTom);
+                return avslutningsdato > navarendeDato;
+            } else {
+                return true;
+            }
         });
     }
-    if (filtrerPa === "Avsluttede")
-    return arbeidsforhold.filter(forhold => {
-        if(forhold.ansattTom) {
-        const avslutningsdato = new Date(forhold.ansattTom);
-        return avslutningsdato < navarendeDato;
-        }
-        else{return false}
-    });
+    if (filtrerPa === 'Avsluttede')
+        return arbeidsforhold.filter(forhold => {
+            if (forhold.ansattTom) {
+                const avslutningsdato = new Date(forhold.ansattTom);
+                return avslutningsdato < navarendeDato;
+            } else {
+                return false;
+            }
+        });
     return arbeidsforhold;
 };
 
 export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold: Arbeidsforhold[]): number[] => {
-    const antallOversikt: number[] = [listeMedArbeidsforhold.length,0,0];
+    const antallOversikt: number[] = [listeMedArbeidsforhold.length, 0, 0];
     const navarendeDato = new Date();
     listeMedArbeidsforhold.forEach(forhold => {
-        if(forhold.ansattTom) {
+        if (forhold.ansattTom) {
             const avslutningsdato = new Date(forhold.ansattTom);
-            if (avslutningsdato<navarendeDato) {
-                antallOversikt[2] ++;
+            if (avslutningsdato < navarendeDato) {
+                antallOversikt[2]++;
+            } else {
+                antallOversikt[1]++;
             }
-            else {
-                antallOversikt[1] ++;
-            }
-        }else{antallOversikt[1] ++}
+        } else {
+            antallOversikt[1]++;
+        }
     });
     return antallOversikt;
 };
 
 export const filtrerPaVarsler = (listeMedArbeidsforhold: Arbeidsforhold[], filtrerPaVarsler: boolean) => {
     const filtrertPaVarsler = listeMedArbeidsforhold.filter(forhold => {
-            if (forhold.varsler && filtrerPaVarsler) {
-                if (forhold.varsler.length) {
-                    return forhold
-                }
+        if (forhold.varsler && filtrerPaVarsler) {
+            if (forhold.varsler.length) {
+                return forhold;
             }
-            if (!filtrerPaVarsler) {
-                return forhold
-            }
-            return null;
         }
-        );
+        if (!filtrerPaVarsler) {
+            return forhold;
+        }
+        return null;
+    });
     return filtrertPaVarsler;
 };
 
-export const filtreringValgt = (event: SyntheticEvent<EventTarget>,toggles: ToggleKnappPureProps[]): string => {
-    let valg = "Alle";
-     toggles.forEach(toggle => {
+export const filtreringValgt = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]): string => {
+    let valg = 'Alle';
+    toggles.forEach(toggle => {
         if (toggle.pressed === true && toggle.children) {
             const includesString: boolean = true;
             switch (includesString) {
-                case (toggle.children.toString().startsWith("Alle")):
-                    valg = "Alle";
+                case toggle.children.toString().startsWith('Alle'):
+                    valg = 'Alle';
                     break;
-                case (toggle.children.toString().startsWith("Aktive")):
-                    valg = "Aktive";
+                case toggle.children.toString().startsWith('Aktive'):
+                    valg = 'Aktive';
                     break;
-                case (toggle.children.toString().startsWith("Avsluttede")):
-                    valg = "Avsluttede";
+                case toggle.children.toString().startsWith('Avsluttede'):
+                    valg = 'Avsluttede';
                     break;
                 default:
-                    break
+                    break;
             }
-
-        };
-
+        }
     });
     return valg;
 };
-
-

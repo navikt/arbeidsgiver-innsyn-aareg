@@ -22,7 +22,7 @@ const SideBytter: FunctionComponent<Props> = props => {
             <div className="sidebytter">
                 <button
                     className="sidebytter__chevron"
-                    id={"sidebytter-chevron-venstre-"+props.plassering}
+                    id={'sidebytter-chevron-venstre-' + props.plassering}
                     onClick={() => {
                         props.byttSide(props.naVarendeSidetall - 1);
                     }}
@@ -54,12 +54,11 @@ const SideBytter: FunctionComponent<Props> = props => {
                         siderTilsammen={props.antallSider}
                     />
                 )}
-
                 <button
-                    className={'sidebytter__chevron'}
+                    className="sidebytter__chevron"
                     onClick={() => props.byttSide(props.naVarendeSidetall + 1)}
                     aria-label={'Goto Page ' + (props.naVarendeSidetall - 1).toString()}
-                    id={"sidebytter-chevron-hoyre-"+props.plassering}
+                    id={'sidebytter-chevron-hoyre-' + props.plassering}
                 >
                     <HoyreChevron />
                 </button>
