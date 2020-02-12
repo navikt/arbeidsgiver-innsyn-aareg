@@ -38,7 +38,7 @@ const IngenTilgangInfo: FunctionComponent<TilgangsInfoProps> = props => {
                             >
                                 <ul className={'ingen-tilgang-info-hovedinnhold__panelinnhold'}>
                                     {props.bedrifterMedTilgang.map(bedrift => (
-                                        <li>{bedrift.Name + '(' + bedrift.OrganizationNumber + ')'}</li>
+                                        <li key={bedrift.OrganizationNumber}>{bedrift.Name + '(' + bedrift.OrganizationNumber + ')'}</li>
                                     ))}
                                 </ul>
                             </Ekspanderbartpanel>
