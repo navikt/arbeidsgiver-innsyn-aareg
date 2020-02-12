@@ -1,64 +1,70 @@
 @import '~nav-frontend-core/less/_variabler';
 
 .innloggingsside {
-  flex-direction: column;
-  display: flex;
-  width: 100%;
-  min-height: 100vh;
-  background-color: white;
-  color: @navMorkGra;
+    min-height: 100vh;
+    background-color: white;
 
-  &__circle
-  {
-    margin-top:4rem;
-    margin-bottom:2.5rem;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    background-color: #cce1f3;
-  }
-  &__handtrykkbilde {
-    margin-top: 25px;
-  }
-  &__punktliste {
-    text-align: left;
-  }
+    &__innhold {
+        text-align: center;
+        padding: 2.5rem 1rem;
 
-  &__punkt {
-    margin: 0.5rem;
-  }
+        @media (min-width: @screen-sm) {
+            padding: 5.5rem 2rem
+        }
 
-  &__innhold {
-    flex-direction: column;
-    display: flex;
-    text-align: center;
-    align-items: center;
-    max-width: 30rem;
-    align-self: center;
-    padding: 1.5rem 1rem 0 1rem;
-  }
+        @media (min-width: @screen-md) {
+            width: 40rem;
+            margin: 0 auto;
+        }
+    }
 
-  &__sidetittel {
-    padding: 0rem 1.5rem  3rem 1.5rem;
-  }
-  &__margintop{
-    margin-top:2rem;
-  }
+    &__circle {
+        margin: 0 auto;
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        background-color: @navBlaLighten80;
 
-  &__loginKnapp {
-    margin: 1.5rem;
-  }
+        .handtrykkbilde {
+            margin-top: 1.65rem;
+        }
+    }
 
+    &__sidetittel {
+        margin-top: 1.5rem;
+        padding: 0 0 2rem;
+        @media (min-width: @screen-sm) {
+            padding: 0 1.5rem 2rem;
+        }
+    }
 
-  &__besok-ditt-nav{
-    align-text: center;
+    &__ingress {
+        max-width: 25.5rem;
+        margin: 0 auto;
+        padding-bottom: 2rem;
+    }
 
-    margin-bottom: 3rem;
-  }
-  &__ingress{
-    max-width: 27.5rem;
-  }
+    &__punktliste {
+        text-align: left;
+    }
+
+    &__punkt {
+        margin: 0.5rem;
+    }
+
+    &__margintop {
+        margin-top: 2rem;
+    }
+
+    &__loginKnapp {
+        margin: 2.5rem 1.5rem;
+    }
+
+    &__besok-ditt-nav {
+        margin-bottom: 3rem;
+
+        .logg-inn-lenke {
+            margin-top: 0.5rem;
+        }
+    }
 }
-
-
-

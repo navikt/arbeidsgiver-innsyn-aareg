@@ -10,10 +10,6 @@ interface Props {
 }
 
 const ForsteDel: FunctionComponent<Props> = props => {
-
-
-
-
     return (
         <>
             <PagineringsKnapp
@@ -38,6 +34,7 @@ const ForsteDel: FunctionComponent<Props> = props => {
                     byttSide={props.byttSide}
                 />
             )}
+
             {props.siderTilsammen > 3 && (
                 <>
                     ...
