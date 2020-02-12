@@ -20,7 +20,7 @@ const VarslingPopover: FunctionComponent<PopoverProps> = (props: PopoverProps) =
             <Popover ankerEl={anker}>
                 <div style={{ padding: '1rem 1rem 0 1rem ' }}>
                     {props.varsler.map(varsel => (
-                        <div style={{ padding: '0 0 1rem 0' }}>{varsel.varslingskodeForklaring}</div>
+                        <div key={varsel.varslingskode} style={{ padding: '0 0 1rem 0' }}>{varsel.varslingskodeForklaring}</div>
                     ))}
                 </div>
             </Popover>
