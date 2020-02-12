@@ -1,4 +1,4 @@
-import React, { FunctionComponent, SyntheticEvent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import './MineAnsatte.less';
 import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import { ToggleKnappPureProps } from 'nav-frontend-toggle';
@@ -9,12 +9,7 @@ import { ObjektFraAAregisteret } from '../Objekter/ObjektFraAAreg';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
-import {
-    byggListeBasertPaPArametere,
-    filtreringValgt,
-    sorterArbeidsforhold,
-    tellAntallAktiveOgInaktiveArbeidsforhold
-} from './sorteringOgFiltreringsFunksjoner';
+import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 import {
     regnUtantallSider,
     regnUtArbeidsForholdSomSkalVisesPaEnSide,
@@ -23,11 +18,14 @@ import {
 import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
-import Sokefelt from './Sokefelt/Sokefelt';
 import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
-import ExcelEksport from './ExcelEksport/ExcelEksport';
-import Filtervalg from './Filtervalg/Filtervalg';
-import { linkTilMinSideArbeidsgiver } from '../lenker';
+import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import { Arbeidstaker } from '../Objekter/Arbeidstaker';
+import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
+import Lenke from "nav-frontend-lenker";
+import {linkTilMinSideArbeidsgiver} from "../lenker";
+import NavFrontendSpinner from "nav-frontend-spinner";
+import MineAnsatteTopp from "./MineAnsatteTopp/MineAnsatteTopp";
 
 export declare interface MineAnsatteProps {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
@@ -73,15 +71,6 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         setnaVarendeSidetall(indeks);
     };
 
-    const onSoketekstChange = (soketekst: string) => {
-        setSoketekst(soketekst);
-    };
-
-    const velgFiltrering = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]) => {
-        const filtrering = filtreringValgt(event, toggles);
-        setFiltrerPaAktiveAvsluttede(filtrering);
-    };
-
     useEffect(() => {
         setFerdiglastet(false);
         const hentogSettArbeidsforhold = async () => {
@@ -97,8 +86,9 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         ) {
             hentogSettArbeidsforhold().then(responsAareg => {
                 setListeFraAareg(responsAareg.arbeidsforholdoversikter);
-                setFerdiglastet(true);
-            });
+                    setFerdiglastet(true);
+            }
+            );
         }
     }, [props.valgtOrganisasjon]);
 
@@ -132,6 +122,9 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
         );
     }
 
+    const antallVarsler = listeMedArbeidsForhold.filter(forhold => {
+        return forhold.varsler;}).length;
+
     useEffect(() => {
         visEllerSkjulChevroner(
             naVarendeSidetall,
@@ -142,7 +135,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [antallSider, naVarendeSidetall]);
 
     return (
-        <div className="bakgrunnsside">
+        <div className={"bakgrunnsside"}>
             <div className="innhold-container">
                 <Normaltekst className="brodsmule">
                     <Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>
@@ -151,86 +144,38 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     {' / arbeidsforhold' }
                 </Normaltekst>
 
-                <div className="mine-ansatte">
-                    <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
-                        Opplysninger fra Aa-registeret
+                <div className={'mine-ansatte'}>
+                    <Systemtittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
+                            Opplysninger fra Aa-registeret
                     </Systemtittel>
-                    <div className="mine-ansatte__header">
-                        <ExcelEksport
-                            className="excel-export"
-                            arbeidsforholdListe={listeMedArbeidsForhold}
-                            navnBedrift={props.valgtOrganisasjon.Name}
-                            orgnrBedrift={props.valgtOrganisasjon.OrganizationNumber}
-                        />
-                        <AlertStripeInfo className="informasjon">
-                            Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Dersom du
-                            finner feil eller mangler i oversikten skal disse korrigeres/rapporteres inn via
-                            a-meldingen.
-                        </AlertStripeInfo>
-                    </div>
-
-                    <div className="mine-ansatte__sok-og-filter">
-                        <Undertittel className="arbeidsforhold-overskrift">Arbeidsforhold</Undertittel>
-                        {listeFraAareg.length > 0 && (
-                            <Filtervalg
-                                filtreringValgt={velgFiltrering}
-                                overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(
-                                    listeFraAareg
-                                )}
-                                setfiltrerPaVarsler={() => setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler)}
-                            />
-                        )}
-                        <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
-                    </div>
-
-                    <div className="mine-ansatte__topp">
-                        <Normaltekst tabIndex={0} className="antall-forhold">
-                            Viser {listeMedArbeidsForhold.length} av {listeFraAareg.length} arbeidsforhold
-                        </Normaltekst>
-                        {antallSider > 1 && (
-                            <SideBytter
-                                plassering="overst"
-                                className="ovre-sidebytter"
-                                byttSide={setIndeksOgGenererListe}
-                                antallSider={antallSider}
-                                naVarendeSidetall={naVarendeSidetall}
-                            />
-                        )}
-                    </div>
-                    {!ferdiglastet && (
-                        <div className="mine-ansatte__spinner-container">
-                            Henter arbeidsforhold
-                            <NavFrontendSpinner className="mine-ansatte__spinner" />
-                        </div>
-                    )}
-                    {ferdiglastet && (
-                        <>
-                            <TabellMineAnsatte
-                                className="mine-ansatte__table"
-                                listeMedArbeidsForhold={forholdPaEnSide}
-                                setNavarendeKolonne={setNavarendeKolonne}
-                                byttSide={setIndeksOgGenererListe}
-                                navarendeKolonne={navarendeKolonne}
-                                settValgtArbeidsgiver={props.setValgtArbeidstaker}
-                                valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
-                            />
-                            <ListeMedAnsatteForMobil
-                                listeMedArbeidsForhold={forholdPaEnSide}
-                                className="mine-ansatte__liste"
-                                settValgtArbeidsgiver={props.setValgtArbeidstaker}
-                                valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
-                            />
-                        </>
-                    )}
-                    {antallSider > 1 && (
-                        <SideBytter
-                            plassering="nederst"
-                            className="nedre-sidebytter"
-                            byttSide={setIndeksOgGenererListe}
-                            antallSider={antallSider}
-                            naVarendeSidetall={naVarendeSidetall}
-                        />
-                    )}
+                    <MineAnsatteTopp valgtOrganisasjon={props.valgtOrganisasjon } setIndeksOgGenererListe={setIndeksOgGenererListe}
+                                     setSoketekst={setSoketekst}  antallSider={antallSider} antallVarsler={antallVarsler} lengdeResponsFiltrertListe={listeMedArbeidsForhold.length}
+                                     listeMedArbeidsforhold={listeMedArbeidsForhold} naVarendeSidetall={naVarendeSidetall} responsFraAaregisteret={listeFraAareg} soketekst={soketekst} setSkalFiltrerePaVarsler={setSkalFiltrerePaVarsler} skalFiltrerePaVarsler={skalFiltrerePaVarsler} setFiltrerPaAktiveAvsluttede={setFiltrerPaAktiveAvsluttede}  />
+                    { !ferdiglastet && <div className={"mine-ansatte__spinner-container"}> Henter arbeidsforhold<NavFrontendSpinner className={"mine-ansatte__spinner"}/></div>}
+                    { ferdiglastet && <>  <TabellMineAnsatte
+                        className={'mine-ansatte__table'}
+                        listeMedArbeidsForhold={forholdPaEnSide}
+                        setNavarendeKolonne={setNavarendeKolonne}
+                        byttSide={setIndeksOgGenererListe}
+                        navarendeKolonne={navarendeKolonne}
+                        settValgtArbeidsgiver={props.setValgtArbeidstaker}
+                        valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
+                    />
+                    <ListeMedAnsatteForMobil
+                        listeMedArbeidsForhold={forholdPaEnSide}
+                        className={'mine-ansatte__liste'}
+                        settValgtArbeidsgiver={props.setValgtArbeidstaker}
+                        valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
+                    />
+                    </>
+                    }
+                    {antallSider > 1 && <SideBytter
+                        plassering={"nederst"}
+                        className={'nedre-sidebytter'}
+                        byttSide={setIndeksOgGenererListe}
+                        antallSider={antallSider}
+                        naVarendeSidetall={naVarendeSidetall}
+                    />}
                 </div>
             </div>
         </div>
