@@ -161,7 +161,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                             <NavFrontendSpinner className="mine-ansatte__spinner" />
                         </div>
                     )}
-                    {ferdiglastet && (
+                    {ferdiglastet && listeMedArbeidsForhold.length > 0 && (
                         <>
                             {' '}
                             <TabellMineAnsatte
