@@ -1,7 +1,7 @@
 import React from 'react';
 import { Element } from 'nav-frontend-typografi';
-import alertikon from './infomation-circle-2.svg';
 import Lenke from 'nav-frontend-lenker';
+import alertikon from './infomation-circle-2.svg';
 import { basename } from '../../paths';
 import './TilgangsStyringInfoTekst.less';
 

@@ -1,11 +1,11 @@
-import React, { FunctionComponent } from 'react';
-import './LoggInnBanner.less';
+import React from 'react';
 import { Sidetittel, Ingress } from 'nav-frontend-typografi';
 import medhjelm from './med-hjelm.svg';
 import telefon from './telefon-person.svg';
 import kokk from './kokk.png';
+import './LoggInnBanner.less';
 
-const LoggInnBanner: FunctionComponent = () => {
+const LoggInnBanner = () => {
     return (
         <div className="logg-inn-banner">
             <div className="logg-inn-banner__container">

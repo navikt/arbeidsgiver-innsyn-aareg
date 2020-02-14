@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -12,14 +12,13 @@ type PopoverProps = {
     valgtBedrift: string;
 };
 
-const NavnPopover: FunctionComponent<PopoverProps> = (props: PopoverProps) => {
+const NavnPopover = (props: PopoverProps) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
     const [skalVisePopover, setSkalVisePopover] = useState(true);
 
     const maxBreddeAvKolonne = 160;
 
     const oppdaterValgtArbeidsgiver = (fnr: string, navn: string) => {
-
         props.settValgtArbeidsgiver({ fnr: fnr, navn: navn });
     };
 
