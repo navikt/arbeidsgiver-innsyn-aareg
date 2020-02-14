@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from 'react';
-import './PagineringsKnapp.less';
+import React from 'react';
 import { Element } from 'nav-frontend-typografi';
+import './PagineringsKnapp.less';
 const CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
     byttSide: (indeks: number) => void;
 }
 
-const GraSirkelMedNr: FunctionComponent<Props> = props => {
+const GraSirkelMedNr = (props: Props) => {
     let ariaLabel = 'Goto Page ' + props.sidetall.toString();
     let className = 'valg';
     const erNavarendeSide = props.naVarendeIndeks === props.sidetall;

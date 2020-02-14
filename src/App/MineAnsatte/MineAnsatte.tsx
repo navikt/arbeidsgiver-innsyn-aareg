@@ -1,11 +1,7 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
-import './MineAnsatte.less';
-import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi';
-import { ToggleKnappPureProps } from 'nav-frontend-toggle';
+import React, { useEffect, useState } from 'react';
+import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import Lenke from 'nav-frontend-lenker';
-import { ObjektFraAAregisteret } from '../Objekter/ObjektFraAAreg';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
@@ -19,15 +15,11 @@ import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
-import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
-import { Arbeidstaker } from '../Objekter/Arbeidstaker';
-import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
-import Lenke from "nav-frontend-lenker";
-import {linkTilMinSideArbeidsgiver} from "../lenker";
-import NavFrontendSpinner from "nav-frontend-spinner";
-import MineAnsatteTopp from "./MineAnsatteTopp/MineAnsatteTopp";
+import { linkTilMinSideArbeidsgiver } from '../lenker';
+import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
+import './MineAnsatte.less';
 
-export declare interface MineAnsatteProps {
+interface MineAnsatteProps {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
     valgtOrganisasjon: Organisasjon;
 }
@@ -55,15 +47,15 @@ const initialKolonne: KolonneState = {
     reversSortering: false
 };
 
-const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProps) => {
-    const [naVarendeSidetall, setnaVarendeSidetall] = useState(1);
+const MineAnsatte = (props: MineAnsatteProps) => {
+    const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(1);
     const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
     const [filtrerPaAktiveAvsluttede, setFiltrerPaAktiveAvsluttede] = useState('Alle');
-    const [soketekst, setSoketekst] = useState('');
+    const [soketekst, setSoketekst] = useState<string>('');
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
-    const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState(false);
-    const [ferdiglastet, setFerdiglastet] = useState(false);
+    const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(false);
+    const [ferdiglastet, setFerdiglastet] = useState<boolean>(false);
 
     const arbeidsforholdPerSide = 25;
 
@@ -74,21 +66,20 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     useEffect(() => {
         setFerdiglastet(false);
         const hentogSettArbeidsforhold = async () => {
-            const responsAareg: ObjektFraAAregisteret = await hentArbeidsforholdFraAAreg(
+            return await hentArbeidsforholdFraAAreg(
                 props.valgtOrganisasjon.OrganizationNumber,
                 props.valgtOrganisasjon.ParentOrganizationNumber
             );
-            return responsAareg;
         };
+
         if (
             props.valgtOrganisasjon.OrganizationNumber !== '' &&
             props.valgtOrganisasjon.ParentOrganizationNumber !== ''
         ) {
             hentogSettArbeidsforhold().then(responsAareg => {
                 setListeFraAareg(responsAareg.arbeidsforholdoversikter);
-                    setFerdiglastet(true);
-            }
-            );
+                setFerdiglastet(true);
+            });
         }
     }, [props.valgtOrganisasjon]);
 
@@ -123,7 +114,8 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }
 
     const antallVarsler = listeMedArbeidsForhold.filter(forhold => {
-        return forhold.varsler;}).length;
+        return forhold.varsler;
+    }).length;
 
     useEffect(() => {
         visEllerSkjulChevroner(
@@ -135,47 +127,69 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
     }, [antallSider, naVarendeSidetall]);
 
     return (
-        <div className={"bakgrunnsside"}>
+        <div className="bakgrunnsside">
             <div className="innhold-container">
                 <Normaltekst className="brodsmule">
                     <Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>
                         Min side – arbeidsgiver
                     </Lenke>
-                    {' / arbeidsforhold' }
+                    {' / arbeidsforhold'}
                 </Normaltekst>
-
-                <div className={'mine-ansatte'}>
-                    <Systemtittel className={'mine-ansatte__systemtittel'} tabIndex={0}>
-                            Opplysninger fra Aa-registeret
+                <div className="mine-ansatte">
+                    <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
+                        Opplysninger fra Aa-registeret
                     </Systemtittel>
-                    <MineAnsatteTopp valgtOrganisasjon={props.valgtOrganisasjon } setIndeksOgGenererListe={setIndeksOgGenererListe}
-                                     setSoketekst={setSoketekst}  antallSider={antallSider} antallVarsler={antallVarsler} lengdeResponsFiltrertListe={listeMedArbeidsForhold.length}
-                                     listeMedArbeidsforhold={listeMedArbeidsForhold} naVarendeSidetall={naVarendeSidetall} responsFraAaregisteret={listeFraAareg} soketekst={soketekst} setSkalFiltrerePaVarsler={setSkalFiltrerePaVarsler} skalFiltrerePaVarsler={skalFiltrerePaVarsler} setFiltrerPaAktiveAvsluttede={setFiltrerPaAktiveAvsluttede}  />
-                    { !ferdiglastet && <div className={"mine-ansatte__spinner-container"}> Henter arbeidsforhold<NavFrontendSpinner className={"mine-ansatte__spinner"}/></div>}
-                    { ferdiglastet && <>  <TabellMineAnsatte
-                        className={'mine-ansatte__table'}
-                        listeMedArbeidsForhold={forholdPaEnSide}
-                        setNavarendeKolonne={setNavarendeKolonne}
-                        byttSide={setIndeksOgGenererListe}
-                        navarendeKolonne={navarendeKolonne}
-                        settValgtArbeidsgiver={props.setValgtArbeidstaker}
-                        valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
-                    />
-                    <ListeMedAnsatteForMobil
-                        listeMedArbeidsForhold={forholdPaEnSide}
-                        className={'mine-ansatte__liste'}
-                        settValgtArbeidsgiver={props.setValgtArbeidstaker}
-                        valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
-                    />
-                    </>
-                    }
-                    {antallSider > 1 && <SideBytter
-                        plassering={"nederst"}
-                        className={'nedre-sidebytter'}
-                        byttSide={setIndeksOgGenererListe}
+                    <MineAnsatteTopp
+                        valgtOrganisasjon={props.valgtOrganisasjon}
+                        setIndeksOgGenererListe={setIndeksOgGenererListe}
+                        setSoketekst={setSoketekst}
                         antallSider={antallSider}
+                        antallVarsler={antallVarsler}
+                        lengdeResponsFiltrertListe={listeMedArbeidsForhold.length}
+                        listeMedArbeidsforhold={listeMedArbeidsForhold}
                         naVarendeSidetall={naVarendeSidetall}
-                    />}
+                        responsFraAaregisteret={listeFraAareg}
+                        soketekst={soketekst}
+                        setSkalFiltrerePaVarsler={setSkalFiltrerePaVarsler}
+                        skalFiltrerePaVarsler={skalFiltrerePaVarsler}
+                        setFiltrerPaAktiveAvsluttede={setFiltrerPaAktiveAvsluttede}
+                    />
+                    {!ferdiglastet && (
+                        <div className="mine-ansatte__spinner-container">
+                            {' '}
+                            Henter arbeidsforhold
+                            <NavFrontendSpinner className="mine-ansatte__spinner" />
+                        </div>
+                    )}
+                    {ferdiglastet && (
+                        <>
+                            {' '}
+                            <TabellMineAnsatte
+                                className="mine-ansatte__table"
+                                listeMedArbeidsForhold={forholdPaEnSide}
+                                setNavarendeKolonne={setNavarendeKolonne}
+                                byttSide={setIndeksOgGenererListe}
+                                navarendeKolonne={navarendeKolonne}
+                                settValgtArbeidsgiver={props.setValgtArbeidstaker}
+                                valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
+                            />
+                            <ListeMedAnsatteForMobil
+                                listeMedArbeidsForhold={forholdPaEnSide}
+                                className="mine-ansatte__liste"
+                                settValgtArbeidsgiver={props.setValgtArbeidstaker}
+                                valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
+                            />
+                        </>
+                    )}
+                    {antallSider > 1 && (
+                        <SideBytter
+                            plassering="nederst"
+                            className="nedre-sidebytter"
+                            byttSide={setIndeksOgGenererListe}
+                            antallSider={antallSider}
+                            naVarendeSidetall={naVarendeSidetall}
+                        />
+                    )}
                 </div>
             </div>
         </div>
