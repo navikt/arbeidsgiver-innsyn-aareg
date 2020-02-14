@@ -5,12 +5,12 @@ import { Ingress, Normaltekst, Sidetittel } from 'nav-frontend-typografi';
 import environment from '../../utils/environment';
 import handshake from './handshake.svg';
 import { TilgangsStyringInfoTekst } from './TilgangsStyringInfoTekst/TilgangsStyringInfoTekst';
-import './Logginn.less';
 import amplitude from '../../utils/amplitude';
+import './Logginn.less';
 
 const LoggInn = () => {
     const redirectTilLogin = () => {
-        amplitude.logEvent("#arbeidsforhold bruker klikket på log-in via forside ");
+        amplitude.logEvent('#arbeidsforhold bruker klikket på log-in via forside ');
         if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs') {
             window.location.href = '/arbeidsforhold/redirect-til-login';
         } else {

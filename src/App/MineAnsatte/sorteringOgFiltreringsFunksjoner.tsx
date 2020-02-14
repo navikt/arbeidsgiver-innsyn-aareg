@@ -33,7 +33,7 @@ export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => 
 };
 
 export const sorterBasertPaDatoTom = (arbeidsforhold: Arbeidsforhold[]) => {
-    const sortert = arbeidsforhold.sort((a, b) => {
+    return arbeidsforhold.sort((a, b) => {
         if (!a.ansattTom) {
             return -1;
         }
@@ -47,17 +47,15 @@ export const sorterBasertPaDatoTom = (arbeidsforhold: Arbeidsforhold[]) => {
         }
         return 1;
     });
-    return sortert;
 };
 
 const sorterBasertPaNavn = (arbeidsforhold: Arbeidsforhold[]) => {
-    const sortert = arbeidsforhold.sort((a, b) => {
+    return arbeidsforhold.sort((a, b) => {
         if (a.arbeidstaker.navn > b.arbeidstaker.navn) {
             return 1;
         }
         return -1;
     });
-    return sortert;
 };
 
 const sorterBasertPaProsent = (
@@ -65,7 +63,7 @@ const sorterBasertPaProsent = (
     sorterPaStillingsprosent: boolean,
     sorterPaPermisjonsprosent: boolean
 ) => {
-    const sortert = arbeidsforhold.sort((a, b) => {
+    return arbeidsforhold.sort((a, b) => {
         if (sorterPaStillingsprosent) {
             if (Number(a.stillingsprosent) > Number(b.stillingsprosent)) {
                 return 1;
@@ -79,11 +77,10 @@ const sorterBasertPaProsent = (
             return 1;
         }
     });
-    return sortert;
 };
 
 const sorterBasertPaKode = (arbeidsforhold: Arbeidsforhold[]) => {
-    const sortert = arbeidsforhold.sort((a, b) => {
+    return arbeidsforhold.sort((a, b) => {
         if (!a.varsler) {
             return -1;
         }
@@ -95,27 +92,24 @@ const sorterBasertPaKode = (arbeidsforhold: Arbeidsforhold[]) => {
         }
         return -1;
     });
-    return sortert;
 };
 
 const sorterBasertPaFnr = (arbeidsforhold: Arbeidsforhold[]) => {
-    const sortert = arbeidsforhold.sort((a, b) => {
+    return arbeidsforhold.sort((a, b) => {
         if (a.arbeidstaker.offentligIdent > b.arbeidstaker.offentligIdent) {
             return 1;
         }
         return -1;
     });
-    return sortert;
 };
 
 const sorterBasertPaYrke = (arbeidsforhold: Arbeidsforhold[]) => {
-    const sortert = arbeidsforhold.sort((a, b) => {
+    return arbeidsforhold.sort((a, b) => {
         if (a.yrkesbeskrivelse > b.yrkesbeskrivelse) {
             return 1;
         }
         return -1;
     });
-    return sortert;
 };
 
 export const sorterArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], atributt: SorteringsAttributt) => {

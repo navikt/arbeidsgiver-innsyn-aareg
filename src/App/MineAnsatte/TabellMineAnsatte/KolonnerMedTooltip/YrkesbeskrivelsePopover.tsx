@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Normaltekst } from 'nav-frontend-typografi';
 import './PopOverStyling.less';
@@ -7,7 +7,7 @@ type PopoverProps = {
     tekst: string;
 };
 
-const YrkesbeskrivelsePopover: FunctionComponent<PopoverProps> = (props: PopoverProps) => {
+const YrkesbeskrivelsePopover = (props: PopoverProps) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
     const [skalVisePopover, setSkalVisePopover] = useState(true);
     const maxBreddeAvKolonne = 160;

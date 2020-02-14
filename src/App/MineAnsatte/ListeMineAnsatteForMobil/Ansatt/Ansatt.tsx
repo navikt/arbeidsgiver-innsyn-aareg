@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react';
-import './Ansatt.less';
 import { Link } from 'react-router-dom';
 import { Arbeidstaker } from '../../../Objekter/Arbeidstaker';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import AttributtVisning from './AttributtVisning/AttributtVisning';
+import './Ansatt.less';
 
 interface Props {
     className?: string;
@@ -13,6 +13,7 @@ interface Props {
 }
 
 const Ansatt: FunctionComponent<Props> = props => {
+
     function oppdaterValgtArbeidsgiver(fnr: string, navn: string) {
         props.settValgtArbeidsgiver({ fnr: fnr, navn: navn });
     }

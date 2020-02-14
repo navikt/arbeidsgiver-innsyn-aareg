@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 
-const IngenArbeidsForholdVisning: FunctionComponent = () => {
+const IngenArbeidsForholdVisning = () => {
     return <div>Du har ingen arbeidsforhold</div>;
 };
 

@@ -10,7 +10,7 @@ const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 
 type ExcelEksportProps = {
     arbeidsforholdListe: Arbeidsforhold[];
-    className?: string;
+    className: string;
     navnBedrift: string;
     orgnrBedrift: string;
 };

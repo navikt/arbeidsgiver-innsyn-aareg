@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
-import './ListeMineAnsatteForMobil.less';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
 import Ansatt from './Ansatt/Ansatt';
+import './ListeMineAnsatteForMobil.less';
 
 interface Props {
     className?: string;
