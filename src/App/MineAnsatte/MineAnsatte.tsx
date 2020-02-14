@@ -125,7 +125,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                              setSoketekst={setSoketekst}  antallSider={antallSider} antallVarsler={antallVarsler}
                              listeMedArbeidsforhold={listeMedArbeidsForhold} naVarendeSidetall={naVarendeSidetall} responsFraAaregisteret={listeFraAareg} soketekst={soketekst} setSkalFiltrerePaVarsler={setSkalFiltrerePaVarsler} skalFiltrerePaVarsler={skalFiltrerePaVarsler} setFiltrerPaAktiveAvsluttede={setFiltrerPaAktiveAvsluttede}  />
             { !ferdiglastet && <div className={"mine-ansatte__spinner-container"}> Henter arbeidsforhold<NavFrontendSpinner className={"mine-ansatte__spinner"}/></div>}
-            { ferdiglastet && <>  <TabellMineAnsatte
+            { ferdiglastet && listeMedArbeidsForhold.length>0 && <>  <TabellMineAnsatte
                 className={'mine-ansatte__table'}
                 listeMedArbeidsForhold={forholdPaEnSide}
                 setNavarendeKolonne={setNavarendeKolonne}
