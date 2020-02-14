@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from 'react';
-import './TabellMineAnsatte.less';
 import 'nav-frontend-tabell-style';
-import { KolonneState } from '../MineAnsatte';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
+import { KolonneState } from '../MineAnsatte';
 import KolonnerFullSkjerm from './Kolonner/Kolonner';
 import YrkesbeskrivelsePopover from './KolonnerMedTooltip/YrkesbeskrivelsePopover';
 import NavnPopover from './KolonnerMedTooltip/NavnPopover';
 import VarslingPopover from './KolonnerMedTooltip/VarslingPopover';
+import './TabellMineAnsatte.less';
 
 interface Props {
     className?: string;
@@ -23,21 +23,21 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
     const rader = props.listeMedArbeidsForhold.map(arbeidsforhold => {
         return (
             <tr key={arbeidsforhold.navArbeidsforholdId}>
-                <td className={'td'}>
+                <td className="td">
                     <NavnPopover
                         arbeidsforhold={arbeidsforhold}
                         settValgtArbeidsgiver={props.settValgtArbeidsgiver}
                         valgtBedrift={props.valgtBedrift}
                     />
                 </td>
-                <td className={'td'}>{arbeidsforhold.arbeidstaker.offentligIdent}</td>
-                <td className={'td'}>{arbeidsforhold.ansattFom}</td>
-                <td className={'td'}>{arbeidsforhold.ansattTom}</td>
-                <td className={'td'}>{arbeidsforhold.stillingsprosent}</td>
-                <td className={'td'}>
+                <td className="td">{arbeidsforhold.arbeidstaker.offentligIdent}</td>
+                <td className="td">{arbeidsforhold.ansattFom}</td>
+                <td className="td">{arbeidsforhold.ansattTom}</td>
+                <td className="td">{arbeidsforhold.stillingsprosent}</td>
+                <td className="td">
                     <YrkesbeskrivelsePopover tekst={arbeidsforhold.yrkesbeskrivelse} />
                 </td>
-                <td className={'td'}>
+                <td className="td">
                     {arbeidsforhold.varsler && (
                         <div>
                             <VarslingPopover varsler={arbeidsforhold.varsler} />

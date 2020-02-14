@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import Kolonne from './Kolonne/Kolonne';
 import { KolonneState, SorteringsAttributt } from '../../MineAnsatte';
 
@@ -7,49 +7,49 @@ interface Props {
     setNavarendeKolonne: (kolonne: KolonneState) => void;
 }
 
-const KolonnerFullSkjerm: FunctionComponent<Props> = props => {
+const KolonnerFullSkjerm = (props: Props) => {
     return (
         <thead>
             <tr>
                 <Kolonne
                     setNavarendeKolonne={props.setNavarendeKolonne}
-                    label={'Navn'}
+                    label="Navn"
                     attributt={SorteringsAttributt.NAVN}
                     navarendeKolonne={props.navarendeKolonne}
                 />
                 <Kolonne
                     setNavarendeKolonne={props.setNavarendeKolonne}
-                    label={'Fødselsnummer'}
+                    label="Fødselsnummer"
                     attributt={SorteringsAttributt.FNR}
                     navarendeKolonne={props.navarendeKolonne}
                 />
                 <Kolonne
                     setNavarendeKolonne={props.setNavarendeKolonne}
-                    label={'Startdato'}
+                    label="Startdato"
                     attributt={SorteringsAttributt.STARTDATO}
                     navarendeKolonne={props.navarendeKolonne}
                 />
                 <Kolonne
                     setNavarendeKolonne={props.setNavarendeKolonne}
-                    label={'Sluttdato'}
+                    label="Sluttdato"
                     attributt={SorteringsAttributt.SLUTTDATO}
                     navarendeKolonne={props.navarendeKolonne}
                 />
                 <Kolonne
                     setNavarendeKolonne={props.setNavarendeKolonne}
-                    label={'Stilling %'}
+                    label="Stilling %"
                     attributt={SorteringsAttributt.STILLINGSPROSENT}
                     navarendeKolonne={props.navarendeKolonne}
                 />
                 <Kolonne
                     setNavarendeKolonne={props.setNavarendeKolonne}
-                    label={'Yrke'}
+                    label="Yrke"
                     attributt={SorteringsAttributt.YRKE}
                     navarendeKolonne={props.navarendeKolonne}
                 />
                 <Kolonne
                     setNavarendeKolonne={props.setNavarendeKolonne}
-                    label={'Varsling'}
+                    label="Varsling"
                     attributt={SorteringsAttributt.VARSEL}
                     navarendeKolonne={props.navarendeKolonne}
                 />
