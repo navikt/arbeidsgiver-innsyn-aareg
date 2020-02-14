@@ -112,6 +112,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
             'sidebytter-chevron-hoyre'
         );
     }, [antallSider,naVarendeSidetall]);
+    console.log(naVarendeSidetall);
 
     return (
         <div className={"bakgrunnsside"}>
@@ -121,7 +122,7 @@ const MineAnsatte: FunctionComponent<MineAnsatteProps> = (props: MineAnsatteProp
                     Opplysninger fra Aa-registeret
                 </Undertittel>
             <MineAnsatteTopp valgtOrganisasjon={props.valgtOrganisasjon } setIndeksOgGenererListe={setIndeksOgGenererListe}
-                             setSoketekst={setSoketekst}  antallSider={antallSider} antallVarsler={antallVarsler} lengdeResponsFiltrertListe={listeMedArbeidsForhold.length}
+                             setSoketekst={setSoketekst}  antallSider={antallSider} antallVarsler={antallVarsler}
                              listeMedArbeidsforhold={listeMedArbeidsForhold} naVarendeSidetall={naVarendeSidetall} responsFraAaregisteret={listeFraAareg} soketekst={soketekst} setSkalFiltrerePaVarsler={setSkalFiltrerePaVarsler} skalFiltrerePaVarsler={skalFiltrerePaVarsler} setFiltrerPaAktiveAvsluttede={setFiltrerPaAktiveAvsluttede}  />
             { !ferdiglastet && <div className={"mine-ansatte__spinner-container"}> Henter arbeidsforhold<NavFrontendSpinner className={"mine-ansatte__spinner"}/></div>}
             { ferdiglastet && <>  <TabellMineAnsatte
