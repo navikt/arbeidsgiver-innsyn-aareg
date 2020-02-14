@@ -101,7 +101,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                         {antallSider > 1 && (
                             <SideBytter
                                 plassering="overst"
-                                className="sidebytter"
+                                className="ovre-sidebytter"
                                 byttSide={setIndeksOgGenererListe}
                                 antallSider={antallSider}
                                 naVarendeSidetall={naVarendeSidetall}
