@@ -33,30 +33,42 @@ const App = () => {
     };
 
     useEffect(() => {
-        hentOgSettOrganisasjoner().then(organisasjonsliste =>
+        hentOgSettOrganisasjoner().then(organisasjonsliste => {
             setorganisasjoner(organisasjonsliste.filter(organisasjon =>
-            organisasjon.OrganizationForm === 'BEDR' || organisasjon.Type === 'Enterprise')));
-        hentOrganisasjonerMedTilgangTilAltinntjeneste(
-            SERVICEKODEINNSYNAAREGISTERET,
-            SERVICEEDITIONINNSYNAAREGISTERET
-        ).then(organisasjonerMedTilgangFraAltinn => {
-            setOrganisasjonerMedTilgang(organisasjonerMedTilgangFraAltinn.filter(organisasjon =>
-                organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR'));
+            organisasjon.OrganizationForm === 'BEDR' || organisasjon.Type === 'Enterprise'));
+            hentOrganisasjonerMedTilgangTilAltinntjeneste(
+                SERVICEKODEINNSYNAAREGISTERET,
+                SERVICEEDITIONINNSYNAAREGISTERET
+            ).then(organisasjonerMedTilgangFraAltinn => {
+                setOrganisasjonerMedTilgang(organisasjonerMedTilgangFraAltinn.filter(organisasjon =>
+                    organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR'));
+            });
         });
     }, []);
 
-    useEffect(() => {
-        setTilgangState(TILGANGSSTATE.LASTER);
-        if (organisasjonerMedTilgang && valgtOrganisasjon !== tomaAltinnOrganisasjon) {
-            if (
-                organisasjonerMedTilgang.filter(organisasjonMedTilgang => {
-                    return organisasjonMedTilgang.OrganizationNumber === valgtOrganisasjon.OrganizationNumber;
-                }).length >= 1
-            ) {
-                setTilgangState(TILGANGSSTATE.TILGANG);
-            } else {
+    const byttOrganisasjon = (organisasjon: Organisasjon) => {
+        if (organisasjon) {
+            if (organisasjonerMedTilgang && valgtOrganisasjon !== tomaAltinnOrganisasjon) {
+                if (
+                    organisasjonerMedTilgang.filter(organisasjonMedTilgang => {
+                        return organisasjonMedTilgang.OrganizationNumber === valgtOrganisasjon.OrganizationNumber;
+                    }).length >= 1
+                ) {
+                    setTilgangState(TILGANGSSTATE.TILGANG);
+                } else {
+                    setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
+                }
+            }
+            if (organisasjonerMedTilgang && organisasjonerMedTilgang.length === 0) {
                 setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
             }
+            setValgtOrganisasjon(organisasjon);
+        }
+    };
+
+    useEffect(() => {
+        if (organisasjonerMedTilgang && valgtOrganisasjon === tomaAltinnOrganisasjon) {
+            setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
         }
         if (organisasjonerMedTilgang && organisasjonerMedTilgang.length === 0) {
             setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
@@ -67,16 +79,17 @@ const App = () => {
         <div className="app">
             <LoginBoundary>
                 <Router basename={basename}>
-                    <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjoner={organisasjoner} />
-                    <Route exact path="/enkeltArbeidsforhold">
-                        <EnkeltArbeidsforhold
-                            valgtArbeidstaker={valgtArbeidstaker}
-                            valgtOrganisasjon={valgtOrganisasjon}
-                        />
-                    </Route>
+
                     <Route exact path="/">
                         {tilgangState !== TILGANGSSTATE.LASTER && (
                             <>
+                                <HovedBanner byttOrganisasjon={byttOrganisasjon} organisasjoner={organisasjoner} />
+                                <Route exact path="/enkeltArbeidsforhold">
+                                    <EnkeltArbeidsforhold
+                                        valgtArbeidstaker={valgtArbeidstaker}
+                                        valgtOrganisasjon={valgtOrganisasjon}
+                                    />
+                                </Route>
                                 {tilgangState === TILGANGSSTATE.IKKE_TILGANG && (
                                     <IngenTilgangInfo
                                         valgtOrganisasjon={valgtOrganisasjon}
