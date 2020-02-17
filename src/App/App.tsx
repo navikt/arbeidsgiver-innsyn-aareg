@@ -27,17 +27,18 @@ const App = () => {
     const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
     const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
 
+    const hentOgSettOrganisasjoner = async () => {
+        const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
+        return organisasjonliste;
+    };
+
     useEffect(() => {
-        const hentOgSettOrganisasjoner = async () => {
-            const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
-            return organisasjonliste;
-        };
         hentOgSettOrganisasjoner().then(organisasjonsliste => setorganisasjoner(organisasjonsliste));
         hentOrganisasjonerMedTilgangTilAltinntjeneste(
             SERVICEKODEINNSYNAAREGISTERET,
             SERVICEEDITIONINNSYNAAREGISTERET
         ).then(organisasjonerMedTilgangFraAltinn => {
-            setOrganisasjonerMedTilgang(organisasjonerMedTilgangFraAltinn);
+            setOrganisasjonerMedTilgang(organisasjonerMedTilgangFraAltinn.filter(organisasjon => organisasjon.ParentOrganizationNumber));
         });
     }, []);
 
