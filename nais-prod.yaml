@@ -4,10 +4,10 @@ metadata:
     name: bedriftsoversikt-og-ansatte
     namespace: default
     labels:
-        team: { { team } }
+        team: {{team}}
 spec:
-    image: { { version } }
-    team: { { team } }
+    image: {{version}}
+    team: {{team}}
     port: 3000
     ingresses:
         - https://arbeidsgiver.nav.no/arbeidsforhold/
