@@ -40,9 +40,10 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
         antallSider,
         setIndeksOgGenererListe,
         setSkalFiltrerePaVarsler,
-        skalFiltrerePaVarsler
+        skalFiltrerePaVarsler,
+        naVarendeSidetall
     },
-    naVarendeSidetall
+
 ) => {
     const onSoketekstChange = (soketekst: string) => {
         setSoketekst(soketekst);
