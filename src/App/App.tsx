@@ -35,7 +35,7 @@ const App = () => {
     useEffect(() => {
         hentOgSettOrganisasjoner().then(organisasjonsliste =>
             setorganisasjoner(organisasjonsliste.filter(organisasjon =>
-            organisasjon.OrganizationForm === 'BEDR' || organisasjon.OrganizationForm === 'Enterprise')));
+            organisasjon.OrganizationForm === 'BEDR' || organisasjon.Type === 'Enterprise')));
         hentOrganisasjonerMedTilgangTilAltinntjeneste(
             SERVICEKODEINNSYNAAREGISTERET,
             SERVICEEDITIONINNSYNAAREGISTERET
@@ -44,9 +44,6 @@ const App = () => {
                 organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR'));
         });
     }, []);
-
-    console.log(organisasjonerMedTilgang);
-    console.log(organisasjoner);
 
     useEffect(() => {
         setTilgangState(TILGANGSSTATE.LASTER);
