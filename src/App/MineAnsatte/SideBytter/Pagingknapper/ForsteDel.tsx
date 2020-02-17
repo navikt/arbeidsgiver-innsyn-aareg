@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import './PagineringsKnapp/PagineringsKnapp.less';
 import PagineringsKnapp from './PagineringsKnapp/PagineringsKnapp';
+import './PagineringsKnapp/PagineringsKnapp.less';
 
 interface Props {
     className?: string;
@@ -10,10 +10,6 @@ interface Props {
 }
 
 const ForsteDel: FunctionComponent<Props> = props => {
-
-
-
-
     return (
         <>
             <PagineringsKnapp
@@ -38,6 +34,7 @@ const ForsteDel: FunctionComponent<Props> = props => {
                     byttSide={props.byttSide}
                 />
             )}
+
             {props.siderTilsammen > 3 && (
                 <>
                     ...

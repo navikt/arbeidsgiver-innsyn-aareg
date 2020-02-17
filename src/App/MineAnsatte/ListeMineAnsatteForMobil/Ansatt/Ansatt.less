@@ -1,17 +1,18 @@
 @import '../../../../../node_modules/nav-frontend-core/less/_variabler';
 
 .arbeidsforhold {
-  display: flex;
-  border-top: solid 1.5px @navLysGra;
-  background-color: white;
-
-  &__liste {
     display: flex;
-    width: 100%;
-    flex-direction: column;
-    margin: 1.5rem 0 1.5rem 2rem;
-  }
+    border-top: solid 1.5px @navLysGra;
+    background-color: white;
 
+    &__liste {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        margin: 1.5rem 0;
 
-
+        @media (min-width: @screen-sm) {
+            margin: 1.5rem 0 1.5rem 2rem;
+        }
+    }
 }

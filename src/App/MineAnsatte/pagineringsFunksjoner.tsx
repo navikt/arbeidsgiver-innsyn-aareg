@@ -24,10 +24,10 @@ export const visEllerSkjulChevroner = (
     stringIDVenstreChevron: string,
     stringIDChevronHoyre: string
 ) => {
-    const idChevronHoyreOvre = document.getElementById(stringIDChevronHoyre+"-overst");
-    const idChevronVenstreOvre = document.getElementById(stringIDVenstreChevron+"-overst");
-    const idChevronHoyreNedre = document.getElementById(stringIDChevronHoyre+"-nederst");
-    const idChevronVenstreNedre = document.getElementById(stringIDVenstreChevron+"-nederst");
+    const idChevronHoyreOvre = document.getElementById(stringIDChevronHoyre + '-overst');
+    const idChevronVenstreOvre = document.getElementById(stringIDVenstreChevron + '-overst');
+    const idChevronHoyreNedre = document.getElementById(stringIDChevronHoyre + '-nederst');
+    const idChevronVenstreNedre = document.getElementById(stringIDVenstreChevron + '-nederst');
 
     if (idChevronHoyreNedre && idChevronHoyreOvre && idChevronVenstreNedre && idChevronVenstreOvre) {
         if (naVarendeSidetall === antallSiderTilsammen) {

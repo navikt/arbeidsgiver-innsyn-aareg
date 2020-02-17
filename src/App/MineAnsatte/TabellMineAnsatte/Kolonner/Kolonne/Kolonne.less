@@ -1,33 +1,28 @@
 @import '../../../../../../node_modules/nav-frontend-core/less/_variabler';
 
 .kolonne {
+    &__sorteringsbutton {
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        margin-left: 4px;
 
-  &__sorteringsbutton {
-    background-color: transparent;
-    border: none;
-    padding: 0rem;
-    margin-left: 4px;
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  &__th {
-    position: relative;
-
-    &:hover {
-      background-color: @navBlaLighten80;
+        &:focus {
+            outline: none;
+        }
     }
 
-  }
+    &__th {
+        position: relative;
 
-  &__sorteringspil {
-    position: absolute;
-    left: -0.5px;
-    top: 1.4rem;
+        &:hover {
+            background-color: @navBlaLighten80;
+        }
+    }
 
-  }
-
+    &__sorteringspil {
+        position: absolute;
+        left: -0.5px;
+        top: 1.4rem;
+    }
 }
-

@@ -1,16 +1,16 @@
 import React, { FunctionComponent } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
+import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
+import { basename } from '../../paths';
 import Bedriftsmeny from '@navikt/bedriftsmeny';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import './HovedBanner.less';
-import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
-import { JuridiskEnhetMedUnderEnheterArray } from '../../Objekter/JuridiskEnhetMedUnderenhetArray';
-import { basename } from '../../paths';
 
 interface Props extends RouteComponentProps {
     byttOrganisasjon: (org: Organisasjon) => void;
-    organisasjonstre: JuridiskEnhetMedUnderEnheterArray[];
+    organisasjoner: Organisasjon[];
 }
+
 const Banner: FunctionComponent<Props> = props => {
     const { history } = props;
 
@@ -20,6 +20,7 @@ const Banner: FunctionComponent<Props> = props => {
             redirectTilListeVisning(organisasjon);
         }
     };
+
     const redirectTilListeVisning = (organisasjon: Organisasjon) => {
         window.location.href = basename + '/?bedrift=' + organisasjon.OrganizationNumber;
     };
@@ -32,10 +33,10 @@ const Banner: FunctionComponent<Props> = props => {
     };
 
     return (
-        <div className={'hovebanner'}>
+        <div className="hovebanner">
             <Bedriftsmeny
                 sidetittel="Arbeidsforhold"
-                organisasjonstre={props.organisasjonstre}
+                organisasjoner={props.organisasjoner}
                 onOrganisasjonChange={onOrganisasjonChange}
                 history={history}
             />
