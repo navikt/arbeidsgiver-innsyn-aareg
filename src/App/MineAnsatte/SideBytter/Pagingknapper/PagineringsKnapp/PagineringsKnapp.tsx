@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from 'react';
-import './PagineringsKnapp.less';
+import React from 'react';
 import { Element } from 'nav-frontend-typografi';
+import './PagineringsKnapp.less';
 const CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
 
 interface Props {
@@ -10,14 +10,14 @@ interface Props {
     byttSide: (indeks: number) => void;
 }
 
-const GraSirkelMedNr: FunctionComponent<Props> = props => {
+const GraSirkelMedNr = (props: Props) => {
     let ariaLabel = 'Goto Page ' + props.sidetall.toString();
     let className = 'valg';
     const erNavarendeSide = props.naVarendeIndeks === props.sidetall;
+
     if (erNavarendeSide) {
         ariaLabel = 'Current Page, ' + props.naVarendeIndeks.toString();
-        className = className + " er-valgt";
-
+        className = className + ' er-valgt';
     }
 
     return (
@@ -35,14 +35,11 @@ const GraSirkelMedNr: FunctionComponent<Props> = props => {
                 transitionAppearTimeout={500}
                 transitionEnterTimeout={100}
                 transitionLeaveTimeout={0}
-
             >
-                <Element className={'valg__sidetall'}>{props.sidetall.toString()}</Element>
+                <Element className="valg__sidetall">{props.sidetall.toString()}</Element>
             </CSSTransitionGroup>
         </button>
     );
 };
 
 export default GraSirkelMedNr;
-
-

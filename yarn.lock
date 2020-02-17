@@ -1133,10 +1133,10 @@
   resolved "https://registry.yarnpkg.com/@navikt/arbeidsforhold/-/arbeidsforhold-1.1.25.tgz#0e742dc0f112b2e3fbf0f92cb6e55db0536fc07e"
   integrity sha512-VFnSbAQmnmB7f1jM8Gv7Gy3WGY34Y4ckVc81hcoFYsElsN3GDVt8uuYsIxivo4OgOil913KgtUcHS1g+yV+19g==
 
-"@navikt/bedriftsmeny@^1.0.15":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@navikt/bedriftsmeny/-/bedriftsmeny-1.0.15.tgz#0297f47dc462b3ddf3738db9f64117363d8ddc7f"
-  integrity sha512-KGE7AJIspJDfy2RMrcDVhZB7SmGkQNSWgIlAlUjxZqzZSyw8QJWx/XNnbs7vsyEVyaivKUulFaR/ER6YF8JrvQ==
+"@navikt/bedriftsmeny@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@navikt/bedriftsmeny/-/bedriftsmeny-2.0.0.tgz#1950ba3e5aea61bdcc28741f95759ac7636a3802"
+  integrity sha512-IR4BscCb9tUHrPNbnr6KFCaJCO0kH9BanvVsEKWr+cHRL4DQohjCxGXGdFb4cqd5NmI9JIPRCYP+8NMCtyMCTQ==
   dependencies:
     classnames "^2.2.6"
     fuzzysort "^1.1.4"

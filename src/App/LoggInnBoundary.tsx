@@ -1,8 +1,8 @@
+import React from 'react';
 import { FunctionComponent, useEffect, useState } from 'react';
 import environment from '../utils/environment';
 import hentVeilarbStatus from '../api/veilarbApi';
 import LoggInn from './LoggInn/LoggInn';
-import React from 'react';
 
 export enum Tilgang {
     LASTER,
