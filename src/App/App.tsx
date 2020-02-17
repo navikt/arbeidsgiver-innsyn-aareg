@@ -33,14 +33,20 @@ const App = () => {
     };
 
     useEffect(() => {
-        hentOgSettOrganisasjoner().then(organisasjonsliste => setorganisasjoner(organisasjonsliste));
+        hentOgSettOrganisasjoner().then(organisasjonsliste =>
+            setorganisasjoner(organisasjonsliste.filter(organisasjon =>
+            organisasjon.OrganizationForm === 'BEDR' || organisasjon.OrganizationForm === 'Enterprise')));
         hentOrganisasjonerMedTilgangTilAltinntjeneste(
             SERVICEKODEINNSYNAAREGISTERET,
             SERVICEEDITIONINNSYNAAREGISTERET
         ).then(organisasjonerMedTilgangFraAltinn => {
-            setOrganisasjonerMedTilgang(organisasjonerMedTilgangFraAltinn.filter(organisasjon => organisasjon.ParentOrganizationNumber));
+            setOrganisasjonerMedTilgang(organisasjonerMedTilgangFraAltinn.filter(organisasjon =>
+                organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR'));
         });
     }, []);
+
+    console.log(organisasjonerMedTilgang);
+    console.log(organisasjoner);
 
     useEffect(() => {
         setTilgangState(TILGANGSSTATE.LASTER);
