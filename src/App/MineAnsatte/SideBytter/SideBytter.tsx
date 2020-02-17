@@ -1,65 +1,47 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { HoyreChevron, VenstreChevron } from 'nav-frontend-chevron';
-import './SideBytter.less';
-
 import TreForste from './Pagingknapper/ForsteDel';
 import TreSiste from './Pagingknapper/SisteDel';
 import Midtdel from './Pagingknapper/Midtdel';
+import './SideBytter.less';
 
 interface Props {
-    className?: string;
+    className: string;
     antallSider: number;
     byttSide: (indeks: number) => void;
     naVarendeSidetall: number;
     plassering: string;
 }
 
-const SideBytter: FunctionComponent<Props> = props => {
-    const { byttSide } = props;
-
+const SideBytter = ({ className, antallSider, byttSide, naVarendeSidetall, plassering }: Props) => {
     return (
-        <nav role="navigation" aria-label="Pagination Navigation" className={props.className}>
+        <nav role="navigation" aria-label="Pagination Navigation" className={className}>
             <div className="sidebytter">
                 <button
                     className="sidebytter__chevron"
-                    id={"sidebytter-chevron-venstre-"+props.plassering}
+                    id={'sidebytter-chevron-venstre-' + plassering}
                     onClick={() => {
-                        props.byttSide(props.naVarendeSidetall - 1);
+                        byttSide(naVarendeSidetall - 1);
                     }}
-                    aria-label={'Goto Page ' + (props.naVarendeSidetall - 1).toString()}
+                    aria-label={'Goto Page ' + (naVarendeSidetall - 1).toString()}
                 >
                     <VenstreChevron type={'venstre'} />
                 </button>
 
-                {(props.naVarendeSidetall < 3 || props.antallSider < 4) && (
-                    <TreForste
-                        byttSide={byttSide}
-                        siderTilsammen={props.antallSider}
-                        naVarendeIndeks={props.naVarendeSidetall}
-                    />
+                {(naVarendeSidetall < 3 || antallSider < 4) && (
+                    <TreForste byttSide={byttSide} siderTilsammen={antallSider} naVarendeIndeks={naVarendeSidetall} />
                 )}
-                {props.antallSider > 3 &&
-                    props.naVarendeSidetall > 2 &&
-                    props.naVarendeSidetall < props.antallSider - 1 && (
-                        <Midtdel
-                            naVarendeIndeks={props.naVarendeSidetall}
-                            byttSide={byttSide}
-                            siderTilsammen={props.antallSider}
-                        />
-                    )}
-                {props.antallSider > 3 && props.naVarendeSidetall >= props.antallSider - 1 && (
-                    <TreSiste
-                        naVarendeIndeks={props.naVarendeSidetall}
-                        byttSide={byttSide}
-                        siderTilsammen={props.antallSider}
-                    />
+                {antallSider > 3 && naVarendeSidetall > 2 && naVarendeSidetall < antallSider - 1 && (
+                    <Midtdel naVarendeIndeks={naVarendeSidetall} byttSide={byttSide} siderTilsammen={antallSider} />
                 )}
-
+                {antallSider > 3 && naVarendeSidetall >= antallSider - 1 && (
+                    <TreSiste naVarendeIndeks={naVarendeSidetall} byttSide={byttSide} siderTilsammen={antallSider} />
+                )}
                 <button
-                    className={'sidebytter__chevron'}
-                    onClick={() => props.byttSide(props.naVarendeSidetall + 1)}
-                    aria-label={'Goto Page ' + (props.naVarendeSidetall - 1).toString()}
-                    id={"sidebytter-chevron-hoyre-"+props.plassering}
+                    className="sidebytter__chevron"
+                    onClick={() => byttSide(naVarendeSidetall + 1)}
+                    aria-label={'Goto Page ' + (naVarendeSidetall - 1).toString()}
+                    id={'sidebytter-chevron-hoyre-' + plassering}
                 >
                     <HoyreChevron />
                 </button>

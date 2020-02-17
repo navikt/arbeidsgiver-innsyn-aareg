@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-
 import PagineringsKnapp from './PagineringsKnapp/PagineringsKnapp';
+
 interface Props {
     className?: string;
     byttSide: (indeks: number) => void;
