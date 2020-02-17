@@ -41,36 +41,29 @@ const App = () => {
                 SERVICEEDITIONINNSYNAAREGISTERET
             ).then(organisasjonerMedTilgangFraAltinn => {
                 setOrganisasjonerMedTilgang(organisasjonerMedTilgangFraAltinn.filter(organisasjon =>
-                    organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR'));
+                    organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR' ));
             });
         });
     }, []);
 
-    const byttOrganisasjon = (organisasjon: Organisasjon) => {
-        if (organisasjon) {
-            if (organisasjonerMedTilgang && valgtOrganisasjon !== tomaAltinnOrganisasjon) {
-                if (
-                    organisasjonerMedTilgang.filter(organisasjonMedTilgang => {
-                        return organisasjonMedTilgang.OrganizationNumber === valgtOrganisasjon.OrganizationNumber;
-                    }).length >= 1
-                ) {
-                    setTilgangState(TILGANGSSTATE.TILGANG);
-                } else {
-                    setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
-                }
-            }
-            if (organisasjonerMedTilgang && organisasjonerMedTilgang.length === 0) {
-                setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
-            }
-            setValgtOrganisasjon(organisasjon);
-        }
-    };
 
     useEffect(() => {
-        if (organisasjonerMedTilgang && valgtOrganisasjon === tomaAltinnOrganisasjon) {
-            setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
+        setTilgangState(TILGANGSSTATE.LASTER);
+        if (organisasjonerMedTilgang && valgtOrganisasjon !== tomaAltinnOrganisasjon) {
+            if (
+                organisasjonerMedTilgang.filter(organisasjonMedTilgang => {
+                    return organisasjonMedTilgang.OrganizationNumber === valgtOrganisasjon.OrganizationNumber;
+                }).length >= 1
+            ) {
+                setTilgangState(TILGANGSSTATE.TILGANG);
+            } else {
+                setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
+            }
         }
         if (organisasjonerMedTilgang && organisasjonerMedTilgang.length === 0) {
+            setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
+        }
+        if (organisasjonerMedTilgang && organisasjonerMedTilgang.length >0 && valgtOrganisasjon === tomaAltinnOrganisasjon) {
             setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
         }
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
@@ -79,11 +72,10 @@ const App = () => {
         <div className="app">
             <LoginBoundary>
                 <Router basename={basename}>
-
                     <Route exact path="/">
+                        <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjoner={organisasjoner} />
                         {tilgangState !== TILGANGSSTATE.LASTER && (
                             <>
-                                <HovedBanner byttOrganisasjon={byttOrganisasjon} organisasjoner={organisasjoner} />
                                 <Route exact path="/enkeltArbeidsforhold">
                                     <EnkeltArbeidsforhold
                                         valgtArbeidstaker={valgtArbeidstaker}
