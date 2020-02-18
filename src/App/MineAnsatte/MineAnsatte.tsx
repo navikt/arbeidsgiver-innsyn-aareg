@@ -139,7 +139,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         Opplysninger fra Aa-registeret
                     </Systemtittel>
-                    <MineAnsatteTopp
+                    {ferdiglastet && <MineAnsatteTopp
                         valgtOrganisasjon={props.valgtOrganisasjon}
                         setIndeksOgGenererListe={setIndeksOgGenererListe}
                         setSoketekst={setSoketekst}
@@ -153,7 +153,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                         setSkalFiltrerePaVarsler={setSkalFiltrerePaVarsler}
                         skalFiltrerePaVarsler={skalFiltrerePaVarsler}
                         setFiltrerPaAktiveAvsluttede={setFiltrerPaAktiveAvsluttede}
-                    />
+                    />}
                     {!ferdiglastet && (
                         <div className="mine-ansatte__spinner-container">
                             {' '}
