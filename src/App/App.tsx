@@ -21,7 +21,8 @@ const App = () => {
     const SERVICEKODEINNSYNAAREGISTERET = '5441';
     const SERVICEEDITIONINNSYNAAREGISTERET = '1';
 
-    const [tilgangState, setTilgangState] = useState(TILGANGSSTATE.LASTER);
+    const [tilgangArbeidsforholdState, setTilgangArbeidsforholdState] = useState(TILGANGSSTATE.LASTER);
+    const [organisasjonerLasteState, setOrganisasjonerLasteState] = useState(TILGANGSSTATE.LASTER);
     const [organisasjoner, setorganisasjoner] = useState(Array<Organisasjon>());
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
     const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
@@ -43,28 +44,29 @@ const App = () => {
                 setOrganisasjonerMedTilgang(organisasjonerMedTilgangFraAltinn.filter(organisasjon =>
                     organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR' ));
             });
+            setOrganisasjonerLasteState(TILGANGSSTATE.TILGANG);
         });
     }, []);
 
 
     useEffect(() => {
-        setTilgangState(TILGANGSSTATE.LASTER);
+        setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
         if (organisasjonerMedTilgang && valgtOrganisasjon !== tomaAltinnOrganisasjon) {
             if (
                 organisasjonerMedTilgang.filter(organisasjonMedTilgang => {
                     return organisasjonMedTilgang.OrganizationNumber === valgtOrganisasjon.OrganizationNumber;
                 }).length >= 1
             ) {
-                setTilgangState(TILGANGSSTATE.TILGANG);
+                setTilgangArbeidsforholdState(TILGANGSSTATE.TILGANG);
             } else {
-                setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
+                setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
             }
         }
         if (organisasjonerMedTilgang && organisasjonerMedTilgang.length === 0) {
-            setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
+            setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
         }
         if (organisasjonerMedTilgang && organisasjonerMedTilgang.length >0 && valgtOrganisasjon === tomaAltinnOrganisasjon) {
-            setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
+            setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
         }
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
 
@@ -73,8 +75,8 @@ const App = () => {
             <LoginBoundary>
                 <Router basename={basename}>
                     <Route exact path="/">
-                        <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjoner={organisasjoner} />
-                        {tilgangState !== TILGANGSSTATE.LASTER && (
+                        {organisasjonerLasteState !== TILGANGSSTATE.LASTER &&  <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjoner={organisasjoner} />}
+                        {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
                             <>
                                 <Route exact path="/enkeltArbeidsforhold">
                                     <EnkeltArbeidsforhold
@@ -82,7 +84,7 @@ const App = () => {
                                         valgtOrganisasjon={valgtOrganisasjon}
                                     />
                                 </Route>
-                                {tilgangState === TILGANGSSTATE.IKKE_TILGANG && (
+                                {tilgangArbeidsforholdState === TILGANGSSTATE.IKKE_TILGANG && (
                                     <IngenTilgangInfo
                                         valgtOrganisasjon={valgtOrganisasjon}
                                         bedrifterMedTilgang={
@@ -94,7 +96,7 @@ const App = () => {
                                     />
                                 )}
 
-                                {tilgangState === TILGANGSSTATE.TILGANG && (
+                                {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                     <MineAnsatte
                                         setValgtArbeidstaker={setValgtArbeidstaker}
                                         valgtOrganisasjon={valgtOrganisasjon}
