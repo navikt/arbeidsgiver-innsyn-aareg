@@ -10,6 +10,7 @@ import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import './App.less';
+import environment from "../utils/environment";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -21,59 +22,77 @@ const App = () => {
     const SERVICEKODEINNSYNAAREGISTERET = '5441';
     const SERVICEEDITIONINNSYNAAREGISTERET = '1';
 
-    const [tilgangState, setTilgangState] = useState(TILGANGSSTATE.LASTER);
+    const [tilgangArbeidsforholdState, setTilgangArbeidsforholdState] = useState(TILGANGSSTATE.LASTER);
+    const [organisasjonerLasteState, setOrganisasjonerLasteState] = useState(TILGANGSSTATE.LASTER);
     const [organisasjoner, setorganisasjoner] = useState(Array<Organisasjon>());
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
     const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
     const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
 
+    const hentOgSettOrganisasjoner = async () => {
+        const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
+        return organisasjonliste;
+    };
+
     useEffect(() => {
-        const hentOgSettOrganisasjoner = async () => {
-            const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
-            return organisasjonliste;
-        };
-        hentOgSettOrganisasjoner().then(organisasjonsliste => setorganisasjoner(organisasjonsliste));
-        hentOrganisasjonerMedTilgangTilAltinntjeneste(
-            SERVICEKODEINNSYNAAREGISTERET,
-            SERVICEEDITIONINNSYNAAREGISTERET
-        ).then(organisasjonerMedTilgangFraAltinn => {
-            setOrganisasjonerMedTilgang(organisasjonerMedTilgangFraAltinn);
+        hentOgSettOrganisasjoner().then(organisasjonsliste => {
+            setorganisasjoner(organisasjonsliste.filter(organisasjon =>
+            organisasjon.OrganizationForm === 'BEDR' || organisasjon.Type === 'Enterprise'));
+            hentOrganisasjonerMedTilgangTilAltinntjeneste(
+                SERVICEKODEINNSYNAAREGISTERET,
+                SERVICEEDITIONINNSYNAAREGISTERET
+            ).then(organisasjonerMedTilgangFraAltinn => {
+                setOrganisasjonerMedTilgang(organisasjonerMedTilgangFraAltinn.filter(organisasjon =>
+                    organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR' ));
+            });
+            setOrganisasjonerLasteState(TILGANGSSTATE.TILGANG);
         });
     }, []);
 
+
     useEffect(() => {
-        setTilgangState(TILGANGSSTATE.LASTER);
+        setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
         if (organisasjonerMedTilgang && valgtOrganisasjon !== tomaAltinnOrganisasjon) {
             if (
                 organisasjonerMedTilgang.filter(organisasjonMedTilgang => {
                     return organisasjonMedTilgang.OrganizationNumber === valgtOrganisasjon.OrganizationNumber;
                 }).length >= 1
             ) {
-                setTilgangState(TILGANGSSTATE.TILGANG);
+                setTilgangArbeidsforholdState(TILGANGSSTATE.TILGANG);
             } else {
-                setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
+                setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
             }
         }
         if (organisasjonerMedTilgang && organisasjonerMedTilgang.length === 0) {
-            setTilgangState(TILGANGSSTATE.IKKE_TILGANG);
+            setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
         }
+
+        setTimeout(() => { }, 3000);
+    }, [valgtOrganisasjon, organisasjonerMedTilgang]);
+
+    useEffect(() => {
+
+        if (organisasjonerMedTilgang && organisasjonerMedTilgang.length > 0 && valgtOrganisasjon === tomaAltinnOrganisasjon && environment.MILJO === 'dev-sbs') {
+            setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
+        }
+        setTimeout(() => { }, 3000);
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
 
     return (
         <div className="app">
             <LoginBoundary>
                 <Router basename={basename}>
-                    <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjoner={organisasjoner} />
-                    <Route exact path="/enkeltArbeidsforhold">
-                        <EnkeltArbeidsforhold
-                            valgtArbeidstaker={valgtArbeidstaker}
-                            valgtOrganisasjon={valgtOrganisasjon}
-                        />
-                    </Route>
                     <Route exact path="/">
-                        {tilgangState !== TILGANGSSTATE.LASTER && (
+                        {organisasjonerLasteState !== TILGANGSSTATE.LASTER &&  <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjoner={organisasjoner} />}
+                        {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
                             <>
-                                {tilgangState === TILGANGSSTATE.IKKE_TILGANG && (
+                                <Route exact path="/enkeltArbeidsforhold">
+                                    <EnkeltArbeidsforhold
+                                        valgtArbeidstaker={valgtArbeidstaker}
+                                        valgtOrganisasjon={valgtOrganisasjon}
+                                    />
+                                </Route>
+                                {tilgangArbeidsforholdState === TILGANGSSTATE.IKKE_TILGANG && (
                                     <IngenTilgangInfo
                                         valgtOrganisasjon={valgtOrganisasjon}
                                         bedrifterMedTilgang={
@@ -85,7 +104,7 @@ const App = () => {
                                     />
                                 )}
 
-                                {tilgangState === TILGANGSSTATE.TILGANG && (
+                                {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                     <MineAnsatte
                                         setValgtArbeidstaker={setValgtArbeidstaker}
                                         valgtOrganisasjon={valgtOrganisasjon}
