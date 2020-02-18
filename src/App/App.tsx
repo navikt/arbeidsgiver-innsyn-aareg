@@ -10,7 +10,6 @@ import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import './App.less';
-import amplitude from "../utils/amplitude";
 import environment from "../utils/environment";
 
 enum TILGANGSSTATE {
