@@ -4,6 +4,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import ReactExport from 'react-data-export';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { filtrerAktiveOgAvsluttede } from '../sorteringOgFiltreringsFunksjoner';
+import {loggBrukerTrykketPaExcel} from "../../amplitudefunksjonerForLogging";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -89,7 +90,7 @@ const ExcelEksport: FunctionComponent<ExcelEksportProps> = (props: ExcelEksportP
     ];
 
     return (
-        <div className={props.className}>
+        <div className={props.className} onClick={() => {loggBrukerTrykketPaExcel()}}>
             <ExcelFile
                 element={<Hovedknapp>Last ned som excelfil</Hovedknapp>}
                 filename={

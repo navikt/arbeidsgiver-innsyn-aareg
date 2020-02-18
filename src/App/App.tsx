@@ -67,7 +67,6 @@ const App = () => {
             setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
         }
 
-        setTimeout(() => { }, 3000);
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
 
     useEffect(() => {
