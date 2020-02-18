@@ -61,12 +61,10 @@ const App = () => {
                 setTilgangArbeidsforholdState(TILGANGSSTATE.TILGANG);
             } else {
                 setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
-                console.log("Her settes ikke tilgang i zller forste if-")
             }
         }
         if (organisasjonerMedTilgang && organisasjonerMedTilgang.length === 0) {
             setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
-            console.log("Her settes ikke tilgang i forste if-")
         }
 
         setTimeout(() => { }, 3000);
@@ -76,14 +74,9 @@ const App = () => {
 
         if (organisasjonerMedTilgang && organisasjonerMedTilgang.length > 0 && valgtOrganisasjon === tomaAltinnOrganisasjon && environment.MILJO === 'dev-sbs') {
             setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
-            console.log("Her settes ikke tilgang i siste if, dette skal ikke skje i prod");
         }
         setTimeout(() => { }, 3000);
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
-
-
-
-    console.log(tilgangArbeidsforholdState);
 
     return (
         <div className="app">
