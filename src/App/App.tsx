@@ -10,6 +10,8 @@ import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import './App.less';
+import amplitude from "../utils/amplitude";
+import environment from "../utils/environment";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -60,15 +62,29 @@ const App = () => {
                 setTilgangArbeidsforholdState(TILGANGSSTATE.TILGANG);
             } else {
                 setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
+                console.log("Her settes ikke tilgang i zller forste if-")
             }
         }
         if (organisasjonerMedTilgang && organisasjonerMedTilgang.length === 0) {
             setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
+            console.log("Her settes ikke tilgang i forste if-")
         }
-        if (organisasjonerMedTilgang && organisasjonerMedTilgang.length >0 && valgtOrganisasjon === tomaAltinnOrganisasjon) {
-            setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
-        }
+
+        setTimeout(() => { }, 3000);
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
+
+    useEffect(() => {
+
+        if (organisasjonerMedTilgang && organisasjonerMedTilgang.length > 0 && valgtOrganisasjon === tomaAltinnOrganisasjon && environment.MILJO === 'dev-sbs') {
+            setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
+            console.log("Her settes ikke tilgang i siste if, dette skal ikke skje i prod");
+        }
+        setTimeout(() => { }, 3000);
+    }, [valgtOrganisasjon, organisasjonerMedTilgang]);
+
+
+
+    console.log(tilgangArbeidsforholdState);
 
     return (
         <div className="app">
