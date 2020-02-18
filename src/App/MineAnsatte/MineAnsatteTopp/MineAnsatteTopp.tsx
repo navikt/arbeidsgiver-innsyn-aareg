@@ -65,6 +65,11 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                 <>
                     {' '}
                     <div className="mine-ansatte__header">
+                        <AlertStripeInfo className="informasjon">
+                            Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Dersom du
+                            finner feil eller mangler i oversikten skal disse korrigeres/rapporteres inn via
+                            a-meldingen.{' '}
+                        </AlertStripeInfo>
                         {lengdeResponsFiltrertListe > 0 && (
                             <ExcelEksport
                                 className="excel-export"
@@ -73,11 +78,6 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                                 orgnrBedrift={valgtOrganisasjon.OrganizationNumber}
                             />
                         )}
-                        <AlertStripeInfo className="informasjon">
-                            Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Dersom du
-                            finner feil eller mangler i oversikten skal disse korrigeres/rapporteres inn via
-                            a-meldingen.{' '}
-                        </AlertStripeInfo>
                     </div>
                     <div className="mine-ansatte__sok-og-filter">
                         <Normaltekst>Arbeidsforhold</Normaltekst>
