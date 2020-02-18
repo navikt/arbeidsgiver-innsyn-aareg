@@ -30,10 +30,13 @@ export const loggAntallAnsatte = (antall: number) => {
 };
 
 export const loggSnittTidPerArbeidsforhold = (antall: number, tid: number) => {
-    let logg = "#arbeidsforhold gjennomsnittstid per arbeidsforhiold hentet: ";
+    let logg = "#arbeidsforhold gjennomsnittstid per arbeidsforhold: ";
     if (antall>0){
         const tidPerForhold = antall/tid;
         switch(true) {
+            case (tidPerForhold < 0.001):
+                logg += "mindre enn 0.001 sekund";
+                break;
             case (tidPerForhold < 0.03):
                 logg += "mindre enn 0.03 sekund";
                 break;
@@ -62,7 +65,7 @@ export const loggSnittTidPerArbeidsforhold = (antall: number, tid: number) => {
 };
 
 export const loggTidForAlleArbeidsforhold = (tid: number) => {
-    let logg = "#arbeidsforhold tid per arbeidsforhiold hentet: ";
+    let logg = "#arbeidsforhold tid å hente alle arbeidsforhold ";
     if (tid>0){
         switch(true) {
             case (tid < 1):
@@ -78,7 +81,7 @@ export const loggTidForAlleArbeidsforhold = (tid: number) => {
                 logg += "mindre enn 15 sekunder";
                 break;
             case (tid > 20):
-                logg += "mellom 20 og 60";
+                logg += "mellom 20 og 60 sekunder";
                 break;
             case (tid >= 60):
                 logg += "over 60";
@@ -93,5 +96,9 @@ export const loggTidForAlleArbeidsforhold = (tid: number) => {
 };
 
 export const loggBrukerTrykketPaVarsel = () => {
-    amplitude.logEvent("trykket pa ansatt med varsel" + environment.MILJO);
+    amplitude.logEvent("#arbeidsforhold trykket pa ansatt med varsel" + environment.MILJO);
+};
+
+export const loggBrukerTrykketPaExcel = () => {
+    amplitude.logEvent("#arbeidsforhold bruker trykket på exceleksport");
 };
