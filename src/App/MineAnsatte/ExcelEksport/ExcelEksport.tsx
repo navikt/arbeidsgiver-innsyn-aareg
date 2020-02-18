@@ -1,9 +1,13 @@
-import React, { FunctionComponent } from 'react';
-import { Hovedknapp } from 'nav-frontend-knapper';
+import React, { FunctionComponent, useState } from 'react';
+import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import Modal from 'nav-frontend-modal';
 // @ts-ignore
 import ReactExport from 'react-data-export';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { filtrerAktiveOgAvsluttede } from '../sorteringOgFiltreringsFunksjoner';
+import varselikon from './varselikon.svg';
+import './ExcelEksport.less'
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -17,6 +21,7 @@ type ExcelEksportProps = {
 
 const convertToDataset = (arbeidsforhold: Arbeidsforhold[]) => {
     const arbeidsforholdDataset: string[][] = [];
+
     arbeidsforhold.forEach(a => {
         const detteArbeidsforholdet: Array<string> = [];
         detteArbeidsforholdet.push(a.arbeidstaker.navn);
@@ -69,6 +74,10 @@ const infosideData = [
 ];
 
 const ExcelEksport: FunctionComponent<ExcelEksportProps> = (props: ExcelEksportProps) => {
+    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+    const openModal = () => setModalIsOpen(true);
+    const closeModal = () => setModalIsOpen(false);
+
     const dagensDato: Date = new Date();
     const aktiveArbeidsforhold = filtrerAktiveOgAvsluttede(props.arbeidsforholdListe, 'Aktive');
     const aktiveArbeidsforholdDataset = convertToDataset(aktiveArbeidsforhold);
@@ -90,21 +99,63 @@ const ExcelEksport: FunctionComponent<ExcelEksportProps> = (props: ExcelEksportP
 
     return (
         <div className={props.className}>
-            <ExcelFile
-                element={<Hovedknapp>Last ned som excelfil</Hovedknapp>}
-                filename={
-                    'ANSATTFORHOLD_' +
-                    props.navnBedrift +
-                    '_' +
-                    props.orgnrBedrift +
-                    '_' +
-                    dagensDato.toLocaleDateString()
-                }
+            <Hovedknapp className="excel-eksport-knapp" onClick={() => openModal()}>Last ned som excelfil</Hovedknapp>
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={() => closeModal()}
+                closeButton={true}
+                contentLabel="Excel eksport modal"
+                className="eksport-modal"
             >
-                <ExcelSheet dataSet={infosideData} name="Info" />
-                <ExcelSheet dataSet={aktiveArbeidsforholdMultiDataSet} name="Aktive arbeidsforhold" />
-                <ExcelSheet dataSet={avsluttedeArbeidsforholdMultiDataSet} name="Avsluttede arbeidsforhold" />
-            </ExcelFile>
+                <div className="eksport-modal__innhold">
+                    <Undertittel className="eksport-modal__overskrift">
+                        Last ned opplysninger fra Aa-registret
+                    </Undertittel>
+
+                    <Normaltekst className="eksport-modal__ingress">
+                        Du har nå mulighet å laste ned alle arbeidsforhold i virksomheten i en Excel-fil.
+                    </Normaltekst>
+
+                    <div className="eksport-modal__varsel">
+                        <img
+                            src={varselikon}
+                            alt=""
+                            className="varselikon"
+                        />
+                        <Normaltekst className="varseltekst">Personvern - lagre filen sikkert</Normaltekst>
+                    </div>
+
+                    <Normaltekst className="eksport-modal__personvern-info">
+                        <div className="tekst">
+                            Filen inneholder personopplysninger om ansatte i virksomheten. Sørg for at du lagrer filen
+                            sikkert og ta forholdsregler når du sender, lager eller laster opp filen en annen plass.
+                        </div>
+                        <div>
+                            Laster du ned filen er virksomheten din selv ansvarlig for å sikre etterlevelse
+                            av personvernreglene.
+                        </div>
+                    </Normaltekst>
+
+                    <div className="eksport-modal__knapper">
+                        <ExcelFile
+                            element={<Hovedknapp onClick={() => closeModal()}>Jeg forstår - Last ned filen</Hovedknapp>}
+                            filename={
+                                'ANSATTFORHOLD_' +
+                                props.navnBedrift +
+                                '_' +
+                                props.orgnrBedrift +
+                                '_' +
+                                dagensDato.toLocaleDateString()
+                            }
+                        >
+                            <ExcelSheet dataSet={infosideData} name="Info"/>
+                            <ExcelSheet dataSet={aktiveArbeidsforholdMultiDataSet} name="Aktive arbeidsforhold"/>
+                            <ExcelSheet dataSet={avsluttedeArbeidsforholdMultiDataSet} name="Avsluttede arbeidsforhold"/>
+                        </ExcelFile>
+                        <Flatknapp className="avbryt-knapp" onClick={() => closeModal()}>Avbryt</Flatknapp>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 };
