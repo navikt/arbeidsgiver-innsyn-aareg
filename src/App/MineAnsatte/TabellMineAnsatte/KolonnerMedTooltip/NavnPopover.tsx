@@ -5,6 +5,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { Arbeidstaker } from '../../../Objekter/Arbeidstaker';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import './PopOverStyling.less';
+import {loggBrukerTrykketPaVarsel} from "../../../amplitudefunksjonerForLogging";
 
 type PopoverProps = {
     settValgtArbeidsgiver: (valgtArbeidstaker: Arbeidstaker) => void;
@@ -20,6 +21,7 @@ const NavnPopover = (props: PopoverProps) => {
 
     const oppdaterValgtArbeidsgiver = (fnr: string, navn: string) => {
         props.settValgtArbeidsgiver({ fnr: fnr, navn: navn });
+        loggBrukerTrykketPaVarsel();
     };
 
     useEffect(() => {
