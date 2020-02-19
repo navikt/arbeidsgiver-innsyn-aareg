@@ -1,7 +1,6 @@
 import { hentArbeidsforholdLink } from '../App/lenker';
 import { ObjektFraAAregisteret, tomResponsFraAareg } from '../App/Objekter/ObjektFraAAreg';
 import amplitude from '../utils/amplitude';
-import environment from '../utils/environment';
 import {
     loggAntallAnsatte,
     loggSnittTidPerArbeidsforhold,
@@ -18,18 +17,12 @@ export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: stri
     if (respons.ok) {
         const jsonRespons: ObjektFraAAregisteret = await respons.json();
         loggAntallAnsatte(jsonRespons.arbeidsforholdoversikter.length);
-        const tid = (new Date().getTime() - startTtid.getTime()) * 1000;
+        const tid = (new Date().getDate() - startTtid.getDate());
         loggSnittTidPerArbeidsforhold(jsonRespons.arbeidsforholdoversikter.length, tid);
         loggTidForAlleArbeidsforhold(tid);
         return jsonRespons;
     } else {
         amplitude.logEvent('#arbeidsforhold klarte ikke hente ut arbeidsforhold');
-        amplitude.logEvent(
-            ' #arbeidsforhold tok: ' +
-                (new Date().getTime() - startTtid.getTime()) * 1000 +
-                ' før kallet feilet i miljøet ' +
-                environment.MILJO
-        );
         return tomResponsFraAareg;
     }
 }

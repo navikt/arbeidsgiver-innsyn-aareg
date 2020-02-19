@@ -6,6 +6,7 @@ import Modal from 'nav-frontend-modal';
 import ReactExport from 'react-data-export';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { filtrerAktiveOgAvsluttede } from '../sorteringOgFiltreringsFunksjoner';
+import {loggBrukerTrykketPaExcel} from "../../amplitudefunksjonerForLogging";
 import varselikon from './varselikon.svg';
 import './ExcelEksport.less'
 
@@ -98,7 +99,7 @@ const ExcelEksport: FunctionComponent<ExcelEksportProps> = (props: ExcelEksportP
     ];
 
     return (
-        <div className={props.className}>
+        <div className={props.className} onClick={() => {loggBrukerTrykketPaExcel()}}>
             <Hovedknapp className="excel-eksport-knapp" onClick={() => openModal()}>Last ned som excelfil</Hovedknapp>
             <Modal
                 isOpen={modalIsOpen}
