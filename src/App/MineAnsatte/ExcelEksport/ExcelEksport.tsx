@@ -53,7 +53,7 @@ const ExcelEksport = (props: ExcelEksportProps) => {
                             alt=""
                             className="varselikon"
                         />
-                        <Normaltekst className="varseltekst">Personvern - lagre filen sikkert</Normaltekst>
+                        <Normaltekst className="varseltekst">Personvern - trygg nedlasting</Normaltekst>
                     </div>
 
                     <div className="eksport-modal__personvern-info">
