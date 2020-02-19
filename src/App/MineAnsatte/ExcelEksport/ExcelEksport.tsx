@@ -45,13 +45,8 @@ const ExcelEksport = (props: ExcelEksportProps) => {
             >
                 <div className="eksport-modal__innhold">
                     <Undertittel className="eksport-modal__overskrift">
-                        Last ned opplysninger fra Aa-registret
+                        Last ned arbeidsforhold fra Aa-registret
                     </Undertittel>
-
-                    <Normaltekst className="eksport-modal__ingress">
-                        Du har nå mulighet å laste ned alle arbeidsforhold i virksomheten i en Excel-fil.
-                    </Normaltekst>
-
                     <div className="eksport-modal__varsel">
                         <img
                             src={varselikon}
@@ -63,11 +58,7 @@ const ExcelEksport = (props: ExcelEksportProps) => {
 
                     <div className="eksport-modal__personvern-info">
                         <Normaltekst className="tekst">
-                            Filen inneholder personopplysninger om ansatte i virksomheten. Sørg for at du lagrer filen
-                            sikkert og ta forholdsregler når du sender, lagrer eller laster opp filen en annen plass.
-                        </Normaltekst>
-                        <Normaltekst>
-                            Laster du ned filen er virksomheten din selv ansvarlig for å overholde personvernreglene.
+                            Dennne filen inneholder personopplysninger. Vær varsom dersom du laster ned eller distribuerer filen videre. Ved nedlasting er du selv ansvarlig for å overholde personvernreglene.
                         </Normaltekst>
                     </div>
 
