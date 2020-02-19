@@ -67,8 +67,7 @@ const ExcelEksport = (props: ExcelEksportProps) => {
                             sikkert og ta forholdsregler når du sender, lagrer eller laster opp filen en annen plass.
                         </Normaltekst>
                         <Normaltekst>
-                            Laster du ned filen er virksomheten din selv ansvarlig for å sikre etterlevelse
-                            av personvernreglene.
+                            Laster du ned filen er virksomheten din selv ansvarlig for å overholde personvernreglene.
                         </Normaltekst>
                     </div>
 
