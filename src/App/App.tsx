@@ -10,7 +10,7 @@ import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import './App.less';
-import environment from "../utils/environment";
+import environment from '../utils/environment';
 
 enum TILGANGSSTATE {
     LASTER,
@@ -36,19 +36,25 @@ const App = () => {
 
     useEffect(() => {
         hentOgSettOrganisasjoner().then(organisasjonsliste => {
-            setorganisasjoner(organisasjonsliste.filter(organisasjon =>
-            organisasjon.OrganizationForm === 'BEDR' || organisasjon.Type === 'Enterprise'));
+            setorganisasjoner(
+                organisasjonsliste.filter(
+                    organisasjon => organisasjon.OrganizationForm === 'BEDR' || organisasjon.Type === 'Enterprise'
+                )
+            );
             hentOrganisasjonerMedTilgangTilAltinntjeneste(
                 SERVICEKODEINNSYNAAREGISTERET,
                 SERVICEEDITIONINNSYNAAREGISTERET
             ).then(organisasjonerMedTilgangFraAltinn => {
-                setOrganisasjonerMedTilgang(organisasjonerMedTilgangFraAltinn.filter(organisasjon =>
-                    organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR' ));
+                setOrganisasjonerMedTilgang(
+                    organisasjonerMedTilgangFraAltinn.filter(
+                        organisasjon =>
+                            organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR'
+                    )
+                );
             });
             setOrganisasjonerLasteState(TILGANGSSTATE.TILGANG);
         });
     }, []);
-
 
     useEffect(() => {
         setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
@@ -66,31 +72,36 @@ const App = () => {
         if (organisasjonerMedTilgang && organisasjonerMedTilgang.length === 0) {
             setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
         }
-
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
 
     useEffect(() => {
-
-        if (organisasjonerMedTilgang && organisasjonerMedTilgang.length > 0 && valgtOrganisasjon === tomaAltinnOrganisasjon && environment.MILJO === 'dev-sbs') {
+        if (
+            organisasjonerMedTilgang &&
+            organisasjonerMedTilgang.length > 0 &&
+            valgtOrganisasjon === tomaAltinnOrganisasjon &&
+            environment.MILJO === 'dev-sbs'
+        ) {
             setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
         }
-        setTimeout(() => { }, 3000);
+        setTimeout(() => {}, 3000);
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
 
     return (
         <div className="app">
             <LoginBoundary>
                 <Router basename={basename}>
-                    <Route exact path="/">
-                        {organisasjonerLasteState !== TILGANGSSTATE.LASTER &&  <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjoner={organisasjoner} />}
-                        {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
-                            <>
-                                <Route exact path="/enkeltArbeidsforhold">
-                                    <EnkeltArbeidsforhold
-                                        valgtArbeidstaker={valgtArbeidstaker}
-                                        valgtOrganisasjon={valgtOrganisasjon}
-                                    />
-                                </Route>
+                    {organisasjonerLasteState !== TILGANGSSTATE.LASTER && (
+                        <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjoner={organisasjoner} />
+                    )}
+                    {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
+                        <>
+                            <Route exact path="/enkeltArbeidsforhold">
+                                <EnkeltArbeidsforhold
+                                    valgtArbeidstaker={valgtArbeidstaker}
+                                    valgtOrganisasjon={valgtOrganisasjon}
+                                />
+                            </Route>
+                            <Route exact path="/">
                                 {tilgangArbeidsforholdState === TILGANGSSTATE.IKKE_TILGANG && (
                                     <IngenTilgangInfo
                                         valgtOrganisasjon={valgtOrganisasjon}
@@ -109,9 +120,9 @@ const App = () => {
                                         valgtOrganisasjon={valgtOrganisasjon}
                                     />
                                 )}
-                            </>
-                        )}
-                    </Route>
+                            </Route>
+                        </>
+                    )}
                 </Router>
             </LoginBoundary>
         </div>

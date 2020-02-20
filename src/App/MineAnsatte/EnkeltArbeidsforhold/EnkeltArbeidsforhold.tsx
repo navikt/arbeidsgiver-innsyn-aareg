@@ -64,12 +64,6 @@ export const EnkeltArbeidsforhold = (props: EnkeltArbeidsforholdProps) => {
                                         <Normaltekst>Fødselsnummer: {props.valgtArbeidstaker.fnr}</Normaltekst>
                                     </div>
                                 </span>
-                                <span className="af-detaljert__kolonne">
-                                    <div className={'af-detaljert__arbeidsgiver'}>
-                                        <Undertittel>Ansattforhold ID</Undertittel>
-                                        <Normaltekst>{parseInt(arbeidsforholdIdFraUrl)}</Normaltekst>
-                                    </div>
-                                </span>
                             </div>
                             <DetaljertArbeidsforhold
                                 locale={locale}
