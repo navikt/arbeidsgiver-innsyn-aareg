@@ -7,25 +7,28 @@ interface Props {
     onProgress: (nyTid: number) => void;
 }
 
-const Progressbar = ({ beregnetTid}: Props) => {
-    const [bredde, setBredde] = useState(0);
+const Progressbar = ({ beregnetTid }: Props) => {
 
+    const [tidGjenstar, setTidGjenstar] = useState(beregnetTid);
+
+    console.log(beregnetTid);
+    console.log(tidGjenstar);
 
     useEffect(() => {
         const element = document.getElementById("progressbar__fyll");
-        if (bredde !== 100) {
+        if (tidGjenstar>0) {
             if(element) {
-                element.style.width =  bredde.toString() + "%";
-                setTimeout(  () =>{setBredde(bredde+2)}, 300);
+                setTimeout(  () =>{element.style.width =  (((beregnetTid - tidGjenstar)/beregnetTid)*100).toString() + "%";
+                    }, 300);
+                setTidGjenstar(tidGjenstar - (beregnetTid/100));
             }
+
         }
-
-
-    }, [ bredde]);
+        }, [ beregnetTid,tidGjenstar]);
 
     return (
         <div className="progressbar">
-            <div className={"progressbar__fyll"} id={"progressbar__fyll"}/>
+            <div className={"progressbar__fyll"} id={"progressbar__fyll"} />
         </div>
     );
 }
