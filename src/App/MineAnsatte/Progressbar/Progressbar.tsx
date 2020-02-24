@@ -5,24 +5,25 @@ import './Progressbar.less';
 interface Props {
     beregnetTid: number;
     onProgress: (nyTid: number) => void;
+    startTid: number;
 }
 
-const Progressbar = ({ beregnetTid }: Props) => {
-    const [tidGatt, setTidGatt] = useState(0);
-    const [initialTid, setInitial] = useState(new Date().getTime());
+const Progressbar = ({ beregnetTid, startTid }: Props) => {
+    const [tid, setTid] = useState(0);
 
     useEffect(() => {
-        const element = document.getElementById("progressbar__fyll");
-        if (tidGatt < beregnetTid) {
-            if (element) {
-                setInitial(new Date().getTime());
-                setTimeout( () => {
-                    setTidGatt(tidGatt + (new Date().getTime() - initialTid));}, beregnetTid/100);
-                console.log(tidGatt);
-                element.style.width =  ((tidGatt/beregnetTid)*100).toString() + "%";
-            }
+        if (tid < beregnetTid) {
+            setTimeout( () => {
+                const element = document.getElementById("progressbar__fyll");
+                if (element) {
+                    const naVarendeTid = new Date().getTime();
+                    element.style.width =  ((tid/beregnetTid)*100).toString() + "%";
+                    const tidGatt = naVarendeTid - startTid;
+                    setTid(tidGatt);
+                };
+            }, beregnetTid/500);
         }
-        }, [ beregnetTid,tidGatt, initialTid]);
+        }, [ beregnetTid, tid,startTid]);
 
     return (
         <div className="progressbar">
