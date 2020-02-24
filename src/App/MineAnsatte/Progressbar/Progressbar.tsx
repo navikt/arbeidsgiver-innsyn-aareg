@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './Progressbar.less';
 
-
 interface Props {
     beregnetTid: number;
     onProgress: (nyTid: number) => void;
@@ -25,10 +24,14 @@ const Progressbar = ({ beregnetTid, startTid }: Props) => {
         }
         }, [ beregnetTid, tid,startTid]);
 
+    const tekst = (Math.floor((tid/beregnetTid)* 100)).toString() + "%";
+
     return (
+        <> {tekst}
         <div className="progressbar">
             <div className={"progressbar__fyll"} id={"progressbar__fyll"} />
         </div>
+            </>
     );
 };
 
