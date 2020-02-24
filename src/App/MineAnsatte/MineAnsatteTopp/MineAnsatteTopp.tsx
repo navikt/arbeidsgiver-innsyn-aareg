@@ -56,7 +56,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
     };
 
     return (
-        <><Progressbar beregnetTid={80000} onProgress={tid => {console.log(tid)}}/>
+        <><Progressbar beregnetTid={10000} startTid={new Date().getTime()} onProgress={tid => {console.log(tid)}}/>
             {responsFraAaregisteret.length === 0 ? (
                 <AlertStripeInfo className="mine-ansatte__informasjon">
                     Det finnes ingen arbeidsforhold rapportert inn til Aa-registret etter 01.01.2015 for valgt
