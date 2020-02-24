@@ -12,15 +12,14 @@ const Progressbar = ({ beregnetTid }: Props) => {
     const [initialTid, setInitial] = useState(new Date().getTime());
 
     useEffect(() => {
-        console.log(tidGatt);
         const element = document.getElementById("progressbar__fyll");
         if (tidGatt < beregnetTid) {
-            if(element) {
-                element.style.width =  ((tidGatt/beregnetTid)*100).toString() + "%";
+            if (element) {
                 setInitial(new Date().getTime());
-                console.log(tidGatt + ( new Date().getTime() - initialTid));
-                    setTidGatt(tidGatt + (new Date().getTime() - initialTid));
+                setTimeout( () => {
+                    setTidGatt(tidGatt + (new Date().getTime() - initialTid));}, beregnetTid/100);
                 console.log(tidGatt);
+                element.style.width =  ((tidGatt/beregnetTid)*100).toString() + "%";
             }
         }
         }, [ beregnetTid,tidGatt, initialTid]);
