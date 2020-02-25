@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './Progressbar.less';
-import {prosent} from "../../../mocking/funksjonerForAlageAAregMock";
+import {Ingress} from "nav-frontend-typografi";
 
 interface Props {
     beregnetTid: number;
@@ -12,7 +12,7 @@ const Progressbar = ({ beregnetTid, startTid }: Props) => {
     const [tid, setTid] = useState(0);
 
     useEffect(() => {
-        if (tid < beregnetTid) {
+        if (tid/beregnetTid<0.97) {
             setTimeout( () => {
                 const element = document.getElementById("progressbar__fyll");
                 if (element) {
@@ -29,6 +29,7 @@ const Progressbar = ({ beregnetTid, startTid }: Props) => {
 
     return (
         <div className={'progressbar__container'}>
+            <Ingress className={'progressbar__henter-antall'}>Henter 5000 arbeidsforhold</Ingress>
             <div className={"progressbar__prosent"}>{tekst}</div>
         <div className="progressbar">
             <div className={"progressbar__fyll"} id={"progressbar__fyll"} />
