@@ -12,7 +12,7 @@ const Progressbar = ({ beregnetTid, startTid }: Props) => {
     const [tid, setTid] = useState(0);
 
     useEffect(() => {
-        if (tid/beregnetTid<0.97) {
+        if (tid/beregnetTid<0.999) {
             setTimeout( () => {
                 const element = document.getElementById("progressbar__fyll");
                 if (element) {
