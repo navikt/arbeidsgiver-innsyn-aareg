@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import Lenke from 'nav-frontend-lenker';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
@@ -18,6 +17,7 @@ import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
 import { linkTilMinSideArbeidsgiver } from '../lenker';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
 import './MineAnsatte.less';
+import Progressbar from "./Progressbar/Progressbar";
 
 interface MineAnsatteProps {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
@@ -138,7 +138,10 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         Opplysninger fra Aa-registeret
-                    </Systemtittel>
+                    </Systemtittel>{!ferdiglastet && (
+                        <Progressbar beregnetTid={10000} startTid={new Date().getTime()} onProgress={tid => {console.log(tid)}}/>
+
+                )}
                     {ferdiglastet && <MineAnsatteTopp
                         valgtOrganisasjon={props.valgtOrganisasjon}
                         setIndeksOgGenererListe={setIndeksOgGenererListe}
@@ -154,13 +157,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                         skalFiltrerePaVarsler={skalFiltrerePaVarsler}
                         setFiltrerPaAktiveAvsluttede={setFiltrerPaAktiveAvsluttede}
                     />}
-                    {!ferdiglastet && (
-                        <div className="mine-ansatte__spinner-container">
-                            {' '}
-                            Henter arbeidsforhold
-                            <NavFrontendSpinner className="mine-ansatte__spinner" />
-                        </div>
-                    )}
+
                     {ferdiglastet && listeMedArbeidsForhold.length > 0 && (
                         <>
                             {' '}

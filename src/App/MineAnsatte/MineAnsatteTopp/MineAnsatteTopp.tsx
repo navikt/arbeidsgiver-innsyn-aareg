@@ -10,7 +10,6 @@ import Filtervalg from '../Filtervalg/Filtervalg';
 import SideBytter from '../SideBytter/SideBytter';
 import { filtreringValgt, tellAntallAktiveOgInaktiveArbeidsforhold } from '../sorteringOgFiltreringsFunksjoner';
 import './MineAnsatteTopp.less';
-import Progressbar from "../Progressbar/Progressbar";
 
 interface Props {
     responsFraAaregisteret: Arbeidsforhold[];
@@ -56,7 +55,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
     };
 
     return (
-        <><Progressbar beregnetTid={10000} startTid={new Date().getTime()} onProgress={tid => {console.log(tid)}}/>
+        <>
             {responsFraAaregisteret.length === 0 ? (
                 <AlertStripeInfo className="mine-ansatte__informasjon">
                     Det finnes ingen arbeidsforhold rapportert inn til Aa-registret etter 01.01.2015 for valgt

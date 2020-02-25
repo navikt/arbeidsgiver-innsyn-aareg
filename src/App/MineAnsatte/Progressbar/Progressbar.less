@@ -9,12 +9,17 @@
   border-radius: 4px;
   width: 30rem;
   height: 0.5rem;
+  margin: 2rem;
 
   &__container {
     display: flex;
     align-self: center;
     flex-direction: column;
-    margin: 2rem;
+  }
+
+  &__henter-antall {
+    display: flex;
+    align-self: center;
   }
 
   &__fyll {
@@ -28,4 +33,12 @@
     align-self: flex-end;
   }
 
+}
+
+@media (max-width: @screen-sm) {
+  .progressbar {
+    width: 100%;
+    margin: 0 1rem 0 1rem;
+
+  }
 }
