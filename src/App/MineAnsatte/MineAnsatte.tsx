@@ -139,7 +139,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         Opplysninger fra Aa-registeret
                     </Systemtittel>{!ferdiglastet && (
-                        <Progressbar beregnetTid={4000} startTid={new Date().getTime()} onProgress={tid => {console.log(tid)}}/>
+                        <Progressbar beregnetTid={3300} startTid={new Date().getTime()} onProgress={tid => {console.log(tid)}}/>
 
                 )}
                     {ferdiglastet && <MineAnsatteTopp
