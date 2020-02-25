@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './Progressbar.less';
+import {prosent} from "../../../mocking/funksjonerForAlageAAregMock";
 
 interface Props {
     beregnetTid: number;
@@ -27,11 +28,12 @@ const Progressbar = ({ beregnetTid, startTid }: Props) => {
     const tekst = (Math.floor((tid/beregnetTid)* 100)).toString() + "%";
 
     return (
-        <> {tekst}
+        <div className={'progressbar__container'}>
+            <div className={"progressbar__prosent"}>{tekst}</div>
         <div className="progressbar">
             <div className={"progressbar__fyll"} id={"progressbar__fyll"} />
         </div>
-            </>
+            </div>
     );
 };
 
