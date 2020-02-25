@@ -13,8 +13,8 @@ import {
 import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
-import { hentArbeidsforholdFraAAreg } from '../../api/AaregApi';
-import { linkTilMinSideArbeidsgiver } from '../lenker';
+import {hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg} from '../../api/AaregApi';
+import {linkTilMinSideArbeidsgiver} from '../lenker';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
 import './MineAnsatte.less';
 import Progressbar from "./Progressbar/Progressbar";
@@ -62,6 +62,10 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     const setIndeksOgGenererListe = (indeks: number) => {
         setnaVarendeSidetall(indeks);
     };
+
+    useEffect(() => {
+        hentAntallArbeidsforholdFraAareg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber).then(antall => console.log(antall))
+    }, [props.valgtOrganisasjon]);
 
     useEffect(() => {
         setFerdiglastet(false);
