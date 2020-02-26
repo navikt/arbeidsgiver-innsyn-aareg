@@ -14,16 +14,7 @@ const Progressbar = ({ beregnetTid, startTid, erFerdigLastet }: Props) => {
     const [visProgress, setVisProgress] = useState(true);
     const [bredde, setBredde] = useState(0);
 
-    const element = document.getElementById("progressbar__fyll");
-
-    useEffect(() => {
-        console.log("useEffect 1 kalles");
-        if (bredde > 98) {
-            setTimeout(() => {setVisProgress(false); console.log("timeout ")},500);
-        }
-    }, [ bredde]);
-
-    useEffect(() => {
+        const element = document.getElementById("progressbar__fyll");
         console.log("useEffect 3");
         if (!erFerdigLastet && tid/beregnetTid < 0.999) {
             setTimeout( () => {
@@ -40,13 +31,14 @@ const Progressbar = ({ beregnetTid, startTid, erFerdigLastet }: Props) => {
             }
         if (erFerdigLastet && element && bredde <100) {
             setTimeout( () => {
-                element.style.width =  (bredde+1).toString() + "%";
-                setBredde(bredde+1);
+                element.style.width =  (bredde+6).toString() + "%";
+                setBredde(bredde+6);
             }, 100);
         }
 
-
-        }, [ beregnetTid, tid, startTid, erFerdigLastet, element, visProgress, bredde]);
+        if (bredde >= 98 && visProgress) {
+            setVisProgress(false);
+        }
 
     let tekst = "";
     if (erFerdigLastet) {
