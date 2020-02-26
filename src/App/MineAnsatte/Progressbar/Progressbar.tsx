@@ -15,32 +15,33 @@ const Progressbar = ({ beregnetTid, startTid, erFerdigLastet }: Props) => {
     const [bredde, setBredde] = useState(0);
 
         const element = document.getElementById("progressbar__fyll");
-        if (!erFerdigLastet && tid/beregnetTid < 0.999) {
-            setTimeout( () => {
-                const element = document.getElementById("progressbar__fyll");
-                if (element) {
-                    const naVarendeTid = new Date().getTime();
-                    const beregnetBredde = (tid/beregnetTid)*100
-                    element.style.width =  beregnetBredde.toString() + "%"
-                    setBredde(beregnetBredde);
-                    const tidGatt = naVarendeTid - startTid;
-                    setTid(tidGatt);
-                    };
-                }, beregnetTid/500);
-            }
-        if (erFerdigLastet && element && bredde<100) {
-            setTimeout( () => {
-                element.style.width =  (bredde+3).toString() + "%";
-                setBredde(bredde+3);
-            }, 10);
-        }
 
         if (bredde >= 98 && visProgress) {
             setVisProgress(false);
         }
+        else {
+            if (!erFerdigLastet && tid/beregnetTid < 0.999) {
+                setTimeout( () => {
+                    const element = document.getElementById("progressbar__fyll");
+                    if (element) {
+                        const naVarendeTid = new Date().getTime();
+                        const beregnetBredde = (tid/beregnetTid)*100
+                        element.style.width =  beregnetBredde.toString() + "%"
+                        setBredde(beregnetBredde);
+                        const tidGatt = naVarendeTid - startTid;
+                        setTid(tidGatt);
+                    };
+                }, beregnetTid/500);
+            }
+            if (erFerdigLastet && element && bredde+3<100) {
+                setTimeout( () => {
+                    element.style.width =  (bredde+3).toString() + "%";
+                    setBredde(bredde+3);
+                }, 10);
+            }
+        }
 
-
-      const tekst = Math.floor(bredde).toString() + "%"
+        const tekst = Math.floor(bredde).toString() + "%"
 
     return (
        <> { visProgress && <div className={'progressbar__container'}>
