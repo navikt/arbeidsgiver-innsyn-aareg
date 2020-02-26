@@ -33,11 +33,11 @@ const Progressbar = ({ beregnetTid, startTid, erFerdigLastet }: Props) => {
                     };
                 }, beregnetTid/500);
             }
-            if (erFerdigLastet && element && bredde+3<100) {
+            if (erFerdigLastet && element && bredde+2<100) {
                 setTimeout( () => {
-                    element.style.width =  (bredde+3).toString() + "%";
-                    setBredde(bredde+3);
-                }, 10);
+                    element.style.width =  (bredde+2).toString() + "%";
+                    setBredde(bredde+2);
+                }, 15);
             }
         }
 
