@@ -19,7 +19,7 @@ const Progressbar = ({ beregnetTid, startTid, erFerdigLastet }: Props) => {
     useEffect(() => {
         console.log("useEffect 1 kalles");
         if (bredde === "98%") {
-            setTimeout(() => {setVisProgress(false); console.log("timeout ")},2000);
+            setTimeout(() => {setVisProgress(false); console.log("timeout ")},500);
         }
     }, [ bredde]);
 
@@ -44,11 +44,14 @@ const Progressbar = ({ beregnetTid, startTid, erFerdigLastet }: Props) => {
 
         }, [ beregnetTid, tid, startTid, erFerdigLastet, element, visProgress]);
 
-    const tekst = (Math.floor((tid/beregnetTid)* 100)).toString() + "%";
-
-    if (element) {
-       console.log( element.offsetWidth, "bredde");
+    let tekst = "";
+    if (erFerdigLastet) {
+        tekst = "98%"
     }
+    else {
+       tekst = (Math.floor((tid/beregnetTid)* 100)).toString() + "%"
+    }
+
 
     return (
        <> { visProgress && <div className={'progressbar__container'}>
