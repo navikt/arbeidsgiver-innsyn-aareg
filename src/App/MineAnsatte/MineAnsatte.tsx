@@ -53,10 +53,11 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
     const [filtrerPaAktiveAvsluttede, setFiltrerPaAktiveAvsluttede] = useState('Alle');
     const [soketekst, setSoketekst] = useState<string>('');
-    const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(false);
+
+    const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const [ferdiglastet, setFerdiglastet] = useState<boolean>(false);
-    const [beregnetTid, setBeregnetTid] = useState<number>(5000);
+    const [beregnetTid, setBeregnetTid] = useState<number>(0);
 
     const arbeidsforholdPerSide = 25;
 
@@ -75,7 +76,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
 
             }
         })
-    }, []);
+    }, [props.valgtOrganisasjon]);
 
     useEffect(() => {
         setFerdiglastet(false);
@@ -152,8 +153,8 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         Opplysninger fra Aa-registeret
-                    </Systemtittel>{!ferdiglastet && beregnetTid >0  && (
-                        <Progressbar beregnetTid={beregnetTid} startTid={new Date().getTime()} onProgress={tid => {console.log(tid)}}/>
+                    </Systemtittel>{beregnetTid >0  && (
+                        <Progressbar erFerdigLastet={ferdiglastet} beregnetTid={beregnetTid} startTid={new Date().getTime()} onProgress={tid => {console.log(tid)}}/>
 
                 )}
                     {ferdiglastet && <MineAnsatteTopp
