@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import './Progressbar.less';
 import {Ingress} from "nav-frontend-typografi";
 
@@ -20,7 +20,7 @@ const Progressbar = ({ beregnetTid, startTid, erFerdigLastet }: Props) => {
             setVisProgress(false);
         }
         else {
-            if (!erFerdigLastet && tid/beregnetTid < 0.999) {
+            if (!erFerdigLastet && tid/beregnetTid < 0.94) {
                 setTimeout( () => {
                     const element = document.getElementById("progressbar__fyll");
                     if (element) {
