@@ -15,7 +15,6 @@ const Progressbar = ({ beregnetTid, startTid, erFerdigLastet }: Props) => {
     const [bredde, setBredde] = useState(0);
 
         const element = document.getElementById("progressbar__fyll");
-        console.log("useEffect 3");
         if (!erFerdigLastet && tid/beregnetTid < 0.999) {
             setTimeout( () => {
                 const element = document.getElementById("progressbar__fyll");
@@ -29,25 +28,19 @@ const Progressbar = ({ beregnetTid, startTid, erFerdigLastet }: Props) => {
                     };
                 }, beregnetTid/500);
             }
-        if (erFerdigLastet && element && bredde <100) {
+        if (erFerdigLastet && element && bredde<100) {
             setTimeout( () => {
-                element.style.width =  (bredde+6).toString() + "%";
-                setBredde(bredde+6);
-            }, 100);
+                element.style.width =  (bredde+3).toString() + "%";
+                setBredde(bredde+3);
+            }, 10);
         }
 
         if (bredde >= 98 && visProgress) {
             setVisProgress(false);
         }
 
-    let tekst = "";
-    if (erFerdigLastet) {
-        tekst = "98%"
-    }
-    else {
-       tekst = (Math.floor((tid/beregnetTid)* 100)).toString() + "%"
-    }
 
+      const tekst = Math.floor(bredde).toString() + "%"
 
     return (
        <> { visProgress && <div className={'progressbar__container'}>
