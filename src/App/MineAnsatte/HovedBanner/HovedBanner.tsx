@@ -8,7 +8,7 @@ import './HovedBanner.less';
 
 interface Props extends RouteComponentProps {
     byttOrganisasjon: (org: Organisasjon) => void;
-    organisasjoner: Organisasjon[];
+    organisasjoner?: Organisasjon[];
 }
 
 const Banner: FunctionComponent<Props> = props => {
