@@ -56,6 +56,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(false);
     const [ferdiglastet, setFerdiglastet] = useState<boolean>(false);
+    const [beregnetTid, setBeregnetTid] = useState<number>(5000);
 
     const arbeidsforholdPerSide = 25;
 
@@ -64,8 +65,17 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     };
 
     useEffect(() => {
-        hentAntallArbeidsforholdFraAareg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber).then(antall => console.log(antall))
-    }, [props.valgtOrganisasjon]);
+        hentAntallArbeidsforholdFraAareg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber).then(antall => {
+            if (antall.valueOf() < 700 && antall.valueOf()>0) {
+                const tidForAhenteNavn = antall.valueOf() * 12;
+                setBeregnetTid(2000 + tidForAhenteNavn)
+            } else {
+                const tidForAhenteNavn = antall.valueOf() * 12;
+                setBeregnetTid(5000 + tidForAhenteNavn)
+
+            }
+        })
+    }, []);
 
     useEffect(() => {
         setFerdiglastet(false);
@@ -142,8 +152,8 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         Opplysninger fra Aa-registeret
-                    </Systemtittel>{!ferdiglastet && (
-                        <Progressbar beregnetTid={3300} startTid={new Date().getTime()} onProgress={tid => {console.log(tid)}}/>
+                    </Systemtittel>{!ferdiglastet && beregnetTid >0  && (
+                        <Progressbar beregnetTid={beregnetTid} startTid={new Date().getTime()} onProgress={tid => {console.log(tid)}}/>
 
                 )}
                     {ferdiglastet && <MineAnsatteTopp
