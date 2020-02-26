@@ -82,7 +82,6 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                 .catch(error => {
                     setAaregLasteState(APISTATUS.FEILET);
                     setFeilkode(error.response.status.toString());
-                    console.log('feilkode:', error.response.status.toString());
                 });
         }
     }, [props.valgtOrganisasjon]);
