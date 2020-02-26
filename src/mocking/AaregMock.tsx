@@ -1,7 +1,7 @@
 import fetchMock from 'fetch-mock';
 import { hentArbeidsforholdLink } from '../App/lenker';
 import { AaregMockObjekt } from './funksjonerForAlageAAregMock';
-const delay = new Promise(res => setTimeout(res, 4000));
+const delay = new Promise(res => setTimeout(res, 10000));
 
 fetchMock
     .get(
