@@ -100,10 +100,12 @@ const App = () => {
         <div className="app">
             <LoginBoundary>
                 <Router basename={basename}>
-                    <HovedBanner
-                        byttOrganisasjon={setValgtOrganisasjon}
-                        organisasjoner={organisasjonerLasteState === APISTATUS.OK ? organisasjoner : []}
-                    />
+                    {organisasjonerLasteState !== APISTATUS.LASTER &&
+                        <HovedBanner
+                            byttOrganisasjon={setValgtOrganisasjon}
+                            organisasjoner={organisasjonerLasteState === APISTATUS.OK ? organisasjoner : []}
+                        />
+                    }
                     {organisasjonerLasteState === APISTATUS.OK ? (
                         <>
                             {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
