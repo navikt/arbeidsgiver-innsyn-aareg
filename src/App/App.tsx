@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import NavFrontendSpinner from 'nav-frontend-spinner';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { basename } from './paths';
 import { Organisasjon, tomaAltinnOrganisasjon } from './Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from './Objekter/Arbeidstaker';
@@ -9,8 +11,9 @@ import { EnkeltArbeidsforhold } from './MineAnsatte/EnkeltArbeidsforhold/EnkeltA
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
-import './App.less';
 import environment from '../utils/environment';
+import './App.less';
+import { APISTATUS } from '../api/api-utils';
 
 enum TILGANGSSTATE {
     LASTER,
@@ -21,39 +24,46 @@ enum TILGANGSSTATE {
 const App = () => {
     const SERVICEKODEINNSYNAAREGISTERET = '5441';
     const SERVICEEDITIONINNSYNAAREGISTERET = '1';
-
     const [tilgangArbeidsforholdState, setTilgangArbeidsforholdState] = useState(TILGANGSSTATE.LASTER);
-    const [organisasjonerLasteState, setOrganisasjonerLasteState] = useState(TILGANGSSTATE.LASTER);
+    const [organisasjonerLasteState, setOrganisasjonerLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
+
     const [organisasjoner, setorganisasjoner] = useState(Array<Organisasjon>());
+    const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
     const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
-    const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
-
-    const hentOgSettOrganisasjoner = async () => {
-        const organisasjonliste: Organisasjon[] = await hentOrganisasjonerFraAltinn();
-        return organisasjonliste;
-    };
 
     useEffect(() => {
-        hentOgSettOrganisasjoner().then(organisasjonsliste => {
-            setorganisasjoner(
-                organisasjonsliste.filter(
-                    organisasjon => organisasjon.OrganizationForm === 'BEDR' || organisasjon.Type === 'Enterprise'
-                )
-            );
-            hentOrganisasjonerMedTilgangTilAltinntjeneste(
-                SERVICEKODEINNSYNAAREGISTERET,
-                SERVICEEDITIONINNSYNAAREGISTERET
-            ).then(organisasjonerMedTilgangFraAltinn => {
-                setOrganisasjonerMedTilgang(
-                    organisasjonerMedTilgangFraAltinn.filter(
-                        organisasjon =>
-                            organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR'
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+         hentOrganisasjonerFraAltinn(signal)
+            .then(organisasjonsliste => {
+                setorganisasjoner(
+                    organisasjonsliste.filter(
+                        organisasjon => organisasjon.OrganizationForm === 'BEDR' || organisasjon.Type === 'Enterprise'
                     )
                 );
+                hentOrganisasjonerMedTilgangTilAltinntjeneste(
+                    SERVICEKODEINNSYNAAREGISTERET,
+                    SERVICEEDITIONINNSYNAAREGISTERET,
+                    signal
+                ).then(organisasjonerMedTilgangFraAltinn => {
+                    setOrganisasjonerMedTilgang(
+                        organisasjonerMedTilgangFraAltinn.filter(
+                            organisasjon =>
+                                organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR'
+                        )
+                    );
+                    setOrganisasjonerLasteState(APISTATUS.OK);
+                }).catch(() => {
+                    setOrganisasjonerLasteState(APISTATUS.FEILET)}
+                );
+            })
+            .catch(() => {
+                setOrganisasjonerLasteState(APISTATUS.FEILET);
             });
-            setOrganisasjonerLasteState(TILGANGSSTATE.TILGANG);
-        });
+        return function cleanup() {
+            abortController.abort();
+        };
     }, []);
 
     useEffect(() => {
@@ -90,38 +100,52 @@ const App = () => {
         <div className="app">
             <LoginBoundary>
                 <Router basename={basename}>
-                    {organisasjonerLasteState !== TILGANGSSTATE.LASTER && (
-                        <HovedBanner byttOrganisasjon={setValgtOrganisasjon} organisasjoner={organisasjoner} />
-                    )}
-                    {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
+                    <HovedBanner
+                        byttOrganisasjon={setValgtOrganisasjon}
+                        organisasjoner={organisasjonerLasteState === APISTATUS.OK ? organisasjoner : []}
+                    />
+                    {organisasjonerLasteState === APISTATUS.OK ? (
                         <>
-                            <Route exact path="/enkeltArbeidsforhold">
-                                <EnkeltArbeidsforhold
-                                    valgtArbeidstaker={valgtArbeidstaker}
-                                    valgtOrganisasjon={valgtOrganisasjon}
-                                />
-                            </Route>
-                            <Route exact path="/">
-                                {tilgangArbeidsforholdState === TILGANGSSTATE.IKKE_TILGANG && (
-                                    <IngenTilgangInfo
-                                        valgtOrganisasjon={valgtOrganisasjon}
-                                        bedrifterMedTilgang={
-                                            organisasjonerMedTilgang &&
-                                            organisasjonerMedTilgang.filter(organisasjonMedTilgang => {
-                                                return organisasjonMedTilgang.OrganizationForm === 'BEDR';
-                                            })
-                                        }
-                                    />
-                                )}
+                            {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
+                                <>
+                                    <Route exact path="/enkeltArbeidsforhold">
+                                        <EnkeltArbeidsforhold
+                                            valgtArbeidstaker={valgtArbeidstaker}
+                                            valgtOrganisasjon={valgtOrganisasjon}
+                                        />
+                                    </Route>
+                                    <Route exact path="/">
+                                        {tilgangArbeidsforholdState === TILGANGSSTATE.IKKE_TILGANG && (
+                                            <IngenTilgangInfo
+                                                valgtOrganisasjon={valgtOrganisasjon}
+                                                bedrifterMedTilgang={
+                                                    organisasjonerMedTilgang &&
+                                                    organisasjonerMedTilgang.filter(organisasjonMedTilgang => {
+                                                        return organisasjonMedTilgang.OrganizationForm === 'BEDR';
+                                                    })
+                                                }
+                                            />
+                                        )}
 
-                                {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
-                                    <MineAnsatte
-                                        setValgtArbeidstaker={setValgtArbeidstaker}
-                                        valgtOrganisasjon={valgtOrganisasjon}
-                                    />
-                                )}
-                            </Route>
+                                        {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
+                                            <MineAnsatte
+                                                setValgtArbeidstaker={setValgtArbeidstaker}
+                                                valgtOrganisasjon={valgtOrganisasjon}
+                                            />
+                                        )}
+                                    </Route>
+                                </>
+                            )}
                         </>
+                    ) : organisasjonerLasteState === APISTATUS.LASTER ? (
+                        <NavFrontendSpinner type="S" />
+                    ) : (
+                        <div className="feilmelding-altinn">
+                            <AlertStripeFeil>
+                                Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn kan du prøve å
+                                laste siden på nytt.
+                            </AlertStripeFeil>
+                        </div>
                     )}
                 </Router>
             </LoginBoundary>
