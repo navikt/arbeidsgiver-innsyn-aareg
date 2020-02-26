@@ -30,8 +30,7 @@ export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: stri
 
 export async function hentAntallArbeidsforholdFraAareg(underenhet: string, enhet: string): Promise<Number> {
     const headere = new Headers();
-    headere.set('orgnr', underenhet);
-    headere.set('jurenhet', enhet);
+    headere.set('opplysningspliktig', enhet);
     let respons = await fetch(hentAntallArbeidsforholdLink(), { headers: headere });
     if (respons.ok) {
         const jsonRespons: OversiktOverAntallForholdPerUnderenhet = await respons.json();
