@@ -26,7 +26,7 @@ const Progressbar = ({ beregnetTid, startTid, erFerdigLastet, setSkalvises, anta
                     const element = document.getElementById("progressbar__fyll");
                     if (element) {
                         const naVarendeTid = new Date().getTime();
-                        const beregnetBredde = (tid/beregnetTid)*100
+                        const beregnetBredde = (tid/beregnetTid)*100;
                         element.style.width =  beregnetBredde.toString() + "%"
                         setBredde(beregnetBredde);
                         const tidGatt = naVarendeTid - startTid;
