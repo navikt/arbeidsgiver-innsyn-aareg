@@ -36,7 +36,6 @@ export async function hentAntallArbeidsforholdFraAareg(underenhet: string, enhet
     if (respons.ok) {
         const jsonRespons: OversiktOverAntallForholdPerUnderenhet = await respons.json();
         const valgtunderEnhet =  jsonRespons.filter(oversikt => oversikt.arbeidsgiver.organisasjonsnummer === underenhet);
-        console.log(valgtunderEnhet);
         if (valgtunderEnhet[0]) {
             return valgtunderEnhet[0].aktiveArbeidsforhold + valgtunderEnhet[0].inaktiveArbeidsforhold;
         }
