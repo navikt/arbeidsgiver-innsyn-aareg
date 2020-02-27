@@ -32,19 +32,42 @@ const Progressbar = ({  startTid, erFerdigLastet, setSkalvises, antall }: Props)
         setSkalvises(false);
     }
     else {
-        if (!erFerdigLastet && tid/beregnetTid < 0.94) {
-            setTimeout( () => {
-                const element = document.getElementById("progressbar__fyll");
-                if (element) {
-                    const naVarendeTid = new Date().getTime();
-                    const beregnetBredde = (tid/beregnetTid)*100;
-                    element.style.width =  beregnetBredde.toString() + "%"
-                    setBredde(beregnetBredde);
-                    const tidGatt = naVarendeTid - startTid;
-                    setTid(tidGatt);
-                };
-            }, beregnetTid/500);
+        if (!erFerdigLastet ) {
+            if (tid / beregnetTid < 0.75) {
+                setTimeout(() => {
+                    const element = document.getElementById("progressbar__fyll");
+                    if (element) {
+                        const naVarendeTid = new Date().getTime();
+                        const beregnetBredde = (tid / beregnetTid) * 100;
+                        element.style.width = beregnetBredde.toString() + "%"
+                        setBredde(beregnetBredde);
+                        const tidGatt = naVarendeTid - startTid;
+                        setTid(tidGatt);
+                    }
+                    ;
+                }, beregnetTid / 500);
+
+            }
         }
+        //Finne en måte å få økning, men en økning som går mot null
+            /*if (tid/beregnetTid > 0.75) {
+                setTimeout( () => {
+                    const element = document.getElementById("progressbar__fyll");
+                    if (element) {
+                        const naVarendeTid = new Date().getTime();
+                        const beregnetBredde = (tid/beregnetTid)*100;
+                        element.style.width =  beregnetBredde.toString() + "%";
+                        setBredde(beregnetBredde);
+                        const tidGatt = naVarendeTid - startTid;
+                        setTid(tidGatt);
+                    };
+                }, beregnetTid/500);
+
+            }
+
+
+        }*/
+
         if (erFerdigLastet && element && bredde+2<100) {
             setTimeout( () => {
                 element.style.width =  (bredde+2).toString() + "%";
