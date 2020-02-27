@@ -7,9 +7,10 @@ interface Props {
     startTid: number;
     erFerdigLastet: boolean;
     setSkalvises: (vises: boolean) => void;
+    antall: number;
 }
 
-const Progressbar = ({ beregnetTid, startTid, erFerdigLastet, setSkalvises }: Props) => {
+const Progressbar = ({ beregnetTid, startTid, erFerdigLastet, setSkalvises, antall }: Props) => {
     const [tid, setTid] = useState(0);
 
     const [bredde, setBredde] = useState(0);
@@ -44,7 +45,7 @@ const Progressbar = ({ beregnetTid, startTid, erFerdigLastet, setSkalvises }: Pr
         const tekst = Math.floor(bredde).toString() + "%"
 
     return (<div className={'progressbar__container'}>
-            <Ingress className={'progressbar__henter-antall'}>Henter 5000 arbeidsforhold</Ingress>
+            <Ingress className={'progressbar__henter-antall'}>{"Henter "+ antall +" arbeidsforhold"}</Ingress>
             <div className={"progressbar__prosent"}>{tekst}</div>
         <div className="progressbar">
             <div className={"progressbar__fyll"} id={"progressbar__fyll"} />
