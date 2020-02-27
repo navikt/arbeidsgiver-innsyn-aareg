@@ -58,7 +58,6 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const [antallArbeidsforhold, setAntallArbeidsforhold] = useState(0);
     const [ferdiglastet, setFerdiglastet] = useState<boolean>(false);
-    const [beregnetTid, setBeregnetTid] = useState<number>(0);
     const [visProgressbar, setVisProgressbar] = useState(false);
 
     const arbeidsforholdPerSide = 25;
@@ -67,49 +66,30 @@ const MineAnsatte = (props: MineAnsatteProps) => {
         setnaVarendeSidetall(indeks);
     };
 
-
-    useEffect(() => {
-        hentAntallArbeidsforholdFraAareg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber).then(antall => {
-            setVisProgressbar(true);
-            console.log("hent er kallt, antall er: ", antall.valueOf());
-            const antallForhold = antall.valueOf();
-            setAntallArbeidsforhold(antallForhold);
-            if (antallForhold < 700 && antallForhold>0) {
-                const tidForAhenteNavn = antall.valueOf() * 12;
-                setBeregnetTid(2000 + tidForAhenteNavn)
-            }
-            else if(antallForhold>700){
-                const tidForAhenteNavn = antall.valueOf() * 12;
-                setBeregnetTid(5000 + tidForAhenteNavn)
-            }
-           else {
-                setBeregnetTid(0);
-                setAntallArbeidsforhold(0);
-                setVisProgressbar(false);
-            }
-        });
-
-    }, [props.valgtOrganisasjon]);
-
     useEffect(() => {
         setFerdiglastet(false);
-        const hentogSettArbeidsforhold = async () => {
-            return await hentArbeidsforholdFraAAreg(
+        hentAntallArbeidsforholdFraAareg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber).then(antall => {
+            const antallForhold = antall.valueOf();
+            setAntallArbeidsforhold(antallForhold);
+        })
+    }, [props.valgtOrganisasjon]);
+
+    useEffect(() => {
+        if (antallArbeidsforhold > 0) {
+            setVisProgressbar(true);
+            hentArbeidsforholdFraAAreg(
                 props.valgtOrganisasjon.OrganizationNumber,
                 props.valgtOrganisasjon.ParentOrganizationNumber
-            );
-        };
-
-        if (
-            props.valgtOrganisasjon.OrganizationNumber !== '' &&
-            props.valgtOrganisasjon.ParentOrganizationNumber !== ''
-        ) {
-            hentogSettArbeidsforhold().then(responsAareg => {
+            ).then(responsAareg => {
                 setListeFraAareg(responsAareg.arbeidsforholdoversikter);
                 setFerdiglastet(true);
-            });
+            })
         }
-    }, [props.valgtOrganisasjon]);
+        else {
+            setVisProgressbar(false)
+            setFerdiglastet(true);
+        }
+    }, [props.valgtOrganisasjon, antallArbeidsforhold]);
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
@@ -154,7 +134,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
         );
     }, [antallSider, naVarendeSidetall]);
 
-    console.log(listeFraAareg.length, beregnetTid);
+    console.log(listeFraAareg.length);
 
     return (
         <div className="bakgrunnsside">
@@ -168,10 +148,10 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         Opplysninger fra Aa-registeret
-                    </Systemtittel>{beregnetTid >0  && visProgressbar && (
-                    <Progressbar antall={antallArbeidsforhold} setSkalvises = {setVisProgressbar}  erFerdigLastet={ferdiglastet} beregnetTid={beregnetTid} startTid={new Date().getTime()} />
+                    </Systemtittel>{antallArbeidsforhold > 0  && visProgressbar && (
+                    <Progressbar antall={antallArbeidsforhold} setSkalvises = {setVisProgressbar}  erFerdigLastet={ferdiglastet} startTid={new Date().getTime()} />
 
-                )}{ !visProgressbar && <>
+                )}{ (!visProgressbar) && <>
                     {ferdiglastet && <MineAnsatteTopp
                         valgtOrganisasjon={props.valgtOrganisasjon}
                         setIndeksOgGenererListe={setIndeksOgGenererListe}
