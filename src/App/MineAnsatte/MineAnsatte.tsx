@@ -70,6 +70,8 @@ const MineAnsatte = (props: MineAnsatteProps) => {
 
     useEffect(() => {
         hentAntallArbeidsforholdFraAareg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber).then(antall => {
+            setVisProgressbar(true);
+            console.log("hent er kallt, antall er: ", antall.valueOf());
             const antallForhold = antall.valueOf();
             setAntallArbeidsforhold(antallForhold);
             if (antallForhold < 700 && antallForhold>0) {
@@ -81,14 +83,15 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                 setBeregnetTid(5000 + tidForAhenteNavn)
             }
            else {
-               setBeregnetTid(0);
-               setAntallArbeidsforhold(0);
+                setBeregnetTid(0);
+                setAntallArbeidsforhold(0);
+                setVisProgressbar(false);
             }
-        })
+        });
+
     }, [props.valgtOrganisasjon]);
 
     useEffect(() => {
-        setVisProgressbar(true);
         setFerdiglastet(false);
         const hentogSettArbeidsforhold = async () => {
             return await hentArbeidsforholdFraAAreg(
