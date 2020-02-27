@@ -68,8 +68,14 @@ const MineAnsatte = (props: MineAnsatteProps) => {
 
     useEffect(() => {
         hentAntallArbeidsforholdFraAareg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber).then(antall => {
-            setVisProgressbar(true);
+
             const antallForhold = antall.valueOf();
+            if (antallForhold>0) {
+                setVisProgressbar(true);
+            }
+            else {
+                setVisProgressbar(false);
+            }
             setAntallArbeidsforhold(antallForhold);
         })
     }, [props.valgtOrganisasjon]);
@@ -149,7 +155,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                         Opplysninger fra Aa-registeret
                     </Systemtittel>{antallArbeidsforhold > 0  && visProgressbar && (
                     <Progressbar antall={antallArbeidsforhold} setSkalvises = {setVisProgressbar}  erFerdigLastet={ferdiglastet} startTid={new Date().getTime()} />
-                    )}{ (!visProgressbar || antallArbeidsforhold === 0) && <>
+                    )}{ (!visProgressbar) && <>
                     {ferdiglastet && <MineAnsatteTopp
                         valgtOrganisasjon={props.valgtOrganisasjon}
                         setIndeksOgGenererListe={setIndeksOgGenererListe}
