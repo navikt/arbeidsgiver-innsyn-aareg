@@ -4,20 +4,20 @@ import {Ingress} from "nav-frontend-typografi";
 
 interface Props {
     beregnetTid: number;
-    onProgress: (nyTid: number) => void;
     startTid: number;
     erFerdigLastet: boolean;
+    setSkalvises: (vises: boolean) => void;
 }
 
-const Progressbar = ({ beregnetTid, startTid, erFerdigLastet }: Props) => {
+const Progressbar = ({ beregnetTid, startTid, erFerdigLastet, setSkalvises }: Props) => {
     const [tid, setTid] = useState(0);
-    const [visProgress, setVisProgress] = useState(true);
+
     const [bredde, setBredde] = useState(0);
 
         const element = document.getElementById("progressbar__fyll");
 
-        if (bredde >= 98 && visProgress) {
-            setVisProgress(false);
+        if (bredde >= 98 && erFerdigLastet) {
+            setSkalvises(false);
         }
         else {
             if (!erFerdigLastet && tid/beregnetTid < 0.94) {
@@ -43,15 +43,13 @@ const Progressbar = ({ beregnetTid, startTid, erFerdigLastet }: Props) => {
 
         const tekst = Math.floor(bredde).toString() + "%"
 
-    return (
-       <> { visProgress && <div className={'progressbar__container'}>
+    return (<div className={'progressbar__container'}>
             <Ingress className={'progressbar__henter-antall'}>Henter 5000 arbeidsforhold</Ingress>
             <div className={"progressbar__prosent"}>{tekst}</div>
         <div className="progressbar">
             <div className={"progressbar__fyll"} id={"progressbar__fyll"} />
         </div>
-            </div>}
-           </>
+            </div>
     );
 };
 
