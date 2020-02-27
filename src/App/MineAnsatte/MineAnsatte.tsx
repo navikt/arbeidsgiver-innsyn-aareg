@@ -58,6 +58,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const [ferdiglastet, setFerdiglastet] = useState<boolean>(false);
     const [beregnetTid, setBeregnetTid] = useState<number>(0);
+    const [visProgressbar, setVisProgressbar] = useState(false);
 
     const arbeidsforholdPerSide = 25;
 
@@ -79,6 +80,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     }, [props.valgtOrganisasjon]);
 
     useEffect(() => {
+        setVisProgressbar(true);
         setFerdiglastet(false);
         const hentogSettArbeidsforhold = async () => {
             return await hentArbeidsforholdFraAAreg(
@@ -153,10 +155,10 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         Opplysninger fra Aa-registeret
-                    </Systemtittel>{beregnetTid >0  && (
-                        <Progressbar erFerdigLastet={ferdiglastet} beregnetTid={beregnetTid} startTid={new Date().getTime()} onProgress={tid => {console.log(tid)}}/>
+                    </Systemtittel>{beregnetTid >0  && visProgressbar && (
+                    <Progressbar setSkalvises = {setVisProgressbar}  erFerdigLastet={ferdiglastet} beregnetTid={beregnetTid} startTid={new Date().getTime()} />
 
-                )}
+                )}{ !visProgressbar && <>
                     {ferdiglastet && <MineAnsatteTopp
                         valgtOrganisasjon={props.valgtOrganisasjon}
                         setIndeksOgGenererListe={setIndeksOgGenererListe}
@@ -202,6 +204,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                             naVarendeSidetall={naVarendeSidetall}
                         />
                     )}
+                    </>}
                 </div>
             </div>
         </div>
