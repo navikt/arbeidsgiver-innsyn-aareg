@@ -68,7 +68,6 @@ const MineAnsatte = (props: MineAnsatteProps) => {
 
     useEffect(() => {
         hentAntallArbeidsforholdFraAareg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber).then(antall => {
-
             const antallForhold = antall.valueOf();
             if (antallForhold>0) {
                 setVisProgressbar(true);
