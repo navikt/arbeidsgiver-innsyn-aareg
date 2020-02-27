@@ -66,6 +66,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
         setnaVarendeSidetall(indeks);
     };
 
+
     useEffect(() => {
         hentAntallArbeidsforholdFraAareg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber).then(antall => {
             if (antall.valueOf() < 700 && antall.valueOf()>0) {
@@ -142,6 +143,8 @@ const MineAnsatte = (props: MineAnsatteProps) => {
             'sidebytter-chevron-hoyre'
         );
     }, [antallSider, naVarendeSidetall]);
+
+    console.log(listeFraAareg.length, beregnetTid);
 
     return (
         <div className="bakgrunnsside">
