@@ -56,6 +56,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(false);
 
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
+    const [antallArbeidsforhold, setAntallArbeidsforhold] = useState(0);
     const [ferdiglastet, setFerdiglastet] = useState<boolean>(false);
     const [beregnetTid, setBeregnetTid] = useState<number>(0);
     const [visProgressbar, setVisProgressbar] = useState(false);
@@ -69,13 +70,19 @@ const MineAnsatte = (props: MineAnsatteProps) => {
 
     useEffect(() => {
         hentAntallArbeidsforholdFraAareg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber).then(antall => {
-            if (antall.valueOf() < 700 && antall.valueOf()>0) {
+            const antallForhold = antall.valueOf();
+            setAntallArbeidsforhold(antallForhold);
+            if (antallForhold < 700 && antallForhold>0) {
                 const tidForAhenteNavn = antall.valueOf() * 12;
                 setBeregnetTid(2000 + tidForAhenteNavn)
-            } else {
+            }
+            else if(antallForhold>700){
                 const tidForAhenteNavn = antall.valueOf() * 12;
                 setBeregnetTid(5000 + tidForAhenteNavn)
-
+            }
+           else {
+               setBeregnetTid(0);
+               setAntallArbeidsforhold(0);
             }
         })
     }, [props.valgtOrganisasjon]);
@@ -159,7 +166,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         Opplysninger fra Aa-registeret
                     </Systemtittel>{beregnetTid >0  && visProgressbar && (
-                    <Progressbar setSkalvises = {setVisProgressbar}  erFerdigLastet={ferdiglastet} beregnetTid={beregnetTid} startTid={new Date().getTime()} />
+                    <Progressbar antall={antallArbeidsforhold} setSkalvises = {setVisProgressbar}  erFerdigLastet={ferdiglastet} beregnetTid={beregnetTid} startTid={new Date().getTime()} />
 
                 )}{ !visProgressbar && <>
                     {ferdiglastet && <MineAnsatteTopp
