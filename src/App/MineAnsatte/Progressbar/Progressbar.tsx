@@ -21,9 +21,16 @@ const beregnTid = (antallForhold: number) => {
    return 0;
 };
 
+const beregnBreddeMedForsinkelse = (forsinkelsesparameter: number, naVarendeBredde: number, beregnetBredde: number) => {
+    const okning = beregnetBredde-naVarendeBredde;
+    const breddeMEdForsinkelse = naVarendeBredde + (okning/forsinkelsesparameter);
+    return breddeMEdForsinkelse;
+};
+
 const Progressbar = ({  startTid, erFerdigLastet, setSkalvises, antall }: Props) => {
     const [tid, setTid] = useState(0);
     const [bredde, setBredde] = useState(0);
+    const [forsinkelsesparameter, setForsinkelsesparameter] = useState(1);
 
     const beregnetTid = beregnTid(antall);
     const element = document.getElementById("progressbar__fyll");
@@ -39,8 +46,14 @@ const Progressbar = ({  startTid, erFerdigLastet, setSkalvises, antall }: Props)
                     if (element) {
                         const naVarendeTid = new Date().getTime();
                         const beregnetBredde = (tid / beregnetTid) * 100;
-                        element.style.width = beregnetBredde.toString() + "%"
-                        setBredde(beregnetBredde);
+                        if (bredde>=80 && bredde <96) {
+                            setForsinkelsesparameter(forsinkelsesparameter+0.5);
+                            setBredde(beregnBreddeMedForsinkelse(forsinkelsesparameter,bredde,beregnetBredde));
+                        }
+                        if (bredde<80) {
+                            setBredde(beregnetBredde);
+                        }
+                        element.style.width = bredde.toString() + "%"
                         const tidGatt = naVarendeTid - startTid;
                         setTid(tidGatt);
                     }
