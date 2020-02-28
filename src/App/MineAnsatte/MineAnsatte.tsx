@@ -70,17 +70,19 @@ const MineAnsatte = (props: MineAnsatteProps) => {
         hentAntallArbeidsforholdFraAareg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber).then(antall => {
             const antallForhold = antall.valueOf();
             if (antallForhold>0) {
+                setFerdiglastet(false);
                 setVisProgressbar(true);
             }
             else {
                 setVisProgressbar(false);
+                setFerdiglastet(true);
             }
             setAntallArbeidsforhold(antallForhold);
         })
     }, [props.valgtOrganisasjon]);
 
     useEffect(() => {
-        setFerdiglastet(false);
+
         if (antallArbeidsforhold > 0) {
             hentArbeidsforholdFraAAreg(
                 props.valgtOrganisasjon.OrganizationNumber,
@@ -89,9 +91,6 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                 setListeFraAareg(responsAareg.arbeidsforholdoversikter);
                 setFerdiglastet(true);
             })
-        }
-        else {
-            setFerdiglastet(true);
         }
     }, [props.valgtOrganisasjon, antallArbeidsforhold]);
 

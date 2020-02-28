@@ -33,7 +33,7 @@ const Progressbar = ({  startTid, erFerdigLastet, setSkalvises, antall }: Props)
     }
     else {
         if (!erFerdigLastet ) {
-            if (tid / beregnetTid < 0.75) {
+            if (tid / beregnetTid < 0.98) {
                 setTimeout(() => {
                     const element = document.getElementById("progressbar__fyll");
                     if (element) {

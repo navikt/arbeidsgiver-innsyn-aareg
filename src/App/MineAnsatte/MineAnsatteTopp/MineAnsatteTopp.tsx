@@ -53,6 +53,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
         const filtrering = filtreringValgt(event, toggles);
         setFiltrerPaAktiveAvsluttede(filtrering);
     };
+    console.log("flasher");
 
     return (
         <>
