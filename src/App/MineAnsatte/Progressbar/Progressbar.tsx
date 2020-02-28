@@ -38,6 +38,7 @@ const Progressbar = ({  startTid, erFerdigLastet, setSkalvises, antall }: Props)
     if (bredde >= 98 && erFerdigLastet) {
         setSkalvises(false);
     }
+
     else {
         if (!erFerdigLastet ) {
             if (tid / beregnetTid < 0.98) {
@@ -47,7 +48,7 @@ const Progressbar = ({  startTid, erFerdigLastet, setSkalvises, antall }: Props)
                         const naVarendeTid = new Date().getTime();
                         const beregnetBredde = (tid / beregnetTid) * 100;
                         if (bredde>=80 && bredde <96) {
-                            setForsinkelsesparameter(forsinkelsesparameter+0.5);
+                            setForsinkelsesparameter(forsinkelsesparameter*1.10);
                             setBredde(beregnBreddeMedForsinkelse(forsinkelsesparameter,bredde,beregnetBredde));
                         }
                         if (bredde<80) {
@@ -62,24 +63,6 @@ const Progressbar = ({  startTid, erFerdigLastet, setSkalvises, antall }: Props)
 
             }
         }
-        //Finne en måte å få økning, men en økning som går mot null
-            /*if (tid/beregnetTid > 0.75) {
-                setTimeout( () => {
-                    const element = document.getElementById("progressbar__fyll");
-                    if (element) {
-                        const naVarendeTid = new Date().getTime();
-                        const beregnetBredde = (tid/beregnetTid)*100;
-                        element.style.width =  beregnetBredde.toString() + "%";
-                        setBredde(beregnetBredde);
-                        const tidGatt = naVarendeTid - startTid;
-                        setTid(tidGatt);
-                    };
-                }, beregnetTid/500);
-
-            }
-
-
-        }*/
 
         if (erFerdigLastet && element && bredde+2<100) {
             setTimeout( () => {
