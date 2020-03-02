@@ -91,13 +91,10 @@ const App = () => {
             valgtOrganisasjon === tomaAltinnOrganisasjon &&
             environment.MILJO === 'dev-sbs'
         ) {
-            console.log("dev-situasjon");
             setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
-            console.log(tilgangArbeidsforholdState, "nettopp satt ");
         }
         setTimeout(() => {}, 3000);
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
-    console.log(tilgangArbeidsforholdState);
 
     return (
         <div className="app">
