@@ -1,55 +1,49 @@
 @import '~nav-frontend-core/less/_variabler';
 
-
-
 .progressbar {
-  display: flex;
-  align-self: center;
-  background-color: @navBlaLighten80;
-  border-radius: 4px;
-  width: 100%;
-  height: 0.5rem;
-
-  &__container {
     display: flex;
     align-self: center;
-    flex-direction: column;
-    width: 30rem;
-  }
+    background-color: @navBlaLighten80;
+    border-radius: 4px;
+    width: 100%;
+    height: 0.5rem;
 
-  &__henter-antall {
-    display: flex;
-    align-self: center;
-  }
+    &__container {
+        display: flex;
+        align-self: center;
+        flex-direction: column;
+        width: 30rem;
+    }
 
-  &__fyll {
-    background-color: @navBla;
-    height: 100%;
-    border-radius:2px;
-  }
+    &__henter-antall {
+        display: flex;
+        align-self: center;
+    }
 
-  &__prosent {
-    display: flex;
-    align-self: flex-end;
-  }
+    &__fyll {
+        background-color: @navBla;
+        height: 100%;
+        border-radius: 2px;
+    }
 
+    &__prosent {
+        display: flex;
+        align-self: flex-end;
+    }
 }
 
 @media (max-width: @screen-md) {
-  .progressbar {
+    .progressbar {
+        &__henter-antall {
+            display: flex;
+            align-self: flex-start;
+        }
 
-    &__henter-antall {
-      display: flex;
-      align-self: flex-start;
+        &__container {
+            max-width: 30rem;
+            width: 100%;
+            display: flex;
+            align-self: center;
+        }
     }
-
-    &__container {
-      max-width: 30rem;
-      width:100%;
-      display: flex;
-      align-self: center;
-    }
-
-  }
-
 }
