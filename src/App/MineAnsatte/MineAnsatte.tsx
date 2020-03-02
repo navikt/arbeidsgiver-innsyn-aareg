@@ -1,25 +1,26 @@
-import React, {useEffect, useState} from 'react';
-import {Normaltekst, Systemtittel} from 'nav-frontend-typografi';
-import Lenke from 'nav-frontend-lenker';
-import {Organisasjon} from '../Objekter/OrganisasjonFraAltinn';
-import {Arbeidstaker} from '../Objekter/Arbeidstaker';
-import {Arbeidsforhold} from '../Objekter/ArbeidsForhold';
-import {byggListeBasertPaPArametere, sorterArbeidsforhold} from './sorteringOgFiltreringsFunksjoner';
+import React, {useEffect, useState} from "react";
+import {APISTATUS} from "../../api/api-utils";
+import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
+import {Organisasjon} from "../Objekter/OrganisasjonFraAltinn";
+import {Arbeidstaker} from "../Objekter/Arbeidstaker";
+import {hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg} from "../../api/aaregApi";
+import {byggListeBasertPaPArametere, sorterArbeidsforhold} from "./sorteringOgFiltreringsFunksjoner";
 import {
     regnUtantallSider,
     regnUtArbeidsForholdSomSkalVisesPaEnSide,
     visEllerSkjulChevroner
-} from './pagineringsFunksjoner';
-import SideBytter from './SideBytter/SideBytter';
-import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
-import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
-import {hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg} from '../../api/aaregApi';
-import {linkTilMinSideArbeidsgiver} from '../lenker';
-import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
-import './MineAnsatte.less';
-import {APISTATUS} from '../../api/api-utils';
+} from "./pagineringsFunksjoner";
 import Progressbar from "./Progressbar/Progressbar";
+import MineAnsatteTopp from "./MineAnsatteTopp/MineAnsatteTopp";
+import {Normaltekst, Systemtittel} from "nav-frontend-typografi";
+import {linkTilMinSideArbeidsgiver} from "../lenker";
+import Lenke from "nav-frontend-lenker";
+import TabellMineAnsatte from "./TabellMineAnsatte/TabellMineAnsatte";
+import ListeMedAnsatteForMobil from "./ListeMineAnsatteForMobil/ListeMineAnsatteForMobil";
 import {AlertStripeFeil} from "nav-frontend-alertstriper";
+import SideBytter from "./SideBytter/SideBytter";
+import './MineAnsatte.less';
+
 
 interface MineAnsatteProps {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
@@ -97,6 +98,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                 setFeilkode(error.response.status.toString());
             });
         }
+
     }, [props.valgtOrganisasjon, antallArbeidsforhold]);
 
 
@@ -178,6 +180,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                             skalFiltrerePaVarsler={skalFiltrerePaVarsler}
                             setFiltrerPaAktiveAvsluttede={setFiltrerPaAktiveAvsluttede}
                         />
+
                     )}
 
                     {aaregLasteState === APISTATUS.OK && listeMedArbeidsForhold.length > 0 && !visProgressbar &&(
@@ -198,21 +201,19 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                                 settValgtArbeidsgiver={props.setValgtArbeidstaker}
                                 valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
                             />
+                            <SideBytter
+                                plassering="nederst"
+                                className="nedre-sidebytter"
+                                byttSide={setIndeksOgGenererListe}
+                                antallSider={antallSider}
+                                naVarendeSidetall={naVarendeSidetall}
+                            />
                         </>
                     )}
                     {aaregLasteState === APISTATUS.FEILET && (
                         <div className="mine-ansatte__feilmelding-aareg">
                             <AlertStripeFeil>{feilmeldingtekst}</AlertStripeFeil>
                         </div>
-                    )}
-                    {antallSider > 1 && (
-                        <SideBytter
-                            plassering="nederst"
-                            className="nedre-sidebytter"
-                            byttSide={setIndeksOgGenererListe}
-                            antallSider={antallSider}
-                            naVarendeSidetall={naVarendeSidetall}
-                        />
                     )}
                 </div>
             </div>
