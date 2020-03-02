@@ -1,7 +1,6 @@
 import { hentArbeidsforholdLink } from '../App/lenker';
 import { ObjektFraAAregisteret } from '../App/Objekter/ObjektFraAAreg';
 import {hentAntallArbeidsforholdLink} from '../App/lenker';
-
 import amplitude from '../utils/amplitude';
 import {
     loggAntallAnsatte,
@@ -9,6 +8,7 @@ import {
     loggTidForAlleArbeidsforhold
 } from '../App/amplitudefunksjonerForLogging';
 import { FetchError } from './api-utils';
+
 import {OversiktOverAntallForholdPerUnderenhet} from "../App/Objekter/OversiktOverAntallForholdPerUnderenhet";
 
 export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string): Promise<ObjektFraAAregisteret> {
