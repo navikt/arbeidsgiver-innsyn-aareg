@@ -1,24 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import {basename} from './paths';
-import {Organisasjon, tomaAltinnOrganisasjon} from './Objekter/OrganisasjonFraAltinn';
-import {Arbeidstaker} from './Objekter/Arbeidstaker';
+import { basename } from './paths';
+import { Organisasjon, tomaAltinnOrganisasjon } from './Objekter/OrganisasjonFraAltinn';
+import { Arbeidstaker } from './Objekter/Arbeidstaker';
 
 import LoginBoundary from './LoggInnBoundary';
 
-import {EnkeltArbeidsforhold} from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
+import { EnkeltArbeidsforhold } from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
-import {hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste} from '../api/altinnApi';
+import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import environment from '../utils/environment';
 import './App.less';
 
 import { APISTATUS } from '../api/api-utils';
-import MineAnsatte from "./MineAnsatte/MineAnsatte";
-import NavFrontendSpinner from "nav-frontend-spinner";
-import {AlertStripeFeil} from "nav-frontend-alertstriper";
-
+import MineAnsatte from './MineAnsatte/MineAnsatte';
+import NavFrontendSpinner from 'nav-frontend-spinner';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 enum TILGANGSSTATE {
     LASTER,
@@ -40,7 +39,7 @@ const App = () => {
     useEffect(() => {
         const abortController = new AbortController();
         const signal = abortController.signal;
-         hentOrganisasjonerFraAltinn(signal)
+        hentOrganisasjonerFraAltinn(signal)
             .then(organisasjonsliste => {
                 setorganisasjoner(
                     organisasjonsliste.filter(
@@ -51,17 +50,19 @@ const App = () => {
                     SERVICEKODEINNSYNAAREGISTERET,
                     SERVICEEDITIONINNSYNAAREGISTERET,
                     signal
-                ).then(organisasjonerMedTilgangFraAltinn => {
-                    setOrganisasjonerMedTilgang(
-                        organisasjonerMedTilgangFraAltinn.filter(
-                            organisasjon =>
-                                organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR'
-                        )
-                    );
-                    setOrganisasjonerLasteState(APISTATUS.OK);
-                }).catch(() => {
-                    setOrganisasjonerLasteState(APISTATUS.FEILET)}
-                );
+                )
+                    .then(organisasjonerMedTilgangFraAltinn => {
+                        setOrganisasjonerMedTilgang(
+                            organisasjonerMedTilgangFraAltinn.filter(
+                                organisasjon =>
+                                    organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR'
+                            )
+                        );
+                        setOrganisasjonerLasteState(APISTATUS.OK);
+                    })
+                    .catch(() => {
+                        setOrganisasjonerLasteState(APISTATUS.FEILET);
+                    });
             })
             .catch(() => {
                 setOrganisasjonerLasteState(APISTATUS.FEILET);
@@ -105,12 +106,12 @@ const App = () => {
         <div className="app">
             <LoginBoundary>
                 <Router basename={basename}>
-                    {organisasjonerLasteState !== APISTATUS.LASTER &&
+                    {organisasjonerLasteState !== APISTATUS.LASTER && (
                         <HovedBanner
                             byttOrganisasjon={setValgtOrganisasjon}
                             organisasjoner={organisasjonerLasteState === APISTATUS.OK ? organisasjoner : []}
                         />
-                    }
+                    )}
                     {organisasjonerLasteState === APISTATUS.OK ? (
                         <>
                             {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
@@ -122,9 +123,7 @@ const App = () => {
                                         />
                                     </Route>
                                     <Route exact path="/">
-
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.IKKE_TILGANG && (
-
                                             <IngenTilgangInfo
                                                 valgtOrganisasjon={valgtOrganisasjon}
                                                 bedrifterMedTilgang={
@@ -151,8 +150,8 @@ const App = () => {
                     ) : (
                         <div className="feilmelding-altinn">
                             <AlertStripeFeil>
-                                Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn kan du prøve å
-                                laste siden på nytt.
+                                Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn kan du prøve
+                                å laste siden på nytt.
                             </AlertStripeFeil>
                         </div>
                     )}
