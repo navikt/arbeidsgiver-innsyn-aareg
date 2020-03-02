@@ -1,26 +1,25 @@
-import React, {useEffect, useState} from "react";
-import {APISTATUS} from "../../api/api-utils";
-import {Arbeidsforhold} from "../Objekter/ArbeidsForhold";
-import {Organisasjon} from "../Objekter/OrganisasjonFraAltinn";
-import {Arbeidstaker} from "../Objekter/Arbeidstaker";
-import {hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg} from "../../api/aaregApi";
-import {byggListeBasertPaPArametere, sorterArbeidsforhold} from "./sorteringOgFiltreringsFunksjoner";
+import React, { useEffect, useState } from 'react';
+import { APISTATUS } from '../../api/api-utils';
+import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
+import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import { Arbeidstaker } from '../Objekter/Arbeidstaker';
+import { hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg } from '../../api/aaregApi';
+import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 import {
     regnUtantallSider,
     regnUtArbeidsForholdSomSkalVisesPaEnSide,
     visEllerSkjulChevroner
-} from "./pagineringsFunksjoner";
-import Progressbar from "./Progressbar/Progressbar";
-import MineAnsatteTopp from "./MineAnsatteTopp/MineAnsatteTopp";
-import {Normaltekst, Systemtittel} from "nav-frontend-typografi";
-import {linkTilMinSideArbeidsgiver} from "../lenker";
-import Lenke from "nav-frontend-lenker";
-import TabellMineAnsatte from "./TabellMineAnsatte/TabellMineAnsatte";
-import ListeMedAnsatteForMobil from "./ListeMineAnsatteForMobil/ListeMineAnsatteForMobil";
-import {AlertStripeFeil} from "nav-frontend-alertstriper";
-import SideBytter from "./SideBytter/SideBytter";
+} from './pagineringsFunksjoner';
+import Progressbar from './Progressbar/Progressbar';
+import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
+import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
+import { linkTilMinSideArbeidsgiver } from '../lenker';
+import Lenke from 'nav-frontend-lenker';
+import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
+import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
-
 
 interface MineAnsatteProps {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
@@ -71,36 +70,38 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     };
 
     useEffect(() => {
-        hentAntallArbeidsforholdFraAareg(props.valgtOrganisasjon.OrganizationNumber, props.valgtOrganisasjon.ParentOrganizationNumber).then(antall => {
+        hentAntallArbeidsforholdFraAareg(
+            props.valgtOrganisasjon.OrganizationNumber,
+            props.valgtOrganisasjon.ParentOrganizationNumber
+        ).then(antall => {
             const antallForhold = antall.valueOf();
-            if (antallForhold>0) {
+            if (antallForhold > 0) {
                 setAaregLasteState(APISTATUS.LASTER);
                 setVisProgressbar(true);
-            }
-            else {
+            } else {
                 setVisProgressbar(false);
                 setAaregLasteState(APISTATUS.OK);
             }
             setAntallArbeidsforhold(antallForhold);
-        })
+        });
     }, [props.valgtOrganisasjon]);
 
     useEffect(() => {
-        if (antallArbeidsforhold>0) {
+        if (antallArbeidsforhold > 0) {
             hentArbeidsforholdFraAAreg(
                 props.valgtOrganisasjon.OrganizationNumber,
                 props.valgtOrganisasjon.ParentOrganizationNumber
-            ).then(responsAareg => {
-                setListeFraAareg(responsAareg.arbeidsforholdoversikter);
-                setAaregLasteState(APISTATUS.OK);
-            }).catch(error => {
-                setAaregLasteState(APISTATUS.FEILET);
-                setFeilkode(error.response.status.toString());
-            });
+            )
+                .then(responsAareg => {
+                    setListeFraAareg(responsAareg.arbeidsforholdoversikter);
+                    setAaregLasteState(APISTATUS.OK);
+                })
+                .catch(error => {
+                    setAaregLasteState(APISTATUS.FEILET);
+                    setFeilkode(error.response.status.toString());
+                });
         }
-
     }, [props.valgtOrganisasjon, antallArbeidsforhold]);
-
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
@@ -145,9 +146,10 @@ const MineAnsatte = (props: MineAnsatteProps) => {
         );
     }, [antallSider, naVarendeSidetall]);
 
-    const feilmeldingtekst = feilkode === '408'
-        ? 'Det oppstod en feil da vi prøvde å hente dine arbeidsforhold. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.'
-        : 'Vi opplever ustabilitet med Aa-registret. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
+    const feilmeldingtekst =
+        feilkode === '408'
+            ? 'Det oppstod en feil da vi prøvde å hente dine arbeidsforhold. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.'
+            : 'Vi opplever ustabilitet med Aa-registret. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
 
     return (
         <div className="bakgrunnsside">
@@ -162,9 +164,15 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         Opplysninger fra Aa-registeret
                     </Systemtittel>
-                    {antallArbeidsforhold > 0  && visProgressbar && (
-                    <Progressbar antall={antallArbeidsforhold} setSkalvises = {setVisProgressbar}  erFerdigLastet={aaregLasteState === APISTATUS.OK} startTid={new Date().getTime()} />)}
-                    {aaregLasteState === APISTATUS.OK && !visProgressbar &&(
+                    {antallArbeidsforhold > 0 && visProgressbar && (
+                        <Progressbar
+                            antall={antallArbeidsforhold}
+                            setSkalvises={setVisProgressbar}
+                            erFerdigLastet={aaregLasteState === APISTATUS.OK}
+                            startTid={new Date().getTime()}
+                        />
+                    )}
+                    {aaregLasteState === APISTATUS.OK && !visProgressbar && (
                         <MineAnsatteTopp
                             valgtOrganisasjon={props.valgtOrganisasjon}
                             setIndeksOgGenererListe={setIndeksOgGenererListe}
@@ -180,10 +188,9 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                             skalFiltrerePaVarsler={skalFiltrerePaVarsler}
                             setFiltrerPaAktiveAvsluttede={setFiltrerPaAktiveAvsluttede}
                         />
-
                     )}
 
-                    {aaregLasteState === APISTATUS.OK && listeMedArbeidsForhold.length > 0 && !visProgressbar &&(
+                    {aaregLasteState === APISTATUS.OK && listeMedArbeidsForhold.length > 0 && !visProgressbar && (
                         <>
                             {' '}
                             <TabellMineAnsatte
