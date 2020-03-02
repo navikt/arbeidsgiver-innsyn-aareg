@@ -1,7 +1,5 @@
-import { hentArbeidsforholdLink } from '../App/lenker';
+import {hentAntallArbeidsforholdLink, hentArbeidsforholdLink} from '../App/lenker';
 import { ObjektFraAAregisteret } from '../App/Objekter/ObjektFraAAreg';
-import {hentAntallArbeidsforholdLink} from '../App/lenker';
-
 import amplitude from '../utils/amplitude';
 import {
     loggAntallAnsatte,
