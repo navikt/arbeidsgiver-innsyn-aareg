@@ -1,19 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import NavFrontendSpinner from 'nav-frontend-spinner';
-import {AlertStripeFeil} from 'nav-frontend-alertstriper';
+
 import {basename} from './paths';
 import {Organisasjon, tomaAltinnOrganisasjon} from './Objekter/OrganisasjonFraAltinn';
 import {Arbeidstaker} from './Objekter/Arbeidstaker';
+
 import LoginBoundary from './LoggInnBoundary';
-import MineAnsatte from './MineAnsatte/MineAnsatte';
+
 import {EnkeltArbeidsforhold} from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import {hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste} from '../api/altinnApi';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import environment from '../utils/environment';
 import './App.less';
-import {APISTATUS} from '../api/api-utils';
+
+import { APISTATUS } from '../api/api-utils';
+import MineAnsatte from "./MineAnsatte/MineAnsatte";
+import NavFrontendSpinner from "nav-frontend-spinner";
+import {AlertStripeFeil} from "nav-frontend-alertstriper";
+
 
 enum TILGANGSSTATE {
     LASTER,
@@ -117,7 +122,9 @@ const App = () => {
                                         />
                                     </Route>
                                     <Route exact path="/">
-                                        {tilgangArbeidsforholdState === TILGANGSSTATE.IKKE_TILGANG &&  (
+
+                                        {tilgangArbeidsforholdState === TILGANGSSTATE.IKKE_TILGANG && (
+
                                             <IngenTilgangInfo
                                                 valgtOrganisasjon={valgtOrganisasjon}
                                                 bedrifterMedTilgang={
