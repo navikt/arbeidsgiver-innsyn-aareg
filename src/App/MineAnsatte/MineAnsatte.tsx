@@ -180,7 +180,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                         />
                     )}
 
-                    {aaregLasteState === APISTATUS.OK && listeMedArbeidsForhold.length > 0 && (
+                    {aaregLasteState === APISTATUS.OK && listeMedArbeidsForhold.length > 0 && !visProgressbar &&(
                         <>
                             {' '}
                             <TabellMineAnsatte
