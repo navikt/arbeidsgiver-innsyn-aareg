@@ -48,7 +48,7 @@ const Progressbar = ({  startTid, erFerdigLastet, setSkalvises, antall }: Props)
                         const naVarendeTid = new Date().getTime();
                         const beregnetBredde = (tid / beregnetTid) * 100;
                         if (bredde>=80 && bredde <96) {
-                            setForsinkelsesparameter(forsinkelsesparameter*1.10);
+                            setForsinkelsesparameter(forsinkelsesparameter*1.05);
                             setBredde(beregnBreddeMedForsinkelse(forsinkelsesparameter,bredde,beregnetBredde));
                         }
                         if (bredde<80) {
