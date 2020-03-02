@@ -83,6 +83,9 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                 setAaregLasteState(APISTATUS.OK);
             }
             setAntallArbeidsforhold(antallForhold);
+        }).catch(error => {
+            setAaregLasteState(APISTATUS.FEILET);
+            setFeilkode(error.response.status.toString());
         });
     }, [props.valgtOrganisasjon]);
 
