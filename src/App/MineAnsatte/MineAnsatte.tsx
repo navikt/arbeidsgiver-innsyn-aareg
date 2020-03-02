@@ -1,10 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {Normaltekst, Systemtittel} from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
+
 import {Organisasjon} from '../Objekter/OrganisasjonFraAltinn';
 import {Arbeidstaker} from '../Objekter/Arbeidstaker';
 import {Arbeidsforhold} from '../Objekter/ArbeidsForhold';
 import {byggListeBasertPaPArametere, sorterArbeidsforhold} from './sorteringOgFiltreringsFunksjoner';
+
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import { Arbeidstaker } from '../Objekter/Arbeidstaker';
+import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
+import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
+
 import {
     regnUtantallSider,
     regnUtArbeidsForholdSomSkalVisesPaEnSide,
@@ -13,13 +21,13 @@ import {
 import SideBytter from './SideBytter/SideBytter';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
+
 import {hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg} from '../../api/aaregApi';
 import {linkTilMinSideArbeidsgiver} from '../lenker';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
 import './MineAnsatte.less';
 import {APISTATUS} from '../../api/api-utils';
 import Progressbar from "./Progressbar/Progressbar";
-import {AlertStripeFeil} from "nav-frontend-alertstriper";
 
 interface MineAnsatteProps {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
@@ -56,6 +64,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     const [filtrerPaAktiveAvsluttede, setFiltrerPaAktiveAvsluttede] = useState('Alle');
     const [soketekst, setSoketekst] = useState<string>('');
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(false);
+
 
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const [antallArbeidsforhold, setAntallArbeidsforhold] = useState(0);
@@ -96,6 +105,25 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                 setAaregLasteState(APISTATUS.FEILET);
                 setFeilkode(error.response.status.toString());
             });
+
+        setAaregLasteState(APISTATUS.LASTER);
+        if (
+            props.valgtOrganisasjon.OrganizationNumber !== '' &&
+            props.valgtOrganisasjon.ParentOrganizationNumber !== ''
+        ) {
+            hentArbeidsforholdFraAAreg(
+                props.valgtOrganisasjon.OrganizationNumber,
+                props.valgtOrganisasjon.ParentOrganizationNumber
+            )
+                .then(responsAareg => {
+                    setListeFraAareg(responsAareg.arbeidsforholdoversikter);
+                    setAaregLasteState(APISTATUS.OK);
+                })
+                .catch(error => {
+                    setAaregLasteState(APISTATUS.FEILET);
+                    setFeilkode(error.response.status.toString());
+                });
+
         }
     }, [props.valgtOrganisasjon, antallArbeidsforhold]);
 
@@ -160,6 +188,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         Opplysninger fra Aa-registeret
                     </Systemtittel>
+
                     {antallArbeidsforhold > 0  && visProgressbar && (
                     <Progressbar antall={antallArbeidsforhold} setSkalvises = {setVisProgressbar}  erFerdigLastet={aaregLasteState === APISTATUS.OK} startTid={new Date().getTime()} />)}
                     {aaregLasteState === APISTATUS.OK && !visProgressbar &&(
@@ -178,9 +207,14 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                             skalFiltrerePaVarsler={skalFiltrerePaVarsler}
                             setFiltrerPaAktiveAvsluttede={setFiltrerPaAktiveAvsluttede}
                         />
+
                     )}
 
                     {aaregLasteState === APISTATUS.OK && listeMedArbeidsForhold.length > 0 && !visProgressbar &&(
+                 
+                    
+           
+
                         <>
                             {' '}
                             <TabellMineAnsatte
