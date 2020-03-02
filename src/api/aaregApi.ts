@@ -45,6 +45,6 @@ export async function hentAntallArbeidsforholdFraAareg(underenhet: string, enhet
         }
         return 0;
     } else {
-        return 0;
+        throw new FetchError(respons.statusText || respons.type, respons);
     }
 }
