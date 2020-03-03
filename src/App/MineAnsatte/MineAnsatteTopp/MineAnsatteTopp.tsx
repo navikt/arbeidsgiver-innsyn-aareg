@@ -58,7 +58,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
         <>
             {responsFraAaregisteret.length === 0 ? (
                 <AlertStripeInfo className="mine-ansatte__informasjon">
-                    Det finnes ingen arbeidsforhold rapportert inn til Aa-registret etter 01.01.2015 for valgt
+                    Det finnes ingen arbeidsforhold rapportert inn til Aa-registeret etter 01.01.2015 for valgt
                     underenhet. Dersom dette er feil må det rettes opp via a-meldingen.
                 </AlertStripeInfo>
             ) : responsFraAaregisteret.length > 0 ? (
