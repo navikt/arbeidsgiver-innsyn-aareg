@@ -1,4 +1,4 @@
-import { hentArbeidsforholdLink } from '../App/lenker';
+import { hentAntallArbeidsforholdLink, hentArbeidsforholdLink } from '../App/lenker';
 import { ObjektFraAAregisteret } from '../App/Objekter/ObjektFraAAreg';
 import amplitude from '../utils/amplitude';
 import {
@@ -7,6 +7,7 @@ import {
     loggTidForAlleArbeidsforhold
 } from '../App/amplitudefunksjonerForLogging';
 import { FetchError } from './api-utils';
+import { OversiktOverAntallForholdPerUnderenhet } from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
 
 export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string): Promise<ObjektFraAAregisteret> {
     const headere = new Headers();
@@ -25,5 +26,25 @@ export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: stri
     } else {
         amplitude.logEvent('#arbeidsforhold klarte ikke hente ut arbeidsforhold');
         throw new FetchError(response.statusText || response.type, response);
+    }
+}
+
+export async function hentAntallArbeidsforholdFraAareg(underenhet: string, enhet: string): Promise<Number> {
+    const headere = new Headers();
+    headere.set('opplysningspliktig', enhet);
+    headere.set('orgnr', underenhet);
+    let respons = await fetch(hentAntallArbeidsforholdLink(), { headers: headere });
+
+    if (respons.ok) {
+        const jsonRespons: OversiktOverAntallForholdPerUnderenhet = await respons.json();
+        const valgtunderEnhet = jsonRespons.filter(
+            oversikt => oversikt.arbeidsgiver.organisasjonsnummer === underenhet
+        );
+        if (valgtunderEnhet[0]) {
+            return valgtunderEnhet[0].aktiveArbeidsforhold + valgtunderEnhet[0].inaktiveArbeidsforhold;
+        }
+        return 0;
+    } else {
+        throw new FetchError(respons.statusText || respons.type, respons);
     }
 }
