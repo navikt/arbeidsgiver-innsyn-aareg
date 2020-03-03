@@ -3,7 +3,6 @@ import { ObjektFraAAregisteret, tomResponsFraAareg } from '../App/Objekter/Objek
 import { Varsel } from '../App/Objekter/Varsel';
 
 export const listeMedFornavn: string[] = [
-    'AAAAAAAAAAAAAAAltfor langt navn',
     'Ingrid Alexandra',
     'Håkon',
     'Mette Marit',
@@ -21,7 +20,7 @@ export const listeMedFornavn: string[] = [
     'Lilly',
     'Helene',
     'Tobias',
-    'Gabriel',
+    'Gabriel Petterson Von Henrik',
     'Henriette',
     'Trude',
     'Gudrun',
@@ -100,7 +99,7 @@ export const yrker: string[] = [
     'Skribent',
     'Forfatter',
     'Ekspeditør',
-    'Prsonalansvarlig',
+    'Personalansvarlig',
     'Daglig leder',
     'Servitør',
     'Pianist',
@@ -111,8 +110,7 @@ export const yrker: string[] = [
     'Generalsekretær',
     'Arkitekt',
     'Slangetemmer',
-    'Performer',
-    'Torpedo'
+    'Performer'
 ];
 
 export const fodselsNr: string[] = [
@@ -184,7 +182,7 @@ const genererRandomIndex = (lengde: number): number => {
 const setNavn = (): string => {
     const indeksFornavn = genererRandomIndex(listeMedFornavn.length);
     const indeksEtternavn = genererRandomIndex(listeMedEtterNavn.length);
-    return listeMedFornavn[indeksFornavn] + ' ' + listeMedEtterNavn[indeksEtternavn];
+    return (listeMedFornavn[indeksFornavn] + ' ' + listeMedEtterNavn[indeksEtternavn]).toUpperCase();
 };
 
 const setProsent = (): string => {
