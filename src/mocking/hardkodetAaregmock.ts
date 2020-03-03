@@ -1,5 +1,5 @@
 import fetchMock from 'fetch-mock';
-const delay = new Promise(res => setTimeout(res, 500));
+const delay = new Promise(res => setTimeout(res, 10000));
 
 fetchMock
     .get(
