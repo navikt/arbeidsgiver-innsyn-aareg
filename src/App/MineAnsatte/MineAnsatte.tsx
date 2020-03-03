@@ -7,8 +7,7 @@ import { hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg } from '..
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 import {
     regnUtantallSider,
-    regnUtArbeidsForholdSomSkalVisesPaEnSide,
-    visEllerSkjulChevroner
+    regnUtArbeidsForholdSomSkalVisesPaEnSide
 } from './pagineringsFunksjoner';
 import Progressbar from './Progressbar/Progressbar';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
@@ -140,14 +139,6 @@ const MineAnsatte = (props: MineAnsatteProps) => {
         return forhold.varsler;
     }).length;
 
-    useEffect(() => {
-        visEllerSkjulChevroner(
-            naVarendeSidetall,
-            antallSider,
-            'sidebytter-chevron-venstre',
-            'sidebytter-chevron-hoyre'
-        );
-    }, [antallSider, naVarendeSidetall]);
 
     const feilmeldingtekst =
         feilkode === '408'
