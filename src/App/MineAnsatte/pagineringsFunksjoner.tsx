@@ -17,34 +17,3 @@ export const regnUtArbeidsForholdSomSkalVisesPaEnSide = (
     );
     return arbeidsForholdPaSiden;
 };
-
-export const visEllerSkjulChevroner = (
-    naVarendeSidetall: number,
-    antallSiderTilsammen: number,
-    stringIDVenstreChevron: string,
-    stringIDChevronHoyre: string
-) => {
-    const idChevronHoyreOvre = document.getElementById(stringIDChevronHoyre + '-overst');
-    const idChevronVenstreOvre = document.getElementById(stringIDVenstreChevron + '-overst');
-    const idChevronHoyreNedre = document.getElementById(stringIDChevronHoyre + '-nederst');
-    const idChevronVenstreNedre = document.getElementById(stringIDVenstreChevron + '-nederst');
-
-    if (idChevronHoyreNedre && idChevronHoyreOvre && idChevronVenstreNedre && idChevronVenstreOvre) {
-        if (naVarendeSidetall === antallSiderTilsammen) {
-            idChevronHoyreOvre.style.visibility = 'hidden';
-            idChevronVenstreOvre.style.display = 'initial';
-            idChevronHoyreNedre.style.visibility = 'hidden';
-            idChevronVenstreNedre.style.display = 'initial';
-        } else if (naVarendeSidetall === 1) {
-            idChevronHoyreOvre.style.visibility = 'initial';
-            idChevronVenstreOvre.style.display = 'none';
-            idChevronHoyreNedre.style.visibility = 'initial';
-            idChevronVenstreNedre.style.display = 'none';
-        } else {
-            idChevronHoyreOvre.style.visibility = 'initial';
-            idChevronVenstreOvre.style.display = 'initial';
-            idChevronHoyreNedre.style.visibility = 'initial';
-            idChevronVenstreNedre.style.display = 'initial';
-        }
-    }
-};
