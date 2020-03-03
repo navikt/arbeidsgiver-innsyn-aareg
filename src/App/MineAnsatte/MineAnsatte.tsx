@@ -211,13 +211,13 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                                 settValgtArbeidsgiver={props.setValgtArbeidstaker}
                                 valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
                             />
-                            <SideBytter
+                            { antallSider>1 &&<SideBytter
                                 plassering="nederst"
                                 className="nedre-sidebytter"
                                 byttSide={setIndeksOgGenererListe}
                                 antallSider={antallSider}
                                 naVarendeSidetall={naVarendeSidetall}
-                            />
+                            />}
                         </>
                     )}
                     {aaregLasteState === APISTATUS.FEILET && (
