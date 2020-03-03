@@ -6,6 +6,10 @@ export const hentArbeidsforholdLink = () => {
     return landingsURL + 'api/arbeidsforhold';
 };
 
+export const hentAntallArbeidsforholdLink = () => {
+    return landingsURL + 'api/arbeidsgivere';
+};
+
 export const hentOrganisasjonerLink = () => {
     return landingsURL + 'api/organisasjoner';
 };

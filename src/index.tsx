@@ -20,7 +20,7 @@ if (process.env.REACT_APP_MOCK) {
     require('./mocking/AaregMock');
     require('./mocking/altinnMock');
     require('./mocking/enkeltArbeidsforholdMock');
-    // require('./mocking/hardkodetAaregmock');
+    require('./mocking/BeregnetTidForArbeidsforholdMock');
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));
