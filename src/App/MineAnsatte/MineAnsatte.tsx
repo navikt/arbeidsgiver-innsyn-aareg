@@ -167,7 +167,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         Opplysninger fra Aa-registeret
                     </Systemtittel>
-                    {antallArbeidsforhold > 0 && visProgressbar && (
+                    {antallArbeidsforhold > 0 && visProgressbar && aaregLasteState !== APISTATUS.FEILET &&(
                         <Progressbar
                             antall={antallArbeidsforhold}
                             setSkalvises={setVisProgressbar}
