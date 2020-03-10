@@ -18,6 +18,7 @@ import { APISTATUS } from '../api/api-utils';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import {sjekkSonekryssing} from "../api/aaregApi";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -35,6 +36,8 @@ const App = () => {
     const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
     const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
+
+    sjekkSonekryssing().then(test => console.log(test));
 
     useEffect(() => {
         const abortController = new AbortController();
