@@ -9,7 +9,7 @@ const proxyConfigArbeidsforholdApi = {
     changeOrigin: true,
     target: envPropertiesArbeidsforholdApi.API_GATEWAY,
     pathRewrite: {
-        '^arbeidsgiver-arbeidsforhold/api/': '/arbeidsgiver-arbeidsforhold-api/'
+        '^arbeidsgiver-arbeidsforhold/api': '/arbeidsgiver-arbeidsforhold-api'
     },
     secure: true,
     xfwd: true
