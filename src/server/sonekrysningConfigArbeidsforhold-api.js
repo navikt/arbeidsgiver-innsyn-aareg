@@ -16,6 +16,7 @@ const proxyConfigArbeidsforholdApi = {
 };
 
 if (envPropertiesArbeidsforholdApi.APIGW_HEADER) {
+    console.log(" gw header-kallt, APIGW er definert")
     proxyConfigArbeidsforholdApi.headers = {
         'x-nav-apiKey': envPropertiesArbeidsforholdApi.APIGW_HEADER
     };
