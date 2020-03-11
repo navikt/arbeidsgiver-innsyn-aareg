@@ -51,8 +51,8 @@ export async function hentAntallArbeidsforholdFraAareg(underenhet: string, enhet
 
 export async function sjekkSonekryssing(): Promise<string> {
     console.log("prover a kalle");
-    console.log("sjekk sonekrysningslink: ", sjekkSonekryssingLink());
-    let respons = await fetch(sjekkSonekryssingLink());
+    console.log("sjekk sonekrysningslink: ", sjekkSonekryssingLink() + "/test");
+    let respons = await fetch(sjekkSonekryssingLink() + "/test");
     if (respons.ok) {
         return respons.json();
     }
