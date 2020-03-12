@@ -16,7 +16,7 @@ const buildPath = path.join(__dirname, '../../build');
 const port = process.env.PORT || 3000;
 
 server.use(`${BASE_PATH}/api`, sonekrysning);
-server.use(`${BASE_PATH}/arbeidsgiver-arbeidsforhold/api`, sonekrysningArbeidsforholdApi);
+server.use('/arbeidsgiver-arbeidsforhold/api', sonekrysningArbeidsforholdApi);
 server.use(`${BASE_PATH}/veilarbstepup/status`, veilarbStatusProxyConfig);
 server.use(
     `${BASE_PATH}/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver`,
