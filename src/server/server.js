@@ -8,6 +8,7 @@ const Promise = require('promise');
 const createEnvSettingsFile = require('./envSettings.js');
 
 const sonekrysning = require('./sonekrysningConfig.js');
+const sonekrysningArbeidsforholdApi = require('./sonekrysningConfigArbeidsforhold-api');
 const veilarbStatusProxyConfig = require('./veilarbStatusProxyConfig');
 const enkeltArbeidsforholdProxyConfig = require('./enkeltArbeidsforholdProxy');
 
@@ -15,6 +16,7 @@ const buildPath = path.join(__dirname, '../../build');
 const port = process.env.PORT || 3000;
 
 server.use(`${BASE_PATH}/api`, sonekrysning);
+server.use(`${BASE_PATH}/arbeidsgiver-arbeidsforhold/api`, sonekrysningArbeidsforholdApi);
 server.use(`${BASE_PATH}/veilarbstepup/status`, veilarbStatusProxyConfig);
 server.use(
     `${BASE_PATH}/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver`,
