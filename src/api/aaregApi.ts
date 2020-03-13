@@ -1,4 +1,4 @@
-import { hentAntallArbeidsforholdLink, hentArbeidsforholdLink } from '../App/lenker';
+import {hentAntallArbeidsforholdLink, hentArbeidsforholdLink, sjekkSonekryssingLink} from '../App/lenker';
 import { ObjektFraAAregisteret } from '../App/Objekter/ObjektFraAAreg';
 import amplitude from '../utils/amplitude';
 import {
@@ -46,5 +46,17 @@ export async function hentAntallArbeidsforholdFraAareg(underenhet: string, enhet
         return 0;
     } else {
         throw new FetchError(respons.statusText || respons.type, respons);
+    }
+}
+
+export async function sjekkSonekryssing(): Promise<string> {
+    console.log("prover a kalle");
+    console.log("sjekk sonekrysningslink: ", sjekkSonekryssingLink());
+    let respons = await fetch(sjekkSonekryssingLink() );
+    if (respons.ok) {
+        return respons.json();
+    }
+    else {
+        return '';
     }
 }
