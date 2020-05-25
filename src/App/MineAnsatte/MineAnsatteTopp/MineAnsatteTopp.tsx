@@ -74,7 +74,10 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                             </Normaltekst>
                             <Normaltekst>
                                 {'Se '}
-                                <Lenke href={skatteetatenUrl}>Skatteetatens veiledning til a-meldingen</Lenke><NyFaneIkon />
+                                <Lenke href={skatteetatenUrl} target="_blank">
+                                    <span>Skatteetatens veiledning til a-meldingen</span>
+                                    <NyFaneIkon />
+                                </Lenke>
                             </Normaltekst>
                         </AlertStripeInfo>
                         {lengdeResponsFiltrertListe > 0 && (
