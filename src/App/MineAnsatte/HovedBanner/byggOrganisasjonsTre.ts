@@ -1,6 +1,7 @@
-import { JuridiskEnhetMedUnderEnheterArray } from '@navikt/bedriftsmeny/lib/organisasjon';
+
 import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
 import { hentAlleJuridiskeEnheter } from '../../../api/enhetsregisteretApi';
+import {JuridiskEnhetMedUnderEnheterArray} from "../../Objekter/JuridiskEnhetMedUnderenhetArray";
 
 const settSammenJuridiskEnhetMedUnderOrganisasjoner = (
     juridiskeEnheter: Organisasjon[],
