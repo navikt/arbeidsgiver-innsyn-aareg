@@ -3,7 +3,6 @@ import { ToggleKnappPureProps } from 'nav-frontend-toggle';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
-import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
 import ExcelEksport from '../ExcelEksport/ExcelEksport';
 import Sokefelt from '../Sokefelt/Sokefelt';
 import Filtervalg from '../Filtervalg/Filtervalg';
@@ -12,6 +11,7 @@ import { filtreringValgt, tellAntallAktiveOgInaktiveArbeidsforhold } from '../so
 import './MineAnsatteTopp.less';
 import Lenke from 'nav-frontend-lenker';
 import NyFaneIkon from './NyFaneIkon';
+import {Organisasjon} from "@navikt/bedriftsmeny/lib/Organisasjon";
 
 interface Props {
     responsFraAaregisteret: Arbeidsforhold[];
