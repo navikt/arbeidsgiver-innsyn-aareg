@@ -5,10 +5,10 @@ const { JSDOM } = jsdom;
 url = '';
 if (process.env.NAIS_CLUSTER_NAME === 'prod-sbs') {
     url =
-        'https://appres.nav.no/common-html/v4/navno?header-withmenu=true&styles=true&scripts=true&footer-withmenu=true';
+        'https://www.nav.no/dekoratoren/?context=arbeidsgiver';
 } else {
     url =
-        'https://appres-q1.nav.no/common-html/v4/navno?header-withmenu=true&styles=true&scripts=true&footer-withmenu=true';
+        'https://www-q1.nav.no/dekoratoren/?context=arbeidsgiver';
 }
 
 const requestDecorator = callback => request(url, callback);
@@ -25,7 +25,6 @@ const getDecorator = () =>
                     NAV_STYLES: document.getElementById('styles')[prop],
                     NAV_HEADING: document.getElementById('header-withmenu')[prop],
                     NAV_FOOTER: document.getElementById('footer-withmenu')[prop],
-                    NAV_MENU_RESOURCES: document.getElementById('megamenu-resources')[prop]
                 };
                 resolve(data);
             } else {
