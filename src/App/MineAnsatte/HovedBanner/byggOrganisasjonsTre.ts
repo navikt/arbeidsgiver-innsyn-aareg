@@ -1,4 +1,4 @@
-import { JuridiskEnhetMedUnderEnheterArray } from '@navikt/bedriftsmeny/lib/Organisasjon';
+import { JuridiskEnhetMedUnderEnheterArray } from '@navikt/bedriftsmeny/lib/organisasjon';
 import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
 import { hentAlleJuridiskeEnheter } from '../../../api/enhetsregisteretApi';
 
