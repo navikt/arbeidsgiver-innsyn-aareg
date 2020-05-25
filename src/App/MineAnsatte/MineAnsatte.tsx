@@ -75,13 +75,14 @@ const MineAnsatte = (props: MineAnsatteProps) => {
         ).then(antall => {
             const antallForhold = antall.valueOf();
             if (antallForhold > 0) {
-                setAaregLasteState(APISTATUS.LASTER);
-                setVisProgressbar(true);
-            } else {
-                setVisProgressbar(false);
-                setAaregLasteState(APISTATUS.OK);
+
+                setAntallArbeidsforhold(antallForhold);
             }
-            setAntallArbeidsforhold(antallForhold);
+            else {
+                setAntallArbeidsforhold(-1);
+            }
+            setAaregLasteState(APISTATUS.LASTER);
+            setVisProgressbar(true);
         }).catch(error => {
             setAaregLasteState(APISTATUS.FEILET);
             setFeilkode(error.response.status.toString());
@@ -89,7 +90,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     }, [props.valgtOrganisasjon]);
 
     useEffect(() => {
-        if (antallArbeidsforhold > 0) {
+        if (antallArbeidsforhold > 0 || antallArbeidsforhold === -1) {
             hentArbeidsforholdFraAAreg(
                 props.valgtOrganisasjon.OrganizationNumber,
                 props.valgtOrganisasjon.ParentOrganizationNumber
@@ -158,7 +159,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         Opplysninger fra Aa-registeret
                     </Systemtittel>
-                    {antallArbeidsforhold > 0 && visProgressbar && aaregLasteState !== APISTATUS.FEILET &&(
+                    {(antallArbeidsforhold > 0 || antallArbeidsforhold ===-1) && visProgressbar && aaregLasteState !== APISTATUS.FEILET &&(
                         <Progressbar
                             antall={antallArbeidsforhold}
                             setSkalvises={setVisProgressbar}
