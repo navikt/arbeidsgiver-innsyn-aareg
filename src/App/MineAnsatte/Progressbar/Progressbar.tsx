@@ -10,6 +10,9 @@ interface Props {
 }
 
 const beregnTid = (antallForhold: number) => {
+    if (antallForhold === -1) {
+        return 10000;
+    }
     if (antallForhold < 700 && antallForhold > 0) {
         const tidForAhenteNavn = antallForhold * 12;
         return tidForAhenteNavn + 2000;
@@ -68,10 +71,11 @@ const Progressbar = ({ startTid, erFerdigLastet, setSkalvises, antall }: Props) 
     }
 
     const tekst = Math.floor(bredde).toString() + '%';
+    const overtekst = antall>0 ? antall : '';
 
     return (
         <div className={'progressbar__container'}>
-            <Ingress className={'progressbar__henter-antall'}>{'Henter ' + antall + ' arbeidsforhold'}</Ingress>
+            <Ingress className={'progressbar__henter-antall'}>{'Henter ' + overtekst + ' arbeidsforhold'}</Ingress>
             <div className={'progressbar__prosent'}>{tekst}</div>
             <div className="progressbar">
                 <div className={'progressbar__fyll'} id={'progressbar__fyll'} />
