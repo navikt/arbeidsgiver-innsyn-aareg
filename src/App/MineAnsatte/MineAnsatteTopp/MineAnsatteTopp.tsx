@@ -3,13 +3,15 @@ import { ToggleKnappPureProps } from 'nav-frontend-toggle';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
-import { Organisasjon } from '@navikt/bedriftsmeny/lib/Organisasjon';
+import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
 import ExcelEksport from '../ExcelEksport/ExcelEksport';
 import Sokefelt from '../Sokefelt/Sokefelt';
 import Filtervalg from '../Filtervalg/Filtervalg';
 import SideBytter from '../SideBytter/SideBytter';
 import { filtreringValgt, tellAntallAktiveOgInaktiveArbeidsforhold } from '../sorteringOgFiltreringsFunksjoner';
 import './MineAnsatteTopp.less';
+import Lenke from 'nav-frontend-lenker';
+import NyFaneIkon from './NyFaneIkon';
 
 interface Props {
     responsFraAaregisteret: Arbeidsforhold[];
@@ -54,6 +56,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
         setFiltrerPaAktiveAvsluttede(filtrering);
     };
 
+    const skatteetatenUrl = 'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/';
     return (
         <>
             {responsFraAaregisteret.length === 0 ? (
@@ -63,12 +66,19 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                 </AlertStripeInfo>
             ) : responsFraAaregisteret.length > 0 ? (
                 <>
-                    {' '}
                     <div className="mine-ansatte__header">
                         <AlertStripeInfo className="informasjon">
-                            Under finner du en oversikt over arbeidsforhold rapportert inn etter 01.01.2015. Dersom du
-                            finner feil eller mangler i oversikten skal disse korrigeres/rapporteres inn via
-                            a-meldingen.{' '}
+                            <Normaltekst>
+                                Oversikten viser alle arbeidsforhold rapportert etter 01.01.2015 for valgt virksomhet.
+                                Hvis det er feil i et arbeidsforhold, skal du som arbeidsgiver endre dette gjennom a-meldingen.
+                            </Normaltekst>
+                            <Normaltekst>
+                                {'Se '}
+                                <Lenke href={skatteetatenUrl} target="_blank">
+                                    <span>Skatteetatens veiledning til a-meldingen</span>
+                                    <NyFaneIkon />
+                                </Lenke>
+                            </Normaltekst>
                         </AlertStripeInfo>
                         {lengdeResponsFiltrertListe > 0 && (
                             <ExcelEksport
@@ -110,11 +120,11 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                         )}
                     </div>
                 </>
-            ) : null}{' '}
+            ) : null}
 
             {responsFraAaregisteret.length > 0 && lengdeResponsFiltrertListe === 0 && (
                 <div className="mine-ansatte__bytt-filtrering">
-                    <Systemtittel>Finner ingen arbeidsforhold.</Systemtittel>{' '}
+                    <Systemtittel>Finner ingen arbeidsforhold.</Systemtittel>
                     <Ingress>Prøv å endre søkeord eller bytt filtreringsvalg.</Ingress>
                 </div>
             )}
