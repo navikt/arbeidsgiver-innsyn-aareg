@@ -1,4 +1,4 @@
-import { Organisasjon } from '@navikt/bedriftsmeny/lib/Organisasjon';
+import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
 import { hentOrganisasjonerLink } from '../App/lenker';
 import { FetchError } from './api-utils';
 
