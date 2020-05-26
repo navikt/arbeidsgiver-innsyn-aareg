@@ -8,7 +8,7 @@
     "@craco/craco": "^5.5.0",
     "@jest/environment": "^24.9.0",
     "@navikt/arbeidsforhold": "^1.1.18",
-    "@navikt/bedriftsmeny": "2.0.1",
+    "@navikt/bedriftsmeny": "2.1.0",
     "@sentry/browser": "^5.11.2",
     "@types/amplitude-js": "^4.4.5",
     "@types/file-saver": "^2.0.1",
