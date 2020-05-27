@@ -32,9 +32,9 @@ const GraSirkelMedNr = (props: Props) => {
             <CSSTransitionGroup
                 transitionName="valg"
                 transitionAppear={true}
-                transitionAppearTimeout={500}
-                transitionEnterTimeout={100}
-                transitionLeaveTimeout={0}
+                transitionAppearTimeout={700}
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={300}
             >
                 <Element className="valg__sidetall">{props.sidetall.toString()}</Element>
             </CSSTransitionGroup>
