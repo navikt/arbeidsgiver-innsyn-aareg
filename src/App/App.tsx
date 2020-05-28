@@ -81,7 +81,7 @@ const App = () => {
     const abortTidligereRequests = () => {
             if (abortControllerAntallArbeidsforhold && abortControllerArbeidsforhold) {
                 abortControllerAntallArbeidsforhold.abort();
-                window.location.reload()
+                //window.location.reload()
             }
     }
 
