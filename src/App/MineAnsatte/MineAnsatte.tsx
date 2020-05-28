@@ -11,12 +11,12 @@ import {
 } from './pagineringsFunksjoner';
 import Progressbar from './Progressbar/Progressbar';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
+import { Normaltekst, Systemtittel, Element } from 'nav-frontend-typografi';
 import { linkTilMinSideArbeidsgiver } from '../lenker';
 import Lenke from 'nav-frontend-lenker';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
 
@@ -36,10 +36,25 @@ export enum SorteringsAttributt {
     STILLINGSPROSENT
 }
 
+const MAKS_ANTALL_ARBEIDSFORHOLD = 3000;
+
 export interface KolonneState {
     erValgt: boolean;
     sorteringsAttributt: SorteringsAttributt;
     reversSortering: boolean;
+}
+
+const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) => {
+    return (
+        <>
+            <Element>For mange arbeidsforhold </Element>
+            {'Vi har ikke kapasitet til å hente flere enn ' + MAKS_ANTALL_ARBEIDSFORHOLD + ' avsluttede eller aktive arbeidsforhold om gangen. '}
+            {'Vi jobber med å forbedre systemet slik at flere arbeidsforhold kan vises.'}
+            <br/>
+            <br/>
+            {'Du har ' + antall + ' aktive eller avsluttede arbeidsforhold registrert på ' + valgtVirksomhet + '.'}
+            </>
+    );
 }
 
 const initialKolonne: KolonneState = {
@@ -62,6 +77,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
 
     const [aaregLasteState, setAaregLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
     const [feilkode, setFeilkode] = useState<string>('');
+    const [forMangeArbeidsforhold, setForMangeArbeidsforhold] = useState(false);
     const arbeidsforholdPerSide = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
@@ -69,20 +85,29 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     };
 
     useEffect(() => {
+        setForMangeArbeidsforhold(false)
         hentAntallArbeidsforholdFraAareg(
             props.valgtOrganisasjon.OrganizationNumber,
             props.valgtOrganisasjon.ParentOrganizationNumber
         ).then(antall => {
             const antallForhold = antall.valueOf();
+            console.log(antallForhold)
             if (antallForhold > 0) {
-
                 setAntallArbeidsforhold(antallForhold);
+                if (antallForhold>MAKS_ANTALL_ARBEIDSFORHOLD) {
+                    setVisProgressbar(false);
+                    setAaregLasteState(APISTATUS.OK);
+                    setForMangeArbeidsforhold(true);
+                }
             }
             else {
                 setAntallArbeidsforhold(-1);
             }
-            setAaregLasteState(APISTATUS.LASTER);
-            setVisProgressbar(true);
+            if ((antallForhold>0 && antallForhold <= MAKS_ANTALL_ARBEIDSFORHOLD) || antallForhold === -1) {
+                setAaregLasteState(APISTATUS.LASTER);
+                setVisProgressbar(true);
+            }
+
         }).catch(error => {
             setAaregLasteState(APISTATUS.FEILET);
             setFeilkode(error.response.status.toString());
@@ -90,7 +115,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     }, [props.valgtOrganisasjon]);
 
     useEffect(() => {
-        if (antallArbeidsforhold > 0 || antallArbeidsforhold === -1) {
+        if ((antallArbeidsforhold > 0 || antallArbeidsforhold === -1) && !forMangeArbeidsforhold) {
             hentArbeidsforholdFraAAreg(
                 props.valgtOrganisasjon.OrganizationNumber,
                 props.valgtOrganisasjon.ParentOrganizationNumber
@@ -104,7 +129,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     setFeilkode(error.response.status.toString());
                 });
         }
-    }, [props.valgtOrganisasjon, antallArbeidsforhold]);
+    }, [props.valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold]);
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
@@ -167,7 +192,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                             startTid={new Date().getTime()}
                         />
                     )}
-                    {aaregLasteState === APISTATUS.OK && !visProgressbar && (
+                    {aaregLasteState === APISTATUS.OK && !visProgressbar && !forMangeArbeidsforhold &&(
                         <MineAnsatteTopp
                             valgtOrganisasjon={props.valgtOrganisasjon}
                             setIndeksOgGenererListe={setIndeksOgGenererListe}
@@ -185,7 +210,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                         />
                     )}
 
-                    {aaregLasteState === APISTATUS.OK && listeMedArbeidsForhold.length > 0 && !visProgressbar && (
+                    {aaregLasteState === APISTATUS.OK && listeMedArbeidsForhold.length > 0 && !visProgressbar && !forMangeArbeidsforhold && (
                         <>
                             {' '}
                             <TabellMineAnsatte
@@ -215,6 +240,11 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     {aaregLasteState === APISTATUS.FEILET && (
                         <div className="mine-ansatte__feilmelding-aareg">
                             <AlertStripeFeil>{feilmeldingtekst}</AlertStripeFeil>
+                        </div>
+                    )}
+                    {forMangeArbeidsforhold && (
+                        <div className="mine-ansatte__feilmelding-aareg">
+                            <AlertStripeAdvarsel > {forMangeArbeidsforholdTekst(antallArbeidsforhold, props.valgtOrganisasjon.Name)}</AlertStripeAdvarsel>
                         </div>
                     )}
                 </div>
