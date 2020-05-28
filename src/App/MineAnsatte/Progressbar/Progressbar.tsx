@@ -37,7 +37,7 @@ const Progressbar = ({ startTid, erFerdigLastet, setSkalvises, antall }: Props) 
     const beregnetTid = beregnTid(antall);
     const element = document.getElementById('progressbar__fyll');
 
-    if (bredde >= 98 && erFerdigLastet) {
+    if (bredde >= 95 && erFerdigLastet) {
         setSkalvises(false);
     } else {
         if (!erFerdigLastet) {
@@ -58,16 +58,20 @@ const Progressbar = ({ startTid, erFerdigLastet, setSkalvises, antall }: Props) 
                         const tidGatt = naVarendeTid - startTid;
                         setTid(tidGatt);
                     }
-                }, beregnetTid / 500);
+                }, (beregnetTid / 500)*forsinkelsesparameter);
             }
         }
 
-        if (erFerdigLastet && element && bredde + 2 < 100) {
+        if (erFerdigLastet && element && bredde + 7 < 100) {
             setTimeout(() => {
-                element.style.width = (bredde + 2).toString() + '%';
-                setBredde(bredde + 2);
-            }, 15);
+                element.style.width = (bredde + 7).toString() + '%';
+                setBredde(bredde + 7);
+            }, 100);
         }
+    }
+
+    if (erFerdigLastet && tid>beregnetTid) {
+        setSkalvises(false);
     }
 
     const tekst = Math.floor(bredde).toString() + '%';
