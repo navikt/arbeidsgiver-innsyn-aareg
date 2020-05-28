@@ -103,7 +103,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
             else {
                 setAntallArbeidsforhold(-1);
             }
-            if ((antallForhold>0 && antallForhold < MAKS_ANTALL_ARBEIDSFORHOLD) || antallForhold === -1) {
+            if ((antallForhold>0 && antallForhold <= MAKS_ANTALL_ARBEIDSFORHOLD) || antallForhold === -1) {
                 setAaregLasteState(APISTATUS.LASTER);
                 setVisProgressbar(true);
             }
