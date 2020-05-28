@@ -11,12 +11,12 @@ import {
 } from './pagineringsFunksjoner';
 import Progressbar from './Progressbar/Progressbar';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
+import { Normaltekst, Systemtittel, Element } from 'nav-frontend-typografi';
 import { linkTilMinSideArbeidsgiver } from '../lenker';
 import Lenke from 'nav-frontend-lenker';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
 
@@ -42,6 +42,19 @@ export interface KolonneState {
     erValgt: boolean;
     sorteringsAttributt: SorteringsAttributt;
     reversSortering: boolean;
+}
+
+const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) => {
+    return (
+        <>
+            <Element>For mange arbeidsforhold </Element>
+            {'Vi har ikke kapasitet til å hente flere enn ' + MAKS_ANTALL_ARBEIDSFORHOLD + ' avsluttede eller aktive arbeidsforhold om gangen. '}
+            {'Vi jobber med å forbedre systemet slik at flere arbeidsforhold kan vises.'}
+            <br/>
+            <br/>
+            {'Du har ' + antall + ' aktive eller avsluttede arbeidsforhold registrert på ' + valgtVirksomhet + '.'}
+            </>
+    );
 }
 
 const initialKolonne: KolonneState = {
@@ -102,7 +115,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     }, [props.valgtOrganisasjon]);
 
     useEffect(() => {
-        if (antallArbeidsforhold > 0 || antallArbeidsforhold === -1 && !forMangeArbeidsforhold) {
+        if ((antallArbeidsforhold > 0 || antallArbeidsforhold === -1) && !forMangeArbeidsforhold) {
             hentArbeidsforholdFraAAreg(
                 props.valgtOrganisasjon.OrganizationNumber,
                 props.valgtOrganisasjon.ParentOrganizationNumber
@@ -231,7 +244,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     )}
                     {forMangeArbeidsforhold && (
                         <div className="mine-ansatte__feilmelding-aareg">
-                            <AlertStripeFeil>For mange arbeidsforhold</AlertStripeFeil>
+                            <AlertStripeAdvarsel > {forMangeArbeidsforholdTekst(antallArbeidsforhold, props.valgtOrganisasjon.Name)}</AlertStripeAdvarsel>
                         </div>
                     )}
                 </div>
