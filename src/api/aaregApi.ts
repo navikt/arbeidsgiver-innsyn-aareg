@@ -9,12 +9,12 @@ import {
 import { FetchError } from './api-utils';
 import { OversiktOverAntallForholdPerUnderenhet } from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
 
-export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string): Promise<ObjektFraAAregisteret> {
+export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string, signal: any): Promise<ObjektFraAAregisteret> {
     const headere = new Headers();
     headere.set('orgnr', underenhet);
     headere.set('jurenhet', enhet);
     const startTtid = new Date();
-    let response: Response = await fetch(hentArbeidsforholdLink(), { headers: headere });
+    let response: Response = await fetch(hentArbeidsforholdLink(), { headers: headere, signal: signal });
 
     if (response.ok) {
         const jsonRespons: ObjektFraAAregisteret = await response.json();
@@ -29,11 +29,11 @@ export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: stri
     }
 }
 
-export async function hentAntallArbeidsforholdFraAareg(underenhet: string, enhet: string): Promise<Number> {
+export async function hentAntallArbeidsforholdFraAareg(underenhet: string, enhet: string, signal: any): Promise<Number> {
     const headere = new Headers();
     headere.set('opplysningspliktig', enhet);
     headere.set('orgnr', underenhet);
-    let respons = await fetch(hentAntallArbeidsforholdLink(), { headers: headere });
+    let respons = await fetch(hentAntallArbeidsforholdLink(), { headers: headere, signal: signal  });
 
     if (respons.ok) {
         const jsonRespons: OversiktOverAntallForholdPerUnderenhet = await respons.json();
