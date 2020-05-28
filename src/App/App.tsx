@@ -37,6 +37,9 @@ const App = () => {
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
     const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
 
+    const [abortControllerAntallArbeidsforhold, setAbortControllerAntallArbeidsforhold] = useState<AbortController | null>(null);
+    const [abortControllerArbeidsforhold, setAbortControllerArbeidsforhold] = useState<AbortController | null>(null);
+
     sjekkSonekryssing().then(test => console.log(test));
 
     useEffect(() => {
@@ -75,6 +78,19 @@ const App = () => {
         };
     }, []);
 
+    const abortTidligereRequests = () => {
+            if (abortControllerAntallArbeidsforhold && abortControllerArbeidsforhold) {
+                abortControllerAntallArbeidsforhold.abort();
+                //window.location.reload()
+            }
+    }
+
+    const setValgtOrg = (org: Organisasjon) => {
+        setValgtOrganisasjon(org);
+
+        abortTidligereRequests()
+    }
+
     useEffect(() => {
         setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
         if (organisasjonerMedTilgang && valgtOrganisasjon !== tomaAltinnOrganisasjon) {
@@ -111,7 +127,7 @@ const App = () => {
                 <Router basename={basename}>
                     {organisasjonerLasteState !== APISTATUS.LASTER && (
                         <HovedBanner
-                            byttOrganisasjon={setValgtOrganisasjon}
+                            byttOrganisasjon={setValgtOrg}
                             organisasjoner={organisasjonerLasteState === APISTATUS.OK ? organisasjoner : []}
                         />
                     )}
@@ -142,6 +158,8 @@ const App = () => {
                                             <MineAnsatte
                                                 setValgtArbeidstaker={setValgtArbeidstaker}
                                                 valgtOrganisasjon={valgtOrganisasjon}
+                                                setAbortControllerAntallArbeidsforhold={setAbortControllerAntallArbeidsforhold}
+                                                setAbortControllerArbeidsforhold={setAbortControllerArbeidsforhold}
                                             />
                                         )}
                                     </Route>
