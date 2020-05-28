@@ -81,13 +81,12 @@ const App = () => {
     const abortTidligereRequests = () => {
             if (abortControllerAntallArbeidsforhold && abortControllerArbeidsforhold) {
                 abortControllerAntallArbeidsforhold.abort();
-                //window.location.reload()
+                abortControllerArbeidsforhold.abort();
             }
     }
 
     const setValgtOrg = (org: Organisasjon) => {
         setValgtOrganisasjon(org);
-
         abortTidligereRequests()
     }
 
