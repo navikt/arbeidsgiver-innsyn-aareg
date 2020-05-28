@@ -20,7 +20,7 @@ import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper'
 import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
 
-interface MineAnsatteProps {
+interface Props {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
     valgtOrganisasjon: Organisasjon;
     setAbortControllerAntallArbeidsforhold: (abortcontroller: AbortController) => void;
@@ -66,7 +66,13 @@ const initialKolonne: KolonneState = {
     reversSortering: false
 };
 
-const MineAnsatte = (props: MineAnsatteProps) => {
+const MineAnsatte = (
+    {
+        setValgtArbeidstaker,
+        valgtOrganisasjon,
+        setAbortControllerAntallArbeidsforhold,
+        setAbortControllerArbeidsforhold
+    }: Props ) => {
     const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(1);
     const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
@@ -90,11 +96,11 @@ const MineAnsatte = (props: MineAnsatteProps) => {
     useEffect(() => {
         setForMangeArbeidsforhold(false)
         const abortController = new AbortController();
-        props.setAbortControllerAntallArbeidsforhold(abortController)
+        setAbortControllerAntallArbeidsforhold(abortController)
         const signal = abortController.signal;
         hentAntallArbeidsforholdFraAareg(
-            props.valgtOrganisasjon.OrganizationNumber,
-            props.valgtOrganisasjon.ParentOrganizationNumber, signal
+            valgtOrganisasjon.OrganizationNumber,
+            valgtOrganisasjon.ParentOrganizationNumber, signal
         ).then(antall => {
             const antallForhold = antall.valueOf();
             console.log(antallForhold)
@@ -118,16 +124,16 @@ const MineAnsatte = (props: MineAnsatteProps) => {
             setAaregLasteState(APISTATUS.FEILET);
             setFeilkode(error.response.status.toString());
         });
-    }, [props.setAbortControllerAntallArbeidsforhold]);
+    }, [setAbortControllerAntallArbeidsforhold, valgtOrganisasjon]);
 
     useEffect(() => {
         if ((antallArbeidsforhold > 0 || antallArbeidsforhold === -1) && !forMangeArbeidsforhold) {
             const abortController = new AbortController();
-            props.setAbortControllerArbeidsforhold(abortController)
+            setAbortControllerArbeidsforhold(abortController)
             const signal = abortController.signal;
             hentArbeidsforholdFraAAreg(
-                props.valgtOrganisasjon.OrganizationNumber,
-                props.valgtOrganisasjon.ParentOrganizationNumber,
+                valgtOrganisasjon.OrganizationNumber,
+                valgtOrganisasjon.ParentOrganizationNumber,
                 signal
             )
                 .then(responsAareg => {
@@ -139,7 +145,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     setFeilkode(error.response.status.toString());
                 });
         }
-    }, [props.valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold, props.setAbortControllerArbeidsforhold]);
+    }, [valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold, setAbortControllerArbeidsforhold]);
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
@@ -185,7 +191,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
         <div className="bakgrunnsside">
             <div className="innhold-container">
                 <Normaltekst className="brodsmule">
-                    <Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>
+                    <Lenke href={linkTilMinSideArbeidsgiver(valgtOrganisasjon.OrganizationNumber)}>
                         Min side – arbeidsgiver
                     </Lenke>
                     {' / arbeidsforhold'}
@@ -204,7 +210,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     )}
                     {aaregLasteState === APISTATUS.OK && !visProgressbar && !forMangeArbeidsforhold &&(
                         <MineAnsatteTopp
-                            valgtOrganisasjon={props.valgtOrganisasjon}
+                            valgtOrganisasjon={valgtOrganisasjon}
                             setIndeksOgGenererListe={setIndeksOgGenererListe}
                             setSoketekst={setSoketekst}
                             antallSider={antallSider}
@@ -229,14 +235,14 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                                 setNavarendeKolonne={setNavarendeKolonne}
                                 byttSide={setIndeksOgGenererListe}
                                 navarendeKolonne={navarendeKolonne}
-                                settValgtArbeidsgiver={props.setValgtArbeidstaker}
-                                valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
+                                settValgtArbeidsgiver={setValgtArbeidstaker}
+                                valgtBedrift={valgtOrganisasjon.OrganizationNumber}
                             />
                             <ListeMedAnsatteForMobil
                                 listeMedArbeidsForhold={forholdPaEnSide}
                                 className="mine-ansatte__liste"
-                                settValgtArbeidsgiver={props.setValgtArbeidstaker}
-                                valgtBedrift={props.valgtOrganisasjon.OrganizationNumber}
+                                settValgtArbeidsgiver={setValgtArbeidstaker}
+                                valgtBedrift={valgtOrganisasjon.OrganizationNumber}
                             />
                             { antallSider>1 &&<SideBytter
                                 plassering="nederst"
@@ -254,7 +260,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     )}
                     {forMangeArbeidsforhold && (
                         <div className="mine-ansatte__feilmelding-aareg">
-                            <AlertStripeAdvarsel > {forMangeArbeidsforholdTekst(antallArbeidsforhold, props.valgtOrganisasjon.Name)}</AlertStripeAdvarsel>
+                            <AlertStripeAdvarsel > {forMangeArbeidsforholdTekst(antallArbeidsforhold, valgtOrganisasjon.Name)}</AlertStripeAdvarsel>
                         </div>
                     )}
                 </div>
