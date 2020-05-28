@@ -23,6 +23,8 @@ import './MineAnsatte.less';
 interface MineAnsatteProps {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
     valgtOrganisasjon: Organisasjon;
+    setAbortControllerAntallArbeidsforhold: (abortcontroller: AbortController) => void;
+    setAbortControllerArbeidsforhold: (abortcontroller: AbortController) => void;
 }
 
 export enum SorteringsAttributt {
@@ -42,6 +44,7 @@ export interface KolonneState {
     erValgt: boolean;
     sorteringsAttributt: SorteringsAttributt;
     reversSortering: boolean;
+
 }
 
 const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) => {
@@ -86,9 +89,12 @@ const MineAnsatte = (props: MineAnsatteProps) => {
 
     useEffect(() => {
         setForMangeArbeidsforhold(false)
+        const abortController = new AbortController();
+        props.setAbortControllerAntallArbeidsforhold(abortController)
+        const signal = abortController.signal;
         hentAntallArbeidsforholdFraAareg(
             props.valgtOrganisasjon.OrganizationNumber,
-            props.valgtOrganisasjon.ParentOrganizationNumber
+            props.valgtOrganisasjon.ParentOrganizationNumber, signal
         ).then(antall => {
             const antallForhold = antall.valueOf();
             console.log(antallForhold)
@@ -112,13 +118,17 @@ const MineAnsatte = (props: MineAnsatteProps) => {
             setAaregLasteState(APISTATUS.FEILET);
             setFeilkode(error.response.status.toString());
         });
-    }, [props.valgtOrganisasjon]);
+    }, [props.setAbortControllerAntallArbeidsforhold]);
 
     useEffect(() => {
         if ((antallArbeidsforhold > 0 || antallArbeidsforhold === -1) && !forMangeArbeidsforhold) {
+            const abortController = new AbortController();
+            props.setAbortControllerArbeidsforhold(abortController)
+            const signal = abortController.signal;
             hentArbeidsforholdFraAAreg(
                 props.valgtOrganisasjon.OrganizationNumber,
-                props.valgtOrganisasjon.ParentOrganizationNumber
+                props.valgtOrganisasjon.ParentOrganizationNumber,
+                signal
             )
                 .then(responsAareg => {
                     setListeFraAareg(responsAareg.arbeidsforholdoversikter);
@@ -129,7 +139,7 @@ const MineAnsatte = (props: MineAnsatteProps) => {
                     setFeilkode(error.response.status.toString());
                 });
         }
-    }, [props.valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold]);
+    }, [props.valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold, props.setAbortControllerArbeidsforhold]);
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
