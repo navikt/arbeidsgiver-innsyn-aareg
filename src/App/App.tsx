@@ -92,6 +92,7 @@ const App = () => {
     }
 
     useEffect(() => {
+        setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
         if (organisasjonerMedTilgang && valgtOrganisasjon !== tomaAltinnOrganisasjon) {
             if (
                 organisasjonerMedTilgang.filter(organisasjonMedTilgang => {
