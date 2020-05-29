@@ -7,10 +7,11 @@ interface Props {
     erFerdigLastet: boolean;
     setSkalvises: (vises: boolean) => void;
     antall: number;
+    antallArbeidsforholdUkjent: boolean;
 }
 
-const beregnTid = (antallForhold: number) => {
-    if (antallForhold === -1) {
+const beregnTid = (antallForhold: number, ukjent: boolean) => {
+    if (ukjent) {
         return 10000;
     }
     if (antallForhold < 700 && antallForhold > 0) {
@@ -29,12 +30,12 @@ const beregnBreddeMedForsinkelse = (forsinkelsesparameter: number, naVarendeBred
     return breddeMEdForsinkelse;
 };
 
-const Progressbar = ({ startTid, erFerdigLastet, setSkalvises, antall }: Props) => {
+const Progressbar = ({ startTid, erFerdigLastet, setSkalvises, antall, antallArbeidsforholdUkjent }: Props) => {
     const [tid, setTid] = useState(0);
     const [bredde, setBredde] = useState(0);
     const [forsinkelsesparameter, setForsinkelsesparameter] = useState(1);
 
-    const beregnetTid = beregnTid(antall);
+    const beregnetTid = beregnTid(antall, antallArbeidsforholdUkjent);
     const element = document.getElementById('progressbar__fyll');
 
     if (bredde >= 94 && erFerdigLastet) {
@@ -77,7 +78,7 @@ const Progressbar = ({ startTid, erFerdigLastet, setSkalvises, antall }: Props) 
     }
 
     const tekst = Math.floor(bredde).toString() + '%';
-    const overtekst = antall>0 ? antall : '';
+    const overtekst = antallArbeidsforholdUkjent ? '' : antall;
 
     return (
         <div className={'progressbar__container'}>
