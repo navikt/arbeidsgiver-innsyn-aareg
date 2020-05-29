@@ -87,6 +87,8 @@ const MineAnsatte = (
     const [aaregLasteState, setAaregLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
     const [feilkode, setFeilkode] = useState<string>('');
     const [forMangeArbeidsforhold, setForMangeArbeidsforhold] = useState(false);
+    const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
+
     const arbeidsforholdPerSide = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
@@ -94,6 +96,8 @@ const MineAnsatte = (
     };
 
     useEffect(() => {
+        setAntallArbeidsforhold(0);
+        setAntallArbeidsforholdUkjent(true)
         setForMangeArbeidsforhold(false)
         const abortController = new AbortController();
         setAbortControllerAntallArbeidsforhold(abortController)
@@ -103,8 +107,8 @@ const MineAnsatte = (
             valgtOrganisasjon.ParentOrganizationNumber, signal
         ).then(antall => {
             const antallForhold = antall.valueOf();
-            console.log(antallForhold)
             if (antallForhold > 0) {
+                setAntallArbeidsforholdUkjent(false);
                 setAntallArbeidsforhold(antallForhold);
                 if (antallForhold>MAKS_ANTALL_ARBEIDSFORHOLD) {
                     setVisProgressbar(false);
@@ -112,10 +116,7 @@ const MineAnsatte = (
                     setForMangeArbeidsforhold(true);
                 }
             }
-            else {
-                setAntallArbeidsforhold(-1);
-            }
-            if ((antallForhold>0 && antallForhold <= MAKS_ANTALL_ARBEIDSFORHOLD) || antallForhold === -1) {
+            if (antallForhold <= MAKS_ANTALL_ARBEIDSFORHOLD) {
                 setAaregLasteState(APISTATUS.LASTER);
                 setVisProgressbar(true);
             }
@@ -127,7 +128,7 @@ const MineAnsatte = (
     }, [setAbortControllerAntallArbeidsforhold, valgtOrganisasjon]);
 
     useEffect(() => {
-        if ((antallArbeidsforhold > 0 || antallArbeidsforhold === -1) && !forMangeArbeidsforhold) {
+        if ((antallArbeidsforhold>0 || antallArbeidsforholdUkjent) && !forMangeArbeidsforhold) {
             const abortController = new AbortController();
             setAbortControllerArbeidsforhold(abortController)
             const signal = abortController.signal;
@@ -139,13 +140,16 @@ const MineAnsatte = (
                 .then(responsAareg => {
                     setListeFraAareg(responsAareg.arbeidsforholdoversikter);
                     setAaregLasteState(APISTATUS.OK);
+                    if (antallArbeidsforholdUkjent) {
+                        setAntallArbeidsforhold(responsAareg.arbeidsforholdoversikter.length);
+                    }
                 })
                 .catch(error => {
                     setAaregLasteState(APISTATUS.FEILET);
                     setFeilkode(error.response.status.toString());
                 });
         }
-    }, [valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold, setAbortControllerArbeidsforhold]);
+    }, [valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold, setAbortControllerArbeidsforhold, antallArbeidsforholdUkjent]);
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
@@ -200,8 +204,9 @@ const MineAnsatte = (
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         Opplysninger fra Aa-registeret
                     </Systemtittel>
-                    {(antallArbeidsforhold > 0 || antallArbeidsforhold ===-1) && visProgressbar && aaregLasteState !== APISTATUS.FEILET &&(
+                    {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) && visProgressbar && aaregLasteState !== APISTATUS.FEILET && !forMangeArbeidsforhold && (
                         <Progressbar
+                            antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
                             antall={antallArbeidsforhold}
                             setSkalvises={setVisProgressbar}
                             erFerdigLastet={aaregLasteState === APISTATUS.OK}

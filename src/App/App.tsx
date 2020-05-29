@@ -86,6 +86,7 @@ const App = () => {
     }
 
     const setValgtOrg = (org: Organisasjon) => {
+        setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
         setValgtOrganisasjon(org);
         abortTidligereRequests()
     }
