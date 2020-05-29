@@ -26,9 +26,10 @@ export const hentOverordnetEnhetApiLink = (orgnr: string) => {
 };
 
 export const linkTilMinSideArbeidsgiver = (orgnr: string) => {
+    const orgNrDel = orgnr.length>0 ? '?bedrift=' + orgnr : '';
     if (environment.MILJO === 'prod-sbs') {
-        return 'https://arbeidsgiver.nav.no/min-side-arbeidsgiver/?bedrift=' + orgnr;
+        return 'https://arbeidsgiver.nav.no/min-side-arbeidsgiver/' + orgNrDel;
     } else {
-        return 'https://arbeidsgiver-q.nav.no/min-side-arbeidsgiver/?bedrift=' + orgnr;
+        return 'https://arbeidsgiver-q.nav.no/min-side-arbeidsgiver/' + orgNrDel;
     }
 };
