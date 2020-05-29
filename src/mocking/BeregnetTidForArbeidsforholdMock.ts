@@ -15,12 +15,12 @@ fetchMock
 const mockObjekt = [
     {
         arbeidsgiver: { organisasjonsnummer: '910825518', type: 'Organisasjon' },
-        aktiveArbeidsforhold: 1500,
-        inaktiveArbeidsforhold: 200
+        aktiveArbeidsforhold: 40,
+        inaktiveArbeidsforhold: 40
     },
     {
         arbeidsgiver: { organisasjonsnummer: '910825526', type: 'Organisasjon' },
-        aktiveArbeidsforhold: 500,
-        inaktiveArbeidsforhold: 4
+        aktiveArbeidsforhold: 0,
+        inaktiveArbeidsforhold: 0
     }
 ];
