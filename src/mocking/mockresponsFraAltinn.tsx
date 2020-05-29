@@ -213,5 +213,31 @@ export const tilgangTilAtinntjenesteRespons: Organisasjon[] = [
         OrganizationNumber: '910825526',
         OrganizationForm: 'BEDR',
         Status: 'Active'
-    }
+    },
+    {
+        Name: 'TRANØY OG SANDE I VESTFOLD REGNSKAP',
+        Type: 'Enterprise',
+        ParentOrganizationNumber: null,
+        OrganizationNumber: '910825550',
+        OrganizationForm: 'AS',
+        Status: 'Active'
+    },
+    {
+        Name: 'BIRTAVARRE OG VÆRLANDET REGNSKAP',
+        Type: 'Business',
+        ParentOrganizationNumber: '910825550',
+        OrganizationNumber: '910825607',
+        OrganizationForm: 'BEDR',
+        Status: 'Active'
+    },
+    {
+        Name: 'STORFOSNA OG FREDRIKSTAD REGNSKAP',
+        Type: 'Business',
+        ParentOrganizationNumber: '910825550',
+        OrganizationNumber: '910825569',
+        OrganizationForm: 'BEDR',
+        Status: 'Active'
+    },
+
+
 ];
