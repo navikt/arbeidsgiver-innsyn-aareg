@@ -27,8 +27,8 @@ export const hentOverordnetEnhetApiLink = (orgnr: string) => {
 
 export const linkTilMinSideArbeidsgiver = (orgnr: string) => {
     if (environment.MILJO === 'prod-sbs') {
-        return 'https://arbeidsgiver.nav.no/min-side-arbeidsgiver/' + orgnr + '/';
+        return 'https://arbeidsgiver.nav.no/min-side-arbeidsgiver/?bedrift=' + orgnr;
     } else {
-        return 'https://arbeidsgiver-q.nav.no/min-side-arbeidsgiver/' + orgnr + '/';
+        return 'https://arbeidsgiver-q.nav.no/min-side-arbeidsgiver/?bedrift=' + orgnr;
     }
 };
