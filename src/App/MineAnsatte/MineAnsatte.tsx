@@ -96,6 +96,7 @@ const MineAnsatte = (
     };
 
     useEffect(() => {
+        setAntallArbeidsforhold(0);
         setAntallArbeidsforholdUkjent(true)
         setForMangeArbeidsforhold(false)
         const abortController = new AbortController();
