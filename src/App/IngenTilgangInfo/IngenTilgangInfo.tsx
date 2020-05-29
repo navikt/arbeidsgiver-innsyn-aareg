@@ -73,7 +73,7 @@ const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsIn
                     </Undertittel>
 
                     <ul className="ingen-tilgang-innhold__panelinnhold" aria-labelledby="panelinnhold-overskrift">
-                        <li>Innsyn i AA-registeret</li>
+                        <li>Innsyn i Aa-registeret for arbeidsgivere</li>
                     </ul>
 
                     <div className="ingen-tilgang-innhold__lenker">
