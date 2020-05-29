@@ -38,7 +38,7 @@ export enum SorteringsAttributt {
     STILLINGSPROSENT
 }
 
-const MAKS_ANTALL_ARBEIDSFORHOLD = 3000;
+const MAKS_ANTALL_ARBEIDSFORHOLD = 5000;
 
 export interface KolonneState {
     erValgt: boolean;
