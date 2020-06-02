@@ -18,7 +18,6 @@ import { APISTATUS } from '../api/api-utils';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import {sjekkSonekryssing} from "../api/aaregApi";
 
 enum TILGANGSSTATE {
     LASTER,
