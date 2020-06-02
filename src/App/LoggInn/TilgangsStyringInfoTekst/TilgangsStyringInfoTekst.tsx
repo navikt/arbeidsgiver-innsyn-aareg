@@ -16,7 +16,7 @@ export const TilgangsStyringInfoTekst = () => {
                 />
                 <div className="informasjonsboks__tekst">
                     <Element className="informasjonsboks__overskrift">Tildeling av roller foregår i Altinn </Element>
-                    <Lenke className="informasjonsboks__lenke" href={basename + '/informasjon-om-tilgangsstyring'}>
+                    <Lenke className="informasjonsboks__lenke" href="https://arbeidsgiver.nav.no/min-side-arbeidsgiver/informasjon-om-tilgangsstyring">
                         Les mer om roller og tilganger
                     </Lenke>
                 </div>
