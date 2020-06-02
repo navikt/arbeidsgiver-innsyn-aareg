@@ -215,14 +215,6 @@ export const tilgangTilAtinntjenesteRespons: Organisasjon[] = [
         Status: 'Active'
     },
     {
-        Name: 'TRANØY OG SANDE I VESTFOLD REGNSKAP',
-        Type: 'Enterprise',
-        ParentOrganizationNumber: null,
-        OrganizationNumber: '910825550',
-        OrganizationForm: 'AS',
-        Status: 'Active'
-    },
-    {
         Name: 'BIRTAVARRE OG VÆRLANDET REGNSKAP',
         Type: 'Business',
         ParentOrganizationNumber: '910825550',
