@@ -9,7 +9,7 @@ import {
 import { FetchError } from './api-utils';
 import { OversiktOverAntallForholdPerUnderenhet } from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
 
-export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string, signal: any): Promise<ObjektFraAAregisteret> {
+export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string, signal: any, tilgangTiLOpplysningspliktigOrg: boolean): Promise<ObjektFraAAregisteret> {
     const headere = new Headers();
     headere.set('orgnr', underenhet);
     headere.set('jurenhet', enhet);
@@ -22,9 +22,10 @@ export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: stri
         const tid = new Date().getDate() - startTtid.getDate();
         loggSnittTidPerArbeidsforhold(jsonRespons.arbeidsforholdoversikter.length, tid);
         loggTidForAlleArbeidsforhold(tid);
+        amplitude.logEvent('#arbeidsforhold klarte å hente ut arbeidsforhold. Tilgang til opplysningspliktig enhet: ' + tilgangTiLOpplysningspliktigOrg);
         return jsonRespons;
     } else {
-        amplitude.logEvent('#arbeidsforhold klarte ikke hente ut arbeidsforhold');
+        amplitude.logEvent('#arbeidsforhold klarte ikke hente ut arbeidsforhold. Tilgang til opplysningspliktig enhet: ' + tilgangTiLOpplysningspliktigOrg);
         throw new FetchError(response.statusText || response.type, response);
     }
 }
@@ -50,8 +51,7 @@ export async function hentAntallArbeidsforholdFraAareg(underenhet: string, enhet
 }
 
 export async function sjekkSonekryssing(): Promise<string> {
-    console.log("prover a kalle");
-    console.log("sjekk sonekrysningslink: ", sjekkSonekryssingLink());
+    //console.log("sjekk sonekrysningslink: ", sjekkSonekryssingLink());
     let respons = await fetch(sjekkSonekryssingLink() );
     if (respons.ok) {
         return respons.json();

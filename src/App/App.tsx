@@ -40,7 +40,7 @@ const App = () => {
     const [abortControllerAntallArbeidsforhold, setAbortControllerAntallArbeidsforhold] = useState<AbortController | null>(null);
     const [abortControllerArbeidsforhold, setAbortControllerArbeidsforhold] = useState<AbortController | null>(null);
 
-    sjekkSonekryssing().then(test => console.log(test));
+    const [tilgangTiLOpplysningspliktigOrg, setTilgangTiLOpplysningspliktigOrg] = useState(false);
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -59,10 +59,7 @@ const App = () => {
                 )
                     .then(organisasjonerMedTilgangFraAltinn => {
                         setOrganisasjonerMedTilgang(
-                            organisasjonerMedTilgangFraAltinn.filter(
-                                organisasjon =>
-                                    organisasjon.ParentOrganizationNumber && organisasjon.OrganizationForm === 'BEDR'
-                            )
+                            organisasjonerMedTilgangFraAltinn
                         );
                         setOrganisasjonerLasteState(APISTATUS.OK);
                     })
@@ -88,6 +85,7 @@ const App = () => {
     const setValgtOrg = (org: Organisasjon) => {
         setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
         setValgtOrganisasjon(org);
+        setTilgangTiLOpplysningspliktigOrg(false);
         abortTidligereRequests()
     }
 
@@ -100,6 +98,9 @@ const App = () => {
                 }).length >= 1
             ) {
                 setTilgangArbeidsforholdState(TILGANGSSTATE.TILGANG);
+                if (organisasjonerMedTilgang.filter(org => org.OrganizationNumber === valgtOrganisasjon.ParentOrganizationNumber).length>0){
+                    setTilgangTiLOpplysningspliktigOrg(true)
+                }
             } else {
                 setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
             }
@@ -156,6 +157,7 @@ const App = () => {
 
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
+                                                tilgangTiLOpplysningspliktigOrg={tilgangTiLOpplysningspliktigOrg}
                                                 setValgtArbeidstaker={setValgtArbeidstaker}
                                                 valgtOrganisasjon={valgtOrganisasjon}
                                                 setAbortControllerAntallArbeidsforhold={setAbortControllerAntallArbeidsforhold}

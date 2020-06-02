@@ -25,6 +25,7 @@ interface Props {
     valgtOrganisasjon: Organisasjon;
     setAbortControllerAntallArbeidsforhold: (abortcontroller: AbortController) => void;
     setAbortControllerArbeidsforhold: (abortcontroller: AbortController) => void;
+    tilgangTiLOpplysningspliktigOrg: boolean;
 }
 
 export enum SorteringsAttributt {
@@ -71,7 +72,8 @@ const MineAnsatte = (
         setValgtArbeidstaker,
         valgtOrganisasjon,
         setAbortControllerAntallArbeidsforhold,
-        setAbortControllerArbeidsforhold
+        setAbortControllerArbeidsforhold,
+        tilgangTiLOpplysningspliktigOrg
     }: Props ) => {
     const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(1);
     const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
@@ -135,7 +137,7 @@ const MineAnsatte = (
             hentArbeidsforholdFraAAreg(
                 valgtOrganisasjon.OrganizationNumber,
                 valgtOrganisasjon.ParentOrganizationNumber,
-                signal
+                signal, tilgangTiLOpplysningspliktigOrg
             )
                 .then(responsAareg => {
                     setListeFraAareg(responsAareg.arbeidsforholdoversikter);
@@ -149,7 +151,7 @@ const MineAnsatte = (
                     setFeilkode(error.response.status.toString());
                 });
         }
-    }, [valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold, setAbortControllerArbeidsforhold, antallArbeidsforholdUkjent]);
+    }, [valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold, setAbortControllerArbeidsforhold, antallArbeidsforholdUkjent, tilgangTiLOpplysningspliktigOrg]);
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
