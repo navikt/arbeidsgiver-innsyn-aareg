@@ -37,7 +37,6 @@ export const EnkeltArbeidsforhold = (props: EnkeltArbeidsforholdProps) => {
     const bedriftFraUrl = new URL(window.location.href).searchParams.get('bedrift');
 
     if (!arbeidsforholdIdFraUrl || !props.valgtArbeidstaker) {
-        console.log('redirect til ', basename + '/?bedrift=' + props.valgtOrganisasjon.OrganizationNumber);
         window.location.href = basename + '/?bedrift=' + bedriftFraUrl;
     }
 
