@@ -29,7 +29,7 @@ export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: stri
         amplitude.logEvent('#arbeidsforhold klarte ikke hente ut arbeidsforhold. Tilgang til opplysningspliktig enhet: ' + tilgangTiLOpplysningspliktigOrg);
         amplitude.logEvent('#arbeidsforhold feilet med: '+ response.statusText || response.type, response);
         if (environment.MILJO === 'prod-sbs') {
-            loggBedriftsInfo(underenhet);
+            loggBedriftsInfo(underenhet, enhet);
         }
 
         throw new FetchError(response.statusText || response.type, response);
