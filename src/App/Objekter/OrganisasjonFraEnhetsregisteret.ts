@@ -19,13 +19,16 @@ export interface OrganisasjonFraEnhetsregisteret {
     organisasjonsnummer: string;
     navn: string;
     organisasjonsform: organisasjonsform;
-    naeringskode1: naeringskode1;
+    naeringskode1?: naeringskode1;
     naeringskode2: naeringskode2;
     naeringskode3: naeringskode3;
     postadresse: postadresse;
     forretningsadresse: forretningsadresse;
     hjemmeside: string;
     overordnetEnhet: string;
+    antallAnsatte: string;
+    beliggenhetsadresse: beliggenhetsadresse;
+    institusjonellSektorkode: institusjonellSektorkode;
 }
 
 export interface organisasjonsform {
@@ -68,14 +71,24 @@ export interface naeringskode3 {
     beskrivelse: string;
 }
 
+export interface beliggenhetsadresse {
+    kommune: string;
+}
+
+export interface institusjonellSektorkode {
+    kode: string;
+    beskrivelse: string;
+}
+
 export const tomEnhetsregOrg: OrganisasjonFraEnhetsregisteret = {
     organisasjonsnummer: '',
     navn: '',
     organisasjonsform: {
         kode: '',
-        beskrivelse: ''
+        beskrivelse: '',
     },
     overordnetEnhet: '',
+    antallAnsatte: '',
     hjemmeside: '',
     postadresse: {
         land: '',
@@ -84,7 +97,11 @@ export const tomEnhetsregOrg: OrganisasjonFraEnhetsregisteret = {
         poststed: '',
         adresse: [''],
         kommune: '',
-        kommunenummer: ''
+        kommunenummer: '',
+    },
+
+    beliggenhetsadresse: {
+        kommune: '',
     },
     forretningsadresse: {
         land: '',
@@ -93,18 +110,22 @@ export const tomEnhetsregOrg: OrganisasjonFraEnhetsregisteret = {
         poststed: '',
         adresse: [''],
         kommune: '',
-        kommunenummer: ''
+        kommunenummer: '',
     },
     naeringskode1: {
         beskrivelse: '',
-        kode: ''
+        kode: '',
     },
     naeringskode2: {
         beskrivelse: '',
-        kode: ''
+        kode: '',
     },
     naeringskode3: {
         beskrivelse: '',
-        kode: ''
-    }
+        kode: '',
+    },
+    institusjonellSektorkode: {
+        kode: '',
+        beskrivelse: '',
+    },
 };
