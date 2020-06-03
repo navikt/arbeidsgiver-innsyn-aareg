@@ -1,5 +1,7 @@
 import amplitude from "../utils/amplitude";
 import environment from "../utils/environment";
+import {hentUnderenhet} from "../api/enhetsregisteretApi";
+import {OrganisasjonFraEnhetsregisteret, tomEnhetsregOrg} from "./Objekter/OrganisasjonFraEnhetsregisteret";
 
 export const loggAntallAnsatte = (antall: number) => {
     let logg = "#arbeidsforhold antall arbeidsforhold: ";
@@ -92,13 +94,71 @@ export const loggTidForAlleArbeidsforhold = (tid: number) => {
         }
         amplitude.logEvent(logg + " i " + environment.MILJO);
 
-    };
+    }
 };
 
 export const loggBrukerTrykketPaVarsel = () => {
     amplitude.logEvent("#arbeidsforhold trykket pa ansatt med varsel" + environment.MILJO);
 };
 
+
+
 export const loggBrukerTrykketPaExcel = () => {
     amplitude.logEvent("#arbeidsforhold bruker trykket på exceleksport");
+};
+
+export const loggBedriftsInfo = async (organisasjonNr: string) => {
+    let infoFraEereg: OrganisasjonFraEnhetsregisteret = tomEnhetsregOrg;
+    await hentUnderenhet(organisasjonNr).then(underenhet => {
+        infoFraEereg = underenhet;
+    });
+
+    const antallAnsatte = infoFraEereg.antallAnsatte;
+
+    if (infoFraEereg !== tomEnhetsregOrg) {
+        amplitude.logEvent('#arbeidsforhold bedriftsinfo kallet feilet med bedrift: ' + infoFraEereg.navn);
+
+        if (infoFraEereg.naeringskode1 && infoFraEereg.naeringskode1.kode.startsWith('84')) {
+            amplitude.logEvent('#arbeidsforhold bedriftsinfo OFFENTLIG');
+            if (
+                infoFraEereg.institusjonellSektorkode.kode &&
+                infoFraEereg.institusjonellSektorkode.kode === '6500'
+            ) {
+                amplitude.logEvent('#arbeidsforhold bedriftsinfo  Kommuneforvaltningen');
+            }
+            if (
+                infoFraEereg.institusjonellSektorkode.kode &&
+                infoFraEereg.institusjonellSektorkode.kode === '6100'
+            ) {
+                amplitude.logEvent('#arbeidsforhold bedriftsinfo Statsforvaltningen');
+            }
+        } else {
+            amplitude.logEvent('#arbeidsforhold bedriftsinfo  PRIVAT');
+        }
+        const antallAnsatte = Number(infoFraEereg.antallAnsatte);
+        switch (true) {
+            case antallAnsatte < 20:
+                amplitude.logEvent('#arbeidsforhold bedriftsinfo under 20 ansatte');
+                break;
+            case antallAnsatte > 3000:
+                amplitude.logEvent('#arbeidsforhold bedriftsinfo over 3000 ansatte');
+                break;
+            case antallAnsatte > 1000:
+                amplitude.logEvent('#arbeidsforhold bedriftsinfo over 1000 ansatte');
+                break;
+            case antallAnsatte > 500:
+                amplitude.logEvent('#arbeidsforhold bedriftsinfo over 500 ansatte');
+                break;
+            case antallAnsatte > 100:
+                amplitude.logEvent('#arbeidsforhold bedriftsinfo over 100 ansatte');
+                break;
+            case antallAnsatte >= 20:
+                amplitude.logEvent('#arbeidsforhold bedriftsinfoover 20 ansatte');
+                break;
+            default:
+                break;
+        }
+
+    }
+    return antallAnsatte;
 };
