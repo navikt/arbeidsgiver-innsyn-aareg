@@ -1,5 +1,10 @@
-import { ListeMedJuridiskeEnheter } from '../App/Objekter/OrganisasjonFraEnhetsregisteret';
+import {
+    ListeMedJuridiskeEnheter,
+    OrganisasjonFraEnhetsregisteret, tomEnhetsregOrg
+} from '../App/Objekter/OrganisasjonFraEnhetsregisteret';
 import { Organisasjon, tomaAltinnOrganisasjon } from '../App/Objekter/OrganisasjonFraAltinn';
+import {hentOverordnetEnhetApiLink, hentUnderenhetApiLink} from "../App/lenker";
+
 
 export async function hentAlleJuridiskeEnheter(listeMedJuridiskeOrgNr: string[]): Promise<Organisasjon[]> {
     const listerMedDefinerteOrgNr = listeMedJuridiskeOrgNr.filter(orgnr => {
@@ -37,4 +42,24 @@ export async function hentAlleJuridiskeEnheter(listeMedJuridiskeOrgNr: string[])
         }
     }
     return [];
+}
+
+export async function hentUnderenhet(orgnr: string): Promise<OrganisasjonFraEnhetsregisteret> {
+    let respons = await fetch(hentUnderenhetApiLink(orgnr));
+    if (respons.ok) {
+        const enhet: OrganisasjonFraEnhetsregisteret = await respons.json();
+        return enhet;
+    }
+    return tomEnhetsregOrg;
+}
+
+export async function hentOverordnetEnhet(orgnr: string): Promise<OrganisasjonFraEnhetsregisteret> {
+    if (orgnr !== '') {
+        let respons = await fetch(hentOverordnetEnhetApiLink(orgnr));
+        if (respons.ok) {
+            const enhet: OrganisasjonFraEnhetsregisteret = await respons.json();
+            return enhet;
+        }
+    }
+    return tomEnhetsregOrg;
 }
