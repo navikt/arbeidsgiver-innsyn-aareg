@@ -1,6 +1,6 @@
 import amplitude from "../utils/amplitude";
 import environment from "../utils/environment";
-import {hentUnderenhet} from "../api/enhetsregisteretApi";
+import {hentOverordnetEnhet, hentUnderenhet} from "../api/enhetsregisteretApi";
 import {OrganisasjonFraEnhetsregisteret, tomEnhetsregOrg} from "./Objekter/OrganisasjonFraEnhetsregisteret";
 
 export const loggAntallAnsatte = (antall: number) => {
@@ -107,17 +107,17 @@ export const loggBrukerTrykketPaExcel = () => {
     amplitude.logEvent("#arbeidsforhold bruker trykket på exceleksport");
 };
 
-export const loggBedriftsInfo = async (organisasjonNr: string) => {
+export const loggBedriftsInfo = async (organisasjonNr: string, juridiskOrgNr: string) => {
     let infoFraEereg: OrganisasjonFraEnhetsregisteret = tomEnhetsregOrg;
     await hentUnderenhet(organisasjonNr).then(underenhet => {
         infoFraEereg = underenhet;
     });
 
-    const antallAnsatte = infoFraEereg.antallAnsatte;
-
     if (infoFraEereg !== tomEnhetsregOrg) {
-        amplitude.logEvent('#arbeidsforhold bedriftsinfo kallet feilet med bedrift: ' + infoFraEereg.navn);
-
+        let infoFraEeregJuridisk: OrganisasjonFraEnhetsregisteret = tomEnhetsregOrg;
+        await hentOverordnetEnhet(juridiskOrgNr).then(enhet => {
+            infoFraEeregJuridisk = enhet;
+        });
         if (infoFraEereg.naeringskode1 && infoFraEereg.naeringskode1.kode.startsWith('84')) {
             amplitude.logEvent('#arbeidsforhold bedriftsinfo OFFENTLIG');
             if (
@@ -130,12 +130,14 @@ export const loggBedriftsInfo = async (organisasjonNr: string) => {
                 infoFraEereg.institusjonellSektorkode.kode &&
                 infoFraEereg.institusjonellSektorkode.kode === '6100'
             ) {
-                amplitude.logEvent('#arbeidsforhold bedriftsinfo Statsforvaltningen');
+                amplitude.logEvent('#arbeidsforhold bedriftsinfo  Statsforvaltningen');
             }
         } else {
             amplitude.logEvent('#arbeidsforhold bedriftsinfo  PRIVAT');
         }
+        amplitude.logEvent('#arbeidsforhold bedriftsinfo feilet med org: ' + infoFraEereg.navn + ' med opplysningspliktig: ' + infoFraEeregJuridisk.navn);
         const antallAnsatte = Number(infoFraEereg.antallAnsatte);
+        const antallAnsatteJuridiske = Number(infoFraEeregJuridisk.antallAnsatte);
         switch (true) {
             case antallAnsatte < 20:
                 amplitude.logEvent('#arbeidsforhold bedriftsinfo under 20 ansatte');
@@ -153,12 +155,61 @@ export const loggBedriftsInfo = async (organisasjonNr: string) => {
                 amplitude.logEvent('#arbeidsforhold bedriftsinfo over 100 ansatte');
                 break;
             case antallAnsatte >= 20:
-                amplitude.logEvent('#arbeidsforhold bedriftsinfoover 20 ansatte');
+                amplitude.logEvent('#arbeidsforhold bedriftsinfo over 20 ansatte');
                 break;
             default:
                 break;
         }
-
+        switch (true) {
+            case antallAnsatteJuridiske < 20:
+                amplitude.logEvent(
+                    '#arbeidsforhold bedriftsinfo under 20 ansatte i juridisk enhet'
+                );
+                break;
+            case antallAnsatteJuridiske > 10000:
+                amplitude.logEvent(
+                    '#arbeidsforhold bedriftsinfo over 10000 ansatte i juridisk enhet'
+                );
+                break;
+            case antallAnsatteJuridiske > 8000:
+                amplitude.logEvent(
+                    '#arbeidsforhold bedriftsinfo over 8000 ansatte i juridisk enhet'
+                );
+                break;
+            case antallAnsatteJuridiske > 5000:
+                amplitude.logEvent(
+                    '#arbeidsforhold bedriftsinfo over 5000 ansatte i juridisk enhet'
+                );
+                break;
+            case antallAnsatteJuridiske > 3000:
+                amplitude.logEvent(
+                    '#arbeidsforhold bedriftsinfo over 3000 ansatte i juridisk enhet'
+                );
+                break;
+            case antallAnsatteJuridiske > 1000:
+                amplitude.logEvent(
+                    '#arbeidsforhold bedriftsinfo over 1000 ansatte i juridisk enhet'
+                );
+                break;
+            case antallAnsatteJuridiske > 500:
+                amplitude.logEvent(
+                    '#arbeidsforhold bedriftsinfo over 500 ansatte i juridisk enhet'
+                );
+                break;
+            case antallAnsatteJuridiske > 100:
+                amplitude.logEvent(
+                    '#arbeidsforhold bedriftsinfo over 100 ansatte i juridisk enhet'
+                );
+                break;
+            case antallAnsatteJuridiske >= 20:
+                amplitude.logEvent('#arbeidsforhold bedriftsinfo over 20 ansatte i juridisk enhet');
+                break;
+            default:
+                break;
+        }
     }
-    return antallAnsatte;
+
 };
+
+
+
