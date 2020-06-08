@@ -35,7 +35,7 @@ const Banner: FunctionComponent<Props> = props => {
     return (
         <div className="hovebanner">
             <Bedriftsmeny
-                sidetittel="Arbeidsforhold test av gh actions"
+                sidetittel="Arbeidsforhold"
                 organisasjoner={props.organisasjoner.sort((a, b) => a.Name.localeCompare(b.Name))}
                 onOrganisasjonChange={onOrganisasjonChange}
                 history={history}
