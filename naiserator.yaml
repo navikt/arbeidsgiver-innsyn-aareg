@@ -27,6 +27,3 @@ spec:
       value: '{{{api-gw-url}}}'
     - name: LOGIN_URL
       value: '{{{selvbetjening-login-url}}}'
-    - name: Q0API_GATEWAY
-      value: '{{{api-gw-url-q0}}}'
-
