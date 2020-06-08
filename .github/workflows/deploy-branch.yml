@@ -1,5 +1,4 @@
 name: Deploy til dev
-
 on:
   repository_dispatch:
     types: [deploy-command]
@@ -23,7 +22,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: 'Deploy satt i gang: https://github.com/navikt/oversikt-over-bedrift-og-ansatte/actions/runs/${{ github.run_id }}'
-
+            })
 
       - name: Sjekk ut kode
         uses: actions/checkout@v2
