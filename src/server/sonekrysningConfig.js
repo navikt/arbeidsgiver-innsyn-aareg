@@ -21,4 +21,8 @@ if (envProperties.APIGW_HEADER) {
     };
 }
 
+else {
+    console.log('Arbeidsgiver-arbeidsforhold klarte ikke hente API-key')
+}
+
 module.exports = proxy(proxyConfig);
