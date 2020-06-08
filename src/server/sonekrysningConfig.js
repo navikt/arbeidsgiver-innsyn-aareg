@@ -21,4 +21,8 @@ if (envProperties.APIGW_HEADER) {
     };
 }
 
+else {
+    console.log('arbeidsgiver arbeidsforhold: KLARTE IKKE HENTE APIKEY ')
+}
+
 module.exports = proxy(proxyConfig);
