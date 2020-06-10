@@ -1,7 +1,7 @@
 const proxy = require('http-proxy-middleware');
 
 const envProperties = {
-    API_GATEWAY: process.env.APIGW_URL || 'http://localhost:8080',
+    API_GATEWAY: process.env.API_GATEWAY || 'http://localhost:8080',
     APIGW_HEADER: process.env.APIGW_HEADER
 };
 
@@ -19,6 +19,10 @@ if (envProperties.APIGW_HEADER) {
     proxyConfig.headers = {
         'x-nav-apiKey': envProperties.APIGW_HEADER
     };
+}
+
+else {
+    console.log('Arbeidsgiver-arbeidsforhold klarte ikke hente API-key')
 }
 
 module.exports = proxy(proxyConfig);
