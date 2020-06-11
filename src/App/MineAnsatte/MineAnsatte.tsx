@@ -19,6 +19,7 @@ import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatte
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
+import {loggInfoOmFeil} from "../amplitudefunksjonerForLogging";
 
 interface Props {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
@@ -26,6 +27,8 @@ interface Props {
     setAbortControllerAntallArbeidsforhold: (abortcontroller: AbortController) => void;
     setAbortControllerArbeidsforhold: (abortcontroller: AbortController) => void;
     tilgangTiLOpplysningspliktigOrg: boolean;
+    antallOrganisasjonerTotalt: number;
+    antallOrganisasjonerMedTilgang: number;
 }
 
 export enum SorteringsAttributt {
@@ -73,7 +76,9 @@ const MineAnsatte = (
         valgtOrganisasjon,
         setAbortControllerAntallArbeidsforhold,
         setAbortControllerArbeidsforhold,
-        tilgangTiLOpplysningspliktigOrg
+        tilgangTiLOpplysningspliktigOrg,
+        antallOrganisasjonerTotalt,
+        antallOrganisasjonerMedTilgang
     }: Props ) => {
     const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(1);
     const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
@@ -137,7 +142,7 @@ const MineAnsatte = (
             hentArbeidsforholdFraAAreg(
                 valgtOrganisasjon.OrganizationNumber,
                 valgtOrganisasjon.ParentOrganizationNumber,
-                signal, tilgangTiLOpplysningspliktigOrg
+                signal, tilgangTiLOpplysningspliktigOrg, antallOrganisasjonerTotalt,antallOrganisasjonerMedTilgang
             )
                 .then(responsAareg => {
                     setListeFraAareg(responsAareg.arbeidsforholdoversikter);
@@ -147,11 +152,13 @@ const MineAnsatte = (
                     }
                 })
                 .catch(error => {
+                    loggInfoOmFeil(error.response.status, antallOrganisasjonerTotalt, antallOrganisasjonerMedTilgang)
                     setAaregLasteState(APISTATUS.FEILET);
                     setFeilkode(error.response.status.toString());
                 });
         }
-    }, [valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold, setAbortControllerArbeidsforhold, antallArbeidsforholdUkjent, tilgangTiLOpplysningspliktigOrg]);
+    }, [valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold, setAbortControllerArbeidsforhold, antallArbeidsforholdUkjent, tilgangTiLOpplysningspliktigOrg,
+    antallOrganisasjonerMedTilgang, antallOrganisasjonerTotalt]);
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(

@@ -2,6 +2,7 @@ import amplitude from "../utils/amplitude";
 import environment from "../utils/environment";
 import {hentOverordnetEnhet, hentUnderenhet} from "../api/enhetsregisteretApi";
 import {OrganisasjonFraEnhetsregisteret, tomEnhetsregOrg} from "./Objekter/OrganisasjonFraEnhetsregisteret";
+import {sjekkInnlogget} from "../api/altinnApi";
 
 export const loggAntallAnsatte = (antall: number) => {
     let logg = "#arbeidsforhold antall arbeidsforhold: ";
@@ -101,13 +102,18 @@ export const loggBrukerTrykketPaVarsel = () => {
     amplitude.logEvent("#arbeidsforhold trykket pa ansatt med varsel" + environment.MILJO);
 };
 
-
-
 export const loggBrukerTrykketPaExcel = () => {
     amplitude.logEvent("#arbeidsforhold bruker trykket på exceleksport");
 };
 
-export const loggBedriftsInfo = async (organisasjonNr: string, juridiskOrgNr: string) => {
+export const loggInfoOmFeil = (typeFeil: string, antallOrgFraAltinn: number, antallOrgMedRettigheter: number) => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+    const erInnlogget = sjekkInnlogget(signal);
+    amplitude.logEvent('#arbeidsforhold FEILER ' + typeFeil + '' +antallOrgFraAltinn + ' er innlogget: ' +erInnlogget);
+};
+
+export const loggBedriftsInfo = async (organisasjonNr: string, juridiskOrgNr: string): Promise<number> => {
     let infoFraEereg: OrganisasjonFraEnhetsregisteret = tomEnhetsregOrg;
     await hentUnderenhet(organisasjonNr).then(underenhet => {
         infoFraEereg = underenhet;
@@ -207,8 +213,9 @@ export const loggBedriftsInfo = async (organisasjonNr: string, juridiskOrgNr: st
             default:
                 break;
         }
+        return antallAnsatte;
     }
-
+    return 0;
 };
 
 

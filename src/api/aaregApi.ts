@@ -2,7 +2,7 @@ import {hentAntallArbeidsforholdLink, hentArbeidsforholdLink, sjekkSonekryssingL
 import { ObjektFraAAregisteret } from '../App/Objekter/ObjektFraAAreg';
 import amplitude from '../utils/amplitude';
 import {
-    loggAntallAnsatte, loggBedriftsInfo,
+    loggAntallAnsatte, loggBedriftsInfo, loggInfoOmFeil,
     loggSnittTidPerArbeidsforhold,
     loggTidForAlleArbeidsforhold
 } from '../App/amplitudefunksjonerForLogging';
@@ -10,7 +10,7 @@ import { FetchError } from './api-utils';
 import { OversiktOverAntallForholdPerUnderenhet } from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
 import environment from "../utils/environment";
 
-export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string, signal: any, tilgangTiLOpplysningspliktigOrg: boolean): Promise<ObjektFraAAregisteret> {
+export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string, signal: any, tilgangTiLOpplysningspliktigOrg: boolean, antallOrganisasjoner: number, antallOrganisasjonerMedTilgang: number): Promise<ObjektFraAAregisteret> {
     const headere = new Headers();
     headere.set('orgnr', underenhet);
     headere.set('jurenhet', enhet);
@@ -28,10 +28,10 @@ export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: stri
     } else {
         amplitude.logEvent('#arbeidsforhold klarte ikke hente ut arbeidsforhold. Tilgang til opplysningspliktig enhet: ' + tilgangTiLOpplysningspliktigOrg);
         amplitude.logEvent('#arbeidsforhold feilet med: '+ response.statusText || response.type, response);
+        loggInfoOmFeil(response.statusText, antallOrganisasjoner, antallOrganisasjonerMedTilgang);
         if (environment.MILJO === 'prod-sbs') {
             loggBedriftsInfo(underenhet, enhet);
         }
-
         throw new FetchError(response.statusText || response.type, response);
     }
 }
