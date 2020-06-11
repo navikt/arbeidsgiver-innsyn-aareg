@@ -18,6 +18,7 @@ import { APISTATUS } from '../api/api-utils';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import amplitude from "../utils/amplitude";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -121,6 +122,14 @@ const App = () => {
         setTimeout(() => {}, 3000);
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
 
+    useEffect(() => {
+        if (environment.MILJO) {
+            amplitude.logEvent("#arbeidsforhold bruker er innlogget");
+        }
+    }, []);
+
+
+
     return (
         <div className="app">
             <LoginBoundary>
@@ -156,6 +165,8 @@ const App = () => {
 
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
+                                                antallOrganisasjonerMedTilgang={organisasjonerMedTilgang?.length || 0}
+                                                antallOrganisasjonerTotalt={organisasjoner.length}
                                                 tilgangTiLOpplysningspliktigOrg={tilgangTiLOpplysningspliktigOrg}
                                                 setValgtArbeidstaker={setValgtArbeidstaker}
                                                 valgtOrganisasjon={valgtOrganisasjon}
