@@ -106,11 +106,11 @@ export const loggBrukerTrykketPaExcel = () => {
     amplitude.logEvent("#arbeidsforhold bruker trykket på exceleksport");
 };
 
-export const loggInfoOmFeil = (typeFeil: string, antallOrgFraAltinn: number, antallOrgMedRettigheter: number) => {
+export const loggInfoOmFeil = async (typeFeil: string, antallOrgFraAltinn: number, antallOrgMedRettigheter: number) => {
     const abortController = new AbortController();
     const signal = abortController.signal;
-    const erInnlogget = sjekkInnlogget(signal);
-    amplitude.logEvent('#arbeidsforhold FEILER ' + typeFeil + '' +antallOrgFraAltinn + ' er innlogget: ' +erInnlogget);
+    const erInnlogget = await sjekkInnlogget(signal);
+    amplitude.logEvent('#arbeidsforhold FEILER ' + typeFeil + ' organisasjoner i altinn ' +antallOrgFraAltinn + 'organisasjoner med tilgang: '+antallOrgMedRettigheter + ' er innlogget: ' +erInnlogget);
 };
 
 export const loggBedriftsInfo = async (organisasjonNr: string, juridiskOrgNr: string): Promise<number> => {
