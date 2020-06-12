@@ -8,16 +8,17 @@ import { TilgangsStyringInfoTekst } from './TilgangsStyringInfoTekst/TilgangsSty
 import amplitude from '../../utils/amplitude';
 import './Logginn.less';
 
+export const redirectTilLogin = () => {
+    if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs') {
+        window.location.href = '/arbeidsforhold/redirect-til-login';
+    } else {
+        document.cookie = 'selvbetjening-idtoken =0123456789..*; path=/;';
+        window.location.href = '/arbeidsforhold/';
+    }
+};
+
 const LoggInn = () => {
-    const redirectTilLogin = () => {
-        amplitude.logEvent('#arbeidsforhold bruker klikket på log-in via forside ');
-        if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs') {
-            window.location.href = '/arbeidsforhold/redirect-til-login';
-        } else {
-            document.cookie = 'selvbetjening-idtoken =0123456789..*; path=/;';
-            window.location.href = '/arbeidsforhold/';
-        }
-    };
+
 
     return (
         <div className="innloggingsside">
