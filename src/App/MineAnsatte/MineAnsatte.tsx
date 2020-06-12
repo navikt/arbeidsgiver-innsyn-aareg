@@ -211,7 +211,7 @@ const MineAnsatte = (
                 </Normaltekst>
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
-                        Opplysninger fra Aa-registeret
+                        {'Opplysninger for '+ valgtOrganisasjon.Name}
                     </Systemtittel>
                     {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) && visProgressbar && aaregLasteState !== APISTATUS.FEILET && !forMangeArbeidsforhold && (
                         <Progressbar
