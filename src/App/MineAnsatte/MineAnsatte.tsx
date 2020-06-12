@@ -20,6 +20,7 @@ import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper'
 import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
 import {loggInfoOmFeil} from "../amplitudefunksjonerForLogging";
+import {redirectTilLogin} from "../LoggInn/LoggInn";
 
 interface Props {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
@@ -129,6 +130,9 @@ const MineAnsatte = (
             }
 
         }).catch(error => {
+            if (error.response.status === 401) {
+                redirectTilLogin();
+            }
             setAaregLasteState(APISTATUS.FEILET);
             setFeilkode(error.response.status.toString());
         });
@@ -153,6 +157,9 @@ const MineAnsatte = (
                 })
                 .catch(error => {
                     loggInfoOmFeil(error.response.status, antallOrganisasjonerTotalt, antallOrganisasjonerMedTilgang)
+                    if (error.response.status === 401) {
+                        redirectTilLogin();
+                    }
                     setAaregLasteState(APISTATUS.FEILET);
                     setFeilkode(error.response.status.toString());
                 });
