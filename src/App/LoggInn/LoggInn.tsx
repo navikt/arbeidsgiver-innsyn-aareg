@@ -5,7 +5,6 @@ import { Ingress, Normaltekst, Sidetittel } from 'nav-frontend-typografi';
 import environment from '../../utils/environment';
 import handshake from './handshake.svg';
 import { TilgangsStyringInfoTekst } from './TilgangsStyringInfoTekst/TilgangsStyringInfoTekst';
-import amplitude from '../../utils/amplitude';
 import './Logginn.less';
 
 export const redirectTilLogin = () => {
