@@ -5,19 +5,19 @@ import { Ingress, Normaltekst, Sidetittel } from 'nav-frontend-typografi';
 import environment from '../../utils/environment';
 import handshake from './handshake.svg';
 import { TilgangsStyringInfoTekst } from './TilgangsStyringInfoTekst/TilgangsStyringInfoTekst';
-import amplitude from '../../utils/amplitude';
 import './Logginn.less';
 
+export const redirectTilLogin = () => {
+    if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs') {
+        window.location.href = '/arbeidsforhold/redirect-til-login';
+    } else {
+        document.cookie = 'selvbetjening-idtoken =0123456789..*; path=/;';
+        window.location.href = '/arbeidsforhold/';
+    }
+};
+
 const LoggInn = () => {
-    const redirectTilLogin = () => {
-        amplitude.logEvent('#arbeidsforhold bruker klikket på log-in via forside ');
-        if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs') {
-            window.location.href = '/arbeidsforhold/redirect-til-login';
-        } else {
-            document.cookie = 'selvbetjening-idtoken =0123456789..*; path=/;';
-            window.location.href = '/arbeidsforhold/';
-        }
-    };
+
 
     return (
         <div className="innloggingsside">
