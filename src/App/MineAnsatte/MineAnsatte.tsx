@@ -182,6 +182,7 @@ const MineAnsatte = (
 
     useEffect(() => {
        if (environment.MILJO && environment.MILJO !== "prod-sbs") {
+           console.log('OISANN')
            const variabel = hentNavn();
            console.log(variabel)
        }
