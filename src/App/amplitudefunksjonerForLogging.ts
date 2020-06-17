@@ -1,7 +1,5 @@
 import amplitude from "../utils/amplitude";
 import environment from "../utils/environment";
-import {hentOverordnetEnhet, hentUnderenhet} from "../api/enhetsregisteretApi";
-import {OrganisasjonFraEnhetsregisteret, tomEnhetsregOrg} from "./Objekter/OrganisasjonFraEnhetsregisteret";
 import {sjekkInnlogget} from "../api/altinnApi";
 
 export const loggAntallAnsatte = (antall: number) => {
@@ -113,7 +111,7 @@ export const loggInfoOmFeil = async (typeFeil: string, antallOrgFraAltinn: numbe
     amplitude.logEvent('#arbeidsforhold FEILER ' + typeFeil + ' organisasjoner i altinn ' +antallOrgFraAltinn + 'organisasjoner med tilgang: '+antallOrgMedRettigheter + ' er innlogget: ' +erInnlogget);
 };
 
-export const loggBedriftsInfo = async (organisasjonNr: string, juridiskOrgNr: string): Promise<number> => {
+/*export const loggBedriftsInfo = async (organisasjonNr: string, juridiskOrgNr: string): Promise<number> => {
     let infoFraEereg: OrganisasjonFraEnhetsregisteret = tomEnhetsregOrg;
     await hentUnderenhet(organisasjonNr).then(underenhet => {
         infoFraEereg = underenhet;
@@ -219,4 +217,4 @@ export const loggBedriftsInfo = async (organisasjonNr: string, juridiskOrgNr: st
 };
 
 
-
+*/
