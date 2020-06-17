@@ -67,8 +67,16 @@ const App = () => {
                         setOrganisasjonerLasteState(APISTATUS.FEILET);
                     });
             })
-            .catch(() => {
-                setOrganisasjonerLasteState(APISTATUS.FEILET);
+            .catch((e: Error) => {
+                console.log("error",e.message);
+                if(e.message==="Forbidden"){
+                    setOrganisasjonerMedTilgang([]);
+                    setOrganisasjonerLasteState(APISTATUS.OK);
+                    console.log("setstate");
+                }
+                else{
+                console.log("error",e.name);
+                setOrganisasjonerLasteState(APISTATUS.FEILET);}
             });
         return function cleanup() {
             abortController.abort();
