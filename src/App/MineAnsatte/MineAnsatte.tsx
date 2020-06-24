@@ -12,7 +12,7 @@ import {
 import Progressbar from './Progressbar/Progressbar';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
 import { Normaltekst, Systemtittel, Element } from 'nav-frontend-typografi';
-import { linkTilMinSideArbeidsgiver } from '../lenker';
+import { linkTilMinSideArbeidsgiver} from '../lenker';
 import Lenke from 'nav-frontend-lenker';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
@@ -21,6 +21,8 @@ import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
 import {loggInfoOmFeil} from "../amplitudefunksjonerForLogging";
 import {redirectTilLogin} from "../LoggInn/LoggInn";
+import environment from "../../utils/environment";
+import {hentNavn} from "../../api/altinnApi";
 
 interface Props {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
@@ -177,6 +179,14 @@ const MineAnsatte = (
         setListeMedArbeidsForhold(oppdatertListe);
         setnaVarendeSidetall(1);
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler]);
+
+    useEffect(() => {
+       if (environment.MILJO && environment.MILJO !== "prod-sbs") {
+           console.log('OISANN')
+           const variabel = hentNavn();
+           console.log(variabel)
+       }
+    }, []);
 
     const antallSider = regnUtantallSider(arbeidsforholdPerSide, listeMedArbeidsForhold.length);
 
