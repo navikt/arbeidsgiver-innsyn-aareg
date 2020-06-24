@@ -6,7 +6,7 @@ export const hentArbeidsforholdLink = () => {
     return landingsURL + 'api/arbeidsforhold';
 };
 export const sjekkSonekryssingLink = () => {
-    return landingsURL+'arbeidsgiver-arbeidsforhold/api/test';
+    return landingsURL+'arbeidsgiver-arbeidsforhold/api/';
 };
 
 export const hentAntallArbeidsforholdLink = () => {
@@ -15,6 +15,10 @@ export const hentAntallArbeidsforholdLink = () => {
 
 export const hentOrganisasjonerLink = () => {
     return landingsURL + 'api/organisasjoner';
+};
+
+export const hentNavnLink= () => {
+    return landingsURL + 'api/navn';
 };
 
 export const hentUnderenhetApiLink = (orgnr: string) => {

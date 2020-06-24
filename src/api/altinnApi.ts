@@ -1,5 +1,5 @@
 
-import { hentOrganisasjonerLink } from '../App/lenker';
+import {hentNavnLink, hentOrganisasjonerLink} from '../App/lenker';
 import { FetchError } from './api-utils';
 import {Organisasjon} from "../App/Objekter/OrganisasjonFraAltinn";
 
@@ -14,6 +14,15 @@ export async function sjekkInnlogget(signal: any): Promise<boolean> {
 
 export async function hentOrganisasjonerFraAltinn(signal: any): Promise<Organisasjon[]> {
     let respons = await fetch(hentOrganisasjonerLink(), { signal: signal });
+    if (respons.ok) {
+        return await respons.json();
+    } else {
+        throw new FetchError(respons.statusText || respons.type, respons);
+    }
+}
+
+export async function hentNavn() {
+    let respons = await fetch(hentNavnLink());
     if (respons.ok) {
         return await respons.json();
     } else {
