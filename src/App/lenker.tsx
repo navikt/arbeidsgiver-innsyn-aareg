@@ -17,8 +17,8 @@ export const hentOrganisasjonerLink = () => {
     return landingsURL + 'api/organisasjoner';
 };
 
-export const hentNavnLink= () => {
-    return landingsURL + 'api/navn';
+export const sjekkInnloggetLenke = () => {
+    return landingsURL + 'api/innlogget';
 };
 
 export const hentUnderenhetApiLink = (orgnr: string) => {
