@@ -17,6 +17,10 @@ export const hentOrganisasjonerLink = () => {
     return landingsURL + 'api/organisasjoner';
 };
 
+export const sjekkInnloggetLenke = () => {
+    return landingsURL + 'api/innlogget';
+};
+
 export const hentNavnLink= () => {
     return landingsURL + 'api/navn';
 };
