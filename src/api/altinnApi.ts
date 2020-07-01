@@ -1,10 +1,10 @@
 
-import {hentNavnLink, hentOrganisasjonerLink} from '../App/lenker';
+import {hentNavnLink, hentOrganisasjonerLink, sjekkInnloggetLenke} from '../App/lenker';
 import { FetchError } from './api-utils';
 import {Organisasjon} from "../App/Objekter/OrganisasjonFraAltinn";
 
 export async function sjekkInnlogget(signal: any): Promise<boolean> {
-    let respons = await fetch(hentOrganisasjonerLink(), { signal: signal });
+    let respons = await fetch(sjekkInnloggetLenke(), { signal: signal });
     if (respons.ok) {
         return true
     } else {
