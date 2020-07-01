@@ -104,6 +104,10 @@ export const loggBrukerTrykketPaExcel = () => {
     amplitude.logEvent("#arbeidsforhold bruker trykket på exceleksport");
 };
 
+export const loggForbiddenFraAltinn = () => {
+    amplitude.logEvent("#arbeidsforhold 403 fra altinn");
+};
+
 export const loggInfoOmFeil = async (typeFeil: string, antallOrgFraAltinn: number, antallOrgMedRettigheter: number) => {
     const abortController = new AbortController();
     const signal = abortController.signal;

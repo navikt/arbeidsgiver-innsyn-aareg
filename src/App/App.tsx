@@ -19,6 +19,7 @@ import MineAnsatte from './MineAnsatte/MineAnsatte';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import amplitude from "../utils/amplitude";
+import {loggForbiddenFraAltinn} from "./amplitudefunksjonerForLogging";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -70,6 +71,7 @@ const App = () => {
             .catch((e: Error) => {
                 console.log("error",e.message);
                 if(e.message==="Forbidden"){
+                    loggForbiddenFraAltinn();
                     setOrganisasjonerMedTilgang([]);
                     setOrganisasjonerLasteState(APISTATUS.OK);
                     console.log("setstate");
