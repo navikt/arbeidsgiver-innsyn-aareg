@@ -21,10 +21,6 @@ export const sjekkInnloggetLenke = () => {
     return landingsURL + 'api/innlogget';
 };
 
-export const hentNavnLink= () => {
-    return landingsURL + 'api/navn';
-};
-
 export const hentUnderenhetApiLink = (orgnr: string) => {
     return `https://data.brreg.no/enhetsregisteret/api/underenheter/${orgnr}`;
 };
