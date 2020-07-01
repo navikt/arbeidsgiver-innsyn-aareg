@@ -21,8 +21,6 @@ import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
 import {loggInfoOmFeil} from "../amplitudefunksjonerForLogging";
 import {redirectTilLogin} from "../LoggInn/LoggInn";
-import environment from "../../utils/environment";
-import {hentNavn} from "../../api/altinnApi";
 
 interface Props {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
@@ -179,14 +177,6 @@ const MineAnsatte = (
         setListeMedArbeidsForhold(oppdatertListe);
         setnaVarendeSidetall(1);
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler]);
-
-    useEffect(() => {
-       if (environment.MILJO && environment.MILJO !== "prod-sbs") {
-           console.log('OISANN')
-           const variabel = hentNavn();
-           console.log(variabel)
-       }
-    }, []);
 
     const antallSider = regnUtantallSider(arbeidsforholdPerSide, listeMedArbeidsForhold.length);
 
