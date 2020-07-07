@@ -180,8 +180,7 @@ const App = () => {
                                                 setValgtArbeidstaker={setValgtArbeidstaker}
                                                 valgtOrganisasjon={valgtOrganisasjon}
                                                 setAbortControllerAntallArbeidsforhold={setAbortControllerAntallArbeidsforhold}
-                                                setAbortControllerArbeidsforhold={setAbortControllerArbeidsforhold}
-                                            />
+                                                setAbortControllerArbeidsforhold={setAbortControllerArbeidsforhold}/>
                                         )}
                                     </Route>
                                 </>

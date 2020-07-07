@@ -1,7 +1,6 @@
 import React from 'react';
 import { Element } from 'nav-frontend-typografi';
 import './PagineringsKnapp.less';
-import { useParams } from 'react-router-dom';
 const CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
 
 interface Props {
@@ -15,9 +14,6 @@ const GraSirkelMedNr = (props: Props) => {
     let ariaLabel = 'Goto Page ' + props.sidetall.toString();
     let className = 'valg';
     const erNavarendeSide = props.naVarendeIndeks === props.sidetall;
-    const { sidetall } = useParams();
-
-    location.search
 
     if (erNavarendeSide) {
         ariaLabel = 'Current Page, ' + props.naVarendeIndeks.toString();
@@ -26,8 +22,6 @@ const GraSirkelMedNr = (props: Props) => {
 
     const onChange = () => {
         props.byttSide(props.sidetall);
-        window.location.href = window.location.toString() + "?side="+props.sidetall.toString();
-
 
     }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
@@ -6,6 +6,7 @@ import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import { hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg } from '../../api/aaregApi';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 import {
+    endreUrlParameter,
     regnUtantallSider,
     regnUtArbeidsForholdSomSkalVisesPaEnSide
 } from './pagineringsFunksjoner';
@@ -21,9 +22,10 @@ import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
 import {loggInfoOmFeil} from "../amplitudefunksjonerForLogging";
 import {redirectTilLogin} from "../LoggInn/LoggInn";
-import { useParams } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router';
 
-interface Props {
+
+interface Props extends RouteComponentProps {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
     valgtOrganisasjon: Organisasjon;
     setAbortControllerAntallArbeidsforhold: (abortcontroller: AbortController) => void;
@@ -72,16 +74,9 @@ const initialKolonne: KolonneState = {
     reversSortering: false
 };
 
-const MineAnsatte = (
-    {
-        setValgtArbeidstaker,
-        valgtOrganisasjon,
-        setAbortControllerAntallArbeidsforhold,
-        setAbortControllerArbeidsforhold,
-        tilgangTiLOpplysningspliktigOrg,
-        antallOrganisasjonerTotalt,
-        antallOrganisasjonerMedTilgang
-    }: Props ) => {
+
+
+const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, valgtOrganisasjon, setAbortControllerAntallArbeidsforhold, setAbortControllerArbeidsforhold, tilgangTiLOpplysningspliktigOrg, antallOrganisasjonerTotalt, antallOrganisasjonerMedTilgang}) =>  {
     const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(1);
     const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
@@ -98,11 +93,21 @@ const MineAnsatte = (
     const [forMangeArbeidsforhold, setForMangeArbeidsforhold] = useState(false);
     const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
 
+
     const arbeidsforholdPerSide = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
         setnaVarendeSidetall(indeks);
     };
+
+    useEffect(() => {
+        const harQueryParametre: boolean = window.location.href.toString().includes("side");
+        if (!harQueryParametre) {
+            const currentUrl = new URL(window.location.href+"&side=1&filter=alle&sok=blank&varsler=false");
+            const { search } = currentUrl;
+            history.replace({ search });
+        }
+    }, [history]);
 
     useEffect(() => {
         setAntallArbeidsforhold(0);
@@ -167,6 +172,8 @@ const MineAnsatte = (
         }
     }, [valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold, setAbortControllerArbeidsforhold, antallArbeidsforholdUkjent, tilgangTiLOpplysningspliktigOrg,
     antallOrganisasjonerMedTilgang, antallOrganisasjonerTotalt]);
+
+    console.log(endreUrlParameter(window.location.href.toString(),"bedrift","66666"));
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
@@ -291,4 +298,4 @@ const MineAnsatte = (
     );
 };
 
-export default MineAnsatte;
+export default withRouter(MineAnsatte);
