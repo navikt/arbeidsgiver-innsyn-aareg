@@ -5,6 +5,11 @@ export const regnUtantallSider = (arbeidsForholdPerSide: number, antallArbeidsFo
 };
 
 export const endreUrlParameter = (url: string,parameter: string, verdi: string) => {
+    const gammelParameter = lesUrlParameter(url, parameter)
+    return url.replace(gammelParameter, verdi);
+}
+
+export const lesUrlParameter = (url: string,parameter: string )=> {
     const posisjonIUrl = url.indexOf(parameter);
     const startPosisjonParameter = posisjonIUrl+parameter.length+1;
     let sluttPosisjonParameter = startPosisjonParameter;
@@ -14,8 +19,7 @@ export const endreUrlParameter = (url: string,parameter: string, verdi: string) 
             break
         }
     }
-    const gammelQueryParameter = url.substr(startPosisjonParameter, sluttPosisjonParameter+1);
-    return url.replace(gammelQueryParameter, verdi);
+    return url.substr(startPosisjonParameter, sluttPosisjonParameter+1);
 }
 
 export const regnUtArbeidsForholdSomSkalVisesPaEnSide = (
