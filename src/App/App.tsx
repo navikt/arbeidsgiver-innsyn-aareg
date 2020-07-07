@@ -27,9 +27,10 @@ enum TILGANGSSTATE {
     IKKE_TILGANG
 }
 
+export const SERVICEKODEINNSYNAAREGISTERET = '5441';
+export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
+
 const App = () => {
-    const SERVICEKODEINNSYNAAREGISTERET = '5441';
-    const SERVICEEDITIONINNSYNAAREGISTERET = '1';
     const [tilgangArbeidsforholdState, setTilgangArbeidsforholdState] = useState(TILGANGSSTATE.LASTER);
     const [organisasjonerLasteState, setOrganisasjonerLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
 
@@ -137,8 +138,6 @@ const App = () => {
             amplitude.logEvent("#arbeidsforhold bruker er innlogget");
         }
     }, []);
-
-
 
     return (
         <div className="app">

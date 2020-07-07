@@ -37,3 +37,34 @@ export const linkTilMinSideArbeidsgiver = (orgnr: string) => {
         return 'https://arbeidsgiver-q.nav.no/min-side-arbeidsgiver/' + orgNrDel;
     }
 };
+
+export const beOmTilgangIAltinnLink = (
+    orgnr: string,
+    serviceKode: string,
+    serviceEditionKode: string,
+    serviceEditionKodeTest?: string
+) => {
+    if (environment.MILJO === 'prod-sbs') {
+        return (
+            'https://altinn.no/ui/DelegationRequest?offeredBy=' +
+            orgnr +
+            '&resources=' +
+            serviceKode +
+            '_' +
+            serviceEditionKode
+        );
+    } else {
+        let testServiceEditionKode = serviceEditionKode;
+        if (serviceEditionKodeTest) {
+            testServiceEditionKode = serviceEditionKodeTest;
+        }
+        return (
+            'https://tt02.altinn.no/ui/DelegationRequest?offeredBy=' +
+            orgnr +
+            '&resources=' +
+            serviceKode+
+            '_' +
+            testServiceEditionKode
+        );
+    }
+};

@@ -5,8 +5,12 @@ import Lenke from 'nav-frontend-lenker';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import alertikon from '../LoggInn/TilgangsStyringInfoTekst/infomation-circle-2.svg';
 import nyfane from './nyfane.svg';
-import { linkTilMinSideArbeidsgiver } from '../lenker';
+import altinlogo from './altinn-logo.svg';
+import {beOmTilgangIAltinnLink, linkTilMinSideArbeidsgiver} from '../lenker';
 import './IngenTilgangInfo.less';
+import Lenkepanel from 'nav-frontend-lenkepanel';
+
+import {SERVICEEDITIONINNSYNAAREGISTERET, SERVICEKODEINNSYNAAREGISTERET} from "../App";
 
 type TilgangsInfoProps = {
     bedrifterMedTilgang: Array<Organisasjon> | null;
@@ -43,7 +47,15 @@ const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsIn
                                 Du har valgt en virksomhet der du mangler rettigheter for å se arbeidsforhold. Velg en
                                 virksomhet der du har tilgang.
                             </Normaltekst>
-
+                           <Lenkepanel  tittelProps={"normaltekst"} border href={beOmTilgangIAltinnLink(valgtOrganisasjon.OrganizationNumber,SERVICEKODEINNSYNAAREGISTERET,SERVICEEDITIONINNSYNAAREGISTERET)} >
+                               <div className = {"ingen-tilgang-innhold__be-om-tilgang-boks"}>
+                               <img src={altinlogo} alt={"altinnlogo"}/>
+                               <div className = {"ingen-tilgang-innhold__be-om-tilgang-tekst"}>
+                               <Undertittel>Be om tilgang</Undertittel>
+                                   Gå til Altinn for å be om tilgang til denne tjenesten.
+                                   </div>
+                                   </div>
+                            </Lenkepanel>
                             <Ekspanderbartpanel
                                 className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel"
                                 tittel="Disse virksomhetene har tilgang"
