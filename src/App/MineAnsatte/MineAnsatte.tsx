@@ -21,6 +21,7 @@ import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
 import {loggInfoOmFeil} from "../amplitudefunksjonerForLogging";
 import {redirectTilLogin} from "../LoggInn/LoggInn";
+import { useParams } from 'react-router-dom';
 
 interface Props {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
