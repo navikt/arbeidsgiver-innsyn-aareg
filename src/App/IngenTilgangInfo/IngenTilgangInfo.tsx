@@ -5,8 +5,11 @@ import Lenke from 'nav-frontend-lenker';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import alertikon from '../LoggInn/TilgangsStyringInfoTekst/infomation-circle-2.svg';
 import nyfane from './nyfane.svg';
-import { linkTilMinSideArbeidsgiver } from '../lenker';
+import {beOmTilgangIAltinnLink, linkTilMinSideArbeidsgiver} from '../lenker';
 import './IngenTilgangInfo.less';
+import Lenkepanel from 'nav-frontend-lenkepanel';
+
+import {SERVICEEDITIONINNSYNAAREGISTERET, SERVICEKODEINNSYNAAREGISTERET} from "../App";
 
 type TilgangsInfoProps = {
     bedrifterMedTilgang: Array<Organisasjon> | null;
@@ -43,6 +46,9 @@ const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsIn
                                 Du har valgt en virksomhet der du mangler rettigheter for å se arbeidsforhold. Velg en
                                 virksomhet der du har tilgang.
                             </Normaltekst>
+                           <Lenkepanel tittelProps={"normaltekst"} border href={beOmTilgangIAltinnLink(valgtOrganisasjon.OrganizationNumber,SERVICEKODEINNSYNAAREGISTERET,SERVICEEDITIONINNSYNAAREGISTERET)} >
+                                Be om tilgang
+                            </Lenkepanel>
 
                             <Ekspanderbartpanel
                                 className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel"
