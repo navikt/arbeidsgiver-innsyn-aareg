@@ -6,29 +6,30 @@ interface Props {
     filtreringValgt: (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]) => void;
     overSiktOverAntallAktiveOgInaktive: number[];
     setfiltrerPaVarsler: () => void;
+    skalFiltrerePaVarsler: boolean;
     anallVarsler: number;
+    filtrerPaAktiveAvsluttede: string;
 }
 
 const Filtervalg: FunctionComponent<Props> = props => {
     const klikkpaaFilterVarsel = () => {
         props.setfiltrerPaVarsler();
-        setFiltrertpaaVarsel(!filtrertPaaVarsel);
     };
 
-    const [filtrertPaaVarsel, setFiltrertpaaVarsel] = useState<boolean>(false);
     const arrayMedToggleTekst = [
         'Alle (' + props.overSiktOverAntallAktiveOgInaktive[0] + ')',
         'Aktive (' + props.overSiktOverAntallAktiveOgInaktive[1].toString() + ')',
         'Avsluttede (' + props.overSiktOverAntallAktiveOgInaktive[2].toString() + ')'
     ];
+
     return (
         <div className={'togglecontainer'}>
             <ToggleGruppe
                 onChange={props.filtreringValgt}
                 defaultToggles={[
-                    { children: arrayMedToggleTekst[0], pressed: true },
-                    { children: arrayMedToggleTekst[1] },
-                    { children: arrayMedToggleTekst[2] }
+                    { children: arrayMedToggleTekst[0], pressed: props.filtrerPaAktiveAvsluttede==="Alle" },
+                    { children: arrayMedToggleTekst[1], pressed: props.filtrerPaAktiveAvsluttede==="Aktive" },
+                    { children: arrayMedToggleTekst[2], pressed: props.filtrerPaAktiveAvsluttede==="Avsluttede"  }
                 ]}
                 minstEn
                 kompakt
@@ -37,7 +38,7 @@ const Filtervalg: FunctionComponent<Props> = props => {
                 <ToggleKnappPure
                     children={'varslinger (' + props.anallVarsler.toString() + ')'}
                     onClick={klikkpaaFilterVarsel}
-                    pressed={filtrertPaaVarsel}
+                    pressed={props.skalFiltrerePaVarsler}
                 />
             </div>
         </div>
