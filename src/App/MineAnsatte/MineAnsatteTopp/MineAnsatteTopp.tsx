@@ -27,6 +27,7 @@ interface Props {
     setSkalFiltrerePaVarsler: (skalFiltrerePaVarsler: boolean) => void;
     skalFiltrerePaVarsler: boolean;
     setFiltrerPaAktiveAvsluttede: (filtrering: string) => void;
+    filtrerPaAktiveAvsluttede: string;
 }
 
 const MineAnsatteTopp: FunctionComponent<Props> = (
@@ -43,7 +44,8 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
         setIndeksOgGenererListe,
         setSkalFiltrerePaVarsler,
         skalFiltrerePaVarsler,
-        naVarendeSidetall
+        naVarendeSidetall,
+        filtrerPaAktiveAvsluttede
     },
 
 ) => {
@@ -93,6 +95,8 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                         <Normaltekst>Arbeidsforhold</Normaltekst>
                         {responsFraAaregisteret.length > 0 && (
                             <Filtervalg
+                                skalFiltrerePaVarsler={skalFiltrerePaVarsler}
+                                filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
                                 anallVarsler={antallVarsler}
                                 filtreringValgt={velgFiltrering}
                                 overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(

@@ -86,6 +86,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
     const sokefeltTekst = currentUrl.searchParams.get("sok") || "";
     const [soketekst, setSoketekst] = useState<string>(sokefeltTekst);
     const filtrertPaVarsler = currentUrl.searchParams.get("varsler") === "true";
+    console.log(filtrertPaVarsler, "URL" );
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(filtrertPaVarsler);
 
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
@@ -251,6 +252,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
                     )}
                     {aaregLasteState === APISTATUS.OK && !visProgressbar && !forMangeArbeidsforhold &&(
                         <MineAnsatteTopp
+                            filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
                             valgtOrganisasjon={valgtOrganisasjon}
                             setIndeksOgGenererListe={setIndeksOgGenererListe}
                             setSoketekst={setSoketekst}
