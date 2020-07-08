@@ -27,6 +27,7 @@ enum TILGANGSSTATE {
     IKKE_TILGANG
 }
 
+
 export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
 
@@ -93,6 +94,9 @@ const App = () => {
 
     const setValgtOrg = (org: Organisasjon) => {
         setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
+
+
+
         setValgtOrganisasjon(org);
         setTilgangTiLOpplysningspliktigOrg(false);
         abortTidligereRequests()
@@ -143,6 +147,7 @@ const App = () => {
                 <Router basename={basename}>
                     {organisasjonerLasteState !== APISTATUS.LASTER && (
                         <HovedBanner
+                            url={window.location.href}
                             byttOrganisasjon={setValgtOrg}
                             organisasjoner={organisasjonerLasteState === APISTATUS.OK ? organisasjoner : []}
                         />

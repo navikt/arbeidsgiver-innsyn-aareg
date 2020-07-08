@@ -51,10 +51,13 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
 ) => {
     const onSoketekstChange = (soketekst: string) => {
         setSoketekst(soketekst);
+        setIndeksOgGenererListe(1);
     };
 
     const velgFiltrering = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]) => {
         const filtrering = filtreringValgt(event, toggles);
+        setIndeksOgGenererListe(1);
+
         setFiltrerPaAktiveAvsluttede(filtrering);
     };
 
@@ -102,7 +105,11 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                                 overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(
                                     responsFraAaregisteret
                                 )}
-                                setfiltrerPaVarsler={() => setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler)}
+                                setfiltrerPaVarsler={() => {
+                                    setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler);
+                                    setIndeksOgGenererListe(1);
+                                }
+                                }
                             />
                         )}
                         <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
