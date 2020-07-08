@@ -104,19 +104,6 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
     };
 
     useEffect(() => {
-        setnaVarendeSidetall(1);
-    }, [valgtOrganisasjon, skalFiltrerePaVarsler,filtrerPaAktiveAvsluttede, soketekst]);
-
-    useEffect(() => {
-        const harQueryParametre: boolean = window.location.href.toString().includes("side");
-        if (!harQueryParametre) {
-            const currentUrl = new URL(window.location.href+"&side=1&filter=alle&sok=blank&varsler=false");
-            const { search } = currentUrl;
-            history.replace({ search });
-        }
-    }, [history]);
-
-    useEffect(() => {
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.set("side", naVarendeSidetall.toString());
         currentUrl.searchParams.set("filter", filtrerPaAktiveAvsluttede);
@@ -127,7 +114,6 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
         const { search } = currentUrl;
         history.replace({ search });
     }, [history, filtrerPaAktiveAvsluttede, naVarendeSidetall,skalFiltrerePaVarsler, soketekst, navarendeKolonne]);
-
 
     useEffect(() => {
         setAntallArbeidsforhold(0);
