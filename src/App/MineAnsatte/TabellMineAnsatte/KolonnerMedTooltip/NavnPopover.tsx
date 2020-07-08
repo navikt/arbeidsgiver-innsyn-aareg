@@ -32,6 +32,10 @@ const NavnPopover = (props: PopoverProps) => {
         }
     }, [anker]);
 
+    const url = window.location.href.toString();
+    const indeksqueryStart = url.indexOf("?");
+    const sistedelAvUrl = url.substr(indeksqueryStart,url.length)
+
     return (
         <div
             className="pop-over-container"
@@ -44,8 +48,7 @@ const NavnPopover = (props: PopoverProps) => {
         >
             <Link
                 to={
-                    'enkeltarbeidsforhold/?bedrift=' +
-                    props.valgtBedrift +
+                    'enkeltarbeidsforhold/'+sistedelAvUrl+
                     '&arbeidsforhold=' +
                     props.arbeidsforhold.navArbeidsforholdId
                 }
