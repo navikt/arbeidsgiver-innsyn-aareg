@@ -6,7 +6,6 @@ import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import { hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg } from '../../api/aaregApi';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 import {
-    endreUrlParameter,
     regnUtantallSider,
     regnUtArbeidsForholdSomSkalVisesPaEnSide
 } from './pagineringsFunksjoner';
@@ -77,12 +76,17 @@ const initialKolonne: KolonneState = {
 
 
 const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, valgtOrganisasjon, setAbortControllerAntallArbeidsforhold, setAbortControllerArbeidsforhold, tilgangTiLOpplysningspliktigOrg, antallOrganisasjonerTotalt, antallOrganisasjonerMedTilgang}) =>  {
-    const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(1);
+    const currentUrl = new URL(window.location.href);
+    const sidetall = currentUrl.searchParams.get("side") || "1";
+    const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(parseInt(sidetall));
     const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
-    const [filtrerPaAktiveAvsluttede, setFiltrerPaAktiveAvsluttede] = useState('Alle');
-    const [soketekst, setSoketekst] = useState<string>('');
-    const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(false);
+    const filtreringsvalg = currentUrl.searchParams.get("filter") || "Alle";
+    const [filtrerPaAktiveAvsluttede, setFiltrerPaAktiveAvsluttede] = useState(filtreringsvalg);
+    const sokefeltTekst = currentUrl.searchParams.get("sok") || "";
+    const [soketekst, setSoketekst] = useState<string>(sokefeltTekst);
+    const filtrertPaVarsler = currentUrl.searchParams.get("varsler") === "true";
+    const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(filtrertPaVarsler);
 
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const [antallArbeidsforhold, setAntallArbeidsforhold] = useState(0);
@@ -92,7 +96,6 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
     const [feilkode, setFeilkode] = useState<string>('');
     const [forMangeArbeidsforhold, setForMangeArbeidsforhold] = useState(false);
     const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
-
 
     const arbeidsforholdPerSide = 25;
 
@@ -119,7 +122,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
         history.replace({ search });
     }, [history, filtrerPaAktiveAvsluttede, naVarendeSidetall,skalFiltrerePaVarsler, soketekst]);
 
-
+    console.log("rendres")
 
     useEffect(() => {
         setAntallArbeidsforhold(0);
@@ -185,8 +188,6 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
     }, [valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold, setAbortControllerArbeidsforhold, antallArbeidsforholdUkjent, tilgangTiLOpplysningspliktigOrg,
     antallOrganisasjonerMedTilgang, antallOrganisasjonerTotalt]);
 
-    console.log(endreUrlParameter(window.location.href.toString(),"bedrift","66666"));
-
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
             listeFraAareg,
@@ -195,7 +196,6 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
             soketekst
         );
         setListeMedArbeidsForhold(oppdatertListe);
-        setnaVarendeSidetall(1);
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler]);
 
     const antallSider = regnUtantallSider(arbeidsforholdPerSide, listeMedArbeidsForhold.length);
