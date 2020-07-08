@@ -110,6 +110,18 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
     }, [history]);
 
     useEffect(() => {
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set("side", naVarendeSidetall.toString());
+        currentUrl.searchParams.set("filter", filtrerPaAktiveAvsluttede);
+        currentUrl.searchParams.set("varsler", skalFiltrerePaVarsler.toString());
+        currentUrl.searchParams.set("sok", soketekst);
+        const { search } = currentUrl;
+        history.replace({ search });
+    }, [history, filtrerPaAktiveAvsluttede, naVarendeSidetall,skalFiltrerePaVarsler, soketekst]);
+
+
+
+    useEffect(() => {
         setAntallArbeidsforhold(0);
         setAntallArbeidsforholdUkjent(true)
         setForMangeArbeidsforhold(false)

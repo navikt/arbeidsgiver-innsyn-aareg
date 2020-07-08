@@ -4,6 +4,8 @@ import { SorteringsAttributt } from './MineAnsatte';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
 
+
+
 export const byggListeBasertPaPArametere = (
     originalListe: Arbeidsforhold[],
     filtrerPaAktiveAvsluttede: string,
