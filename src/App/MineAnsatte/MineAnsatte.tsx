@@ -67,26 +67,25 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
     );
 }
 
-const initialKolonne: KolonneState = {
-    erValgt: true,
-    sorteringsAttributt: SorteringsAttributt.NAVN,
-    reversSortering: false
-};
-
-
-
 const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, valgtOrganisasjon, setAbortControllerAntallArbeidsforhold, setAbortControllerArbeidsforhold, tilgangTiLOpplysningspliktigOrg, antallOrganisasjonerTotalt, antallOrganisasjonerMedTilgang}) =>  {
     const currentUrl = new URL(window.location.href);
     const sidetall = currentUrl.searchParams.get("side") || "1";
     const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(parseInt(sidetall));
     const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
+
+    const sortering = currentUrl.searchParams.get("sorter") || "0";
+    const initialKolonne: KolonneState = {
+        erValgt: true,
+        sorteringsAttributt: parseInt(sortering),
+        reversSortering: currentUrl.searchParams.get("revers") === "true"
+    };
+
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
     const filtreringsvalg = currentUrl.searchParams.get("filter") || "Alle";
     const [filtrerPaAktiveAvsluttede, setFiltrerPaAktiveAvsluttede] = useState(filtreringsvalg);
     const sokefeltTekst = currentUrl.searchParams.get("sok") || "";
     const [soketekst, setSoketekst] = useState<string>(sokefeltTekst);
     const filtrertPaVarsler = currentUrl.searchParams.get("varsler") === "true";
-    console.log(filtrertPaVarsler, "URL" );
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(filtrertPaVarsler);
 
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
@@ -105,6 +104,10 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
     };
 
     useEffect(() => {
+        setnaVarendeSidetall(1);
+    }, [valgtOrganisasjon, skalFiltrerePaVarsler,filtrerPaAktiveAvsluttede, soketekst]);
+
+    useEffect(() => {
         const harQueryParametre: boolean = window.location.href.toString().includes("side");
         if (!harQueryParametre) {
             const currentUrl = new URL(window.location.href+"&side=1&filter=alle&sok=blank&varsler=false");
@@ -119,11 +122,12 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
         currentUrl.searchParams.set("filter", filtrerPaAktiveAvsluttede);
         currentUrl.searchParams.set("varsler", skalFiltrerePaVarsler.toString());
         currentUrl.searchParams.set("sok", soketekst);
+        currentUrl.searchParams.set("sorter", navarendeKolonne.sorteringsAttributt.toString());
+        currentUrl.searchParams.set("revers", navarendeKolonne.reversSortering.toString());
         const { search } = currentUrl;
         history.replace({ search });
-    }, [history, filtrerPaAktiveAvsluttede, naVarendeSidetall,skalFiltrerePaVarsler, soketekst]);
+    }, [history, filtrerPaAktiveAvsluttede, naVarendeSidetall,skalFiltrerePaVarsler, soketekst, navarendeKolonne]);
 
-    console.log("rendres")
 
     useEffect(() => {
         setAntallArbeidsforhold(0);

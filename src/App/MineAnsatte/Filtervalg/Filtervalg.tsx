@@ -1,4 +1,4 @@
-import React, { FunctionComponent, SyntheticEvent, useState } from 'react';
+import React, { FunctionComponent, SyntheticEvent } from 'react';
 import { ToggleGruppe, ToggleKnappPure, ToggleKnappPureProps } from 'nav-frontend-toggle';
 import './Filtervalg.less';
 
