@@ -40,6 +40,10 @@ export const EnkeltArbeidsforhold = (props: EnkeltArbeidsforholdProps) => {
         window.location.href = basename + '/?bedrift=' + bedriftFraUrl;
     }
 
+    const url = window.location.href.toString();
+    const indeksqueryStart = url.indexOf("?");
+    const sistedelAvUrl = url.substr(indeksqueryStart,url.length)
+
     return (
         <>
             {arbeidsforholdIdFraUrl && props.valgtArbeidstaker && (
@@ -50,7 +54,7 @@ export const EnkeltArbeidsforhold = (props: EnkeltArbeidsforholdProps) => {
                                 Min side – arbeidsgiver
                             </Lenke>
                             {' / '}
-                            <Lenke href={basename + '/?bedrift=' + props.valgtOrganisasjon.OrganizationNumber}>
+                            <Lenke href={basename + '/'+ sistedelAvUrl}>
                                 arbeidsforhold
                             </Lenke>
                             {' / enkeltarbeidsforhold'}

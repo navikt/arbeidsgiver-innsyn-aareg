@@ -75,10 +75,8 @@ const App = () => {
                     loggForbiddenFraAltinn();
                     setOrganisasjonerMedTilgang([]);
                     setOrganisasjonerLasteState(APISTATUS.OK);
-                    console.log("setstate");
                 }
                 else{
-                console.log("error",e.name);
                 setOrganisasjonerLasteState(APISTATUS.FEILET);}
             });
         return function cleanup() {
