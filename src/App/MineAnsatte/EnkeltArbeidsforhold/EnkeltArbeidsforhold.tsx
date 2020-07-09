@@ -12,6 +12,7 @@ import './EnkeltArbeidsforhold.less';
 export declare type EnkeltArbeidsforholdProps = {
     valgtArbeidstaker: Arbeidstaker | null;
     valgtOrganisasjon: Organisasjon;
+    queryParametereHovedSiden?: string;
 };
 
 const miljo = () => {
@@ -34,10 +35,9 @@ const apiURL = () => {
 export const EnkeltArbeidsforhold = (props: EnkeltArbeidsforholdProps) => {
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
-    const bedriftFraUrl = new URL(window.location.href).searchParams.get('bedrift');
 
     if (!arbeidsforholdIdFraUrl || !props.valgtArbeidstaker) {
-        window.location.href = basename + '/?bedrift=' + bedriftFraUrl;
+        window.location.href = basename + '/' +props.queryParametereHovedSiden;
     }
 
     const url = new URL(window.location.href);
