@@ -27,6 +27,7 @@ enum TILGANGSSTATE {
     IKKE_TILGANG
 }
 
+
 export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
 
@@ -75,10 +76,8 @@ const App = () => {
                     loggForbiddenFraAltinn();
                     setOrganisasjonerMedTilgang([]);
                     setOrganisasjonerLasteState(APISTATUS.OK);
-                    console.log("setstate");
                 }
                 else{
-                console.log("error",e.name);
                 setOrganisasjonerLasteState(APISTATUS.FEILET);}
             });
         return function cleanup() {
@@ -95,6 +94,9 @@ const App = () => {
 
     const setValgtOrg = (org: Organisasjon) => {
         setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
+
+
+
         setValgtOrganisasjon(org);
         setTilgangTiLOpplysningspliktigOrg(false);
         abortTidligereRequests()
@@ -139,12 +141,17 @@ const App = () => {
         }
     }, []);
 
+    const url = window.location.href.toString();
+    const indeksqueryStart = url.indexOf("?");
+    const sistedelAvUrl = url.substr(indeksqueryStart,url.length)
+
     return (
         <div className="app">
             <LoginBoundary>
                 <Router basename={basename}>
                     {organisasjonerLasteState !== APISTATUS.LASTER && (
                         <HovedBanner
+                            url={window.location.href}
                             byttOrganisasjon={setValgtOrg}
                             organisasjoner={organisasjonerLasteState === APISTATUS.OK ? organisasjoner : []}
                         />
@@ -157,6 +164,7 @@ const App = () => {
                                         <EnkeltArbeidsforhold
                                             valgtArbeidstaker={valgtArbeidstaker}
                                             valgtOrganisasjon={valgtOrganisasjon}
+                                            queryParametereHovedSiden={sistedelAvUrl}
                                         />
                                     </Route>
                                     <Route exact path="/">
@@ -180,8 +188,7 @@ const App = () => {
                                                 setValgtArbeidstaker={setValgtArbeidstaker}
                                                 valgtOrganisasjon={valgtOrganisasjon}
                                                 setAbortControllerAntallArbeidsforhold={setAbortControllerAntallArbeidsforhold}
-                                                setAbortControllerArbeidsforhold={setAbortControllerArbeidsforhold}
-                                            />
+                                                setAbortControllerArbeidsforhold={setAbortControllerArbeidsforhold}/>
                                         )}
                                     </Route>
                                 </>

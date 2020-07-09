@@ -27,6 +27,7 @@ interface Props {
     setSkalFiltrerePaVarsler: (skalFiltrerePaVarsler: boolean) => void;
     skalFiltrerePaVarsler: boolean;
     setFiltrerPaAktiveAvsluttede: (filtrering: string) => void;
+    filtrerPaAktiveAvsluttede: string;
 }
 
 const MineAnsatteTopp: FunctionComponent<Props> = (
@@ -43,16 +44,20 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
         setIndeksOgGenererListe,
         setSkalFiltrerePaVarsler,
         skalFiltrerePaVarsler,
-        naVarendeSidetall
+        naVarendeSidetall,
+        filtrerPaAktiveAvsluttede
     },
 
 ) => {
     const onSoketekstChange = (soketekst: string) => {
         setSoketekst(soketekst);
+        setIndeksOgGenererListe(1);
     };
 
     const velgFiltrering = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]) => {
         const filtrering = filtreringValgt(event, toggles);
+        setIndeksOgGenererListe(1);
+
         setFiltrerPaAktiveAvsluttede(filtrering);
     };
 
@@ -93,12 +98,18 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                         <Normaltekst>Arbeidsforhold</Normaltekst>
                         {responsFraAaregisteret.length > 0 && (
                             <Filtervalg
+                                skalFiltrerePaVarsler={skalFiltrerePaVarsler}
+                                filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
                                 anallVarsler={antallVarsler}
                                 filtreringValgt={velgFiltrering}
                                 overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(
                                     responsFraAaregisteret
                                 )}
-                                setfiltrerPaVarsler={() => setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler)}
+                                setfiltrerPaVarsler={() => {
+                                    setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler);
+                                    setIndeksOgGenererListe(1);
+                                }
+                                }
                             />
                         )}
                         <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />

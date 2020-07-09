@@ -12,6 +12,7 @@ import './EnkeltArbeidsforhold.less';
 export declare type EnkeltArbeidsforholdProps = {
     valgtArbeidstaker: Arbeidstaker | null;
     valgtOrganisasjon: Organisasjon;
+    queryParametereHovedSiden?: string;
 };
 
 const miljo = () => {
@@ -34,11 +35,16 @@ const apiURL = () => {
 export const EnkeltArbeidsforhold = (props: EnkeltArbeidsforholdProps) => {
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
-    const bedriftFraUrl = new URL(window.location.href).searchParams.get('bedrift');
 
     if (!arbeidsforholdIdFraUrl || !props.valgtArbeidstaker) {
-        window.location.href = basename + '/?bedrift=' + bedriftFraUrl;
+        window.location.href = basename + '/' +props.queryParametereHovedSiden;
     }
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete('arbeidsforhold');
+    const urlString = url.toString();
+    const indeksqueryStart = urlString.indexOf("?");
+    const sistedelAvUrl = urlString.substr(indeksqueryStart,urlString.length);
 
     return (
         <>
@@ -50,7 +56,7 @@ export const EnkeltArbeidsforhold = (props: EnkeltArbeidsforholdProps) => {
                                 Min side – arbeidsgiver
                             </Lenke>
                             {' / '}
-                            <Lenke href={basename + '/?bedrift=' + props.valgtOrganisasjon.OrganizationNumber}>
+                            <Lenke href={basename + '/'+ sistedelAvUrl}>
                                 arbeidsforhold
                             </Lenke>
                             {' / enkeltarbeidsforhold'}
