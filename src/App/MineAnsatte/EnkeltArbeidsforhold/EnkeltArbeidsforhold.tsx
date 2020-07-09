@@ -40,9 +40,11 @@ export const EnkeltArbeidsforhold = (props: EnkeltArbeidsforholdProps) => {
         window.location.href = basename + '/?bedrift=' + bedriftFraUrl;
     }
 
-    const url = window.location.href.toString();
-    const indeksqueryStart = url.indexOf("?");
-    const sistedelAvUrl = url.substr(indeksqueryStart,url.length)
+    const url = new URL(window.location.href);
+    url.searchParams.delete('arbeidsforhold');
+    const urlString = url.toString();
+    const indeksqueryStart = urlString.indexOf("?");
+    const sistedelAvUrl = urlString.substr(indeksqueryStart,urlString.length);
 
     return (
         <>
