@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useState} from 'react';
+import React, {FunctionComponent } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
 import { basename } from '../../paths';
