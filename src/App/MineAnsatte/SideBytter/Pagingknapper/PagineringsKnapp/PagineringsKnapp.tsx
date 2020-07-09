@@ -20,11 +20,16 @@ const GraSirkelMedNr = (props: Props) => {
         className = className + ' er-valgt';
     }
 
+    const onChange = () => {
+        props.byttSide(props.sidetall);
+
+    }
+
     return (
         <button
             key={props.sidetall}
             className={className}
-            onClick={() => props.byttSide(props.sidetall)}
+            onClick={() => onChange()}
             id={props.sidetall.toString()}
             aria-label={ariaLabel}
             aria-current={props.naVarendeIndeks === props.sidetall}
