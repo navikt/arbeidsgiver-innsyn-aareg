@@ -35,6 +35,7 @@ const NavnPopover = (props: PopoverProps) => {
     const url = window.location.href.toString();
     const indeksqueryStart = url.indexOf("?");
     const sistedelAvUrl = url.substr(indeksqueryStart,url.length)
+    console.log("siste del av url, ", sistedelAvUrl);
 
     return (
         <div

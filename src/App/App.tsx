@@ -141,6 +141,10 @@ const App = () => {
         }
     }, []);
 
+    const url = window.location.href.toString();
+    const indeksqueryStart = url.indexOf("?");
+    const sistedelAvUrl = url.substr(indeksqueryStart,url.length)
+
     return (
         <div className="app">
             <LoginBoundary>
@@ -160,6 +164,7 @@ const App = () => {
                                         <EnkeltArbeidsforhold
                                             valgtArbeidstaker={valgtArbeidstaker}
                                             valgtOrganisasjon={valgtOrganisasjon}
+                                            queryParametereHovedSiden={sistedelAvUrl}
                                         />
                                     </Route>
                                     <Route exact path="/">
