@@ -104,6 +104,10 @@ export const loggBrukerTrykketPaExcel = () => {
     amplitude.logEvent("#arbeidsforhold bruker trykket på exceleksport");
 };
 
+export const loggBrukerTrykketPaVeiledning= () => {
+    amplitude.logEvent("#arbeidsforhold bruker trykket på Skatteetatens veiledning");
+};
+
 export const loggForbiddenFraAltinn = () => {
     amplitude.logEvent("#arbeidsforhold 403 fra altinn");
 };
