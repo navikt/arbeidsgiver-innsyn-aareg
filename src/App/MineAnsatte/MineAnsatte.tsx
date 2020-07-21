@@ -213,11 +213,17 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
     }).length;
 
 
-    const feilmeldingtekst =
-        feilkode === '408'
-            ? 'Det oppstod en feil da vi prøvde å hente dine arbeidsforhold. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.'
-            : 'Vi opplever ustabilitet med Aa-registret. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
+    const feilmeldingtekst = () => {
+        switch (feilkode) {
+            case '408':
+                return 'Det oppstod en feil da vi prøvde å hente dine arbeidsforhold. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
+            case '403':
+                return 'ikke tilgang til forspurt entitet i Aa-reg, Vi opplever problemer med å hente opplysninger, vennligst ta kontakt med brukerstøtte ';
+            default:
+                return 'Vi opplever ustabilitet med Aa-registret. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
 
+        }
+    };
     return (
         <div className="bakgrunnsside">
             <div className="innhold-container">
@@ -288,7 +294,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
                     )}
                     {aaregLasteState === APISTATUS.FEILET && (
                         <div className="mine-ansatte__feilmelding-aareg">
-                            <AlertStripeFeil>{feilmeldingtekst}</AlertStripeFeil>
+                            <AlertStripeFeil>{feilmeldingtekst()}</AlertStripeFeil>
                         </div>
                     )}
                     {forMangeArbeidsforhold && (
