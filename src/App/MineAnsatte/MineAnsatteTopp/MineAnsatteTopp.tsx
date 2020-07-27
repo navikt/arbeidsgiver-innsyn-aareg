@@ -11,8 +11,9 @@ import { filtreringValgt, tellAntallAktiveOgInaktiveArbeidsforhold } from '../so
 import './MineAnsatteTopp.less';
 import Lenke from 'nav-frontend-lenker';
 import NyFaneIkon from './NyFaneIkon';
-import {Organisasjon} from "@navikt/bedriftsmeny/lib/organisasjon";
+
 import {loggBrukerTrykketPaVeiledning} from "../../amplitudefunksjonerForLogging";
+import {Organisasjon} from "../../Objekter/OrganisasjonFraAltinn";
 
 interface Props {
     responsFraAaregisteret: Arbeidsforhold[];
