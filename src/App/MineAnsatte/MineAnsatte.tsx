@@ -142,6 +142,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
             }
 
         }).catch(error => {
+            loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
             if (error.response.status === 401) {
                 redirectTilLogin();
             }
@@ -158,7 +159,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
             hentArbeidsforholdFraAAreg(
                 valgtOrganisasjon.OrganizationNumber,
                 valgtOrganisasjon.ParentOrganizationNumber,
-                signal, tilgangTiLOpplysningspliktigOrg, antallOrganisasjonerTotalt,antallOrganisasjonerMedTilgang
+                signal
             )
                 .then(responsAareg => {
                     setListeFraAareg(responsAareg.arbeidsforholdoversikter);
@@ -168,7 +169,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
                     }
                 })
                 .catch(error => {
-                    loggInfoOmFeil(error.response.status, antallOrganisasjonerTotalt, antallOrganisasjonerMedTilgang)
+                    loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
                     if (error.response.status === 401) {
                         redirectTilLogin();
                     }
