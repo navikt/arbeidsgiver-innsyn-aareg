@@ -1,6 +1,5 @@
 import {hentAntallArbeidsforholdLink, hentArbeidsforholdLink, sjekkSonekryssingLink} from '../App/lenker';
 import { ObjektFraAAregisteret } from '../App/Objekter/ObjektFraAAreg';
-import amplitude from '../utils/amplitude';
 import {
     loggAntallAnsatte,
     loggSnittTidPerArbeidsforhold,
@@ -9,7 +8,7 @@ import {
 import { FetchError } from './api-utils';
 import { OversiktOverAntallForholdPerUnderenhet } from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
 
-export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string, signal: any, tilgangTiLOpplysningspliktigOrg: boolean, antallOrganisasjoner: number, antallOrganisasjonerMedTilgang: number): Promise<ObjektFraAAregisteret> {
+export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string, signal: any): Promise<ObjektFraAAregisteret> {
     const headere = new Headers();
     headere.set('orgnr', underenhet);
     headere.set('jurenhet', enhet);
@@ -22,11 +21,8 @@ export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: stri
         const tid = new Date().getDate() - startTtid.getDate();
         loggSnittTidPerArbeidsforhold(jsonRespons.arbeidsforholdoversikter.length, tid);
         loggTidForAlleArbeidsforhold(tid);
-        amplitude.logEvent('#arbeidsforhold klarte å hente ut arbeidsforhold. Tilgang til opplysningspliktig enhet: ' + tilgangTiLOpplysningspliktigOrg);
         return jsonRespons;
     } else {
-        amplitude.logEvent('#arbeidsforhold klarte ikke hente ut arbeidsforhold. Tilgang til opplysningspliktig enhet: ' + tilgangTiLOpplysningspliktigOrg);
-        amplitude.logEvent('#arbeidsforhold feilet med: '+ response.statusText || response.type, response);
         throw new FetchError(response.statusText || response.type, response);
     }
 }
