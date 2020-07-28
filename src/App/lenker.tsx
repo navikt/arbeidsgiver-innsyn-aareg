@@ -5,6 +5,11 @@ const landingsURL = '/arbeidsforhold/';
 export const hentArbeidsforholdLink = () => {
     return landingsURL + 'api/arbeidsforhold';
 };
+
+export const hentArbeidsforholdLinkNyBackend = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/arbeidsforhold';
+};
+
 export const sjekkSonekryssingLink = () => {
     return landingsURL+'arbeidsgiver-arbeidsforhold/api/';
 };
