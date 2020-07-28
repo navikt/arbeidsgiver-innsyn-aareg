@@ -3,7 +3,11 @@ import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
-import { hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg } from '../../api/aaregApi';
+import {
+    hentAntallArbeidsforholdFraAareg,
+    hentArbeidsforholdFraAAreg,
+    hentArbeidsforholdFraAAregNyBackend
+} from '../../api/aaregApi';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 import {
     regnUtantallSider,
@@ -22,6 +26,7 @@ import './MineAnsatte.less';
 import {loggInfoOmFeil} from "../amplitudefunksjonerForLogging";
 import {redirectTilLogin} from "../LoggInn/LoggInn";
 import { RouteComponentProps, withRouter } from 'react-router';
+
 
 
 interface Props extends RouteComponentProps {
@@ -189,6 +194,22 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
         );
         setListeMedArbeidsForhold(oppdatertListe);
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler]);
+
+    useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        hentArbeidsforholdFraAAregNyBackend(
+            valgtOrganisasjon.OrganizationNumber,
+            valgtOrganisasjon.ParentOrganizationNumber,
+            signal
+        )
+            .then(responsAareg => {
+
+            })
+            .catch(error => {
+
+            });
+    }, [valgtOrganisasjon]);
 
     const antallSider = regnUtantallSider(arbeidsforholdPerSide, listeMedArbeidsForhold.length);
 
