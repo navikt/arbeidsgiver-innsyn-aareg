@@ -1,8 +1,7 @@
 import {
-    hentAntallArbeidsforholdLink,
+    hentAntallArbeidsforholdLink, hentAntallArbeidsforholdLinkNyBackend,
     hentArbeidsforholdLink,
-    hentArbeidsforholdLinkNyBackend,
-    sjekkSonekryssingLink
+    hentArbeidsforholdLinkNyBackend
 } from '../App/lenker';
 import { ObjektFraAAregisteret } from '../App/Objekter/ObjektFraAAreg';
 import {
@@ -50,6 +49,26 @@ export async function hentArbeidsforholdFraAAregNyBackend(underenhet: string, en
     }
 }
 
+export async function hentAntallArbeidsforholdFraAaregNyBackend(underenhet: string, enhet: string, signal: any): Promise<Number> {
+    const headere = new Headers();
+    headere.set('opplysningspliktig', enhet);
+    headere.set('orgnr', underenhet);
+    let respons = await fetch(hentAntallArbeidsforholdLinkNyBackend(), { headers: headere, signal: signal  });
+
+    if (respons.ok) {
+        const jsonRespons: OversiktOverAntallForholdPerUnderenhet = await respons.json();
+        const valgtunderEnhet = jsonRespons.filter(
+            oversikt => oversikt.arbeidsgiver.organisasjonsnummer === underenhet
+        );
+        if (valgtunderEnhet[0]) {
+            return valgtunderEnhet[0].aktiveArbeidsforhold + valgtunderEnhet[0].inaktiveArbeidsforhold;
+        }
+        return 0;
+    } else {
+        throw new FetchError(respons.statusText || respons.type, respons);
+    }
+}
+
 export async function hentAntallArbeidsforholdFraAareg(underenhet: string, enhet: string, signal: any): Promise<Number> {
     const headere = new Headers();
     headere.set('opplysningspliktig', enhet);
@@ -69,16 +88,3 @@ export async function hentAntallArbeidsforholdFraAareg(underenhet: string, enhet
         throw new FetchError(respons.statusText || respons.type, respons);
     }
 }
-
-export async function sjekkSonekryssing(): Promise<string> {
-    //console.log("sjekk sonekrysningslink: ", sjekkSonekryssingLink());
-    let respons = await fetch(sjekkSonekryssingLink() );
-    if (respons.ok) {
-        return respons.json();
-    }
-    else {
-        return '';
-    }
-}
-
-
