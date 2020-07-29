@@ -9,7 +9,11 @@ import LoginBoundary from './LoggInnBoundary';
 
 import { EnkeltArbeidsforhold } from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
-import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
+import {
+    hentOrganisasjonerFraAltinn,
+    hentOrganisasjonerFraAltinnNyBackend,
+    hentOrganisasjonerMedTilgangTilAltinntjeneste, hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend
+} from '../api/altinnApi';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import environment from '../utils/environment';
 import './App.less';
@@ -20,7 +24,6 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import amplitude from "../utils/amplitude";
 import {loggForbiddenFraAltinn} from "./amplitudefunksjonerForLogging";
-import {sjekkSonekryssing} from "../api/aaregApi";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -133,13 +136,23 @@ const App = () => {
         setTimeout(() => {}, 3000);
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
 
+
     useEffect(() => {
         if (environment.MILJO) {
             amplitude.logEvent("#arbeidsforhold bruker er innlogget");
         }
     }, []);
 
-    sjekkSonekryssing().then(test => console.log(test));
+    useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        const abortController2 = new AbortController();
+        const signal2 = abortController2.signal;
+        hentOrganisasjonerFraAltinnNyBackend(signal).then(organisasjoner=> console.log('org fra altinn: ',organisasjoner));
+        hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend(SERVICEKODEINNSYNAAREGISTERET,
+            SERVICEEDITIONINNSYNAAREGISTERET,signal2).then(organisasjoner => console.log('org fra altinn med tilgang: ', organisasjoner))
+    }, []);
+
 
     const url = window.location.href.toString();
     const indeksqueryStart = url.indexOf("?");
