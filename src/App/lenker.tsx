@@ -10,7 +10,7 @@ export const hentArbeidsforholdLinkNyBackend = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/arbeidsforhold';
 };
 export const hentAntallArbeidsforholdLinkNyBackend = () => {
-    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/arbeidsgivere';
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/antall-arbeidsforhold';
 };
 
 export const hentOrganisasjonerLinkNyBackend = () => {
