@@ -20,6 +20,7 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import amplitude from "../utils/amplitude";
 import {loggForbiddenFraAltinn} from "./amplitudefunksjonerForLogging";
+import {sjekkSonekryssing} from "../api/aaregApi";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -137,6 +138,8 @@ const App = () => {
             amplitude.logEvent("#arbeidsforhold bruker er innlogget");
         }
     }, []);
+
+    sjekkSonekryssing().then(test => console.log(test));
 
     const url = window.location.href.toString();
     const indeksqueryStart = url.indexOf("?");
