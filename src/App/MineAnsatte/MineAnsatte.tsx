@@ -4,7 +4,7 @@ import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import {
-    hentAntallArbeidsforholdFraAareg,
+    hentAntallArbeidsforholdFraAareg, hentAntallArbeidsforholdFraAaregNyBackend,
     hentArbeidsforholdFraAAreg,
     hentArbeidsforholdFraAAregNyBackend
 } from '../../api/aaregApi';
@@ -204,6 +204,19 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
             signal
         )
             .then(responsAareg => {
+                console.log(responsAareg)
+
+            })
+            .catch(error => {
+
+            });
+        hentAntallArbeidsforholdFraAaregNyBackend(
+            valgtOrganisasjon.OrganizationNumber,
+            valgtOrganisasjon.ParentOrganizationNumber,
+            signal
+        )
+            .then(responsAareg => {
+                console.log(responsAareg)
 
             })
             .catch(error => {
