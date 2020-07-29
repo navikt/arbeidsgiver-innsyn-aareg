@@ -18,7 +18,7 @@ export const hentOrganisasjonerLinkNyBackend = () => {
 };
 
 export const hentRettigheterTilAltinnTjenesteLink = () => {
-    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/rettigheter-til-skjema/';
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/rettigheter-til-tjeneste/';
 }
 
 export const hentAntallArbeidsforholdLink = () => {
