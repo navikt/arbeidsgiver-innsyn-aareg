@@ -9,10 +9,17 @@ export const hentArbeidsforholdLink = () => {
 export const hentArbeidsforholdLinkNyBackend = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/arbeidsforhold';
 };
-
-export const sjekkSonekryssingLink = () => {
-    return landingsURL+'arbeidsgiver-arbeidsforhold/api/test';
+export const hentAntallArbeidsforholdLinkNyBackend = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/arbeidsgivere';
 };
+
+export const hentOrganisasjonerLinkNyBackend = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/organisasjoner';
+};
+
+export const hentRettigheterTilAltinnTjenesteLink = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/rettigheter-til-skjema/';
+}
 
 export const hentAntallArbeidsforholdLink = () => {
     return landingsURL + 'api/arbeidsgivere';
