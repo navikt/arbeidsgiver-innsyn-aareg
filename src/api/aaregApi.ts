@@ -51,7 +51,7 @@ export async function hentArbeidsforholdFraAAregNyBackend(underenhet: string, en
 
 export async function hentAntallArbeidsforholdFraAaregNyBackend(underenhet: string, enhet: string, signal: any): Promise<Number> {
     const headere = new Headers();
-    headere.set('opplysningspliktig', enhet);
+    headere.set('jurenhet', enhet);
     headere.set('orgnr', underenhet);
     let respons = await fetch(hentAntallArbeidsforholdLinkNyBackend(), { headers: headere, signal: signal  });
 
