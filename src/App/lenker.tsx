@@ -11,7 +11,7 @@ export const hentArbeidsforholdLinkNyBackend = () => {
 };
 
 export const sjekkSonekryssingLink = () => {
-    return landingsURL+'arbeidsgiver-arbeidsforhold/api/';
+    return landingsURL+'arbeidsgiver-arbeidsforhold/api/test';
 };
 
 export const hentAntallArbeidsforholdLink = () => {
