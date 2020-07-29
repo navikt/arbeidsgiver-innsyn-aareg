@@ -57,7 +57,7 @@ export async function hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend(
     signal: any
 ): Promise<Organisasjon[]> {
     let respons = await fetch(
-        hentRettigheterTilAltinnTjenesteLink + '?serviceKode=' + serviceKode + '&serviceEdition=' + serviceEdition,
+        hentRettigheterTilAltinnTjenesteLink() + '?serviceKode=' + serviceKode + '&serviceEdition=' + serviceEdition,
         { signal: signal }
     );
     if (respons.ok) {
