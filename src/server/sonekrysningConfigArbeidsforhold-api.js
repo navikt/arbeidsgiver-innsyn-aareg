@@ -22,7 +22,7 @@ if (envPropertiesArbeidsforholdApi.APIGW_HEADER) {
     };
 }
 else {
-    console.log('Arbeidsgiver-arbeidsforhold klarte ikke hente API-key')
+    console.log('Arbeidsgiver-arbeidsforhold klarte ikke hente API-key til ny backend')
 }
 
 console.log('Arbeidsgiver-arbeidsforholdproxy config brukt')
