@@ -9,7 +9,11 @@ import LoginBoundary from './LoggInnBoundary';
 
 import { EnkeltArbeidsforhold } from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
-import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
+import {
+    hentOrganisasjonerFraAltinn,
+    hentOrganisasjonerFraAltinnNyBackend,
+    hentOrganisasjonerMedTilgangTilAltinntjeneste, hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend
+} from '../api/altinnApi';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import environment from '../utils/environment';
 import './App.less';
@@ -19,7 +23,7 @@ import MineAnsatte from './MineAnsatte/MineAnsatte';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import amplitude from "../utils/amplitude";
-import {loggForbiddenFraAltinn} from "./amplitudefunksjonerForLogging";
+import {loggForbiddenFraAltinn, loggNyBackendFungerer} from "./amplitudefunksjonerForLogging";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -94,9 +98,6 @@ const App = () => {
 
     const setValgtOrg = (org: Organisasjon) => {
         setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
-
-
-
         setValgtOrganisasjon(org);
         setTilgangTiLOpplysningspliktigOrg(false);
         abortTidligereRequests()
@@ -135,11 +136,25 @@ const App = () => {
         setTimeout(() => {}, 3000);
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
 
+
     useEffect(() => {
         if (environment.MILJO) {
             amplitude.logEvent("#arbeidsforhold bruker er innlogget");
         }
     }, []);
+
+    useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        const abortController2 = new AbortController();
+        const signal2 = abortController2.signal;
+        hentOrganisasjonerFraAltinnNyBackend(signal).then(organisasjoner=> loggNyBackendFungerer('antall org: ' +organisasjoner.length.toString()))
+            .catch((e: Error) => loggNyBackendFungerer('antall org: feilet' + e.message ));
+        hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend(SERVICEKODEINNSYNAAREGISTERET,
+            SERVICEEDITIONINNSYNAAREGISTERET,signal2).then(organisasjoner =>loggNyBackendFungerer('antall org med tilgang: ' +organisasjoner.length.toString()))
+            .catch((e: Error) => loggNyBackendFungerer('antall org med tilgang: feilet' + e.message ));
+    }, []);
+
 
     const url = window.location.href.toString();
     const indeksqueryStart = url.indexOf("?");
