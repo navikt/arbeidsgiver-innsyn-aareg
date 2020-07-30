@@ -116,7 +116,7 @@ export const loggForbiddenFraAltinn = () => {
 };
 
 export const loggInfoOmFeil = async (typeFeil: string,  bedriftsnummer: string) => {
-    amplitude.logEvent('#arbeidsforhold FEILER ' + typeFeil, {bedriftsnummer: bedriftsnummer });
+    //amplitude.logEvent('#arbeidsforhold FEILER ' + typeFeil, {bedriftsnummer: bedriftsnummer });
 };
 
 /*export const loggBedriftsInfo = async (organisasjonNr: string, juridiskOrgNr: string): Promise<number> => {
