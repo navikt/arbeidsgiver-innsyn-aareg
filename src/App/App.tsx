@@ -23,7 +23,7 @@ import MineAnsatte from './MineAnsatte/MineAnsatte';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import amplitude from "../utils/amplitude";
-import {loggForbiddenFraAltinn} from "./amplitudefunksjonerForLogging";
+import {loggForbiddenFraAltinn, loggNyBackendFungerer} from "./amplitudefunksjonerForLogging";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -148,9 +148,11 @@ const App = () => {
         const signal = abortController.signal;
         const abortController2 = new AbortController();
         const signal2 = abortController2.signal;
-        hentOrganisasjonerFraAltinnNyBackend(signal).then(organisasjoner=> console.log('org fra altinn: ',organisasjoner));
+        hentOrganisasjonerFraAltinnNyBackend(signal).then(organisasjoner=> loggNyBackendFungerer('antall org: ' +organisasjoner.length.toString()))
+            .catch((e: Error) => loggNyBackendFungerer('antall org: feilet' + e.message ));
         hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend(SERVICEKODEINNSYNAAREGISTERET,
-            SERVICEEDITIONINNSYNAAREGISTERET,signal2).then(organisasjoner => console.log('org fra altinn med tilgang: ', organisasjoner))
+            SERVICEEDITIONINNSYNAAREGISTERET,signal2).then(organisasjoner =>loggNyBackendFungerer('antall org med tilgang: ' +organisasjoner.length.toString()))
+            .catch((e: Error) => loggNyBackendFungerer('antall org med tilgang: feilet' + e.message ));
     }, []);
 
 

@@ -23,7 +23,7 @@ import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatte
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
-import {loggInfoOmFeil} from "../amplitudefunksjonerForLogging";
+import {loggInfoOmFeil, loggNyBackendFungerer} from "../amplitudefunksjonerForLogging";
 import {redirectTilLogin} from "../LoggInn/LoggInn";
 import { RouteComponentProps, withRouter } from 'react-router';
 
@@ -203,25 +203,15 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
             valgtOrganisasjon.ParentOrganizationNumber,
             signal
         )
-            .then(responsAareg => {
-                console.log(responsAareg)
-
-            })
-            .catch(error => {
-
-            });
+            .then(arbeidsforholdResponse =>loggNyBackendFungerer('arbeidsforhold-kall: ' + arbeidsforholdResponse.arbeidsforholdoversikter.length))
+            .catch((e: Error) => loggNyBackendFungerer('arbeidsforhold-kall med tilgang: ' + e.message ));
         hentAntallArbeidsforholdFraAaregNyBackend(
             valgtOrganisasjon.OrganizationNumber,
             valgtOrganisasjon.ParentOrganizationNumber,
             signal
         )
-            .then(responsAareg => {
-                console.log(responsAareg)
-
-            })
-            .catch(error => {
-
-            });
+            .then(objekt =>loggNyBackendFungerer('antall arbeidsforhold-kall  ' + objekt.toString()))
+            .catch((e: Error) => loggNyBackendFungerer('antall arbeidsforhold-kall: ' + e.message ));
     }, [valgtOrganisasjon]);
 
     const antallSider = regnUtantallSider(arbeidsforholdPerSide, listeMedArbeidsForhold.length);
