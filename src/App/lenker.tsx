@@ -5,9 +5,21 @@ const landingsURL = '/arbeidsforhold/';
 export const hentArbeidsforholdLink = () => {
     return landingsURL + 'api/arbeidsforhold';
 };
-export const sjekkSonekryssingLink = () => {
-    return landingsURL+'arbeidsgiver-arbeidsforhold/api/';
+
+export const hentArbeidsforholdLinkNyBackend = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/arbeidsforhold';
 };
+export const hentAntallArbeidsforholdLinkNyBackend = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/antall-arbeidsforhold';
+};
+
+export const hentOrganisasjonerLinkNyBackend = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/organisasjoner';
+};
+
+export const hentRettigheterTilAltinnTjenesteLink = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/rettigheter-til-tjeneste/';
+}
 
 export const hentAntallArbeidsforholdLink = () => {
     return landingsURL + 'api/arbeidsgivere';
