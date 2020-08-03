@@ -21,7 +21,9 @@ const NavnPopover = (props: PopoverProps) => {
 
     const oppdaterValgtArbeidsgiver = (fnr: string, navn: string) => {
         props.settValgtArbeidsgiver({ fnr: fnr, navn: navn });
-        loggBrukerTrykketPaVarsel();
+        if (props.arbeidsforhold.varsler?.length) {
+            loggBrukerTrykketPaVarsel();
+        }
     };
 
     useEffect(() => {
@@ -35,7 +37,6 @@ const NavnPopover = (props: PopoverProps) => {
     const url = window.location.href.toString();
     const indeksqueryStart = url.indexOf("?");
     const sistedelAvUrl = url.substr(indeksqueryStart,url.length)
-    console.log("siste del av url, ", sistedelAvUrl);
 
     return (
         <div

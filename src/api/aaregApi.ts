@@ -1,6 +1,9 @@
-import {hentAntallArbeidsforholdLink, hentArbeidsforholdLink, sjekkSonekryssingLink} from '../App/lenker';
+import {
+    hentAntallArbeidsforholdLink, hentAntallArbeidsforholdLinkNyBackend,
+    hentArbeidsforholdLink,
+    hentArbeidsforholdLinkNyBackend
+} from '../App/lenker';
 import { ObjektFraAAregisteret } from '../App/Objekter/ObjektFraAAreg';
-import amplitude from '../utils/amplitude';
 import {
     loggAntallAnsatte,
     loggSnittTidPerArbeidsforhold,
@@ -9,7 +12,7 @@ import {
 import { FetchError } from './api-utils';
 import { OversiktOverAntallForholdPerUnderenhet } from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
 
-export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string, signal: any, tilgangTiLOpplysningspliktigOrg: boolean, antallOrganisasjoner: number, antallOrganisasjonerMedTilgang: number): Promise<ObjektFraAAregisteret> {
+export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string, signal: any): Promise<ObjektFraAAregisteret> {
     const headere = new Headers();
     headere.set('orgnr', underenhet);
     headere.set('jurenhet', enhet);
@@ -22,12 +25,47 @@ export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: stri
         const tid = new Date().getDate() - startTtid.getDate();
         loggSnittTidPerArbeidsforhold(jsonRespons.arbeidsforholdoversikter.length, tid);
         loggTidForAlleArbeidsforhold(tid);
-        amplitude.logEvent('#arbeidsforhold klarte å hente ut arbeidsforhold. Tilgang til opplysningspliktig enhet: ' + tilgangTiLOpplysningspliktigOrg);
         return jsonRespons;
     } else {
-        amplitude.logEvent('#arbeidsforhold klarte ikke hente ut arbeidsforhold. Tilgang til opplysningspliktig enhet: ' + tilgangTiLOpplysningspliktigOrg);
-        amplitude.logEvent('#arbeidsforhold feilet med: '+ response.statusText || response.type, response);
         throw new FetchError(response.statusText || response.type, response);
+    }
+}
+
+export async function hentArbeidsforholdFraAAregNyBackend(underenhet: string, enhet: string, signal: any): Promise<ObjektFraAAregisteret> {
+    const headere = new Headers();
+    headere.set('orgnr', underenhet);
+    headere.set('jurenhet', enhet);
+    const startTtid = new Date();
+    let response: Response = await fetch(hentArbeidsforholdLinkNyBackend(), { headers: headere, signal: signal });
+    if (response.ok) {
+        const jsonRespons: ObjektFraAAregisteret = await response.json();
+        loggAntallAnsatte(jsonRespons.arbeidsforholdoversikter.length);
+        const tid = new Date().getDate() - startTtid.getDate();
+        loggSnittTidPerArbeidsforhold(jsonRespons.arbeidsforholdoversikter.length, tid);
+        loggTidForAlleArbeidsforhold(tid);
+        return jsonRespons;
+    } else {
+        throw new FetchError(response.statusText || response.type, response);
+    }
+}
+
+export async function hentAntallArbeidsforholdFraAaregNyBackend(underenhet: string, enhet: string, signal: any): Promise<Number> {
+    const headere = new Headers();
+    headere.set('jurenhet', enhet);
+    headere.set('orgnr', underenhet);
+    let respons = await fetch(hentAntallArbeidsforholdLinkNyBackend(), { headers: headere, signal: signal  });
+
+    if (respons.ok) {
+        const jsonRespons: OversiktOverAntallForholdPerUnderenhet = await respons.json();
+        const valgtunderEnhet = jsonRespons.filter(
+            oversikt => oversikt.arbeidsgiver.organisasjonsnummer === underenhet
+        );
+        if (valgtunderEnhet[0]) {
+            return valgtunderEnhet[0].aktiveArbeidsforhold + valgtunderEnhet[0].inaktiveArbeidsforhold;
+        }
+        return 0;
+    } else {
+        throw new FetchError(respons.statusText || respons.type, respons);
     }
 }
 
@@ -50,16 +88,3 @@ export async function hentAntallArbeidsforholdFraAareg(underenhet: string, enhet
         throw new FetchError(respons.statusText || respons.type, respons);
     }
 }
-
-export async function sjekkSonekryssing(): Promise<string> {
-    //console.log("sjekk sonekrysningslink: ", sjekkSonekryssingLink());
-    let respons = await fetch(sjekkSonekryssingLink() );
-    if (respons.ok) {
-        return respons.json();
-    }
-    else {
-        return '';
-    }
-}
-
-

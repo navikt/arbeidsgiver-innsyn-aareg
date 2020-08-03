@@ -11,7 +11,9 @@ import { filtreringValgt, tellAntallAktiveOgInaktiveArbeidsforhold } from '../so
 import './MineAnsatteTopp.less';
 import Lenke from 'nav-frontend-lenker';
 import NyFaneIkon from './NyFaneIkon';
-import {Organisasjon} from "@navikt/bedriftsmeny/lib/organisasjon";
+
+import {loggBrukerTrykketPaVeiledning} from "../../amplitudefunksjonerForLogging";
+import {Organisasjon} from "../../Objekter/OrganisasjonFraAltinn";
 
 interface Props {
     responsFraAaregisteret: Arbeidsforhold[];
@@ -79,7 +81,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                             </Normaltekst>
                             <Normaltekst>
                                 {'Se '}
-                                <Lenke href={skatteetatenUrl} target="_blank">
+                                <Lenke href={skatteetatenUrl} target="_blank" onClick={() => loggBrukerTrykketPaVeiledning()}>
                                     <span>Skatteetatens veiledning til a-meldingen</span>
                                     <NyFaneIkon />
                                 </Lenke>
