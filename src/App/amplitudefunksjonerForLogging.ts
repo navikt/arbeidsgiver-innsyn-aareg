@@ -1,6 +1,5 @@
 import amplitude from "../utils/amplitude";
 import environment from "../utils/environment";
-import {sjekkInnlogget} from "../api/altinnApi";
 
 export const loggAntallAnsatte = (antall: number) => {
     let logg = "#arbeidsforhold antall arbeidsforhold: ";
@@ -100,19 +99,24 @@ export const loggBrukerTrykketPaVarsel = () => {
     amplitude.logEvent("#arbeidsforhold trykket pa ansatt med varsel" + environment.MILJO);
 };
 
+export const loggNyBackendFungerer= (beskjed: string) => {
+    amplitude.logEvent("#arbeidsforhold ny backend "+ beskjed);
+}
+
 export const loggBrukerTrykketPaExcel = () => {
     amplitude.logEvent("#arbeidsforhold bruker trykket på exceleksport");
+};
+
+export const loggBrukerTrykketPaVeiledning= () => {
+    amplitude.logEvent("#arbeidsforhold bruker trykket på Skatteetatens veiledning");
 };
 
 export const loggForbiddenFraAltinn = () => {
     amplitude.logEvent("#arbeidsforhold 403 fra altinn");
 };
 
-export const loggInfoOmFeil = async (typeFeil: string, antallOrgFraAltinn: number, antallOrgMedRettigheter: number) => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-    const erInnlogget = await sjekkInnlogget(signal);
-    amplitude.logEvent('#arbeidsforhold FEILER ' + typeFeil + ' organisasjoner i altinn ' +antallOrgFraAltinn + 'organisasjoner med tilgang: '+antallOrgMedRettigheter + ' er innlogget: ' +erInnlogget);
+export const loggInfoOmFeil = async (typeFeil: string,  bedriftsnummer: string) => {
+    //amplitude.logEvent('#arbeidsforhold FEILER ' + typeFeil, {bedriftsnummer: bedriftsnummer });
 };
 
 /*export const loggBedriftsInfo = async (organisasjonNr: string, juridiskOrgNr: string): Promise<number> => {
