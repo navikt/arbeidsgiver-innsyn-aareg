@@ -41,21 +41,20 @@ const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsIn
                 </div>
 
                 <div className="ingen-tilgang-innhold">
+                    <Normaltekst className="ingen-tilgang-innhold__ingress">
+                        Du har valgt en virksomhet der du mangler rettigheter for å se arbeidsforhold. Velg en
+                        virksomhet der du har tilgang.
+                    </Normaltekst>
+                    <Lenkepanel  tittelProps={"normaltekst"} border href={beOmTilgangIAltinnLink(valgtOrganisasjon.OrganizationNumber,SERVICEKODEINNSYNAAREGISTERET,SERVICEEDITIONINNSYNAAREGISTERET)} >
+                        <div className = {"ingen-tilgang-innhold__be-om-tilgang-boks"}>
+                            <img src={altinlogo} alt={"altinnlogo"}/>
+                            <div className = {"ingen-tilgang-innhold__be-om-tilgang-tekst"}>
+                                <Undertittel>Be om tilgang</Undertittel>
+                                Gå til Altinn for å be om tilgang til denne tjenesten.
+                            </div>
+                        </div>
+                    </Lenkepanel>
                     {bedrifterMedTilgang && bedrifterMedTilgang.length > 0 && (
-                        <>
-                            <Normaltekst className="ingen-tilgang-innhold__ingress">
-                                Du har valgt en virksomhet der du mangler rettigheter for å se arbeidsforhold. Velg en
-                                virksomhet der du har tilgang.
-                            </Normaltekst>
-                           <Lenkepanel  tittelProps={"normaltekst"} border href={beOmTilgangIAltinnLink(valgtOrganisasjon.OrganizationNumber,SERVICEKODEINNSYNAAREGISTERET,SERVICEEDITIONINNSYNAAREGISTERET)} >
-                               <div className = {"ingen-tilgang-innhold__be-om-tilgang-boks"}>
-                               <img src={altinlogo} alt={"altinnlogo"}/>
-                               <div className = {"ingen-tilgang-innhold__be-om-tilgang-tekst"}>
-                               <Undertittel>Be om tilgang</Undertittel>
-                                   Gå til Altinn for å be om tilgang til denne tjenesten.
-                                   </div>
-                                   </div>
-                            </Lenkepanel>
                             <Ekspanderbartpanel
                                 className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel"
                                 tittel="Disse virksomhetene har tilgang"
@@ -69,7 +68,6 @@ const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsIn
                                     ))}
                                 </ul>
                             </Ekspanderbartpanel>
-                        </>
                     )}
 
                     {(!bedrifterMedTilgang || bedrifterMedTilgang.length === 0) && (
