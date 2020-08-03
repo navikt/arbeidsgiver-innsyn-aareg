@@ -1,7 +1,7 @@
 const proxy = require('http-proxy-middleware');
 
 const envPropertiesArbeidsforholdApi = {
-    API_GATEWAY: process.env.APIGW_URL || 'http://localhost:8080',
+    API_GATEWAY: process.env.API_GATEWAY || 'http://localhost:8080',
     APIGW_HEADER: process.env.ARBEIDSFORHOLD_API_GW_HEADER
 };
 
@@ -21,5 +21,11 @@ if (envPropertiesArbeidsforholdApi.APIGW_HEADER) {
         'x-nav-apiKey': envPropertiesArbeidsforholdApi.APIGW_HEADER
     };
 }
+else {
+    console.log('Arbeidsgiver-arbeidsforhold klarte ikke hente API-key til ny backend')
+}
+
+console.log('Arbeidsgiver-arbeidsforholdproxy config brukt')
+
 
 module.exports = proxy(proxyConfigArbeidsforholdApi);

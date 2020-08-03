@@ -3,7 +3,11 @@ import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
-import { hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg } from '../../api/aaregApi';
+import {
+    hentAntallArbeidsforholdFraAareg, hentAntallArbeidsforholdFraAaregNyBackend,
+    hentArbeidsforholdFraAAreg,
+    hentArbeidsforholdFraAAregNyBackend
+} from '../../api/aaregApi';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 import {
     regnUtantallSider,
@@ -19,9 +23,10 @@ import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatte
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
-import {loggInfoOmFeil} from "../amplitudefunksjonerForLogging";
+import {loggInfoOmFeil, loggNyBackendFungerer} from "../amplitudefunksjonerForLogging";
 import {redirectTilLogin} from "../LoggInn/LoggInn";
 import { RouteComponentProps, withRouter } from 'react-router';
+
 
 
 interface Props extends RouteComponentProps {
@@ -142,6 +147,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
             }
 
         }).catch(error => {
+            loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
             if (error.response.status === 401) {
                 redirectTilLogin();
             }
@@ -158,7 +164,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
             hentArbeidsforholdFraAAreg(
                 valgtOrganisasjon.OrganizationNumber,
                 valgtOrganisasjon.ParentOrganizationNumber,
-                signal, tilgangTiLOpplysningspliktigOrg, antallOrganisasjonerTotalt,antallOrganisasjonerMedTilgang
+                signal
             )
                 .then(responsAareg => {
                     setListeFraAareg(responsAareg.arbeidsforholdoversikter);
@@ -168,7 +174,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
                     }
                 })
                 .catch(error => {
-                    loggInfoOmFeil(error.response.status, antallOrganisasjonerTotalt, antallOrganisasjonerMedTilgang)
+                    loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
                     if (error.response.status === 401) {
                         redirectTilLogin();
                     }
@@ -188,6 +194,25 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
         );
         setListeMedArbeidsForhold(oppdatertListe);
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler]);
+
+    useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        hentArbeidsforholdFraAAregNyBackend(
+            valgtOrganisasjon.OrganizationNumber,
+            valgtOrganisasjon.ParentOrganizationNumber,
+            signal
+        )
+            .then(arbeidsforholdResponse =>loggNyBackendFungerer('arbeidsforhold-kall: ' + arbeidsforholdResponse.arbeidsforholdoversikter.length))
+            .catch((e: Error) => loggNyBackendFungerer('arbeidsforhold-kall med tilgang: ' + e.message ));
+        hentAntallArbeidsforholdFraAaregNyBackend(
+            valgtOrganisasjon.OrganizationNumber,
+            valgtOrganisasjon.ParentOrganizationNumber,
+            signal
+        )
+            .then(objekt =>loggNyBackendFungerer('antall arbeidsforhold-kall  ' + objekt.toString()))
+            .catch((e: Error) => loggNyBackendFungerer('antall arbeidsforhold-kall: ' + e.message ));
+    }, [valgtOrganisasjon]);
 
     const antallSider = regnUtantallSider(arbeidsforholdPerSide, listeMedArbeidsForhold.length);
 
@@ -213,11 +238,17 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
     }).length;
 
 
-    const feilmeldingtekst =
-        feilkode === '408'
-            ? 'Det oppstod en feil da vi prøvde å hente dine arbeidsforhold. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.'
-            : 'Vi opplever ustabilitet med Aa-registret. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
+    const feilmeldingtekst = () => {
+        switch (feilkode) {
+            case '408':
+                return 'Det oppstod en feil da vi prøvde å hente dine arbeidsforhold. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
+            case '403':
+                return 'ikke tilgang til forspurt entitet i Aa-reg, Vi opplever problemer med å hente opplysninger, vennligst ta kontakt med brukerstøtte ';
+            default:
+                return 'Vi opplever ustabilitet med Aa-registret. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
 
+        }
+    };
     return (
         <div className="bakgrunnsside">
             <div className="innhold-container">
@@ -288,7 +319,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
                     )}
                     {aaregLasteState === APISTATUS.FEILET && (
                         <div className="mine-ansatte__feilmelding-aareg">
-                            <AlertStripeFeil>{feilmeldingtekst}</AlertStripeFeil>
+                            <AlertStripeFeil>{feilmeldingtekst()}</AlertStripeFeil>
                         </div>
                     )}
                     {forMangeArbeidsforhold && (
