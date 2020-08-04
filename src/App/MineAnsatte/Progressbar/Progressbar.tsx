@@ -80,6 +80,8 @@ const Progressbar = ({ startTid, erFerdigLastet, setSkalvises, antall, antallArb
     const tekst = Math.floor(bredde).toString() + '%';
     const overtekst = antallArbeidsforholdUkjent ? '' : antall;
 
+    console.log(erFerdigLastet);
+
     return (
         <div className={'progressbar__container'}>
             <Ingress className={'progressbar__henter-antall'}>{'Henter ' + overtekst + ' arbeidsforhold'}</Ingress>
