@@ -117,8 +117,16 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
         currentUrl.searchParams.set("sorter", navarendeKolonne.sorteringsAttributt.toString());
         currentUrl.searchParams.set("revers", navarendeKolonne.reversSortering.toString());
         const { search } = currentUrl;
-        history.replace({ search });
+        history.replace({ search: search });
     }, [history, filtrerPaAktiveAvsluttede, naVarendeSidetall,skalFiltrerePaVarsler, soketekst, navarendeKolonne]);
+
+    const setValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold ) => {
+        setValgtArbeidstaker({navn: arbeidsforhold.arbeidstaker.navn, fnr:  arbeidsforhold.arbeidstaker.offentligIdent})
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set("arbeidsforhold", arbeidsforhold.navArbeidsforholdId.toString());
+        const { search } = currentUrl;
+        history.replace({pathname: '/enkeltArbeidsforhold', search: search });
+    }
 
     useEffect(() => {
         setAntallArbeidsforhold(0);
@@ -299,13 +307,13 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
                                 setNavarendeKolonne={setNavarendeKolonne}
                                 byttSide={setIndeksOgGenererListe}
                                 navarendeKolonne={navarendeKolonne}
-                                settValgtArbeidsgiver={setValgtArbeidstaker}
+                                setValgtArbeidsforhold={setValgtArbeidsforhold}
                                 valgtBedrift={valgtOrganisasjon.OrganizationNumber}
                             />
                             <ListeMedAnsatteForMobil
                                 listeMedArbeidsForhold={forholdPaEnSide}
                                 className="mine-ansatte__liste"
-                                settValgtArbeidsgiver={setValgtArbeidstaker}
+                                setValgtArbeidsforhold={setValgtArbeidsforhold}
                                 valgtBedrift={valgtOrganisasjon.OrganizationNumber}
                             />
                             { antallSider>1 &&<SideBytter
