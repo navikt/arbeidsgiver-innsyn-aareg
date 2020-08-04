@@ -23,7 +23,10 @@ import MineAnsatte from './MineAnsatte/MineAnsatte';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import amplitude from "../utils/amplitude";
-import {loggForbiddenFraAltinn, loggNyBackendFungerer} from "./amplitudefunksjonerForLogging";
+import {loggForbiddenFraAltinn, loggInfoOmFeil, loggNyBackendFungerer} from "./amplitudefunksjonerForLogging";
+import {hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg} from "../api/aaregApi";
+import {redirectTilLogin} from "./LoggInn/LoggInn";
+import {Arbeidsforhold} from "./Objekter/ArbeidsForhold";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -36,6 +39,8 @@ export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
 
 const App = () => {
+    const MAKS_ANTALL_ARBEIDSFORHOLD = 10000;
+
     const [tilgangArbeidsforholdState, setTilgangArbeidsforholdState] = useState(TILGANGSSTATE.LASTER);
     const [organisasjonerLasteState, setOrganisasjonerLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
 
@@ -47,7 +52,15 @@ const App = () => {
     const [abortControllerAntallArbeidsforhold, setAbortControllerAntallArbeidsforhold] = useState<AbortController | null>(null);
     const [abortControllerArbeidsforhold, setAbortControllerArbeidsforhold] = useState<AbortController | null>(null);
 
-    const [tilgangTiLOpplysningspliktigOrg, setTilgangTiLOpplysningspliktigOrg] = useState(false);
+    const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
+    const [antallArbeidsforhold, setAntallArbeidsforhold] = useState(0);
+    const [visProgressbar, setVisProgressbar] = useState(false);
+
+    const [aaregLasteState, setAaregLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
+    const [feilkode, setFeilkode] = useState<string>('');
+    const [forMangeArbeidsforhold, setForMangeArbeidsforhold] = useState(false);
+    const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
+
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -99,7 +112,6 @@ const App = () => {
     const setValgtOrg = (org: Organisasjon) => {
         setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
         setValgtOrganisasjon(org);
-        setTilgangTiLOpplysningspliktigOrg(false);
         abortTidligereRequests()
     }
 
@@ -112,9 +124,6 @@ const App = () => {
                 }).length >= 1
             ) {
                 setTilgangArbeidsforholdState(TILGANGSSTATE.TILGANG);
-                if (organisasjonerMedTilgang.filter(org => org.OrganizationNumber === valgtOrganisasjon.ParentOrganizationNumber).length>0){
-                    setTilgangTiLOpplysningspliktigOrg(true)
-                }
             } else {
                 setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
             }
@@ -154,6 +163,72 @@ const App = () => {
             SERVICEEDITIONINNSYNAAREGISTERET,signal2).then(organisasjoner =>loggNyBackendFungerer('antall org med tilgang: ' +organisasjoner.length.toString()))
             .catch((e: Error) => loggNyBackendFungerer('antall org med tilgang: feilet' + e.message ));
     }, []);
+
+    useEffect(() => {
+        setAntallArbeidsforhold(0);
+        setAntallArbeidsforholdUkjent(true)
+        setForMangeArbeidsforhold(false)
+        const abortController = new AbortController();
+        setAbortControllerAntallArbeidsforhold(abortController)
+        const signal = abortController.signal;
+        hentAntallArbeidsforholdFraAareg(
+            valgtOrganisasjon.OrganizationNumber,
+            valgtOrganisasjon.ParentOrganizationNumber, signal
+        ).then(antall => {
+            const antallForhold = antall.valueOf();
+            if (antallForhold > 0) {
+                setAntallArbeidsforholdUkjent(false);
+                setAntallArbeidsforhold(antallForhold);
+                if (antallForhold>MAKS_ANTALL_ARBEIDSFORHOLD) {
+                    setVisProgressbar(false);
+                    setAaregLasteState(APISTATUS.OK);
+                    setForMangeArbeidsforhold(true);
+                }
+            }
+            if (antallForhold <= MAKS_ANTALL_ARBEIDSFORHOLD) {
+                setAaregLasteState(APISTATUS.LASTER);
+                setVisProgressbar(true);
+            }
+
+        }).catch(error => {
+            loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
+            if (error.response.status === 401) {
+                redirectTilLogin();
+            }
+            setAaregLasteState(APISTATUS.FEILET);
+            setFeilkode(error.response.status.toString());
+        });
+    }, [setAbortControllerAntallArbeidsforhold, valgtOrganisasjon]);
+
+    useEffect(() => {
+        if ((antallArbeidsforhold>0 || antallArbeidsforholdUkjent) && !forMangeArbeidsforhold) {
+            const abortController = new AbortController();
+            setAbortControllerArbeidsforhold(abortController)
+            const signal = abortController.signal;
+            hentArbeidsforholdFraAAreg(
+                valgtOrganisasjon.OrganizationNumber,
+                valgtOrganisasjon.ParentOrganizationNumber,
+                signal
+            )
+                .then(responsAareg => {
+                    setListeFraAareg(responsAareg.arbeidsforholdoversikter);
+                    setAaregLasteState(APISTATUS.OK);
+                    if (antallArbeidsforholdUkjent) {
+                        setAntallArbeidsforhold(responsAareg.arbeidsforholdoversikter.length);
+                    }
+                })
+                .catch(error => {
+                    loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
+                    if (error.response.status === 401) {
+                        redirectTilLogin();
+                    }
+                    setAaregLasteState(APISTATUS.FEILET);
+                    setFeilkode(error.response.status.toString());
+                });
+        }
+    }, [valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold, setAbortControllerArbeidsforhold, antallArbeidsforholdUkjent,
+    ]);
+
 
 
     const url = window.location.href.toString();
@@ -197,13 +272,16 @@ const App = () => {
 
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
-                                                antallOrganisasjonerMedTilgang={organisasjonerMedTilgang?.length || 0}
-                                                antallOrganisasjonerTotalt={organisasjoner.length}
-                                                tilgangTiLOpplysningspliktigOrg={tilgangTiLOpplysningspliktigOrg}
+                                                setVisProgressbar={setVisProgressbar}
+                                                visProgressbar={visProgressbar}
+                                                antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
+                                                antallArbeidsforhold={antallArbeidsforhold}
+                                                listeFraAareg={listeFraAareg}
+                                                aaregLasteState={aaregLasteState}
+                                                feilkode={feilkode}
+                                                forMangeArbeidsforhold={forMangeArbeidsforhold}
                                                 setValgtArbeidstaker={setValgtArbeidstaker}
-                                                valgtOrganisasjon={valgtOrganisasjon}
-                                                setAbortControllerAntallArbeidsforhold={setAbortControllerAntallArbeidsforhold}
-                                                setAbortControllerArbeidsforhold={setAbortControllerArbeidsforhold}/>
+                                                valgtOrganisasjon={valgtOrganisasjon}/>
                                         )}
                                     </Route>
                                 </>
