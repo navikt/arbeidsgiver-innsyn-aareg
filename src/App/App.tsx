@@ -88,7 +88,6 @@ const App = () => {
                     });
             })
             .catch((e: Error) => {
-                console.log("error",e.message);
                 if(e.message==="Forbidden"){
                     loggForbiddenFraAltinn();
                     setOrganisasjonerMedTilgang([]);
@@ -114,7 +113,6 @@ const App = () => {
     }
 
     const setValgtOrg = (org: Organisasjon) => {
-        console.log('set valgt org kallt');
         setValgtOrganisasjon(org);
         if (org.OrganizationNumber.length  && harTilgang(org.OrganizationNumber)) {
             const abortController = new AbortController();
@@ -213,11 +211,6 @@ const App = () => {
         }
     }, []);
 
-
-    const url = window.location.href.toString();
-    const indeksqueryStart = url.indexOf("?");
-    const sistedelAvUrl = url.substr(indeksqueryStart,url.length)
-
     return (
         <div className="app">
             <LoginBoundary>
@@ -237,7 +230,6 @@ const App = () => {
                                         <EnkeltArbeidsforhold
                                             valgtArbeidstaker={valgtArbeidstaker}
                                             valgtOrganisasjon={valgtOrganisasjon}
-                                            queryParametereHovedSiden={sistedelAvUrl}
                                         />
                                     </Route>
                                     <Route exact path="/">
