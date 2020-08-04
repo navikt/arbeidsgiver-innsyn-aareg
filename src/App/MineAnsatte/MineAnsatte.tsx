@@ -3,10 +3,6 @@ import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
-import {
-  hentAntallArbeidsforholdFraAaregNyBackend,
-    hentArbeidsforholdFraAAregNyBackend
-} from '../../api/aaregApi';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 import {
     regnUtantallSider,
@@ -22,7 +18,6 @@ import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatte
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
-import {loggNyBackendFungerer} from "../amplitudefunksjonerForLogging";
 import { RouteComponentProps, withRouter } from 'react-router';
 
 interface Props extends RouteComponentProps {
@@ -121,25 +116,6 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
         );
         setListeMedArbeidsForhold(oppdatertListe);
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler]);
-
-    useEffect(() => {
-        const abortController = new AbortController();
-        const signal = abortController.signal;
-        hentArbeidsforholdFraAAregNyBackend(
-            valgtOrganisasjon.OrganizationNumber,
-            valgtOrganisasjon.ParentOrganizationNumber,
-            signal
-        )
-            .then(arbeidsforholdResponse =>loggNyBackendFungerer('arbeidsforhold-kall: ' + arbeidsforholdResponse.arbeidsforholdoversikter.length))
-            .catch((e: Error) => loggNyBackendFungerer('arbeidsforhold-kall med tilgang: ' + e.message ));
-        hentAntallArbeidsforholdFraAaregNyBackend(
-            valgtOrganisasjon.OrganizationNumber,
-            valgtOrganisasjon.ParentOrganizationNumber,
-            signal
-        )
-            .then(objekt =>loggNyBackendFungerer('antall arbeidsforhold-kall  ' + objekt.toString()))
-            .catch((e: Error) => loggNyBackendFungerer('antall arbeidsforhold-kall: ' + e.message ));
-    }, [valgtOrganisasjon]);
 
     const antallSider = regnUtantallSider(arbeidsforholdPerSide, listeMedArbeidsForhold.length);
 
