@@ -4,8 +4,7 @@ import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import {
-    hentAntallArbeidsforholdFraAareg, hentAntallArbeidsforholdFraAaregNyBackend,
-    hentArbeidsforholdFraAAreg,
+  hentAntallArbeidsforholdFraAaregNyBackend,
     hentArbeidsforholdFraAAregNyBackend
 } from '../../api/aaregApi';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
@@ -23,20 +22,21 @@ import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatte
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
-import {loggInfoOmFeil, loggNyBackendFungerer} from "../amplitudefunksjonerForLogging";
-import {redirectTilLogin} from "../LoggInn/LoggInn";
+import {loggNyBackendFungerer} from "../amplitudefunksjonerForLogging";
 import { RouteComponentProps, withRouter } from 'react-router';
-
-
 
 interface Props extends RouteComponentProps {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
     valgtOrganisasjon: Organisasjon;
-    setAbortControllerAntallArbeidsforhold: (abortcontroller: AbortController) => void;
-    setAbortControllerArbeidsforhold: (abortcontroller: AbortController) => void;
-    tilgangTiLOpplysningspliktigOrg: boolean;
-    antallOrganisasjonerTotalt: number;
-    antallOrganisasjonerMedTilgang: number;
+    listeFraAareg: Arbeidsforhold[];
+    antallArbeidsforhold: number;
+    visProgressbar: boolean;
+    setVisProgressbar: (skalVises: boolean) => void
+    aaregLasteState: APISTATUS;
+    feilkode: string;
+    forMangeArbeidsforhold: boolean;
+    antallArbeidsforholdUkjent: boolean;
+
 }
 
 export enum SorteringsAttributt {
@@ -72,7 +72,7 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
     );
 }
 
-const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, valgtOrganisasjon, setAbortControllerAntallArbeidsforhold, setAbortControllerArbeidsforhold, tilgangTiLOpplysningspliktigOrg, antallOrganisasjonerTotalt, antallOrganisasjonerMedTilgang}) =>  {
+const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, valgtOrganisasjon, listeFraAareg,antallArbeidsforholdUkjent,antallArbeidsforhold, setVisProgressbar, visProgressbar,aaregLasteState,feilkode, forMangeArbeidsforhold}) =>  {
     const currentUrl = new URL(window.location.href);
     const sidetall = currentUrl.searchParams.get("side") || "1";
     const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(parseInt(sidetall));
@@ -93,15 +93,6 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
     const filtrertPaVarsler = currentUrl.searchParams.get("varsler") === "true";
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(filtrertPaVarsler);
 
-    const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
-    const [antallArbeidsforhold, setAntallArbeidsforhold] = useState(0);
-    const [visProgressbar, setVisProgressbar] = useState(false);
-
-    const [aaregLasteState, setAaregLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
-    const [feilkode, setFeilkode] = useState<string>('');
-    const [forMangeArbeidsforhold, setForMangeArbeidsforhold] = useState(false);
-    const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
-
     const arbeidsforholdPerSide = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
@@ -120,70 +111,6 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
         history.replace({ search });
     }, [history, filtrerPaAktiveAvsluttede, naVarendeSidetall,skalFiltrerePaVarsler, soketekst, navarendeKolonne]);
 
-    useEffect(() => {
-        setAntallArbeidsforhold(0);
-        setAntallArbeidsforholdUkjent(true)
-        setForMangeArbeidsforhold(false)
-        const abortController = new AbortController();
-        setAbortControllerAntallArbeidsforhold(abortController)
-        const signal = abortController.signal;
-        hentAntallArbeidsforholdFraAareg(
-            valgtOrganisasjon.OrganizationNumber,
-            valgtOrganisasjon.ParentOrganizationNumber, signal
-        ).then(antall => {
-            const antallForhold = antall.valueOf();
-            if (antallForhold > 0) {
-                setAntallArbeidsforholdUkjent(false);
-                setAntallArbeidsforhold(antallForhold);
-                if (antallForhold>MAKS_ANTALL_ARBEIDSFORHOLD) {
-                    setVisProgressbar(false);
-                    setAaregLasteState(APISTATUS.OK);
-                    setForMangeArbeidsforhold(true);
-                }
-            }
-            if (antallForhold <= MAKS_ANTALL_ARBEIDSFORHOLD) {
-                setAaregLasteState(APISTATUS.LASTER);
-                setVisProgressbar(true);
-            }
-
-        }).catch(error => {
-            loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
-            if (error.response.status === 401) {
-                redirectTilLogin();
-            }
-            setAaregLasteState(APISTATUS.FEILET);
-            setFeilkode(error.response.status.toString());
-        });
-    }, [setAbortControllerAntallArbeidsforhold, valgtOrganisasjon]);
-
-    useEffect(() => {
-        if ((antallArbeidsforhold>0 || antallArbeidsforholdUkjent) && !forMangeArbeidsforhold) {
-            const abortController = new AbortController();
-            setAbortControllerArbeidsforhold(abortController)
-            const signal = abortController.signal;
-            hentArbeidsforholdFraAAreg(
-                valgtOrganisasjon.OrganizationNumber,
-                valgtOrganisasjon.ParentOrganizationNumber,
-                signal
-            )
-                .then(responsAareg => {
-                    setListeFraAareg(responsAareg.arbeidsforholdoversikter);
-                    setAaregLasteState(APISTATUS.OK);
-                    if (antallArbeidsforholdUkjent) {
-                        setAntallArbeidsforhold(responsAareg.arbeidsforholdoversikter.length);
-                    }
-                })
-                .catch(error => {
-                    loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
-                    if (error.response.status === 401) {
-                        redirectTilLogin();
-                    }
-                    setAaregLasteState(APISTATUS.FEILET);
-                    setFeilkode(error.response.status.toString());
-                });
-        }
-    }, [valgtOrganisasjon, antallArbeidsforhold, forMangeArbeidsforhold, setAbortControllerArbeidsforhold, antallArbeidsforholdUkjent, tilgangTiLOpplysningspliktigOrg,
-    antallOrganisasjonerMedTilgang, antallOrganisasjonerTotalt]);
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
