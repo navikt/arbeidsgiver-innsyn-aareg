@@ -2,7 +2,6 @@ import React, {FunctionComponent} from 'react';
 import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold/dist';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
-import { basename } from '../../paths';
 import environment from '../../../utils/environment';
 import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
 import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
@@ -13,7 +12,7 @@ import {RouteComponentProps, withRouter} from "react-router";
 interface Props extends RouteComponentProps{
     valgtArbeidstaker: Arbeidstaker | null;
     valgtOrganisasjon: Organisasjon;
-    queryParametereHovedSiden?: string;
+    sistUrl?: string;
 };
 
 
@@ -34,21 +33,21 @@ const apiURL = () => {
     return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
 };
 
-const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidstaker, queryParametereHovedSiden, valgtOrganisasjon}) => {
+const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidstaker, sistUrl, valgtOrganisasjon}) => {
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
 
-    if (!arbeidsforholdIdFraUrl || !valgtArbeidstaker) {
-        window.location.href = basename + '/' +queryParametereHovedSiden;
-    }
-
     const redirectTilbake = () => {
-        const currentUrl = new URL(window.location.href);
+        const currentUrl = new URL(sistUrl!!);
         currentUrl.searchParams.delete(('arbeidsforhold'));
         const { search } = currentUrl;
         history.replace({ search: search , pathname: '/'})
-
     }
+    if (!arbeidsforholdIdFraUrl || !valgtArbeidstaker) {
+        redirectTilbake()
+    }
+
+    console.log(sistUrl);
 
     return (
         <>

@@ -19,7 +19,6 @@ export async function sjekkInnlogget(signal: any): Promise<boolean> {
 
 export async function hentOrganisasjonerFraAltinn(signal: any): Promise<Organisasjon[]> {
     let respons = await fetch(hentOrganisasjonerLink(), { signal: signal });
-    console.log('org hentet fra altinn');
     if (respons.ok) {
         return await respons.json();
     } else {
