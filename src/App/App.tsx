@@ -1,19 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
-import {basename} from './paths';
-import {Organisasjon, tomaAltinnOrganisasjon} from './Objekter/OrganisasjonFraAltinn';
-import {Arbeidstaker} from './Objekter/Arbeidstaker';
+import { basename } from './paths';
+import { Organisasjon, tomaAltinnOrganisasjon } from './Objekter/OrganisasjonFraAltinn';
+import { Arbeidstaker } from './Objekter/Arbeidstaker';
 
 import LoginBoundary from './LoggInnBoundary';
 
-import {EnkeltArbeidsforhold} from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
+import  EnkeltArbeidsforhold  from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import {
     hentOrganisasjonerFraAltinn,
-    hentOrganisasjonerFraAltinnNyBackend,
-    hentOrganisasjonerMedTilgangTilAltinntjeneste,
-    hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend
+
+    hentOrganisasjonerMedTilgangTilAltinntjeneste
 } from '../api/altinnApi';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import environment from '../utils/environment';
@@ -24,7 +23,7 @@ import MineAnsatte from './MineAnsatte/MineAnsatte';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import {AlertStripeFeil} from 'nav-frontend-alertstriper';
 import amplitude from "../utils/amplitude";
-import {loggForbiddenFraAltinn, loggInfoOmFeil, loggNyBackendFungerer} from "./amplitudefunksjonerForLogging";
+import {loggForbiddenFraAltinn, loggInfoOmFeil} from "./amplitudefunksjonerForLogging";
 import {hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg} from "../api/aaregApi";
 import {redirectTilLogin} from "./LoggInn/LoggInn";
 import {Arbeidsforhold} from "./Objekter/ArbeidsForhold";
@@ -230,17 +229,6 @@ const App = () => {
         }
     }, []);
 
-    useEffect(() => {
-        const abortController = new AbortController();
-        const signal = abortController.signal;
-        const abortController2 = new AbortController();
-        const signal2 = abortController2.signal;
-        hentOrganisasjonerFraAltinnNyBackend(signal).then(organisasjoner=> loggNyBackendFungerer('antall org: ' +organisasjoner.length.toString()))
-            .catch((e: Error) => loggNyBackendFungerer('antall org: feilet' + e.message ));
-        hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend(SERVICEKODEINNSYNAAREGISTERET,
-            SERVICEEDITIONINNSYNAAREGISTERET,signal2).then(organisasjoner =>loggNyBackendFungerer('antall org med tilgang: ' +organisasjoner.length.toString()))
-            .catch((e: Error) => loggNyBackendFungerer('antall org med tilgang: feilet' + e.message ));
-    }, []);
 
     const url = window.location.href.toString();
     const indeksqueryStart = url.indexOf("?");

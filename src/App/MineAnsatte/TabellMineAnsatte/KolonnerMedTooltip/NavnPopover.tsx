@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { Arbeidstaker } from '../../../Objekter/Arbeidstaker';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import './PopOverStyling.less';
 import {loggBrukerTrykketPaVarsel} from "../../../amplitudefunksjonerForLogging";
 
 type PopoverProps = {
-    settValgtArbeidsgiver: (valgtArbeidstaker: Arbeidstaker) => void;
+    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
     arbeidsforhold: Arbeidsforhold;
     valgtBedrift: string;
 };
@@ -19,8 +18,8 @@ const NavnPopover = (props: PopoverProps) => {
 
     const maxBreddeAvKolonne = 160;
 
-    const oppdaterValgtArbeidsgiver = (fnr: string, navn: string) => {
-        props.settValgtArbeidsgiver({ fnr: fnr, navn: navn });
+    const oppdaterValgtArbeidsforhold= (arbeidsforhold: Arbeidsforhold) => {
+        props.setValgtArbeidsforhold(arbeidsforhold);
         if (props.arbeidsforhold.varsler?.length) {
             loggBrukerTrykketPaVarsel();
         }
@@ -42,9 +41,8 @@ const NavnPopover = (props: PopoverProps) => {
         <div
             className="pop-over-container"
             onClick={() =>
-                oppdaterValgtArbeidsgiver(
-                    props.arbeidsforhold.arbeidstaker.offentligIdent,
-                    props.arbeidsforhold.arbeidstaker.navn
+                oppdaterValgtArbeidsforhold(
+                    props.arbeidsforhold
                 )
             }
         >

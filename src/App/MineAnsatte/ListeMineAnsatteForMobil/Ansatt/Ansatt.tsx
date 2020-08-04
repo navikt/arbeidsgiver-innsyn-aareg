@@ -1,22 +1,25 @@
 import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
-import { Arbeidstaker } from '../../../Objekter/Arbeidstaker';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import AttributtVisning from './AttributtVisning/AttributtVisning';
 import './Ansatt.less';
+import {loggBrukerTrykketPaVarsel} from "../../../amplitudefunksjonerForLogging";
 
 interface Props {
     className?: string;
     arbeidsforhold: Arbeidsforhold;
-    settValgtArbeidsgiver: (valgtArbeidstaker: Arbeidstaker) => void;
+    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
     valgtBedrift: string;
 }
 
 const Ansatt: FunctionComponent<Props> = props => {
 
-    function oppdaterValgtArbeidsgiver(fnr: string, navn: string) {
-        props.settValgtArbeidsgiver({ fnr: fnr, navn: navn });
+  const oppdaterValgtArbeidsforhold= (arbeidsforhold: Arbeidsforhold) => {
+    props.setValgtArbeidsforhold(arbeidsforhold);
+    if (props.arbeidsforhold.varsler?.length) {
+      loggBrukerTrykketPaVarsel();
     }
+  };
 
     return (
         <li className="arbeidsforhold">
@@ -26,9 +29,8 @@ const Ansatt: FunctionComponent<Props> = props => {
                     <div
                         className="attributt__verdi"
                         onClick={() =>
-                            oppdaterValgtArbeidsgiver(
-                                props.arbeidsforhold.arbeidstaker.offentligIdent,
-                                props.arbeidsforhold.arbeidstaker.navn
+                            oppdaterValgtArbeidsforhold(
+                                props.arbeidsforhold
                             )
                         }
                     >
