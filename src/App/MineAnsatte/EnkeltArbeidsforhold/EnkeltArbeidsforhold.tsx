@@ -12,9 +12,7 @@ import {RouteComponentProps, withRouter} from "react-router";
 interface Props extends RouteComponentProps{
     valgtArbeidstaker: Arbeidstaker | null;
     valgtOrganisasjon: Organisasjon;
-    sistUrl?: string;
 };
-
 
 const miljo = () => {
     if (environment.MILJO === 'prod-sbs') {
@@ -33,12 +31,12 @@ const apiURL = () => {
     return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
 };
 
-const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidstaker, sistUrl, valgtOrganisasjon}) => {
+const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidstaker, valgtOrganisasjon}) => {
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
 
     const redirectTilbake = () => {
-        const currentUrl = new URL(sistUrl!!);
+        const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.delete(('arbeidsforhold'));
         const { search } = currentUrl;
         history.replace({ search: search , pathname: '/'})
@@ -46,8 +44,6 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsta
     if (!arbeidsforholdIdFraUrl || !valgtArbeidstaker) {
         redirectTilbake()
     }
-
-    console.log(sistUrl);
 
     return (
         <>
