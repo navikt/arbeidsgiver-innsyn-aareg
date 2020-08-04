@@ -108,9 +108,15 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
 
     const setValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold ) => {
         setValgtArbeidstaker({navn: arbeidsforhold.arbeidstaker.navn, fnr:  arbeidsforhold.arbeidstaker.offentligIdent})
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set("arbeidsforhold", arbeidsforhold.navArbeidsforholdId.toString());
-        const { search } = currentUrl;
+        const nyUrl = new URL(window.location.href);
+        nyUrl.searchParams.set("side", naVarendeSidetall.toString());
+        nyUrl.searchParams.set("filter", filtrerPaAktiveAvsluttede);
+        nyUrl.searchParams.set("varsler", skalFiltrerePaVarsler.toString());
+        nyUrl.searchParams.set("sok", soketekst);
+        nyUrl.searchParams.set("sorter", navarendeKolonne.sorteringsAttributt.toString());
+        nyUrl.searchParams.set("revers", navarendeKolonne.reversSortering.toString());
+        nyUrl.searchParams.set("arbeidsforhold", arbeidsforhold.navArbeidsforholdId.toString());
+        const { search } = nyUrl;
         history.replace({pathname: '/enkeltArbeidsforhold', search: search });
     }
 
