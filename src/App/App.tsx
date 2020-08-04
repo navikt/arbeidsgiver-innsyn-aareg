@@ -7,7 +7,7 @@ import { Arbeidstaker } from './Objekter/Arbeidstaker';
 
 import LoginBoundary from './LoggInnBoundary';
 
-import { EnkeltArbeidsforhold } from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
+import  EnkeltArbeidsforhold  from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import {
     hentOrganisasjonerFraAltinn,
