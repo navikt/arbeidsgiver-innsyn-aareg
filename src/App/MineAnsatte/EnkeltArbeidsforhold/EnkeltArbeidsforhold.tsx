@@ -37,6 +37,7 @@ const apiURL = () => {
 const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsforhold, valgtOrganisasjon, alleArbeidsforhold, setValgtArbeidsforhold}) => {
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
+    window.scrollTo(0, 0);
 
     const redirectTilbake = () => {
         const currentUrl = new URL(window.location.href);
