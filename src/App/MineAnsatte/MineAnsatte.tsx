@@ -21,7 +21,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import Chevron from "nav-frontend-chevron";
 
 interface Props extends RouteComponentProps {
-    setValgtOgEtterFolgendeArbeidsforhold: (arbeidsforhold: Arbeidsforhold, nesteArbeidsforhold?: Arbeidsforhold) => void;
+    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
     valgtOrganisasjon: Organisasjon;
     listeFraAareg: Arbeidsforhold[];
     antallArbeidsforhold: number;
@@ -67,7 +67,7 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
     );
 }
 
-const MineAnsatte: FunctionComponent<Props> = ({history, setValgtOgEtterFolgendeArbeidsforhold, valgtOrganisasjon, listeFraAareg,antallArbeidsforholdUkjent,antallArbeidsforhold, setVisProgressbar, visProgressbar,aaregLasteState,feilkode, forMangeArbeidsforhold}) =>  {
+const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, listeFraAareg,antallArbeidsforholdUkjent,antallArbeidsforhold, setVisProgressbar, visProgressbar,aaregLasteState,feilkode, forMangeArbeidsforhold}) =>  {
     const currentUrl = new URL(window.location.href);
     const sidetall = currentUrl.searchParams.get("side") || "1";
     const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(parseInt(sidetall));

@@ -48,8 +48,6 @@ const App = () => {
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
 
     const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
-    const [etterfolgendeArbeidsforhold, setEtterfolgendeArbeidsforhold] = useState<Arbeidsforhold | undefined>(undefined);
-
     const [abortControllerAntallArbeidsforhold, setAbortControllerAntallArbeidsforhold] = useState<AbortController | null>(null);
     const [abortControllerArbeidsforhold, setAbortControllerArbeidsforhold] = useState<AbortController | null>(null);
 
@@ -61,12 +59,6 @@ const App = () => {
     const [feilkode, setFeilkode] = useState<string>('');
     const [forMangeArbeidsforhold, setForMangeArbeidsforhold] = useState(false);
     const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
-
-    const setValgtOgEtterFolgendeArbeidsforhold = (valgtArbeidsforhold: Arbeidsforhold, nesteILista?: Arbeidsforhold) => {
-        setValgtArbeidsforhold(valgtArbeidsforhold);
-        nesteILista && setEtterfolgendeArbeidsforhold(nesteILista);
-    }
-
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -235,9 +227,8 @@ const App = () => {
                                 <>
                                     <Route exact path="/enkeltArbeidsforhold">
                                         <EnkeltArbeidsforhold
-                                            setValgtOgEtterFolgendeArbeidsforhold={setValgtOgEtterFolgendeArbeidsforhold}
+                                            setValgtArbeidsforhold={setValgtArbeidsforhold}
                                             valgtArbeidsforhold={valgtArbeidsforhold}
-                                            nesteArbeidsforhold={etterfolgendeArbeidsforhold}
                                             valgtOrganisasjon={valgtOrganisasjon}
                                             alleArbeidsforhold={listeFraAareg}
                                         />
@@ -265,7 +256,7 @@ const App = () => {
                                                 aaregLasteState={aaregLasteState}
                                                 feilkode={feilkode}
                                                 forMangeArbeidsforhold={forMangeArbeidsforhold}
-                                                setValgtOgEtterFolgendeArbeidsforhold={setValgtOgEtterFolgendeArbeidsforhold}
+                                                setValgtArbeidsforhold={setValgtArbeidsforhold}
                                                 valgtOrganisasjon={valgtOrganisasjon}/>
                                         )}
                                     </Route>

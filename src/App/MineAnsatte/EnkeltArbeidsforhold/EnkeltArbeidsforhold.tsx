@@ -14,7 +14,7 @@ interface Props extends RouteComponentProps{
     nesteArbeidsforhold?: Arbeidsforhold;
     valgtOrganisasjon: Organisasjon;
     alleArbeidsforhold: Arbeidsforhold[];
-    setValgtOgEtterFolgendeArbeidsforhold: (arbeidsforhold: Arbeidsforhold, neste?: Arbeidsforhold) => void;
+    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
 };
 
 const miljo = () => {
@@ -34,7 +34,7 @@ const apiURL = () => {
     return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
 };
 
-const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsforhold, valgtOrganisasjon, alleArbeidsforhold, setValgtOgEtterFolgendeArbeidsforhold}) => {
+const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsforhold, valgtOrganisasjon, alleArbeidsforhold, setValgtArbeidsforhold}) => {
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
 
@@ -88,11 +88,10 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsfo
     }
 
     const nesteArbeidsforhold = arbeidsforhold[indeksValgtArbeidsforhold+1];
-    setValgtOgEtterFolgendeArbeidsforhold(arbeidsforhold[indeksValgtArbeidsforhold], nesteArbeidsforhold)
+    setValgtArbeidsforhold(arbeidsforhold[indeksValgtArbeidsforhold])
 
     const redirectNesteArbeidsforhold = () => {
         setTimeout(() => {}, 2500);
-        setValgtOgEtterFolgendeArbeidsforhold(nesteArbeidsforhold, arbeidsforhold[indeksValgtArbeidsforhold+2])
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.set('arbeidsforhold', nesteArbeidsforhold.navArbeidsforholdId);
         const { search } = currentUrl;
