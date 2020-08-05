@@ -122,7 +122,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsfo
                             <div className="af-detaljert__header">
                                 <span className="af-detaljert__kolonne">
                                     <div className={'af-detaljert__arbeidsgiver'}>
-                                        <Undertittel>{}</Undertittel>
+                                        <Undertittel>{valgtArbeidsforhold.arbeidstaker.navn}</Undertittel>
                                         <Normaltekst>Fødselsnummer: {valgtArbeidsforhold.arbeidstaker.offentligIdent}</Normaltekst>
                                     </div>
                                 </span>
