@@ -256,7 +256,6 @@ const App = () => {
                                                 aaregLasteState={aaregLasteState}
                                                 feilkode={feilkode}
                                                 forMangeArbeidsforhold={forMangeArbeidsforhold}
-                                                setValgtArbeidsforhold={setValgtArbeidsforhold}
                                                 valgtOrganisasjon={valgtOrganisasjon}/>
                                         )}
                                     </Route>
