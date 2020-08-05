@@ -7,7 +7,7 @@ import './PopOverStyling.less';
 import {loggBrukerTrykketPaVarsel} from "../../../amplitudefunksjonerForLogging";
 
 interface Props {
-    setValgtOgEtterFolgendeArbeidsforhold: (arbeidsforhold: Arbeidsforhold, nesteArbeidsforhold?: Arbeidsforhold) => void;
+    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
     arbeidsforhold: Arbeidsforhold;
     nesteArbeidsforhold?: Arbeidsforhold;
     valgtBedrift: string;
@@ -19,8 +19,8 @@ const NavnPopover = (props: Props) => {
 
     const maxBreddeAvKolonne = 160;
 
-    const oppdaterValgtArbeidsforhold= (arbeidsforhold: Arbeidsforhold, neste?: Arbeidsforhold) => {
-        props.setValgtOgEtterFolgendeArbeidsforhold(arbeidsforhold, neste);
+    const oppdaterValgtArbeidsforhold= (arbeidsforhold: Arbeidsforhold) => {
+        props.setValgtArbeidsforhold(arbeidsforhold);
         if (props.arbeidsforhold.varsler?.length) {
             loggBrukerTrykketPaVarsel();
         }
@@ -43,8 +43,7 @@ const NavnPopover = (props: Props) => {
             className="pop-over-container"
             onClick={() =>
                 oppdaterValgtArbeidsforhold(
-                    props.arbeidsforhold,
-                    props.nesteArbeidsforhold
+                    props.arbeidsforhold
                 )
             }
         >
