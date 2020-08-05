@@ -50,16 +50,11 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsta
             {arbeidsforholdIdFraUrl && valgtArbeidstaker && (
                 <div className="enkelt-arbeidsforhold-container">
                     <div className="enkelt-arbeidsforhold-innhold">
-                        <Normaltekst className="brodsmule">
-                            <Lenke href={linkTilMinSideArbeidsgiver(valgtOrganisasjon.OrganizationNumber)}>
-                                Min side – arbeidsgiver
-                            </Lenke>
-                            {' / '}
-                            <div onClick={redirectTilbake} >
-                                arbeidsforhold
-                            </div>
-                            {' / enkeltarbeidsforhold'}
-                        </Normaltekst>
+                            <button className="brodsmule" onClick={redirectTilbake} >
+                                <Normaltekst >
+                                Tilbake til liste
+                                </Normaltekst>
+                            </button>
                         <div className="enkelt-arbeidsforhold">
                             <div className="af-detaljert__header">
                                 <span className="af-detaljert__kolonne">
