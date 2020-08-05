@@ -8,15 +8,15 @@ import {loggBrukerTrykketPaVarsel} from "../../../amplitudefunksjonerForLogging"
 interface Props {
     className?: string;
     arbeidsforhold: Arbeidsforhold;
-    setValgtOgEtterFolgendeArbeidsforhold: (arbeidsforhold: Arbeidsforhold, nesteArbeidsforhold?: Arbeidsforhold) => void;
+    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
     valgtBedrift: string;
     nesteArbeidsforhold?: Arbeidsforhold;
 }
 
 const Ansatt: FunctionComponent<Props> = props => {
 
-  const oppdaterValgtArbeidsforhold= (arbeidsforhold: Arbeidsforhold, neste?: Arbeidsforhold) => {
-    props.setValgtOgEtterFolgendeArbeidsforhold(arbeidsforhold, neste)
+  const oppdaterValgtArbeidsforhold= (arbeidsforhold: Arbeidsforhold) => {
+    props.setValgtArbeidsforhold(arbeidsforhold)
     if (props.arbeidsforhold.varsler?.length) {
       loggBrukerTrykketPaVarsel();
     }
@@ -31,8 +31,7 @@ const Ansatt: FunctionComponent<Props> = props => {
                         className="attributt__verdi"
                         onClick={() =>
                             oppdaterValgtArbeidsforhold(
-                                props.arbeidsforhold,
-                                props.nesteArbeidsforhold
+                                props.arbeidsforhold
                             )
                         }
                     >

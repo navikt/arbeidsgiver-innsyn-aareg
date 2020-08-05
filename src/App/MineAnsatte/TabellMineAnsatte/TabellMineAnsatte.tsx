@@ -15,7 +15,7 @@ interface Props {
     setNavarendeKolonne: (kolonne: KolonneState) => void;
     byttSide: (indeks: number) => void;
     navarendeKolonne: KolonneState;
-    setValgtOgEtterFolgendeArbeidsforhold: (arbeidsforhold: Arbeidsforhold, nesteArbeidsforhold?: Arbeidsforhold) => void;
+    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
     valgtBedrift: string;
 
 }
@@ -29,7 +29,7 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
                 <td className="td">
                     <NavnPopover
                         arbeidsforhold={arbeidsforhold}
-                        setValgtOgEtterFolgendeArbeidsforhold={props.setValgtOgEtterFolgendeArbeidsforhold}
+                        setValgtArbeidsforhold={props.setValgtArbeidsforhold}
                         valgtBedrift={props.valgtBedrift}
                     />
                 </td>
