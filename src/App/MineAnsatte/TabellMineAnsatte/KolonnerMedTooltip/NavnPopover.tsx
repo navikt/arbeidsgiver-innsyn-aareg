@@ -6,20 +6,21 @@ import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import './PopOverStyling.less';
 import {loggBrukerTrykketPaVarsel} from "../../../amplitudefunksjonerForLogging";
 
-type PopoverProps = {
-    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
+interface Props {
+    setValgtOgEtterFolgendeArbeidsforhold: (arbeidsforhold: Arbeidsforhold, nesteArbeidsforhold?: Arbeidsforhold) => void;
     arbeidsforhold: Arbeidsforhold;
+    nesteArbeidsforhold?: Arbeidsforhold;
     valgtBedrift: string;
 };
 
-const NavnPopover = (props: PopoverProps) => {
+const NavnPopover = (props: Props) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
     const [skalVisePopover, setSkalVisePopover] = useState(true);
 
     const maxBreddeAvKolonne = 160;
 
-    const oppdaterValgtArbeidsforhold= (arbeidsforhold: Arbeidsforhold) => {
-        props.setValgtArbeidsforhold(arbeidsforhold);
+    const oppdaterValgtArbeidsforhold= (arbeidsforhold: Arbeidsforhold, neste?: Arbeidsforhold) => {
+        props.setValgtOgEtterFolgendeArbeidsforhold(arbeidsforhold, neste);
         if (props.arbeidsforhold.varsler?.length) {
             loggBrukerTrykketPaVarsel();
         }
@@ -42,7 +43,8 @@ const NavnPopover = (props: PopoverProps) => {
             className="pop-over-container"
             onClick={() =>
                 oppdaterValgtArbeidsforhold(
-                    props.arbeidsforhold
+                    props.arbeidsforhold,
+                    props.nesteArbeidsforhold
                 )
             }
         >

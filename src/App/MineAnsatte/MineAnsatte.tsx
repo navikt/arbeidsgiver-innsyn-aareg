@@ -22,9 +22,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import Chevron from "nav-frontend-chevron";
 
 interface Props extends RouteComponentProps {
-    setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
+    setValgtOgEtterFolgendeArbeidsforhold: (arbeidsforhold: Arbeidsforhold, nesteArbeidsforhold?: Arbeidsforhold) => void;
     valgtOrganisasjon: Organisasjon;
     listeFraAareg: Arbeidsforhold[];
+    setSortertListeMedArbeidsforhold: (arbeidsforhold: Arbeidsforhold[]) => void;
     antallArbeidsforhold: number;
     visProgressbar: boolean;
     setVisProgressbar: (skalVises: boolean) => void
@@ -68,7 +69,7 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
     );
 }
 
-const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, valgtOrganisasjon, listeFraAareg,antallArbeidsforholdUkjent,antallArbeidsforhold, setVisProgressbar, visProgressbar,aaregLasteState,feilkode, forMangeArbeidsforhold}) =>  {
+const MineAnsatte: FunctionComponent<Props> = ({history, setValgtOgEtterFolgendeArbeidsforhold, valgtOrganisasjon, listeFraAareg,antallArbeidsforholdUkjent,antallArbeidsforhold, setVisProgressbar, visProgressbar,aaregLasteState,feilkode, forMangeArbeidsforhold, setSortertListeMedArbeidsforhold}) =>  {
     const currentUrl = new URL(window.location.href);
     const sidetall = currentUrl.searchParams.get("side") || "1";
     const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(parseInt(sidetall));
@@ -107,8 +108,8 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
         history.replace({ search: search });
     }, [history, filtrerPaAktiveAvsluttede, naVarendeSidetall,skalFiltrerePaVarsler, soketekst, navarendeKolonne]);
 
-    const setValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold ) => {
-        setValgtArbeidstaker({navn: arbeidsforhold.arbeidstaker.navn, fnr:  arbeidsforhold.arbeidstaker.offentligIdent})
+    const setValgtArbeidsforholdOgSendMedParametere = (arbeidsforhold: Arbeidsforhold, nesteArbeidsforhold?: Arbeidsforhold  ) => {
+        setValgtOgEtterFolgendeArbeidsforhold(arbeidsforhold, nesteArbeidsforhold)
         const nyUrl = new URL(window.location.href);
         nyUrl.searchParams.set("side", naVarendeSidetall.toString());
         nyUrl.searchParams.set("filter", filtrerPaAktiveAvsluttede);
@@ -116,7 +117,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
         nyUrl.searchParams.set("sok", soketekst);
         nyUrl.searchParams.set("sorter", navarendeKolonne.sorteringsAttributt.toString());
         nyUrl.searchParams.set("revers", navarendeKolonne.reversSortering.toString());
-        nyUrl.searchParams.set("arbeidsforhold", arbeidsforhold.navArbeidsforholdId.toString());
+        nyUrl.searchParams.set("arbeidsforhold", arbeidsforhold.navArbeidsforholdId);
         const { search } = nyUrl;
         history.replace({pathname: '/enkeltArbeidsforhold', search: search });
     }
@@ -128,8 +129,17 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
             skalFiltrerePaVarsler,
             soketekst
         );
-        setListeMedArbeidsForhold(oppdatertListe);
+        if (navarendeKolonne.reversSortering) {
+                setListeMedArbeidsForhold(sorterArbeidsforhold(oppdatertListe, navarendeKolonne.sorteringsAttributt).reverse());
+
+        } else {
+                setListeMedArbeidsForhold(sorterArbeidsforhold(oppdatertListe, navarendeKolonne.sorteringsAttributt));
+        }
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler]);
+
+    useEffect(() => {
+        setSortertListeMedArbeidsforhold(listeMedArbeidsForhold);
+    }, [listeMedArbeidsForhold]);
 
     const antallSider = regnUtantallSider(arbeidsforholdPerSide, listeMedArbeidsForhold.length);
 
@@ -213,16 +223,18 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
                             <TabellMineAnsatte
                                 className="mine-ansatte__table"
                                 listeMedArbeidsForhold={forholdPaEnSide}
+                                fullListe={listeMedArbeidsForhold}
                                 setNavarendeKolonne={setNavarendeKolonne}
                                 byttSide={setIndeksOgGenererListe}
                                 navarendeKolonne={navarendeKolonne}
-                                setValgtArbeidsforhold={setValgtArbeidsforhold}
+                                setValgtOgEtterFolgendeArbeidsforhold={setValgtArbeidsforholdOgSendMedParametere}
                                 valgtBedrift={valgtOrganisasjon.OrganizationNumber}
                             />
                             <ListeMedAnsatteForMobil
+                                fullListe={listeMedArbeidsForhold}
                                 listeMedArbeidsForhold={forholdPaEnSide}
                                 className="mine-ansatte__liste"
-                                setValgtArbeidsforhold={setValgtArbeidsforhold}
+                                setValgtOgEtterFolgendeArbeidsforhold={setValgtArbeidsforholdOgSendMedParametere}
                                 valgtBedrift={valgtOrganisasjon.OrganizationNumber}
                             />
                             { antallSider>1 &&<SideBytter

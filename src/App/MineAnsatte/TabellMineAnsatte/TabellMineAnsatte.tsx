@@ -11,21 +11,25 @@ import './TabellMineAnsatte.less';
 interface Props {
     className?: string;
     listeMedArbeidsForhold: Arbeidsforhold[];
+    fullListe: Arbeidsforhold[];
     setNavarendeKolonne: (kolonne: KolonneState) => void;
     byttSide: (indeks: number) => void;
     navarendeKolonne: KolonneState;
-    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
+    setValgtOgEtterFolgendeArbeidsforhold: (arbeidsforhold: Arbeidsforhold, nesteArbeidsforhold?: Arbeidsforhold) => void;
     valgtBedrift: string;
+
 }
 
 const TabellMineAnsatte: FunctionComponent<Props> = props => {
+
+
     const rader = props.listeMedArbeidsForhold.map(arbeidsforhold => {
         return (
             <tr key={arbeidsforhold.navArbeidsforholdId}>
                 <td className="td">
                     <NavnPopover
                         arbeidsforhold={arbeidsforhold}
-                        setValgtArbeidsforhold={props.setValgtArbeidsforhold}
+                        setValgtOgEtterFolgendeArbeidsforhold={props.setValgtOgEtterFolgendeArbeidsforhold}
                         valgtBedrift={props.valgtBedrift}
                     />
                 </td>
