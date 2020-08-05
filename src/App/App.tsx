@@ -3,7 +3,6 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import { basename } from './paths';
 import { Organisasjon, tomaAltinnOrganisasjon } from './Objekter/OrganisasjonFraAltinn';
-import { Arbeidstaker } from './Objekter/Arbeidstaker';
 
 import LoginBoundary from './LoggInnBoundary';
 
@@ -47,12 +46,15 @@ const App = () => {
     const [organisasjoner, setorganisasjoner] = useState(Array<Organisasjon>());
     const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
-    const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
+
+    const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
+    const [etterfolgendeArbeidsforhold, setEtterfolgendeArbeidsforhold] = useState<Arbeidsforhold | undefined>(undefined);
 
     const [abortControllerAntallArbeidsforhold, setAbortControllerAntallArbeidsforhold] = useState<AbortController | null>(null);
     const [abortControllerArbeidsforhold, setAbortControllerArbeidsforhold] = useState<AbortController | null>(null);
 
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
+    const [sortertListeMedArbeidsforhold, setSortertListeMedArbeidsforhold] = useState(Array<Arbeidsforhold>());
     const [antallArbeidsforhold, setAntallArbeidsforhold] = useState(0);
     const [visProgressbar, setVisProgressbar] = useState(false);
 
@@ -60,6 +62,11 @@ const App = () => {
     const [feilkode, setFeilkode] = useState<string>('');
     const [forMangeArbeidsforhold, setForMangeArbeidsforhold] = useState(false);
     const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
+
+    const setValgtOgEtterFolgendeArbeidsforhold = (valgtArbeidsforhold: Arbeidsforhold, nesteILista?: Arbeidsforhold) => {
+        setValgtArbeidsforhold(valgtArbeidsforhold);
+        nesteILista && setEtterfolgendeArbeidsforhold(nesteILista);
+    }
 
 
     useEffect(() => {
@@ -229,8 +236,10 @@ const App = () => {
                                 <>
                                     <Route exact path="/enkeltArbeidsforhold">
                                         <EnkeltArbeidsforhold
-                                            valgtArbeidstaker={valgtArbeidstaker}
+                                            valgtArbeidsforhold={valgtArbeidsforhold}
+                                            nesteArbeidsforhold={etterfolgendeArbeidsforhold}
                                             valgtOrganisasjon={valgtOrganisasjon}
+                                            sortertListe={sortertListeMedArbeidsforhold}
                                         />
                                     </Route>
                                     <Route exact path="/">
@@ -248,6 +257,7 @@ const App = () => {
 
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
+                                                setSortertListeMedArbeidsforhold={setSortertListeMedArbeidsforhold}
                                                 setVisProgressbar={setVisProgressbar}
                                                 visProgressbar={visProgressbar}
                                                 antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
@@ -256,7 +266,7 @@ const App = () => {
                                                 aaregLasteState={aaregLasteState}
                                                 feilkode={feilkode}
                                                 forMangeArbeidsforhold={forMangeArbeidsforhold}
-                                                setValgtArbeidstaker={setValgtArbeidstaker}
+                                                setValgtOgEtterFolgendeArbeidsforhold={setValgtOgEtterFolgendeArbeidsforhold}
                                                 valgtOrganisasjon={valgtOrganisasjon}/>
                                         )}
                                     </Route>
