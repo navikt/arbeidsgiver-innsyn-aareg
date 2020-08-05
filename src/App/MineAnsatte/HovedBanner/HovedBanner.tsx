@@ -1,6 +1,6 @@
 import React, {FunctionComponent } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
+import {Organisasjon, tomaAltinnOrganisasjon} from '../../Objekter/OrganisasjonFraAltinn';
 import { basename } from '../../paths';
 import Bedriftsmeny from '@navikt/bedriftsmeny';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
@@ -10,6 +10,7 @@ interface Props extends RouteComponentProps {
     byttOrganisasjon: (org: Organisasjon) => void;
     organisasjoner: Organisasjon[];
     url: string;
+    valgtOrganisasjon: Organisasjon;
 }
 
 const Banner: FunctionComponent<Props> = props => {
@@ -27,7 +28,7 @@ const Banner: FunctionComponent<Props> = props => {
         window.location.href = basename + '/?bedrift=' + organisasjon.OrganizationNumber;
     };
 
-    const nullStillUrl = () => {
+    const nullStillUrlParametere = () => {
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.set("side", "1");
         currentUrl.searchParams.set("filter", "Alle");
@@ -38,12 +39,16 @@ const Banner: FunctionComponent<Props> = props => {
         const { search } = currentUrl;
         history.replace(search);
     }
-    const currentUrl = new URL(props.url);
+
+    const sjekkAtManBytterBedriftIkkeVedRefresh = () => {
+        return (props.valgtOrganisasjon!== tomaAltinnOrganisasjon);
+    }
+
     const onOrganisasjonChange = (organisasjon?: Organisasjon) => {
         if (organisasjon) {
             props.byttOrganisasjon(organisasjon);
-            if (organisasjon.OrganizationNumber !== currentUrl.searchParams.get("bedrift")) {
-                nullStillUrl()
+            if (sjekkAtManBytterBedriftIkkeVedRefresh()) {
+                nullStillUrlParametere()
                 window.location.reload();
             }
             sjekkOmBrukerErPaaEnkeltArbeidsforholdSide(organisasjon);
