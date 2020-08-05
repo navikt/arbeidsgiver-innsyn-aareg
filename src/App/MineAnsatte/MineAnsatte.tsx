@@ -21,7 +21,6 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import Chevron from "nav-frontend-chevron";
 
 interface Props extends RouteComponentProps {
-    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
     valgtOrganisasjon: Organisasjon;
     listeFraAareg: Arbeidsforhold[];
     antallArbeidsforhold: number;
