@@ -218,6 +218,7 @@ const App = () => {
                     {organisasjonerLasteState !== APISTATUS.LASTER && (
                         <HovedBanner
                             url={window.location.href}
+                            valgtOrganisasjon = {valgtOrganisasjon}
                             byttOrganisasjon={setValgtOrg}
                             organisasjoner={organisasjonerLasteState === APISTATUS.OK ? organisasjoner : []}
                         />
