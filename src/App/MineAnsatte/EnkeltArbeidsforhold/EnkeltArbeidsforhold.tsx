@@ -72,7 +72,6 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsfo
             revers = true
         }
         const listeBasertPaParametere = byggListeBasertPaPArametere(alleArbeidsforhold, filter,skalFiltrere, sok);
-        console.log('liste pa parametere: ', listeBasertPaParametere);
         if (revers) {
             return sorterArbeidsforhold(listeBasertPaParametere, sorter).reverse()
         }
