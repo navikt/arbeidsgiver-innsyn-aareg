@@ -91,6 +91,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsfo
     setValgtOgEtterFolgendeArbeidsforhold(arbeidsforhold[indeksValgtArbeidsforhold], nesteArbeidsforhold)
 
     const redirectNesteArbeidsforhold = () => {
+        setTimeout(() => {}, 2500);
         setValgtOgEtterFolgendeArbeidsforhold(nesteArbeidsforhold, arbeidsforhold[indeksValgtArbeidsforhold+2])
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.set('arbeidsforhold', nesteArbeidsforhold.navArbeidsforholdId);
