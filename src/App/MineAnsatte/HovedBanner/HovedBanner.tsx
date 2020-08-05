@@ -19,7 +19,7 @@ const Banner: FunctionComponent<Props> = props => {
 
     const sjekkOmBrukerErPaaEnkeltArbeidsforholdSide = (organisasjon: Organisasjon) => {
         const url = window.location.href;
-        if (url.indexOf('/enkeltarbeidsforhold') >= 0) {
+        if (url.indexOf('/enkeltArbeidsforhold') >= 0) {
             redirectTilListeVisning(organisasjon);
         }
     };
@@ -50,8 +50,8 @@ const Banner: FunctionComponent<Props> = props => {
             if (sjekkAtManBytterBedriftIkkeVedRefresh()) {
                 nullStillUrlParametere()
                 window.location.reload();
+                sjekkOmBrukerErPaaEnkeltArbeidsforholdSide(organisasjon);
             }
-            sjekkOmBrukerErPaaEnkeltArbeidsforholdSide(organisasjon);
         }
     };
 
