@@ -19,6 +19,7 @@ import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper'
 import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
 import { RouteComponentProps, withRouter } from 'react-router';
+import Chevron from "nav-frontend-chevron";
 
 interface Props extends RouteComponentProps {
     setValgtArbeidstaker: (arbeidstaker: Arbeidstaker) => void;
@@ -169,10 +170,10 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtArbeidstaker, v
         <div className="bakgrunnsside">
             <div className="innhold-container">
                 <Normaltekst className="brodsmule">
+                    <Chevron type={'venstre'} />
                     <Lenke href={linkTilMinSideArbeidsgiver(valgtOrganisasjon.OrganizationNumber)}>
                         Min side – arbeidsgiver
                     </Lenke>
-                    {' / arbeidsforhold'}
                 </Normaltekst>
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
