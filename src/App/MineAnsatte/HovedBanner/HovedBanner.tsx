@@ -41,11 +41,12 @@ const Banner: FunctionComponent<Props> = props => {
     const currentUrl = new URL(props.url);
     const onOrganisasjonChange = (organisasjon?: Organisasjon) => {
         if (organisasjon) {
+            props.byttOrganisasjon(organisasjon);
             if (organisasjon.OrganizationNumber !== currentUrl.searchParams.get("bedrift")) {
                 nullStillUrl()
+                window.location.reload();
             }
             sjekkOmBrukerErPaaEnkeltArbeidsforholdSide(organisasjon);
-            props.byttOrganisasjon(organisasjon);
         }
     };
 
