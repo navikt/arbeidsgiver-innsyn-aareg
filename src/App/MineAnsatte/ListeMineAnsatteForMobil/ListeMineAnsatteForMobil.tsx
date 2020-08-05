@@ -6,7 +6,9 @@ import './ListeMineAnsatteForMobil.less';
 interface Props {
     className?: string;
     listeMedArbeidsForhold: Arbeidsforhold[];
-    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
+    fullListe: Arbeidsforhold[];
+    nesteArbeidsforhold?: Arbeidsforhold;
+    setValgtOgEtterFolgendeArbeidsforhold: (arbeidsforhold: Arbeidsforhold, nesteArbeidsforhold?: Arbeidsforhold) => void;
     valgtBedrift: string;
 }
 
@@ -14,7 +16,7 @@ const ListeMedAnsatteForMobil: FunctionComponent<Props> = (props: Props) => {
     const rader = props.listeMedArbeidsForhold.map(forhold => (
         <Ansatt
             key={forhold.navArbeidsforholdId}
-            setValgtArbeidsforhold={props.setValgtArbeidsforhold}
+            setValgtOgEtterFolgendeArbeidsforhold={props.setValgtOgEtterFolgendeArbeidsforhold}
             valgtBedrift={props.valgtBedrift}
             arbeidsforhold={forhold}
         />
