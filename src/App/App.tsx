@@ -54,7 +54,6 @@ const App = () => {
     const [abortControllerArbeidsforhold, setAbortControllerArbeidsforhold] = useState<AbortController | null>(null);
 
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
-    const [sortertListeMedArbeidsforhold, setSortertListeMedArbeidsforhold] = useState(Array<Arbeidsforhold>());
     const [antallArbeidsforhold, setAntallArbeidsforhold] = useState(0);
     const [visProgressbar, setVisProgressbar] = useState(false);
 
@@ -236,10 +235,11 @@ const App = () => {
                                 <>
                                     <Route exact path="/enkeltArbeidsforhold">
                                         <EnkeltArbeidsforhold
+                                            setValgtOgEtterFolgendeArbeidsforhold={setValgtOgEtterFolgendeArbeidsforhold}
                                             valgtArbeidsforhold={valgtArbeidsforhold}
                                             nesteArbeidsforhold={etterfolgendeArbeidsforhold}
                                             valgtOrganisasjon={valgtOrganisasjon}
-                                            sortertListe={sortertListeMedArbeidsforhold}
+                                            alleArbeidsforhold={listeFraAareg}
                                         />
                                     </Route>
                                     <Route exact path="/">
@@ -257,7 +257,6 @@ const App = () => {
 
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
-                                                setSortertListeMedArbeidsforhold={setSortertListeMedArbeidsforhold}
                                                 setVisProgressbar={setVisProgressbar}
                                                 visProgressbar={visProgressbar}
                                                 antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}

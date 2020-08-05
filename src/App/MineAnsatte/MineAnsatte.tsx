@@ -2,7 +2,6 @@ import React, {FunctionComponent, useEffect, useState} from 'react';
 import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
-import { Arbeidstaker } from '../Objekter/Arbeidstaker';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 import {
     regnUtantallSider,
@@ -25,7 +24,6 @@ interface Props extends RouteComponentProps {
     setValgtOgEtterFolgendeArbeidsforhold: (arbeidsforhold: Arbeidsforhold, nesteArbeidsforhold?: Arbeidsforhold) => void;
     valgtOrganisasjon: Organisasjon;
     listeFraAareg: Arbeidsforhold[];
-    setSortertListeMedArbeidsforhold: (arbeidsforhold: Arbeidsforhold[]) => void;
     antallArbeidsforhold: number;
     visProgressbar: boolean;
     setVisProgressbar: (skalVises: boolean) => void
@@ -69,7 +67,7 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
     );
 }
 
-const MineAnsatte: FunctionComponent<Props> = ({history, setValgtOgEtterFolgendeArbeidsforhold, valgtOrganisasjon, listeFraAareg,antallArbeidsforholdUkjent,antallArbeidsforhold, setVisProgressbar, visProgressbar,aaregLasteState,feilkode, forMangeArbeidsforhold, setSortertListeMedArbeidsforhold}) =>  {
+const MineAnsatte: FunctionComponent<Props> = ({history, setValgtOgEtterFolgendeArbeidsforhold, valgtOrganisasjon, listeFraAareg,antallArbeidsforholdUkjent,antallArbeidsforhold, setVisProgressbar, visProgressbar,aaregLasteState,feilkode, forMangeArbeidsforhold}) =>  {
     const currentUrl = new URL(window.location.href);
     const sidetall = currentUrl.searchParams.get("side") || "1";
     const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(parseInt(sidetall));
@@ -108,8 +106,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtOgEtterFolgende
         history.replace({ search: search });
     }, [history, filtrerPaAktiveAvsluttede, naVarendeSidetall,skalFiltrerePaVarsler, soketekst, navarendeKolonne]);
 
-    const setValgtArbeidsforholdOgSendMedParametere = (arbeidsforhold: Arbeidsforhold, nesteArbeidsforhold?: Arbeidsforhold  ) => {
-        setValgtOgEtterFolgendeArbeidsforhold(arbeidsforhold, nesteArbeidsforhold)
+    const setValgtArbeidsforholdOgSendMedParametere = (arbeidsforhold: Arbeidsforhold ) => {
         const nyUrl = new URL(window.location.href);
         nyUrl.searchParams.set("side", naVarendeSidetall.toString());
         nyUrl.searchParams.set("filter", filtrerPaAktiveAvsluttede);
@@ -137,9 +134,6 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtOgEtterFolgende
         }
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler]);
 
-    useEffect(() => {
-        setSortertListeMedArbeidsforhold(listeMedArbeidsForhold);
-    }, [listeMedArbeidsForhold]);
 
     const antallSider = regnUtantallSider(arbeidsforholdPerSide, listeMedArbeidsForhold.length);
 
@@ -227,14 +221,14 @@ const MineAnsatte: FunctionComponent<Props> = ({history, setValgtOgEtterFolgende
                                 setNavarendeKolonne={setNavarendeKolonne}
                                 byttSide={setIndeksOgGenererListe}
                                 navarendeKolonne={navarendeKolonne}
-                                setValgtOgEtterFolgendeArbeidsforhold={setValgtArbeidsforholdOgSendMedParametere}
+                                setValgtArbeidsforhold={setValgtArbeidsforholdOgSendMedParametere}
                                 valgtBedrift={valgtOrganisasjon.OrganizationNumber}
                             />
                             <ListeMedAnsatteForMobil
                                 fullListe={listeMedArbeidsForhold}
                                 listeMedArbeidsForhold={forholdPaEnSide}
                                 className="mine-ansatte__liste"
-                                setValgtOgEtterFolgendeArbeidsforhold={setValgtArbeidsforholdOgSendMedParametere}
+                                setValgtArbeidsforhold={setValgtArbeidsforholdOgSendMedParametere}
                                 valgtBedrift={valgtOrganisasjon.OrganizationNumber}
                             />
                             { antallSider>1 &&<SideBytter
