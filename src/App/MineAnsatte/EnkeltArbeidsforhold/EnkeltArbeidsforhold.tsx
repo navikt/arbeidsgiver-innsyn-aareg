@@ -1,11 +1,10 @@
 import React, {FunctionComponent} from 'react';
 import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold/dist';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import Lenke from 'nav-frontend-lenker';
 import environment from '../../../utils/environment';
 import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
 import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
-import { linkTilMinSideArbeidsgiver } from '../../lenker';
+import Chevron from 'nav-frontend-chevron';
 import './EnkeltArbeidsforhold.less';
 import {RouteComponentProps, withRouter} from "react-router";
 
@@ -51,6 +50,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsta
                 <div className="enkelt-arbeidsforhold-container">
                     <div className="enkelt-arbeidsforhold-innhold">
                             <button className="brodsmule" onClick={redirectTilbake} >
+                                <Chevron type={'venstre'} />
                                 <Normaltekst >
                                 Tilbake til liste
                                 </Normaltekst>
