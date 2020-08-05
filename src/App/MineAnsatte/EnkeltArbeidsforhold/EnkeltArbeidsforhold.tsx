@@ -7,10 +7,13 @@ import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
 import Chevron from 'nav-frontend-chevron';
 import './EnkeltArbeidsforhold.less';
 import {RouteComponentProps, withRouter} from "react-router";
+import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
 
 interface Props extends RouteComponentProps{
-    valgtArbeidstaker: Arbeidstaker | null;
+    valgtArbeidsforhold: Arbeidsforhold | null;
+    nesteArbeidsforhold?: Arbeidsforhold;
     valgtOrganisasjon: Organisasjon;
+    sortertListe: Arbeidsforhold[];
 };
 
 const miljo = () => {
@@ -30,9 +33,12 @@ const apiURL = () => {
     return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
 };
 
-const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidstaker, valgtOrganisasjon}) => {
+const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsforhold, valgtOrganisasjon, sortertListe}) => {
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
+
+    const indeksValgtArbeidsforhold = sortertListe.findIndex( arbeidsforhold => arbeidsforhold.navArbeidsforholdId === valgtArbeidsforhold?.navArbeidsforholdId)
+    console.log(sortertListe[indeksValgtArbeidsforhold+1].arbeidstaker.navn);
 
     const redirectTilbake = () => {
         const currentUrl = new URL(window.location.href);
@@ -40,13 +46,13 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsta
         const { search } = currentUrl;
         history.replace({ search: search , pathname: '/'})
     }
-    if (!arbeidsforholdIdFraUrl || !valgtArbeidstaker) {
+    if (!arbeidsforholdIdFraUrl || !valgtArbeidsforhold) {
         redirectTilbake()
     }
 
     return (
         <>
-            {arbeidsforholdIdFraUrl && valgtArbeidstaker && (
+            {arbeidsforholdIdFraUrl && valgtArbeidsforhold && (
                 <div className="enkelt-arbeidsforhold-container">
                     <div className="enkelt-arbeidsforhold-innhold">
                             <button className="brodsmule" onClick={redirectTilbake} >
@@ -60,7 +66,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsta
                                 <span className="af-detaljert__kolonne">
                                     <div className={'af-detaljert__arbeidsgiver'}>
                                         <Undertittel>{}</Undertittel>
-                                        <Normaltekst>Fødselsnummer: {valgtArbeidstaker.fnr}</Normaltekst>
+                                        <Normaltekst>Fødselsnummer: {valgtArbeidsforhold.arbeidstaker.offentligIdent}</Normaltekst>
                                     </div>
                                 </span>
                             </div>
@@ -69,7 +75,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsta
                                 miljo={miljo()}
                                 navArbeidsforholdId={parseInt(arbeidsforholdIdFraUrl)}
                                 rolle="ARBEIDSGIVER"
-                                fnrArbeidstaker={valgtArbeidstaker.fnr}
+                                fnrArbeidstaker={valgtArbeidsforhold.arbeidstaker.offentligIdent}
                                 customApiUrl={apiURL()}
                             />
                         </div>
