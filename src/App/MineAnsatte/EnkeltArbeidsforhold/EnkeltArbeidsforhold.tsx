@@ -1,18 +1,20 @@
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold/dist';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import Lenke from 'nav-frontend-lenker';
-import { basename } from '../../paths';
 import environment from '../../../utils/environment';
-import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
 import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
-import { linkTilMinSideArbeidsgiver } from '../../lenker';
+import Chevron from 'nav-frontend-chevron';
 import './EnkeltArbeidsforhold.less';
+import {RouteComponentProps, withRouter} from "react-router";
+import {Arbeidsforhold} from "../../Objekter/ArbeidsForhold";
+import {byggListeBasertPaPArametere, sorterArbeidsforhold} from "../sorteringOgFiltreringsFunksjoner";
 
-export declare type EnkeltArbeidsforholdProps = {
-    valgtArbeidstaker: Arbeidstaker | null;
+interface Props extends RouteComponentProps{
+    valgtArbeidsforhold: Arbeidsforhold | null;
+    nesteArbeidsforhold?: Arbeidsforhold;
     valgtOrganisasjon: Organisasjon;
-    queryParametereHovedSiden?: string;
+    alleArbeidsforhold: Arbeidsforhold[];
+    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
 };
 
 const miljo = () => {
@@ -32,41 +34,105 @@ const apiURL = () => {
     return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
 };
 
-export const EnkeltArbeidsforhold = (props: EnkeltArbeidsforholdProps) => {
+const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsforhold, valgtOrganisasjon, alleArbeidsforhold, setValgtArbeidsforhold}) => {
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
+    window.scrollTo(0, 0);
 
-    if (!arbeidsforholdIdFraUrl || !props.valgtArbeidstaker) {
-        window.location.href = basename + '/' +props.queryParametereHovedSiden;
+    const redirectTilbake = () => {
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.delete(('arbeidsforhold'));
+        const { search } = currentUrl;
+        history.replace({ search: search , pathname: '/'})
     }
 
-    const url = new URL(window.location.href);
-    url.searchParams.delete('arbeidsforhold');
-    const urlString = url.toString();
-    const indeksqueryStart = urlString.indexOf("?");
-    const sistedelAvUrl = urlString.substr(indeksqueryStart,urlString.length);
+    if (arbeidsforholdIdFraUrl === null) {
+        redirectTilbake()
+    }
+
+    const finnParametereFraUrlOgGenererListe = () => {
+        const currentUrl = new URL(window.location.href);
+        let filter = 'Alle'
+        if (currentUrl.searchParams.get("filter") && currentUrl.searchParams.get("filter") !== "Alle") {
+            filter = currentUrl.searchParams.get("filter")!!;
+        }
+        let skalFiltrere = false;
+        if (currentUrl.searchParams.get("varsler") && currentUrl.searchParams.get("varsler") === "true") {
+            skalFiltrere=true;
+        }
+        let sok = '';
+        if (currentUrl.searchParams.get("sok") && currentUrl.searchParams.get("sok") !== '') {
+            sok = currentUrl.searchParams.get("sok")!!;
+        }
+        let sorter = 0;
+        if (currentUrl.searchParams.get("sorter") && currentUrl.searchParams.get("sorter") !== '1') {
+            sorter = parseInt(currentUrl.searchParams.get("sorter")!!);
+        }
+        let revers = false;
+        if (currentUrl.searchParams.get("revers") && currentUrl.searchParams.get("revers") !== 'false') {
+            revers = true
+        }
+        const listeBasertPaParametere = byggListeBasertPaPArametere(alleArbeidsforhold, filter,skalFiltrere, sok);
+        if (revers) {
+            return sorterArbeidsforhold(listeBasertPaParametere, sorter).reverse()
+        }
+        return sorterArbeidsforhold(listeBasertPaParametere, sorter);
+
+    }
+
+    const arbeidsforhold = finnParametereFraUrlOgGenererListe();
+    const indeksValgtArbeidsforhold = arbeidsforhold.findIndex( arbeidsforhold => {
+        return arbeidsforhold.navArbeidsforholdId === arbeidsforholdIdFraUrl
+    })
+    if (arbeidsforhold.length && indeksValgtArbeidsforhold === -1) {
+        redirectTilbake()
+    }
+
+    const nesteArbeidsforhold = arbeidsforhold[indeksValgtArbeidsforhold+1];
+    const forrigeArbeidsforhold = arbeidsforhold[indeksValgtArbeidsforhold-1];
+    setValgtArbeidsforhold(arbeidsforhold[indeksValgtArbeidsforhold])
+
+    const redirectTilArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
+        setTimeout(() => {}, 2500);
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('arbeidsforhold', arbeidsforhold.navArbeidsforholdId);
+        const { search } = currentUrl;
+        history.replace({ search: search })
+    }
 
     return (
         <>
-            {arbeidsforholdIdFraUrl && props.valgtArbeidstaker && (
+            {arbeidsforholdIdFraUrl && valgtArbeidsforhold && (
                 <div className="enkelt-arbeidsforhold-container">
                     <div className="enkelt-arbeidsforhold-innhold">
-                        <Normaltekst className="brodsmule">
-                            <Lenke href={linkTilMinSideArbeidsgiver(props.valgtOrganisasjon.OrganizationNumber)}>
-                                Min side – arbeidsgiver
-                            </Lenke>
-                            {' / '}
-                            <Lenke href={basename + '/'+ sistedelAvUrl}>
-                                arbeidsforhold
-                            </Lenke>
-                            {' / enkeltarbeidsforhold'}
-                        </Normaltekst>
+                        <div className={"enkelt-arbeidsforhold-innhold__topp"}>
+                            <button className="brodsmule" onClick={redirectTilbake} >
+                                <Chevron type={'venstre'} />
+                                <Normaltekst >
+                                Tilbake til liste
+                                </Normaltekst>
+                            </button>
+                            <div className={"enkelt-arbeidsforhold-innhold__fram-tilbake-knapp"}>
+                                { forrigeArbeidsforhold && <button className="brodsmule" onClick={() => redirectTilArbeidsforhold(forrigeArbeidsforhold)} >
+                                    <Chevron type={'venstre'} />
+                                    <Normaltekst >
+                                        Forrige
+                                    </Normaltekst>
+                                </button>}
+                            { nesteArbeidsforhold && <button className="brodsmule" onClick={() => redirectTilArbeidsforhold(nesteArbeidsforhold)} >
+                                <Normaltekst >
+                                    Neste
+                                </Normaltekst>
+                                <Chevron type={'høyre'} />
+                            </button>}
+                            </div>
+                            </div>
                         <div className="enkelt-arbeidsforhold">
                             <div className="af-detaljert__header">
                                 <span className="af-detaljert__kolonne">
                                     <div className={'af-detaljert__arbeidsgiver'}>
-                                        <Undertittel>{props.valgtArbeidstaker.navn}</Undertittel>
-                                        <Normaltekst>Fødselsnummer: {props.valgtArbeidstaker.fnr}</Normaltekst>
+                                        <Undertittel>{valgtArbeidsforhold.arbeidstaker.navn}</Undertittel>
+                                        <Normaltekst>Fødselsnummer: {valgtArbeidsforhold.arbeidstaker.offentligIdent}</Normaltekst>
                                     </div>
                                 </span>
                             </div>
@@ -75,7 +141,7 @@ export const EnkeltArbeidsforhold = (props: EnkeltArbeidsforholdProps) => {
                                 miljo={miljo()}
                                 navArbeidsforholdId={parseInt(arbeidsforholdIdFraUrl)}
                                 rolle="ARBEIDSGIVER"
-                                fnrArbeidstaker={props.valgtArbeidstaker.fnr}
+                                fnrArbeidstaker={valgtArbeidsforhold.arbeidstaker.offentligIdent}
                                 customApiUrl={apiURL()}
                             />
                         </div>
@@ -85,3 +151,5 @@ export const EnkeltArbeidsforhold = (props: EnkeltArbeidsforholdProps) => {
         </>
     );
 };
+
+export default withRouter(EnkeltArbeidsforhold);
