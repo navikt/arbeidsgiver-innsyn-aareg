@@ -1,29 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import { basename } from './paths';
 import { Organisasjon, tomaAltinnOrganisasjon } from './Objekter/OrganisasjonFraAltinn';
-import { Arbeidstaker } from './Objekter/Arbeidstaker';
 
 import LoginBoundary from './LoggInnBoundary';
 
-import { EnkeltArbeidsforhold } from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
+import  EnkeltArbeidsforhold  from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import {
-    hentOrganisasjonerFraAltinn,
-    hentOrganisasjonerFraAltinnNyBackend,
+    hentOrganisasjonerFraAltinn, hentOrganisasjonerFraAltinnNyBackend,
+
     hentOrganisasjonerMedTilgangTilAltinntjeneste, hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend
 } from '../api/altinnApi';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import environment from '../utils/environment';
 import './App.less';
 
-import { APISTATUS } from '../api/api-utils';
+import {APISTATUS} from '../api/api-utils';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import {AlertStripeFeil} from 'nav-frontend-alertstriper';
 import amplitude from "../utils/amplitude";
-import {loggForbiddenFraAltinn, loggNyBackendFungerer} from "./amplitudefunksjonerForLogging";
+import {loggForbiddenFraAltinn, loggInfoOmFeil, loggNyBackendFungerer} from "./amplitudefunksjonerForLogging";
+import {hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg} from "../api/aaregApi";
+import {redirectTilLogin} from "./LoggInn/LoggInn";
+import {Arbeidsforhold} from "./Objekter/ArbeidsForhold";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -36,18 +38,27 @@ export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
 
 const App = () => {
+    const MAKS_ANTALL_ARBEIDSFORHOLD = 10000;
+
     const [tilgangArbeidsforholdState, setTilgangArbeidsforholdState] = useState(TILGANGSSTATE.LASTER);
     const [organisasjonerLasteState, setOrganisasjonerLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
 
     const [organisasjoner, setorganisasjoner] = useState(Array<Organisasjon>());
     const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
-    const [valgtArbeidstaker, setValgtArbeidstaker] = useState<Arbeidstaker | null>(null);
 
+    const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
     const [abortControllerAntallArbeidsforhold, setAbortControllerAntallArbeidsforhold] = useState<AbortController | null>(null);
     const [abortControllerArbeidsforhold, setAbortControllerArbeidsforhold] = useState<AbortController | null>(null);
 
-    const [tilgangTiLOpplysningspliktigOrg, setTilgangTiLOpplysningspliktigOrg] = useState(false);
+    const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
+    const [antallArbeidsforhold, setAntallArbeidsforhold] = useState(0);
+    const [visProgressbar, setVisProgressbar] = useState(false);
+
+    const [aaregLasteState, setAaregLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
+    const [feilkode, setFeilkode] = useState<string>('');
+    const [forMangeArbeidsforhold, setForMangeArbeidsforhold] = useState(false);
+    const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -75,7 +86,6 @@ const App = () => {
                     });
             })
             .catch((e: Error) => {
-                console.log("error",e.message);
                 if(e.message==="Forbidden"){
                     loggForbiddenFraAltinn();
                     setOrganisasjonerMedTilgang([]);
@@ -96,10 +106,69 @@ const App = () => {
             }
     }
 
+    const harTilgang = (orgnr: string) => {
+        return organisasjonerMedTilgang?.filter(org=> org.OrganizationNumber === orgnr).length
+    }
+
     const setValgtOrg = (org: Organisasjon) => {
-        setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
         setValgtOrganisasjon(org);
-        setTilgangTiLOpplysningspliktigOrg(false);
+        if (org.OrganizationNumber.length  && harTilgang(org.OrganizationNumber)) {
+            const abortController = new AbortController();
+            setAntallArbeidsforholdUkjent(true);
+            setAbortControllerAntallArbeidsforhold(abortController)
+            const signal = abortController.signal;
+            setAntallArbeidsforholdUkjent(true);
+             hentAntallArbeidsforholdFraAareg(
+                org.OrganizationNumber,
+                org.ParentOrganizationNumber, signal
+            ).then(antall => {
+                const antallForhold = antall.valueOf();
+                if (antallForhold > 0) {
+                    setAntallArbeidsforholdUkjent(false);
+                    setAntallArbeidsforhold(antallForhold);
+                    if (antallForhold>MAKS_ANTALL_ARBEIDSFORHOLD) {
+                        setVisProgressbar(false);
+                        setAaregLasteState(APISTATUS.OK);
+                        setForMangeArbeidsforhold(true);
+                    }
+                }
+                if (antallForhold <= MAKS_ANTALL_ARBEIDSFORHOLD) {
+                    setVisProgressbar(true);
+                }
+                 if ((antallForhold>0 || antallArbeidsforholdUkjent) && !forMangeArbeidsforhold) {
+                     const abortController = new AbortController();
+                     setAbortControllerArbeidsforhold(abortController)
+                     const signal = abortController.signal;
+                     hentArbeidsforholdFraAAreg(
+                         org.OrganizationNumber,
+                         org.ParentOrganizationNumber,
+                         signal
+                     )
+                         .then(responsAareg => {
+                             setListeFraAareg(responsAareg.arbeidsforholdoversikter);
+                             setAaregLasteState(APISTATUS.OK);
+                             if (antallArbeidsforholdUkjent) {
+                                 setAntallArbeidsforhold(responsAareg.arbeidsforholdoversikter.length);
+                             }
+                         })
+                         .catch(error => {
+                             loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
+                             if (error.response.status === 401) {
+                                 redirectTilLogin();
+                             }
+                             setAaregLasteState(APISTATUS.FEILET);
+                             setFeilkode(error.response.status.toString());
+                         });
+                 }
+            }).catch(error => {
+                loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
+                if (error.response.status === 401) {
+                    redirectTilLogin();
+                }
+                setAaregLasteState(APISTATUS.FEILET);
+                setFeilkode(error.response.status.toString());
+            });
+        }
         abortTidligereRequests()
     }
 
@@ -112,9 +181,6 @@ const App = () => {
                 }).length >= 1
             ) {
                 setTilgangArbeidsforholdState(TILGANGSSTATE.TILGANG);
-                if (organisasjonerMedTilgang.filter(org => org.OrganizationNumber === valgtOrganisasjon.ParentOrganizationNumber).length>0){
-                    setTilgangTiLOpplysningspliktigOrg(true)
-                }
             } else {
                 setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
             }
@@ -137,12 +203,7 @@ const App = () => {
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
 
 
-    useEffect(() => {
-        if (environment.MILJO) {
-            amplitude.logEvent("#arbeidsforhold bruker er innlogget");
-        }
-    }, []);
-
+    //skyggekall til ny backend
     useEffect(() => {
         const abortController = new AbortController();
         const signal = abortController.signal;
@@ -156,9 +217,11 @@ const App = () => {
     }, []);
 
 
-    const url = window.location.href.toString();
-    const indeksqueryStart = url.indexOf("?");
-    const sistedelAvUrl = url.substr(indeksqueryStart,url.length)
+    useEffect(() => {
+        if (environment.MILJO) {
+            amplitude.logEvent("#arbeidsforhold bruker er innlogget");
+        }
+    }, []);
 
     return (
         <div className="app">
@@ -167,6 +230,7 @@ const App = () => {
                     {organisasjonerLasteState !== APISTATUS.LASTER && (
                         <HovedBanner
                             url={window.location.href}
+                            valgtOrganisasjon = {valgtOrganisasjon}
                             byttOrganisasjon={setValgtOrg}
                             organisasjoner={organisasjonerLasteState === APISTATUS.OK ? organisasjoner : []}
                         />
@@ -177,9 +241,10 @@ const App = () => {
                                 <>
                                     <Route exact path="/enkeltArbeidsforhold">
                                         <EnkeltArbeidsforhold
-                                            valgtArbeidstaker={valgtArbeidstaker}
+                                            setValgtArbeidsforhold={setValgtArbeidsforhold}
+                                            valgtArbeidsforhold={valgtArbeidsforhold}
                                             valgtOrganisasjon={valgtOrganisasjon}
-                                            queryParametereHovedSiden={sistedelAvUrl}
+                                            alleArbeidsforhold={listeFraAareg}
                                         />
                                     </Route>
                                     <Route exact path="/">
@@ -197,13 +262,15 @@ const App = () => {
 
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
-                                                antallOrganisasjonerMedTilgang={organisasjonerMedTilgang?.length || 0}
-                                                antallOrganisasjonerTotalt={organisasjoner.length}
-                                                tilgangTiLOpplysningspliktigOrg={tilgangTiLOpplysningspliktigOrg}
-                                                setValgtArbeidstaker={setValgtArbeidstaker}
-                                                valgtOrganisasjon={valgtOrganisasjon}
-                                                setAbortControllerAntallArbeidsforhold={setAbortControllerAntallArbeidsforhold}
-                                                setAbortControllerArbeidsforhold={setAbortControllerArbeidsforhold}/>
+                                                setVisProgressbar={setVisProgressbar}
+                                                visProgressbar={visProgressbar}
+                                                antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
+                                                antallArbeidsforhold={antallArbeidsforhold}
+                                                listeFraAareg={listeFraAareg}
+                                                aaregLasteState={aaregLasteState}
+                                                feilkode={feilkode}
+                                                forMangeArbeidsforhold={forMangeArbeidsforhold}
+                                                valgtOrganisasjon={valgtOrganisasjon}/>
                                         )}
                                     </Route>
                                 </>

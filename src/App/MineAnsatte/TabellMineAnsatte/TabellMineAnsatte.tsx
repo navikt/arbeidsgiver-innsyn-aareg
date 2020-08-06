@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import 'nav-frontend-tabell-style';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
-import { Arbeidstaker } from '../../Objekter/Arbeidstaker';
 import { KolonneState } from '../MineAnsatte';
 import KolonnerFullSkjerm from './Kolonner/Kolonner';
 import YrkesbeskrivelsePopover from './KolonnerMedTooltip/YrkesbeskrivelsePopover';
@@ -12,21 +11,25 @@ import './TabellMineAnsatte.less';
 interface Props {
     className?: string;
     listeMedArbeidsForhold: Arbeidsforhold[];
+    fullListe: Arbeidsforhold[];
     setNavarendeKolonne: (kolonne: KolonneState) => void;
     byttSide: (indeks: number) => void;
     navarendeKolonne: KolonneState;
-    settValgtArbeidsgiver: (valgtArbeidstaker: Arbeidstaker) => void;
+    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
     valgtBedrift: string;
+
 }
 
 const TabellMineAnsatte: FunctionComponent<Props> = props => {
+
+
     const rader = props.listeMedArbeidsForhold.map(arbeidsforhold => {
         return (
             <tr key={arbeidsforhold.navArbeidsforholdId}>
                 <td className="td">
                     <NavnPopover
                         arbeidsforhold={arbeidsforhold}
-                        settValgtArbeidsgiver={props.settValgtArbeidsgiver}
+                        setValgtArbeidsforhold={props.setValgtArbeidsforhold}
                         valgtBedrift={props.valgtBedrift}
                     />
                 </td>
