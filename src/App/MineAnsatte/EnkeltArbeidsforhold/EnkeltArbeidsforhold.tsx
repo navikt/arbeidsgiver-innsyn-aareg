@@ -89,12 +89,13 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsfo
     }
 
     const nesteArbeidsforhold = arbeidsforhold[indeksValgtArbeidsforhold+1];
+    const forrigeArbeidsforhold = arbeidsforhold[indeksValgtArbeidsforhold-1];
     setValgtArbeidsforhold(arbeidsforhold[indeksValgtArbeidsforhold])
 
-    const redirectNesteArbeidsforhold = () => {
+    const redirectTilArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
         setTimeout(() => {}, 2500);
         const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('arbeidsforhold', nesteArbeidsforhold.navArbeidsforholdId);
+        currentUrl.searchParams.set('arbeidsforhold', arbeidsforhold.navArbeidsforholdId);
         const { search } = currentUrl;
         history.replace({ search: search })
     }
@@ -111,12 +112,20 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsfo
                                 Tilbake til liste
                                 </Normaltekst>
                             </button>
-                            { nesteArbeidsforhold && <button className="brodsmule" onClick={redirectNesteArbeidsforhold} >
+                            <div className={"enkelt-arbeidsforhold-innhold__fram-tilbake-knapp"}>
+                                { forrigeArbeidsforhold && <button className="brodsmule" onClick={() => redirectTilArbeidsforhold(forrigeArbeidsforhold)} >
+                                    <Chevron type={'venstre'} />
+                                    <Normaltekst >
+                                        Forrige
+                                    </Normaltekst>
+                                </button>}
+                            { nesteArbeidsforhold && <button className="brodsmule" onClick={() => redirectTilArbeidsforhold(nesteArbeidsforhold)} >
                                 <Normaltekst >
-                                    Neste arbeidsforhold
+                                    Neste
                                 </Normaltekst>
                                 <Chevron type={'høyre'} />
                             </button>}
+                            </div>
                             </div>
                         <div className="enkelt-arbeidsforhold">
                             <div className="af-detaljert__header">
