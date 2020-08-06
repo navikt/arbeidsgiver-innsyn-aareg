@@ -11,8 +11,38 @@
             border-radius: 4px;
         }
 
+        &__topp {
+            display: flex;
+            justify-content: space-between;
+
+            @media (max-width: 450px) {
+                flex-direction: column;
+                justify-content: space-around;
+
+            }
+
+        }
+
+        &__fram-tilbake-knapp {
+            display: flex;
+            justify-content: space-between;
+        }
+
         .brodsmule {
             margin: 1rem 1.5rem;
+            color: #0067C5;
+            background: none;
+            text-decoration: underline;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+
+            &:hover {
+                text-decoration: none;
+            }
+
+
             @media (min-width: @screen-sm) {
                 margin: 2rem;
             }
@@ -36,5 +66,7 @@
         }
     }
 }
+
+
 
 
