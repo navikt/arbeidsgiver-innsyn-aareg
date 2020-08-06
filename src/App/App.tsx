@@ -123,7 +123,7 @@ const App = () => {
                 org.ParentOrganizationNumber, signal
             ).then(antall => {
                 const antallForhold = antall.valueOf();
-                if (antallForhold > 0) {
+                if (antallForhold >= 0) {
                     setAntallArbeidsforholdUkjent(false);
                     setAntallArbeidsforhold(antallForhold);
                     if (antallForhold>MAKS_ANTALL_ARBEIDSFORHOLD) {
@@ -132,10 +132,10 @@ const App = () => {
                         setForMangeArbeidsforhold(true);
                     }
                 }
-                if (antallForhold <= MAKS_ANTALL_ARBEIDSFORHOLD) {
+                if (antallForhold <= MAKS_ANTALL_ARBEIDSFORHOLD ) {
                     setVisProgressbar(true);
                 }
-                 if ((antallForhold>0 || antallArbeidsforholdUkjent) && !forMangeArbeidsforhold) {
+                 if ((antallForhold>=0 || antallArbeidsforholdUkjent) && !forMangeArbeidsforhold) {
                      const abortController = new AbortController();
                      setAbortControllerArbeidsforhold(abortController)
                      const signal = abortController.signal;
