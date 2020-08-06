@@ -19,6 +19,8 @@ import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
 import { RouteComponentProps, withRouter } from 'react-router';
 import Chevron from "nav-frontend-chevron";
+import {hentAntallArbeidsforholdFraAaregNyBackend, hentArbeidsforholdFraAAregNyBackend} from "../../api/aaregApi";
+import {loggNyBackendFungerer} from "../amplitudefunksjonerForLogging";
 
 interface Props extends RouteComponentProps {
     valgtOrganisasjon: Organisasjon;
@@ -156,6 +158,26 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
     const antallVarsler = listeMedArbeidsForhold.filter(forhold => {
         return forhold.varsler;
     }).length;
+
+    //skyggekall ny backend
+    useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        hentArbeidsforholdFraAAregNyBackend(
+            valgtOrganisasjon.OrganizationNumber,
+            valgtOrganisasjon.ParentOrganizationNumber,
+            signal
+        )
+            .then(arbeidsforholdResponse =>loggNyBackendFungerer('arbeidsforhold-kall: ' + arbeidsforholdResponse.arbeidsforholdoversikter.length))
+            .catch((e: Error) => loggNyBackendFungerer('arbeidsforhold-kall med tilgang: ' + e.message ));
+        hentAntallArbeidsforholdFraAaregNyBackend(
+            valgtOrganisasjon.OrganizationNumber,
+            valgtOrganisasjon.ParentOrganizationNumber,
+            signal
+        )
+            .then(objekt =>loggNyBackendFungerer('antall arbeidsforhold-kall  ' + objekt.toString()))
+            .catch((e: Error) => loggNyBackendFungerer('antall arbeidsforhold-kall: ' + e.message ));
+    }, [valgtOrganisasjon]);
 
 
     const feilmeldingtekst = () => {
