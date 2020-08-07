@@ -117,6 +117,7 @@ const App = () => {
             setAntallArbeidsforholdUkjent(true);
             setAbortControllerAntallArbeidsforhold(abortController)
             setAntallArbeidsforhold(0);
+            setForMangeArbeidsforhold(false);
             const signal = abortController.signal;
             setAntallArbeidsforholdUkjent(true);
              hentAntallArbeidsforholdFraAareg(
@@ -133,6 +134,7 @@ const App = () => {
                         setForMangeArbeidsforhold(true);
                     }
                 }
+                console.log('antall arbeidsforhold lest som: ' + antallForhold);
 
                 if (antallForhold <= MAKS_ANTALL_ARBEIDSFORHOLD ) {
                     setVisProgressbar(true);
