@@ -116,6 +116,7 @@ const App = () => {
             const abortController = new AbortController();
             setAntallArbeidsforholdUkjent(true);
             setAbortControllerAntallArbeidsforhold(abortController)
+            setAntallArbeidsforhold(0);
             const signal = abortController.signal;
             setAntallArbeidsforholdUkjent(true);
              hentAntallArbeidsforholdFraAareg(
@@ -123,7 +124,7 @@ const App = () => {
                 org.ParentOrganizationNumber, signal
             ).then(antall => {
                 const antallForhold = antall.valueOf();
-                if (antallForhold >= 0) {
+                if (antallForhold > 0) {
                     setAntallArbeidsforholdUkjent(false);
                     setAntallArbeidsforhold(antallForhold);
                     if (antallForhold>MAKS_ANTALL_ARBEIDSFORHOLD) {
@@ -132,10 +133,11 @@ const App = () => {
                         setForMangeArbeidsforhold(true);
                     }
                 }
+
                 if (antallForhold <= MAKS_ANTALL_ARBEIDSFORHOLD ) {
                     setVisProgressbar(true);
                 }
-                 if ((antallForhold>=0 || antallArbeidsforholdUkjent) && !forMangeArbeidsforhold) {
+                 if (!forMangeArbeidsforhold) {
                      const abortController = new AbortController();
                      setAbortControllerArbeidsforhold(abortController)
                      const signal = abortController.signal;
