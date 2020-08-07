@@ -165,6 +165,29 @@ const App = () => {
                          });
                  }
             }).catch(error => {
+                 const abortController = new AbortController();
+                 setAbortControllerArbeidsforhold(abortController)
+                 const signal = abortController.signal;
+                 hentArbeidsforholdFraAAreg(
+                     org.OrganizationNumber,
+                     org.ParentOrganizationNumber,
+                     signal
+                 )
+                     .then(responsAareg => {
+                         setListeFraAareg(responsAareg.arbeidsforholdoversikter);
+                         setAaregLasteState(APISTATUS.OK);
+                         if (antallArbeidsforholdUkjent) {
+                             setAntallArbeidsforhold(responsAareg.arbeidsforholdoversikter.length);
+                         }
+                     })
+                     .catch(error => {
+                         loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
+                         if (error.response.status === 401) {
+                             redirectTilLogin();
+                         }
+                         setAaregLasteState(APISTATUS.FEILET);
+                         setFeilkode(error.response.status.toString());
+                     });
                 loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
                 if (error.response.status === 401) {
                     redirectTilLogin();
