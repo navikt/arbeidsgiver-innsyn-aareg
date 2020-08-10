@@ -99,8 +99,8 @@ export const loggBrukerTrykketPaVarsel = () => {
     amplitude.logEvent("#arbeidsforhold trykket pa ansatt med varsel" + environment.MILJO);
 };
 
-export const loggNyBackendFungerer= (beskjed: string) => {
-    amplitude.logEvent("#arbeidsforhold ny backend "+ beskjed);
+export const loggNyBackendFungerer= (beskjed: string, antall?: Number) => {
+    amplitude.logEvent("#arbeidsforhold ny backend "+ beskjed, {antall});
 }
 
 export const loggBrukerTrykketPaExcel = () => {
