@@ -7,3 +7,8 @@ export type overSiktPerUnderenhet = {
     aktiveArbeidsforhold: number;
     inaktiveArbeidsforhold: number;
 };
+
+export type overSiktPerUnderenhetPar = {
+    first: string;
+    second: number;
+};
