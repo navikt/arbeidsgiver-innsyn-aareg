@@ -37,6 +37,10 @@ enum TILGANGSSTATE {
 export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
 
+const erGyldigOrganisasjon = (organisasjon: Organisasjon) => {
+    return ((organisasjon.Type === 'Enterprise' || organisasjon.OrganizationForm === 'FLI') || (organisasjon.OrganizationForm ==='BEDR' || organisasjon.OrganizationForm === 'AAFY'));
+}
+
 const App = () => {
     const MAKS_ANTALL_ARBEIDSFORHOLD = 10000;
 
@@ -67,7 +71,7 @@ const App = () => {
             .then(organisasjonsliste => {
                 setorganisasjoner(
                     organisasjonsliste.filter(
-                        organisasjon => organisasjon.OrganizationForm === 'BEDR' || organisasjon.Type === 'Enterprise'
+                        organisasjon => erGyldigOrganisasjon(organisasjon)
                     )
                 );
                 hentOrganisasjonerMedTilgangTilAltinntjeneste(
