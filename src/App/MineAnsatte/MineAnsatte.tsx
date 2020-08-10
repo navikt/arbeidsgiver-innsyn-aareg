@@ -168,17 +168,16 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
             valgtOrganisasjon.ParentOrganizationNumber,
             signal
         )
-            .then(arbeidsforholdResponse =>loggNyBackendFungerer('arbeidsforhold-kall: ' + arbeidsforholdResponse.arbeidsforholdoversikter.length))
+            .then(arbeidsforholdResponse =>loggNyBackendFungerer('arbeidsforhold-kall fungerer ', arbeidsforholdResponse.arbeidsforholdoversikter.length))
             .catch((e: Error) => loggNyBackendFungerer('arbeidsforhold-kall med tilgang: ' + e.message ));
         hentAntallArbeidsforholdFraAaregNyBackend(
             valgtOrganisasjon.OrganizationNumber,
             valgtOrganisasjon.ParentOrganizationNumber,
             signal
         )
-            .then(objekt =>loggNyBackendFungerer('antall arbeidsforhold-kall fungerer ', objekt))
+            .then(antall =>loggNyBackendFungerer('antall arbeidsforhold-kall fungerer ', antall))
             .catch((e: Error) => loggNyBackendFungerer('antall arbeidsforhold-kall: ' + e.message ));
     }, [valgtOrganisasjon]);
-
 
     const feilmeldingtekst = () => {
         switch (feilkode) {
