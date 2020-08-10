@@ -72,7 +72,7 @@ const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsIn
                             </Ekspanderbartpanel>
                     )}
 
-                    {(!bedrifterMedTilgang || bedrifterMedTilgang.length === 0) && (
+                    {(!filtrerteUnderEnheter || filtrerteUnderEnheter.length === 0) && (
                         <div className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel">
                             <Normaltekst>
                                 Det finnes ingen virksomheter der du har rettigheter til å se arbeidsforhold.
