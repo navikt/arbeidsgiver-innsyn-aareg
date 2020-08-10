@@ -10,7 +10,10 @@ import {
     loggTidForAlleArbeidsforhold
 } from '../App/amplitudefunksjonerForLogging';
 import { FetchError } from './api-utils';
-import { OversiktOverAntallForholdPerUnderenhet } from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
+import {
+    OversiktOverAntallForholdPerUnderenhet,
+    overSiktPerUnderenhetPar
+} from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
 
 export async function hentArbeidsforholdFraAAreg(underenhet: string, enhet: string, signal: any): Promise<ObjektFraAAregisteret> {
     const headere = new Headers();
@@ -49,23 +52,17 @@ export async function hentArbeidsforholdFraAAregNyBackend(underenhet: string, en
     }
 }
 
-export async function hentAntallArbeidsforholdFraAaregNyBackend(underenhet: string, enhet: string, signal: any): Promise<Number> {
+export async function hentAntallArbeidsforholdFraAaregNyBackend(underenhet: string, enhet: string, signal: any): Promise<number> {
     const headere = new Headers();
     headere.set('jurenhet', enhet);
     headere.set('orgnr', underenhet);
     let respons = await fetch(hentAntallArbeidsforholdLinkNyBackend(), { headers: headere, signal: signal  });
 
     if (respons.ok) {
-        const jsonRespons: OversiktOverAntallForholdPerUnderenhet = await respons.json();
-        const valgtunderEnhet = jsonRespons.filter(
-            oversikt => oversikt.arbeidsgiver.organisasjonsnummer === underenhet
-        );
-        if (valgtunderEnhet[0]) {
-            return valgtunderEnhet[0].aktiveArbeidsforhold + valgtunderEnhet[0].inaktiveArbeidsforhold;
-        }
-        return 0;
+        const jsonRespons: overSiktPerUnderenhetPar= await respons.json();
+        return jsonRespons.second
     } else {
-        throw new FetchError(respons.statusText || respons.type, respons);
+        return -1
     }
 }
 
