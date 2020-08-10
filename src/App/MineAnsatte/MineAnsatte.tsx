@@ -175,7 +175,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
             valgtOrganisasjon.ParentOrganizationNumber,
             signal
         )
-            .then(objekt =>loggNyBackendFungerer('antall arbeidsforhold-kall  ' + objekt.toString()))
+            .then(objekt =>loggNyBackendFungerer('antall arbeidsforhold-kall fungerer ', objekt))
             .catch((e: Error) => loggNyBackendFungerer('antall arbeidsforhold-kall: ' + e.message ));
     }, [valgtOrganisasjon]);
 
