@@ -37,7 +37,7 @@ enum TILGANGSSTATE {
 export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
 
-const erGyldigOrganisasjon = (organisasjon: Organisasjon) => {
+export const erGyldigOrganisasjon = (organisasjon: Organisasjon) => {
     return ((organisasjon.Type === 'Enterprise' || organisasjon.OrganizationForm === 'FLI') || (organisasjon.OrganizationForm ==='BEDR' || organisasjon.OrganizationForm === 'AAFY'));
 }
 

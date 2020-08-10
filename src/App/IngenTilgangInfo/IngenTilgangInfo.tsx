@@ -10,7 +10,7 @@ import {beOmTilgangIAltinnLink, linkTilMinSideArbeidsgiver} from '../lenker';
 import './IngenTilgangInfo.less';
 import Lenkepanel from 'nav-frontend-lenkepanel';
 
-import {SERVICEEDITIONINNSYNAAREGISTERET, SERVICEKODEINNSYNAAREGISTERET} from "../App";
+import {erGyldigOrganisasjon, SERVICEEDITIONINNSYNAAREGISTERET, SERVICEKODEINNSYNAAREGISTERET} from "../App";
 
 type TilgangsInfoProps = {
     bedrifterMedTilgang: Array<Organisasjon> | null;
@@ -18,6 +18,8 @@ type TilgangsInfoProps = {
 };
 
 const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsInfoProps) => {
+    const filtrerteUnderEnheter: Array<Organisasjon> | null | undefined = bedrifterMedTilgang?.filter(organisasjon => erGyldigOrganisasjon(organisasjon))
+
     return (
         <div className="ingen-tilgang-info-container">
             <Normaltekst className="brodsmule">
@@ -54,14 +56,14 @@ const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsIn
                             </div>
                         </div>
                     </Lenkepanel>
-                    {bedrifterMedTilgang && bedrifterMedTilgang.length > 0 && (
+                    {filtrerteUnderEnheter && filtrerteUnderEnheter.length > 0 && (
                             <Ekspanderbartpanel
                                 className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel"
                                 tittel="Disse virksomhetene har tilgang"
                                 border
                             >
                                 <ul className="ingen-tilgang-innhold__panelinnhold">
-                                    {bedrifterMedTilgang.map(bedrift => (
+                                    {filtrerteUnderEnheter.map(bedrift => (
                                         <li key={bedrift.OrganizationNumber}>
                                             {bedrift.Name + '(' + bedrift.OrganizationNumber + ')'}
                                         </li>
