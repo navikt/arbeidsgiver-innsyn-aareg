@@ -185,10 +185,11 @@ export const testRespons: Organisasjon[] = [
         Type: 'Business',
         ParentOrganizationNumber: '810825472',
         OrganizationNumber: '910825526',
-        OrganizationForm: 'BEDR',
+        OrganizationForm: 'AAFY',
         Status: 'Active'
     }
 ];
+
 export const tilgangTilAtinntjenesteRespons: Organisasjon[] = [
     {
         Name: 'MALMEFJORDEN OG RIDABU REGNSKAP',
