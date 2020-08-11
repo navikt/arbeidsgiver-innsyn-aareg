@@ -57,9 +57,9 @@ export async function hentAntallArbeidsforholdFraAaregNyBackend(underenhet: stri
     headere.set('jurenhet', enhet);
     headere.set('orgnr', underenhet);
     let respons = await fetch(hentAntallArbeidsforholdLinkNyBackend(), { headers: headere, signal: signal  });
-
     if (respons.ok) {
         const jsonRespons: overSiktPerUnderenhetPar= await respons.json();
+        console.log('kaller antall fikk: ',jsonRespons);
         return jsonRespons.second
     } else {
         return -1

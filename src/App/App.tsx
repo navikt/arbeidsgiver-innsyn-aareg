@@ -22,8 +22,15 @@ import MineAnsatte from './MineAnsatte/MineAnsatte';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import {AlertStripeFeil} from 'nav-frontend-alertstriper';
 import amplitude from "../utils/amplitude";
-import {loggForbiddenFraAltinn, loggInfoOmFeil, loggNyBackendFungerer} from "./amplitudefunksjonerForLogging";
-import {hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg} from "../api/aaregApi";
+import {
+    loggForbiddenFraAltinn,
+    loggInfoOmFeil,
+    loggNyBackendFungerer
+} from "./amplitudefunksjonerForLogging";
+import {
+    hentAntallArbeidsforholdFraAaregNyBackend,
+    hentArbeidsforholdFraAAregNyBackend
+} from "../api/aaregApi";
 import {redirectTilLogin} from "./LoggInn/LoggInn";
 import {Arbeidsforhold} from "./Objekter/ArbeidsForhold";
 
@@ -110,97 +117,71 @@ const App = () => {
             }
     }
 
+    const hentAntallArbeidsforholdogArbeidsforhold = (organisasjon: Organisasjon) => {
+        console.log('kaller hent arbeidsforhold');
+        setAaregLasteState(APISTATUS.LASTER);
+        setAntallArbeidsforholdUkjent(true);
+        const abortControllerAntallKall = new AbortController();
+        const signal = abortControllerAntallKall.signal;
+        setAbortControllerAntallArbeidsforhold(abortControllerAntallKall)
+        setAntallArbeidsforhold(0);
+        setForMangeArbeidsforhold(false);
+        hentAntallArbeidsforholdFraAaregNyBackend(organisasjon.OrganizationNumber, organisasjon.ParentOrganizationNumber, signal).then(antall => {
+            if (antall === -1) {
+                setAntallArbeidsforholdUkjent(true);
+            }
+            else if (antallArbeidsforhold>MAKS_ANTALL_ARBEIDSFORHOLD){
+                setForMangeArbeidsforhold(true);
+                setVisProgressbar(false);
+                setAaregLasteState(APISTATUS.OK);
+            }
+            else {
+                setVisProgressbar(true);
+                setAntallArbeidsforholdUkjent(false);
+                setAntallArbeidsforhold(antall)
+                setAntallArbeidsforhold(antall);
+            }
+            console.log(antall);
+            if (antall<= MAKS_ANTALL_ARBEIDSFORHOLD) {
+                const abortControllerArbeidsforhold = new AbortController();
+                setAbortControllerArbeidsforhold(abortControllerArbeidsforhold)
+                const signal = abortControllerArbeidsforhold.signal;
+                hentArbeidsforholdFraAAregNyBackend(
+                    organisasjon.OrganizationNumber,
+                    organisasjon.ParentOrganizationNumber,
+                    signal
+                )
+                    .then(responsAareg => {
+                        console.log(responsAareg);
+                        setListeFraAareg(responsAareg.arbeidsforholdoversikter);
+                        setAaregLasteState(APISTATUS.OK);
+                        if (!antallArbeidsforholdUkjent) {
+                            setAntallArbeidsforhold(responsAareg.arbeidsforholdoversikter.length);
+                        }
+                    })
+                    .catch(error => {
+                        loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
+                        if (error.response.status === 401) {
+                            redirectTilLogin();
+                        }
+                        setAaregLasteState(APISTATUS.FEILET);
+                        setFeilkode(error.response.status.toString());
+                    });
+            }
+        });
+        }
+
+
     const harTilgang = (orgnr: string) => {
         return organisasjonerMedTilgang?.filter(org=> org.OrganizationNumber === orgnr).length
     }
 
-    const setValgtOrg = (org: Organisasjon) => {
-        setValgtOrganisasjon(org);
-        if (org.OrganizationNumber.length  && harTilgang(org.OrganizationNumber)) {
-            const abortController = new AbortController();
-            setAntallArbeidsforholdUkjent(true);
-            setAbortControllerAntallArbeidsforhold(abortController)
-            setAntallArbeidsforhold(0);
-            setForMangeArbeidsforhold(false);
-            const signal = abortController.signal;
-            setAntallArbeidsforholdUkjent(true);
-             hentAntallArbeidsforholdFraAareg(
-                org.OrganizationNumber,
-                org.ParentOrganizationNumber, signal
-            ).then(antall => {
-                const antallForhold = antall.valueOf();
-                if (antallForhold > 0) {
-                    setAntallArbeidsforholdUkjent(false);
-                    setAntallArbeidsforhold(antallForhold);
-                    if (antallForhold>MAKS_ANTALL_ARBEIDSFORHOLD) {
-                        setVisProgressbar(false);
-                        setAaregLasteState(APISTATUS.OK);
-                        setForMangeArbeidsforhold(true);
-                    }
-                }
-                console.log('antall arbeidsforhold lest som: ' + antallForhold);
-
-                if (antallForhold <= MAKS_ANTALL_ARBEIDSFORHOLD ) {
-                    setVisProgressbar(true);
-                }
-                 if (!forMangeArbeidsforhold) {
-                     const abortController = new AbortController();
-                     setAbortControllerArbeidsforhold(abortController)
-                     const signal = abortController.signal;
-                     hentArbeidsforholdFraAAreg(
-                         org.OrganizationNumber,
-                         org.ParentOrganizationNumber,
-                         signal
-                     )
-                         .then(responsAareg => {
-                             setListeFraAareg(responsAareg.arbeidsforholdoversikter);
-                             setAaregLasteState(APISTATUS.OK);
-                             if (antallArbeidsforholdUkjent) {
-                                 setAntallArbeidsforhold(responsAareg.arbeidsforholdoversikter.length);
-                             }
-                         })
-                         .catch(error => {
-                             loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
-                             if (error.response.status === 401) {
-                                 redirectTilLogin();
-                             }
-                             setAaregLasteState(APISTATUS.FEILET);
-                             setFeilkode(error.response.status.toString());
-                         });
-                 }
-            }).catch(error => {
-                 const abortController = new AbortController();
-                 setAbortControllerArbeidsforhold(abortController)
-                 const signal = abortController.signal;
-                 hentArbeidsforholdFraAAreg(
-                     org.OrganizationNumber,
-                     org.ParentOrganizationNumber,
-                     signal
-                 )
-                     .then(responsAareg => {
-                         setListeFraAareg(responsAareg.arbeidsforholdoversikter);
-                         setAaregLasteState(APISTATUS.OK);
-                         if (antallArbeidsforholdUkjent) {
-                             setAntallArbeidsforhold(responsAareg.arbeidsforholdoversikter.length);
-                         }
-                     })
-                     .catch(error => {
-                         loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
-                         if (error.response.status === 401) {
-                             redirectTilLogin();
-                         }
-                         setAaregLasteState(APISTATUS.FEILET);
-                         setFeilkode(error.response.status.toString());
-                     });
-                loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
-                if (error.response.status === 401) {
-                    redirectTilLogin();
-                }
-                setAaregLasteState(APISTATUS.FEILET);
-                setFeilkode(error.response.status.toString());
-            });
-        }
+    const setValgtOrg = (organisasjon: Organisasjon) => {
+        setValgtOrganisasjon(organisasjon);
         abortTidligereRequests()
+        if (organisasjon.OrganizationNumber.length  && harTilgang(organisasjon.OrganizationNumber)) {
+            hentAntallArbeidsforholdogArbeidsforhold(organisasjon);
+        }
     }
 
     useEffect(() => {
