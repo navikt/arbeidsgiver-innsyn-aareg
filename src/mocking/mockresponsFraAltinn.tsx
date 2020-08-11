@@ -1,236 +1,166 @@
-import { Organisasjon } from '../App/Objekter/OrganisasjonFraAltinn';
+import {OrganisasjonlowerCase} from "../App/Objekter/OrganisasjonFraAltinn";
 
-export const MockresponsOrganisasjoner: Organisasjon[] = [
+export const testRespons: OrganisasjonlowerCase[] = [
     {
-        Name: 'BALLSTAD OG HAMARØY',
-        Type: 'Business',
-        OrganizationNumber: '811076732',
-        ParentOrganizationNumber: '811076112',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
+        name: 'STORFOSNA OG FREDRIKSTAD REGNSKAP',
+        type: 'Business',
+        parentOrganizationNumber: '910825550',
+        organizationNumber: '910825569',
+        organizationForm: 'BEDR',
+        status: 'Active'
     },
     {
-        Name: 'BALLSTAD OG HORTEN',
-        Type: 'Enterprise',
-        ParentOrganizationNumber: null,
-        OrganizationNumber: '811076112',
-        OrganizationForm: 'AS',
-        Status: 'Active'
+        name: 'ULNES OG SÆBØ',
+        type: 'Business',
+        parentOrganizationNumber: '910712217',
+        organizationNumber: '910712241',
+        organizationForm: 'BEDR',
+        status: 'Active'
     },
     {
-        Name: 'DIGITAL JUNKIES AS ',
-        Type: 'Enterprise',
-        OrganizationNumber: '822565212',
-        ParentOrganizationNumber: null,
-        OrganizationForm: 'AS',
-        Status: 'Active'
+        name: 'TRANØY OG SANDE I VESTFOLD REGNSKAP',
+        type: 'Enterprise',
+        parentOrganizationNumber: null,
+        organizationNumber: '910825550',
+        organizationForm: 'AS',
+        status: 'Active'
     },
     {
-        Name: 'DIGITAL JUNKIES AS ',
-        Type: 'Business',
-        OrganizationNumber: '922658986',
-        ParentOrganizationNumber: '822565212',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
+        name: 'BYGSTAD OG VINTERBRO REGNSKAP',
+        type: 'Business',
+        parentOrganizationNumber: '910825321',
+        organizationNumber: '910825348',
+        organizationForm: 'BEDR',
+        status: 'Active'
     },
     {
-        Name: 'NAV ENGERDAL',
-        Type: 'Business',
-        ParentOrganizationNumber: '874652202',
-        OrganizationNumber: '991378642',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
+        name: 'LINESØYA OG LANGANGEN REGNSKAP',
+        type: 'Business',
+        parentOrganizationNumber: '910825550',
+        organizationNumber: '910825585',
+        organizationForm: 'BEDR',
+        status: 'Active'
     },
     {
-        Name: 'NAV HAMAR',
-        Type: 'Business',
-        ParentOrganizationNumber: '874652202',
-        OrganizationNumber: '990229023',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
+        name: 'SLEMMESTAD OG STAVERN REGNSKAP',
+        type: 'Business',
+        parentOrganizationNumber: '810825472',
+        organizationNumber: '910825496',
+        organizationForm: 'BEDR',
+        status: 'Active'
     },
     {
-        Name: 'MAURA OG KOLBU AS ',
-        Type: 'Enterprise',
-        OrganizationNumber: '910825518',
-        ParentOrganizationNumber: null,
-        OrganizationForm: 'AS',
-        Status: 'Active'
+        name: 'ENEBAKK OG SANDSHAMN REVISJON',
+        type: 'Business',
+        parentOrganizationNumber: null,
+        organizationNumber: '911000474',
+        organizationForm: 'BEDR',
+        status: 'Active'
     },
     {
-        Name: 'MAURA OG KOLBU',
-        Type: 'Business',
-        OrganizationNumber: '810825472',
-        ParentOrganizationNumber: '910825518',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
+        name: 'STØ OG BERGER',
+        type: 'Enterprise',
+        parentOrganizationNumber: null,
+        organizationNumber: '910712217',
+        organizationForm: 'AS',
+        status: 'Active'
+    },
+    {
+        name: 'UTVIK OG ETNE',
+        type: 'Business',
+        parentOrganizationNumber: '910712217',
+        organizationNumber: '910712233',
+        organizationForm: 'BEDR',
+        status: 'Active'
+    },
+    {
+        name: 'LALM OG NARVIK REVISJON',
+        type: 'Enterprise',
+        parentOrganizationNumber: null,
+        organizationNumber: '911003155',
+        organizationForm: 'AS',
+        status: 'Active'
+    },
+    {
+        name: 'MALMEFJORDEN OG RIDABU REGNSKAP',
+        type: 'Enterprise',
+        parentOrganizationNumber: null,
+        organizationNumber: '810825472',
+        organizationForm: 'AS',
+        status: 'Active'
+    },
+    {
+        name: 'ENEBAKK OG ØYER',
+        type: 'Business',
+        parentOrganizationNumber: '910712217',
+        organizationNumber: '910712268',
+        organizationForm: 'BEDR',
+        status: 'Active'
+    },
+    {
+        name: 'BIRTAVARRE OG VÆRLANDET REGNSKAP',
+        type: 'Business',
+        parentOrganizationNumber: '910825550',
+        organizationNumber: '910825607',
+        organizationForm: 'BEDR',
+        status: 'Active'
+    },
+    {
+        name: 'MAURA OG KOLBU REGNSKAP',
+        type: 'Business',
+        parentOrganizationNumber: '810825472',
+        organizationNumber: '910825518',
+        organizationForm: 'BEDR',
+        status: 'Active'
+    },
+    {
+        name: 'GAMLE FREDRIKSTAD OG RAMNES REGNSKAP',
+        type: 'Business',
+        parentOrganizationNumber: '810825472',
+        organizationNumber: '910825526',
+        organizationForm: 'BEDR',
+        status: 'Active'
     }
 ];
-
-export const testRespons: Organisasjon[] = [
+export const tilgangTilAtinntjenesteRespons: OrganisasjonlowerCase[] = [
     {
-        Name: 'STORFOSNA OG FREDRIKSTAD REGNSKAP',
-        Type: 'Business',
-        ParentOrganizationNumber: '910825550',
-        OrganizationNumber: '910825569',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
+        name: 'MALMEFJORDEN OG RIDABU REGNSKAP',
+        type: 'Enterprise',
+        parentOrganizationNumber: null,
+        organizationNumber: '810825472',
+        organizationForm: 'AS',
+        status: 'Active'
     },
     {
-        Name: 'ULNES OG SÆBØ',
-        Type: 'Business',
-        ParentOrganizationNumber: '910712217',
-        OrganizationNumber: '910712241',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
+        name: 'MAURA OG KOLBU REGNSKAP',
+        type: 'Business',
+        parentOrganizationNumber: '810825472',
+        organizationNumber: '910825518',
+        organizationForm: 'BEDR',
+        status: 'Active'
     },
     {
-        Name: 'TRANØY OG SANDE I VESTFOLD REGNSKAP',
-        Type: 'Enterprise',
-        ParentOrganizationNumber: null,
-        OrganizationNumber: '910825550',
-        OrganizationForm: 'AS',
-        Status: 'Active'
+        name: 'GAMLE FREDRIKSTAD OG RAMNES REGNSKAP',
+        type: 'Business',
+        parentOrganizationNumber: '810825472',
+        organizationNumber: '910825526',
+        organizationForm: 'BEDR',
+        status: 'Active'
     },
     {
-        Name: 'BYGSTAD OG VINTERBRO REGNSKAP',
-        Type: 'Business',
-        ParentOrganizationNumber: '910825321',
-        OrganizationNumber: '910825348',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
+        name: 'BIRTAVARRE OG VÆRLANDET REGNSKAP',
+        type: 'Business',
+        parentOrganizationNumber: '910825550',
+        organizationNumber: '910825607',
+        organizationForm: 'BEDR',
+        status: 'Active'
     },
     {
-        Name: 'LINESØYA OG LANGANGEN REGNSKAP',
-        Type: 'Business',
-        ParentOrganizationNumber: '910825550',
-        OrganizationNumber: '910825585',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
+        name: 'STORFOSNA OG FREDRIKSTAD REGNSKAP',
+        type: 'Business',
+        parentOrganizationNumber: '910825550',
+        organizationNumber: '910825569',
+        organizationForm: 'BEDR',
+        status: 'Active'
     },
-    {
-        Name: 'SLEMMESTAD OG STAVERN REGNSKAP',
-        Type: 'Business',
-        ParentOrganizationNumber: '810825472',
-        OrganizationNumber: '910825496',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
-    },
-    {
-        Name: 'ENEBAKK OG SANDSHAMN REVISJON',
-        Type: 'Business',
-        ParentOrganizationNumber: null,
-        OrganizationNumber: '911000474',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
-    },
-    {
-        Name: 'STØ OG BERGER',
-        Type: 'Enterprise',
-        ParentOrganizationNumber: null,
-        OrganizationNumber: '910712217',
-        OrganizationForm: 'AS',
-        Status: 'Active'
-    },
-    {
-        Name: 'UTVIK OG ETNE',
-        Type: 'Business',
-        ParentOrganizationNumber: '910712217',
-        OrganizationNumber: '910712233',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
-    },
-    {
-        Name: 'LALM OG NARVIK REVISJON',
-        Type: 'Enterprise',
-        ParentOrganizationNumber: null,
-        OrganizationNumber: '911003155',
-        OrganizationForm: 'AS',
-        Status: 'Active'
-    },
-    {
-        Name: 'MALMEFJORDEN OG RIDABU REGNSKAP',
-        Type: 'Enterprise',
-        ParentOrganizationNumber: null,
-        OrganizationNumber: '810825472',
-        OrganizationForm: 'AS',
-        Status: 'Active'
-    },
-    {
-        Name: 'ENEBAKK OG ØYER',
-        Type: 'Business',
-        ParentOrganizationNumber: '910712217',
-        OrganizationNumber: '910712268',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
-    },
-    {
-        Name: 'BIRTAVARRE OG VÆRLANDET REGNSKAP',
-        Type: 'Business',
-        ParentOrganizationNumber: '910825550',
-        OrganizationNumber: '910825607',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
-    },
-    {
-        Name: 'MAURA OG KOLBU REGNSKAP',
-        Type: 'Business',
-        ParentOrganizationNumber: '810825472',
-        OrganizationNumber: '910825518',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
-    },
-    {
-        Name: 'GAMLE FREDRIKSTAD OG RAMNES REGNSKAP',
-        Type: 'Business',
-        ParentOrganizationNumber: '810825472',
-        OrganizationNumber: '910825526',
-        OrganizationForm: 'AAFY',
-        Status: 'Active'
-    }
-];
-
-export const tilgangTilAtinntjenesteRespons: Organisasjon[] = [
-    {
-        Name: 'MALMEFJORDEN OG RIDABU REGNSKAP',
-        Type: 'Enterprise',
-        ParentOrganizationNumber: null,
-        OrganizationNumber: '810825472',
-        OrganizationForm: 'AS',
-        Status: 'Active'
-    },
-    {
-        Name: 'MAURA OG KOLBU REGNSKAP',
-        Type: 'Business',
-        ParentOrganizationNumber: '810825472',
-        OrganizationNumber: '910825518',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
-    },
-    {
-        Name: 'GAMLE FREDRIKSTAD OG RAMNES REGNSKAP',
-        Type: 'Business',
-        ParentOrganizationNumber: '810825472',
-        OrganizationNumber: '910825526',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
-    },
-    {
-        Name: 'BIRTAVARRE OG VÆRLANDET REGNSKAP',
-        Type: 'Business',
-        ParentOrganizationNumber: '910825550',
-        OrganizationNumber: '910825607',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
-    },
-    {
-        Name: 'STORFOSNA OG FREDRIKSTAD REGNSKAP',
-        Type: 'Business',
-        ParentOrganizationNumber: '910825550',
-        OrganizationNumber: '910825569',
-        OrganizationForm: 'BEDR',
-        Status: 'Active'
-    },
-
-
 ];
