@@ -30,6 +30,8 @@ interface Props extends RouteComponentProps {
     feilkode: string;
     forMangeArbeidsforhold: boolean;
     antallArbeidsforholdUkjent: boolean;
+    setEndringAlert: (endret: string) => void
+    endringAlert: string;
 
 }
 
@@ -66,12 +68,11 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
     );
 }
 
-const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, listeFraAareg,antallArbeidsforholdUkjent,antallArbeidsforhold, setVisProgressbar, visProgressbar,aaregLasteState,feilkode, forMangeArbeidsforhold}) =>  {
+const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, listeFraAareg,antallArbeidsforholdUkjent,antallArbeidsforhold, setVisProgressbar, visProgressbar,aaregLasteState,feilkode, forMangeArbeidsforhold,setEndringAlert, endringAlert}) =>  {
     const initialUrl = new URL(window.location.href);
     const sidetall = initialUrl.searchParams.get("side") || "1";
     const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(parseInt(sidetall));
     const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
-    const [url, setUrl] = useState(window.location.href);
 
     const Initialsortering = initialUrl.searchParams.get("sorter") || "0";
     const initialKolonne: KolonneState = {
@@ -99,30 +100,34 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
         currentUrl.searchParams.set(parameter, variabel);
         const { search } = currentUrl;
         history.replace({ search: search })
+        setEndringAlert(window.location.href)
     }
 
     useEffect(() => {
-        const currentUrl = new URL (url);
-        if (currentUrl.searchParams.get("filter")) {
-            setFiltrerPaAktiveAvsluttede(currentUrl.searchParams.get("filter")!!)
-        }
-        if (currentUrl.searchParams.get("varsler")) {
-            const filtrerPaVarsler = currentUrl.searchParams.get("varsler") === "true"
-            setSkalFiltrerePaVarsler(filtrerPaVarsler);
-        }
-        if (currentUrl.searchParams.get("sok")) {
-            setSoketekst(currentUrl.searchParams.get("sok")!!);
-        }
-        let sortering = 0;
-        if (currentUrl.searchParams.get("sorter") && currentUrl.searchParams.get("sorter")) {
-            sortering = parseInt(currentUrl.searchParams.get("sorter")!!);
-        }
-        let revers = false
-        if (currentUrl.searchParams.get("revers") && currentUrl.searchParams.get("revers") === "true") {
-            revers = currentUrl.searchParams.get("revers") === "true";
-        }
-        setNavarendeKolonne({sorteringsAttributt: sortering, reversSortering:revers, erValgt: true })
-    }, [history.location.search]);
+        let currentUrl= new URL(window.location.href);                                // => 'https://developer.mozilla.org/'
+            if (currentUrl.searchParams.get("filter")) {
+                setFiltrerPaAktiveAvsluttede(currentUrl.searchParams.get("filter")!!)
+            }
+            if (currentUrl.searchParams.get("varsler")) {
+                const filtrerPaVarsler = currentUrl.searchParams.get("varsler") === "true"
+                setSkalFiltrerePaVarsler(filtrerPaVarsler);
+            }
+            if (currentUrl.searchParams.get("sok")) {
+                setSoketekst(currentUrl.searchParams.get("sok")!!);
+            }
+            let sortering = 0;
+            if (currentUrl.searchParams.get("sorter") && currentUrl.searchParams.get("sorter")) {
+                sortering = parseInt(currentUrl.searchParams.get("sorter")!!);
+            }
+            let revers = false
+            if (currentUrl.searchParams.get("revers") && currentUrl.searchParams.get("revers") === "true") {
+                revers = currentUrl.searchParams.get("revers") === "true";
+            }
+            setNavarendeKolonne({sorteringsAttributt: sortering, reversSortering:revers, erValgt: true })
+            setnaVarendeSidetall(1);
+
+
+    }, [endringAlert]);
 
 
     /*

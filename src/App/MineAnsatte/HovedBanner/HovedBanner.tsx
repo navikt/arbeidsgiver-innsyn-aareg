@@ -11,6 +11,8 @@ interface Props extends RouteComponentProps {
     organisasjoner: Organisasjon[];
     url: string;
     valgtOrganisasjon: Organisasjon;
+    setEndringAlert: (endret: string) => void
+    endringAlert: string;
 }
 
 const Banner: FunctionComponent<Props> = props => {
@@ -48,8 +50,9 @@ const Banner: FunctionComponent<Props> = props => {
         if (organisasjon) {
             props.byttOrganisasjon(organisasjon);
             if (sjekkAtManBytterBedriftIkkeVedRefresh()) {
-                nullStillUrlParametere()
+                nullStillUrlParametere();
                 sjekkOmBrukerErPaaEnkeltArbeidsforholdSide(organisasjon);
+                props.setEndringAlert(window.location.href);
             }
         }
     };
