@@ -69,6 +69,7 @@ const App = () => {
     const [feilkode, setFeilkode] = useState<string>('');
     const [forMangeArbeidsforhold, setForMangeArbeidsforhold] = useState(false);
     const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
+    const [endringAlert, setEndringAlert] = useState(window.location.href);
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -240,6 +241,8 @@ const App = () => {
                 <Router basename={basename}>
                     {organisasjonerLasteState !== APISTATUS.LASTER && (
                         <HovedBanner
+                            endringAlert={endringAlert}
+                            setEndringAlert={setEndringAlert}
                             url={window.location.href}
                             valgtOrganisasjon = {valgtOrganisasjon}
                             byttOrganisasjon={setValgtOrg}
@@ -273,6 +276,8 @@ const App = () => {
 
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
+                                                endringAlert={endringAlert}
+                                                setEndringAlert={setEndringAlert}
                                                 setVisProgressbar={setVisProgressbar}
                                                 visProgressbar={visProgressbar}
                                                 antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}

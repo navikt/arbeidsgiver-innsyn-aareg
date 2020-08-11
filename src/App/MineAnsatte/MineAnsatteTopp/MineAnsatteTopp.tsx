@@ -95,6 +95,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                         <Normaltekst>Arbeidsforhold</Normaltekst>
                         {responsFraAaregisteret.length > 0 && (
                             <Filtervalg
+                                setParameterIUrl = {setParameterIUrl}
                                 skalFiltrerePaVarsler={skalFiltrerePaVarsler}
                                 filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
                                 anallVarsler={antallVarsler}
