@@ -2,10 +2,6 @@ import environment from '../utils/environment';
 
 const landingsURL = '/arbeidsforhold/';
 
-export const hentArbeidsforholdLink = () => {
-    return landingsURL + 'api/arbeidsforhold';
-};
-
 export const hentArbeidsforholdLinkNyBackend = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/arbeidsforhold';
 };
@@ -20,10 +16,6 @@ export const hentOrganisasjonerLinkNyBackend = () => {
 export const hentRettigheterTilAltinnTjenesteLink = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/rettigheter-til-tjeneste/';
 }
-
-export const hentAntallArbeidsforholdLink = () => {
-    return landingsURL + 'api/arbeidsgivere';
-};
 
 export const hentOrganisasjonerLink = () => {
     return landingsURL + 'api/organisasjoner';
