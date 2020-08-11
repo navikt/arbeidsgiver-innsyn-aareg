@@ -49,7 +49,6 @@ const Banner: FunctionComponent<Props> = props => {
             props.byttOrganisasjon(organisasjon);
             if (sjekkAtManBytterBedriftIkkeVedRefresh()) {
                 nullStillUrlParametere()
-                window.location.reload();
                 sjekkOmBrukerErPaaEnkeltArbeidsforholdSide(organisasjon);
             }
         }
