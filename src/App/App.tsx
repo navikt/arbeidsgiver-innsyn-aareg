@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import { basename } from './paths';
@@ -9,9 +9,8 @@ import LoginBoundary from './LoggInnBoundary';
 import  EnkeltArbeidsforhold  from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import {
-    hentOrganisasjonerFraAltinn, hentOrganisasjonerFraAltinnNyBackend,
-
-    hentOrganisasjonerMedTilgangTilAltinntjeneste, hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend
+  hentOrganisasjonerFraAltinnNyBackend,
+    hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend
 } from '../api/altinnApi';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import environment from '../utils/environment';
@@ -74,14 +73,14 @@ const App = () => {
     useEffect(() => {
         const abortController = new AbortController();
         const signal = abortController.signal;
-        hentOrganisasjonerFraAltinn(signal)
+        hentOrganisasjonerFraAltinnNyBackend(signal)
             .then(organisasjonsliste => {
                 setorganisasjoner(
                     organisasjonsliste.filter(
                         organisasjon => erGyldigOrganisasjon(organisasjon)
                     )
                 );
-                hentOrganisasjonerMedTilgangTilAltinntjeneste(
+                hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend(
                     SERVICEKODEINNSYNAAREGISTERET,
                     SERVICEEDITIONINNSYNAAREGISTERET,
                     signal
