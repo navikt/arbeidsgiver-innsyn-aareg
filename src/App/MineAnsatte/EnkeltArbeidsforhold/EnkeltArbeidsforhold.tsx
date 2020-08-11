@@ -77,7 +77,6 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsfo
             return sorterArbeidsforhold(listeBasertPaParametere, sorter).reverse()
         }
         return sorterArbeidsforhold(listeBasertPaParametere, sorter);
-
     }
 
     const arbeidsforhold = finnParametereFraUrlOgGenererListe();
