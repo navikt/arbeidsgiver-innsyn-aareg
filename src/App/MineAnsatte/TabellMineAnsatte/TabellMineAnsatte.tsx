@@ -17,6 +17,7 @@ interface Props {
     navarendeKolonne: KolonneState;
     setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
     valgtBedrift: string;
+    setParameterIUrl: (parameter: string, variabel: string) => void;
 
 }
 
