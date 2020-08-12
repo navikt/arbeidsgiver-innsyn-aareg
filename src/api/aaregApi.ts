@@ -16,11 +16,12 @@ import {
 
 export async function hentArbeidsforholdFraAAregNyBackend(underenhet: string, enhet: string, signal: any): Promise<ObjektFraAAregisteret> {
     let headere = new Headers();
-    headere.append('orgnr', underenhet);
-    headere.append('jurenhet', enhet);
+    headere.set('orgnr', underenhet);
+    headere.set('jurenhet', enhet);
     console.log(enhet, underenhet);
+    console.log("headere: ", headere.get('orgnr'));
     const startTtid = new Date();
-    let response: Response = await fetch(hentArbeidsforholdLinkNyBackend(), { headers: {'orgnr': underenhet, 'jurenhet':enhet}, signal: signal });
+    let response: Response = await fetch(hentArbeidsforholdLinkNyBackend(), { headers: headere, signal: signal });
     if (response.ok) {
         const jsonRespons: ObjektFraAAregisteret = await response.json();
         loggAntallAnsatte(jsonRespons.arbeidsforholdoversikter.length);
