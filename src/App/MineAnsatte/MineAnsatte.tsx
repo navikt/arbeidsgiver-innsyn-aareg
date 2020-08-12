@@ -30,8 +30,9 @@ interface Props extends RouteComponentProps {
     feilkode: string;
     forMangeArbeidsforhold: boolean;
     antallArbeidsforholdUkjent: boolean;
-    setEndringAlert: (endret: string) => void
-    endringAlert: string;
+    setEndringIUrlAlert: (endret: string) => void
+    endringIUrlAlert: string;
+
 
 }
 
@@ -68,19 +69,19 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
     );
 }
 
-const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, listeFraAareg,antallArbeidsforholdUkjent,antallArbeidsforhold, setVisProgressbar, visProgressbar,aaregLasteState,feilkode, forMangeArbeidsforhold,setEndringAlert, endringAlert}) =>  {
+const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, listeFraAareg,antallArbeidsforholdUkjent,antallArbeidsforhold, setVisProgressbar, visProgressbar,aaregLasteState,feilkode, forMangeArbeidsforhold,setEndringIUrlAlert, endringIUrlAlert}) =>  {
     const initialUrl = new URL(window.location.href);
     const sidetall = initialUrl.searchParams.get("side") || "1";
     const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(parseInt(sidetall));
     const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
 
+    //parametere som bestemmer tilstanden på listen som vises
     const Initialsortering = initialUrl.searchParams.get("sorter") || "0";
     const initialKolonne: KolonneState = {
         erValgt: true,
         sorteringsAttributt: parseInt(Initialsortering),
         reversSortering: initialUrl.searchParams.get("revers") === "true"
     };
-
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
     const filtreringsvalg = initialUrl.searchParams.get("filter") || "Alle";
     const [filtrerPaAktiveAvsluttede, setFiltrerPaAktiveAvsluttede] = useState(filtreringsvalg);
@@ -89,22 +90,22 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
     const filtrertPaVarsler = initialUrl.searchParams.get("varsler") === "true";
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(filtrertPaVarsler);
 
-    const arbeidsforholdPerSide = 25;
+    const ARBEIDSFORHOLDPERSIDE = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
-        setParameterUrl("side", indeks.toString())
+        setParameterIUrl("side", indeks.toString())
     };
 
-    const setParameterUrl = (parameter: string, variabel: string) => {
+    const setParameterIUrl = (parameter: string, variabel: string) => {
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.set(parameter, variabel);
         const { search } = currentUrl;
         history.replace({ search: search })
-        setEndringAlert(window.location.href)
+        setEndringIUrlAlert(window.location.href)
     }
 
     useEffect(() => {
-        let currentUrl= new URL(endringAlert);                                // => 'https://developer.mozilla.org/'
+        let currentUrl= new URL(endringIUrlAlert);                                // => 'https://developer.mozilla.org/'
             if (currentUrl.searchParams.get("filter")) {
                 setFiltrerPaAktiveAvsluttede(currentUrl.searchParams.get("filter")!!)
             }
@@ -131,35 +132,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
         }
 
 
-    }, [endringAlert]);
-
-
-    /*
-        if (currentUrl.searchParams.get("filter") && currentUrl.searchParams.get("filter") !== filtreringsvalg) {
-            setFiltrerPaAktiveAvsluttede(currentUrl.searchParams.get("filter")!!)
-        }
-        if (currentUrl.searchParams.get("varsler") && currentUrl.searchParams.get("varsler") === skalFiltrerePaVarsler.toString()) {
-            setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler);
-        }
-        if (currentUrl.searchParams.get("sok") && currentUrl.searchParams.get("sok") !== soketekst) {
-            setSoketekst(currentUrl.searchParams.get("sok")!!);
-        }
-        let sortering = 0;
-        let skalOppdatereNavarendeKolonne = false;
-        if (currentUrl.searchParams.get("sorter") && currentUrl.searchParams.get("sorter") !== navarendeKolonne.sorteringsAttributt.toString()) {
-            sortering = parseInt(currentUrl.searchParams.get("sorter")!!);
-            skalOppdatereNavarendeKolonne = true;
-        }
-        let revers = false
-        if (currentUrl.searchParams.get("revers") && currentUrl.searchParams.get("revers") !== navarendeKolonne.reversSortering.toString()) {
-            revers = !navarendeKolonne.reversSortering;
-            skalOppdatereNavarendeKolonne = true
-        }
-        skalOppdatereNavarendeKolonne && setNavarendeKolonne({sorteringsAttributt: sortering, reversSortering:revers, erValgt: true })
-
-         */
-
-
+    }, [endringIUrlAlert]);
 
     const setValgtArbeidsforholdOgSendMedParametere = (arbeidsforhold: Arbeidsforhold ) => {
         const nyUrl = new URL(window.location.href);
@@ -168,7 +141,6 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
 
         history.replace({pathname: '/enkeltArbeidsforhold', search: search });
     }
-
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
@@ -185,20 +157,20 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
         }
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler]);
 
-    const antallSider = regnUtantallSider(arbeidsforholdPerSide, listeMedArbeidsForhold.length);
+    const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, listeMedArbeidsForhold.length);
 
     let forholdPaEnSide: Arbeidsforhold[] = [];
     if (navarendeKolonne.reversSortering) {
         forholdPaEnSide = regnUtArbeidsForholdSomSkalVisesPaEnSide(
             naVarendeSidetall,
-            arbeidsforholdPerSide,
+            ARBEIDSFORHOLDPERSIDE,
             antallSider,
             sorterArbeidsforhold(listeMedArbeidsForhold, navarendeKolonne.sorteringsAttributt).reverse()
         );
     } else {
         forholdPaEnSide = regnUtArbeidsForholdSomSkalVisesPaEnSide(
             naVarendeSidetall,
-            arbeidsforholdPerSide,
+            ARBEIDSFORHOLDPERSIDE,
             antallSider,
             sorterArbeidsforhold(listeMedArbeidsForhold, navarendeKolonne.sorteringsAttributt)
         );
@@ -244,7 +216,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
                     )}
                     {aaregLasteState === APISTATUS.OK && !visProgressbar && !forMangeArbeidsforhold &&(
                         <MineAnsatteTopp
-                            setParameterIUrl={setParameterUrl}
+                            setParameterIUrl={setParameterIUrl}
                             filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
                             valgtOrganisasjon={valgtOrganisasjon}
                             setIndeksOgGenererListe={setIndeksOgGenererListe}
@@ -263,7 +235,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
                         <>
                             {' '}
                             <TabellMineAnsatte
-                                setParameterIUrl={setParameterUrl}
+                                setParameterIUrl={setParameterIUrl}
                                 className="mine-ansatte__table"
                                 listeMedArbeidsForhold={forholdPaEnSide}
                                 fullListe={listeMedArbeidsForhold}

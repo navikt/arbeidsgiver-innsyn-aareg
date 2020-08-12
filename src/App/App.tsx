@@ -52,15 +52,14 @@ const App = () => {
 
     const [tilgangArbeidsforholdState, setTilgangArbeidsforholdState] = useState(TILGANGSSTATE.LASTER);
     const [organisasjonerLasteState, setOrganisasjonerLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
-
     const [organisasjoner, setorganisasjoner] = useState(Array<Organisasjon>());
     const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
 
     const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
+
     const [abortControllerAntallArbeidsforhold, setAbortControllerAntallArbeidsforhold] = useState<AbortController | null>(null);
     const [abortControllerArbeidsforhold, setAbortControllerArbeidsforhold] = useState<AbortController | null>(null);
-
     const [listeFraAareg, setListeFraAareg] = useState(Array<Arbeidsforhold>());
     const [antallArbeidsforhold, setAntallArbeidsforhold] = useState(0);
     const [visProgressbar, setVisProgressbar] = useState(false);
@@ -69,7 +68,8 @@ const App = () => {
     const [feilkode, setFeilkode] = useState<string>('');
     const [forMangeArbeidsforhold, setForMangeArbeidsforhold] = useState(false);
     const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
-    const [endringAlert, setEndringAlert] = useState(window.location.href);
+
+    const [endringIUrlAlert, setEndringIUrlAlert] = useState(window.location.href);
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -239,9 +239,7 @@ const App = () => {
                 <Router basename={basename}>
                     {organisasjonerLasteState !== APISTATUS.LASTER && (
                         <HovedBanner
-                            endringAlert={endringAlert}
-                            setEndringAlert={setEndringAlert}
-                            url={window.location.href}
+                            setEndringIUrlAlert={setEndringIUrlAlert}
                             valgtOrganisasjon = {valgtOrganisasjon}
                             byttOrganisasjon={setValgtOrg}
                             organisasjoner={organisasjonerLasteState === APISTATUS.OK ? organisasjoner : []}
@@ -274,8 +272,8 @@ const App = () => {
 
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
-                                                endringAlert={endringAlert}
-                                                setEndringAlert={setEndringAlert}
+                                                endringIUrlAlert={endringIUrlAlert}
+                                                setEndringIUrlAlert={setEndringIUrlAlert}
                                                 setVisProgressbar={setVisProgressbar}
                                                 visProgressbar={visProgressbar}
                                                 antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
