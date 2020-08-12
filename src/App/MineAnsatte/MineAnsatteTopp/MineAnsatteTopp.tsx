@@ -49,7 +49,6 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
 ) => {
     const onSoketekstChange = (soketekst: string) => {
         setParameterIUrl("sok", soketekst);
-        setIndeksOgGenererListe(1);
     };
 
     const velgFiltrering = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]) => {
