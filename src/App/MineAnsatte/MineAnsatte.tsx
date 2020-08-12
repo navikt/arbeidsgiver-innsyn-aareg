@@ -92,6 +92,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
     const arbeidsforholdPerSide = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
+        setParameterUrl("side", indeks.toString())
         setnaVarendeSidetall(indeks);
     };
 
@@ -104,7 +105,7 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
     }
 
     useEffect(() => {
-        let currentUrl= new URL(window.location.href);                                // => 'https://developer.mozilla.org/'
+        let currentUrl= new URL(endringAlert);                                // => 'https://developer.mozilla.org/'
             if (currentUrl.searchParams.get("filter")) {
                 setFiltrerPaAktiveAvsluttede(currentUrl.searchParams.get("filter")!!)
             }
@@ -123,8 +124,8 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
             if (currentUrl.searchParams.get("revers") && currentUrl.searchParams.get("revers") === "true") {
                 revers = currentUrl.searchParams.get("revers") === "true";
             }
+
             setNavarendeKolonne({sorteringsAttributt: sortering, reversSortering:revers, erValgt: true })
-            setnaVarendeSidetall(1);
 
 
     }, [endringAlert]);
@@ -160,6 +161,8 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
     const setValgtArbeidsforholdOgSendMedParametere = (arbeidsforhold: Arbeidsforhold ) => {
         const nyUrl = new URL(window.location.href);
         const { search } = nyUrl;
+
+
         history.replace({pathname: '/enkeltArbeidsforhold', search: search });
     }
 
