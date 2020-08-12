@@ -56,6 +56,7 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
         <div className="tabell-container">
             <table className="tabell tabell--stripet">
                 <KolonnerFullSkjerm
+                    setParameterIUrl={props.setParameterIUrl}
                     setNavarendeKolonne={props.setNavarendeKolonne}
                     navarendeKolonne={props.navarendeKolonne}
                 />

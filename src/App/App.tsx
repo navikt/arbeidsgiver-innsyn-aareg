@@ -141,7 +141,6 @@ const App = () => {
                 setAntallArbeidsforhold(antall)
                 setAntallArbeidsforhold(antall);
             }
-            console.log(antall);
             if (antall<= MAKS_ANTALL_ARBEIDSFORHOLD) {
                 const abortControllerArbeidsforhold = new AbortController();
                 setAbortControllerArbeidsforhold(abortControllerArbeidsforhold)
@@ -152,7 +151,6 @@ const App = () => {
                     signal
                 )
                     .then(responsAareg => {
-                        console.log(responsAareg);
                         setListeFraAareg(responsAareg.arbeidsforholdoversikter);
                         setAaregLasteState(APISTATUS.OK);
                         if (!antallArbeidsforholdUkjent) {

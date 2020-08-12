@@ -103,8 +103,6 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
         setEndringAlert(window.location.href)
     }
 
-    console.log(soketekst);
-
     useEffect(() => {
         let currentUrl= new URL(endringAlert);                                // => 'https://developer.mozilla.org/'
             if (currentUrl.searchParams.get("filter")) {
