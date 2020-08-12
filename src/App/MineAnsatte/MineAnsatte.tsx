@@ -93,7 +93,6 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
 
     const setIndeksOgGenererListe = (indeks: number) => {
         setParameterUrl("side", indeks.toString())
-        setnaVarendeSidetall(indeks);
     };
 
     const setParameterUrl = (parameter: string, variabel: string) => {
@@ -103,6 +102,8 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
         history.replace({ search: search })
         setEndringAlert(window.location.href)
     }
+
+    console.log(soketekst);
 
     useEffect(() => {
         let currentUrl= new URL(endringAlert);                                // => 'https://developer.mozilla.org/'
@@ -114,8 +115,10 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
                 setSkalFiltrerePaVarsler(filtrerPaVarsler);
             }
             if (currentUrl.searchParams.get("sok")) {
-                setSoketekst(currentUrl.searchParams.get("sok")!!);
+                setSoketekst(currentUrl.searchParams.get("sok")!!)
             }
+            //sokefeltet er blankt
+            else {setSoketekst("")}
             let sortering = 0;
             if (currentUrl.searchParams.get("sorter") && currentUrl.searchParams.get("sorter")) {
                 sortering = parseInt(currentUrl.searchParams.get("sorter")!!);
@@ -124,8 +127,10 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
             if (currentUrl.searchParams.get("revers") && currentUrl.searchParams.get("revers") === "true") {
                 revers = currentUrl.searchParams.get("revers") === "true";
             }
-
             setNavarendeKolonne({sorteringsAttributt: sortering, reversSortering:revers, erValgt: true })
+            if (currentUrl.searchParams.get("side") && currentUrl.searchParams.get("side")) {
+            setnaVarendeSidetall(parseInt(currentUrl.searchParams.get("side")!!));
+        }
 
 
     }, [endringAlert]);
