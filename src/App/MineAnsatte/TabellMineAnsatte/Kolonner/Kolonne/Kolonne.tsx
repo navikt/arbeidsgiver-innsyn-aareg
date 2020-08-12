@@ -10,6 +10,7 @@ interface Props {
     attributt: SorteringsAttributt;
     setNavarendeKolonne: (kolonne: KolonneState) => void;
     navarendeKolonne: KolonneState;
+    setParameterIUrl: (parameter: string, variabel: string) => void;
 }
 
 const Kolonne = (props: Props) => {
@@ -33,8 +34,10 @@ const Kolonne = (props: Props) => {
     }
 
     const setKolonneTilAktiv = () => {
+        props.setParameterIUrl("sorter", kolonneState.sorteringsAttributt.toString())
         if (kolonneState.erValgt) {
             kolonneState.reversSortering = !kolonneState.reversSortering;
+            props.setParameterIUrl("revers", kolonneState.reversSortering.toString())
         }
         props.setNavarendeKolonne(kolonneState);
     };
