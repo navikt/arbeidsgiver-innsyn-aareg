@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold/dist';
+import { DetaljertArbeidsforhold } from "@navikt/arbeidsforhold"
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import environment from '../../../utils/environment';
 import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
@@ -129,12 +129,12 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsfo
                             </div>
                         <div className="enkelt-arbeidsforhold">
                             <div className="af-detaljert__header">
-                                <span className="af-detaljert__kolonne">
+                                <div className="af-detaljert__kolonne">
                                     <div className={'af-detaljert__arbeidsgiver'}>
                                         <Undertittel>{valgtArbeidsforhold.arbeidstaker.navn}</Undertittel>
                                         <Normaltekst>Fødselsnummer: {valgtArbeidsforhold.arbeidstaker.offentligIdent}</Normaltekst>
                                     </div>
-                                </span>
+                                </div>
                             </div>
                             <DetaljertArbeidsforhold
                                 locale={locale}
@@ -143,6 +143,9 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsfo
                                 rolle="ARBEIDSGIVER"
                                 fnrArbeidstaker={valgtArbeidsforhold.arbeidstaker.offentligIdent}
                                 customApiUrl={apiURL()}
+                                printActivated={true}
+                                printName={"Ola Nordmann"}
+                                printSSN={"12345678911"}
                             />
                         </div>
                     </div>
