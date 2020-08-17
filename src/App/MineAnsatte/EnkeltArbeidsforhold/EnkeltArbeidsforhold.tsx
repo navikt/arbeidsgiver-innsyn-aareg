@@ -144,8 +144,8 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsfo
                                 fnrArbeidstaker={valgtArbeidsforhold.arbeidstaker.offentligIdent}
                                 customApiUrl={apiURL()}
                                 printActivated={true}
-                                printName={"Ola Nordmann"}
-                                printSSN={"12345678911"}
+                                printName={valgtArbeidsforhold.arbeidstaker.navn}
+                                printSSN={valgtArbeidsforhold.arbeidstaker.offentligIdent}
                             />
                         </div>
                     </div>
