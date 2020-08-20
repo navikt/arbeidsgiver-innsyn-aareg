@@ -117,7 +117,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                         <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
                     </div>
                     <div className="mine-ansatte__topp">
-                        <div tabIndex={0} className="mine-ansatte__antall-forhold">
+                        <div tabIndex={0} className="mine-ansatte__antall-forhold"> /* eslint-disable-next-line */
                             <Normaltekst>
                                 Viser {lengdeResponsFiltrertListe} av {responsFraAaregisteret.length} arbeidsforhold
                             </Normaltekst>
