@@ -34,8 +34,16 @@ const ExcelEksport = (props: ExcelEksportProps) => {
     const avsluttedeArbeidsforholdDataset = convertToDataset(avsluttedeArbeidsforhold);
 
     return (
-        <div className={props.className} onClick={() => {loggBrukerTrykketPaExcel()}}>
-            <Hovedknapp className="excel-eksport-knapp" onClick={() => openModal()}>Last ned som excelfil</Hovedknapp>
+        <div className={props.className}>
+            <Hovedknapp
+                className="excel-eksport-knapp"
+                onClick={() => {
+                    loggBrukerTrykketPaExcel();
+                    openModal();
+                }}
+            >
+                Last ned som excelfil
+            </Hovedknapp>
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={() => closeModal()}
