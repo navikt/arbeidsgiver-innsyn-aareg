@@ -24,7 +24,6 @@ import amplitude from "../utils/amplitude";
 import {
     loggForbiddenFraAltinn,
     loggInfoOmFeil,
-    loggNyBackendFungerer
 } from "./amplitudefunksjonerForLogging";
 import {
     hentAntallArbeidsforholdFraAaregNyBackend,
@@ -211,21 +210,6 @@ const App = () => {
         }
         setTimeout(() => {}, 3000);
     }, [valgtOrganisasjon, organisasjonerMedTilgang]);
-
-
-    //skyggekall til ny backend
-    useEffect(() => {
-        const abortController = new AbortController();
-        const signal = abortController.signal;
-        const abortController2 = new AbortController();
-        const signal2 = abortController2.signal;
-        hentOrganisasjonerFraAltinnNyBackend(signal).then(organisasjoner=> loggNyBackendFungerer('antall org: ' +organisasjoner.length.toString()))
-            .catch((e: Error) => loggNyBackendFungerer('antall org: feilet' + e.message ));
-        hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend(SERVICEKODEINNSYNAAREGISTERET,
-            SERVICEEDITIONINNSYNAAREGISTERET,signal2).then(organisasjoner =>loggNyBackendFungerer('antall org med tilgang: ' +organisasjoner.length.toString()))
-            .catch((e: Error) => loggNyBackendFungerer('antall org med tilgang: feilet' + e.message ));
-    }, []);
-
 
     useEffect(() => {
         if (environment.MILJO) {
