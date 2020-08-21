@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import React, { FunctionComponent, SyntheticEvent } from 'react';
 import { ToggleKnappPureProps } from 'nav-frontend-toggle';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
@@ -117,11 +118,9 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                         <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
                     </div>
                     <div className="mine-ansatte__topp">
-                        <div tabIndex={0} className="mine-ansatte__antall-forhold"> /* eslint-disable-next-line */
-                            <Normaltekst>
-                                Viser {lengdeResponsFiltrertListe} av {responsFraAaregisteret.length} arbeidsforhold
-                            </Normaltekst>
-                        </div>
+                        <Normaltekst className="mine-ansatte__antall-forhold" tabIndex={0}>
+                            Viser {lengdeResponsFiltrertListe} av {responsFraAaregisteret.length} arbeidsforhold
+                        </Normaltekst>
                         {antallSider > 1 && (
                             <SideBytter
                                 plassering="overst"

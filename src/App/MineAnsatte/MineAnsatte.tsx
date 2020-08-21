@@ -66,7 +66,7 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
             {'Du har ' + antall + ' aktive eller avsluttede arbeidsforhold registrert på ' + valgtVirksomhet + '.'}
             </>
     );
-}
+};
 
 const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, listeFraAareg,antallArbeidsforholdUkjent,antallArbeidsforhold, setVisProgressbar, visProgressbar,aaregLasteState,feilkode, forMangeArbeidsforhold}) =>  {
     const currentUrl = new URL(window.location.href);
