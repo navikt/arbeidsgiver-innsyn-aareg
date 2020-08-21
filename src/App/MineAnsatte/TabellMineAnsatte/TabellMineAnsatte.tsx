@@ -17,6 +17,7 @@ interface Props {
     navarendeKolonne: KolonneState;
     setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
     valgtBedrift: string;
+    setParameterIUrl: (parameter: string, variabel: string) => void;
 
 }
 
@@ -55,6 +56,7 @@ const TabellMineAnsatte: FunctionComponent<Props> = props => {
         <div className="tabell-container">
             <table className="tabell tabell--stripet">
                 <KolonnerFullSkjerm
+                    setParameterIUrl={props.setParameterIUrl}
                     setNavarendeKolonne={props.setNavarendeKolonne}
                     navarendeKolonne={props.navarendeKolonne}
                 />
