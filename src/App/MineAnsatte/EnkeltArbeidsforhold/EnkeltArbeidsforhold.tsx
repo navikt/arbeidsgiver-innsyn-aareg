@@ -22,7 +22,7 @@ const miljo = () => {
         return 'PROD';
     }
     if (environment.MILJO === 'dev-sbs') {
-        return 'Q0';
+        return 'Q1';
     }
     return 'LOCAL';
 };
@@ -77,7 +77,6 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({history, valgtArbeidsfo
             return sorterArbeidsforhold(listeBasertPaParametere, sorter).reverse()
         }
         return sorterArbeidsforhold(listeBasertPaParametere, sorter);
-
     }
 
     const arbeidsforhold = finnParametereFraUrlOgGenererListe();

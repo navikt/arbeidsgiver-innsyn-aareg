@@ -23,29 +23,25 @@ interface Props {
     valgtOrganisasjon: Organisasjon;
     antallSider: number;
     soketekst: string;
-    setSoketekst: (soketekst: string) => void;
     antallVarsler: number;
     setIndeksOgGenererListe: (indeks: number) => void;
     naVarendeSidetall: number;
-    setSkalFiltrerePaVarsler: (skalFiltrerePaVarsler: boolean) => void;
     skalFiltrerePaVarsler: boolean;
-    setFiltrerPaAktiveAvsluttede: (filtrering: string) => void;
     filtrerPaAktiveAvsluttede: string;
+    setParameterIUrl: (parameter: string, variabel: string) => void;
 }
 
 const MineAnsatteTopp: FunctionComponent<Props> = (
     {
-        setSoketekst,
+        setParameterIUrl,
         responsFraAaregisteret,
         lengdeResponsFiltrertListe,
         listeMedArbeidsforhold,
         valgtOrganisasjon,
         soketekst,
         antallVarsler,
-        setFiltrerPaAktiveAvsluttede,
         antallSider,
         setIndeksOgGenererListe,
-        setSkalFiltrerePaVarsler,
         skalFiltrerePaVarsler,
         naVarendeSidetall,
         filtrerPaAktiveAvsluttede
@@ -53,15 +49,14 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
 
 ) => {
     const onSoketekstChange = (soketekst: string) => {
-        setSoketekst(soketekst);
+        setParameterIUrl("sok", soketekst);
         setIndeksOgGenererListe(1);
     };
 
     const velgFiltrering = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]) => {
         const filtrering = filtreringValgt(event, toggles);
+        setParameterIUrl("filter", filtrering);
         setIndeksOgGenererListe(1);
-
-        setFiltrerPaAktiveAvsluttede(filtrering);
     };
 
     const skatteetatenUrl = 'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/';
@@ -101,6 +96,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                         <Normaltekst>Arbeidsforhold</Normaltekst>
                         {responsFraAaregisteret.length > 0 && (
                             <Filtervalg
+                                setParameterIUrl = {setParameterIUrl}
                                 skalFiltrerePaVarsler={skalFiltrerePaVarsler}
                                 filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
                                 anallVarsler={antallVarsler}
@@ -109,7 +105,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                                     responsFraAaregisteret
                                 )}
                                 setfiltrerPaVarsler={() => {
-                                    setSkalFiltrerePaVarsler(!skalFiltrerePaVarsler);
+                                    setParameterIUrl("varsler",(!skalFiltrerePaVarsler).toString());
                                     setIndeksOgGenererListe(1);
                                 }
                                 }
