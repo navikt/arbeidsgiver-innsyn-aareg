@@ -103,6 +103,10 @@ export const loggNyBackendFungerer= (beskjed: string, antall?: Number) => {
     amplitude.logEvent("#arbeidsforhold ny backend "+ beskjed, {antall});
 }
 
+export const loggHvilkenOrganisasjonFeiler= (organisasjonsnummer: string) => {
+    amplitude.logEvent("#arbeidsforhold kall mislykkes", {organisasjonsnummer});
+}
+
 export const loggBrukerTrykketPaExcel = () => {
     amplitude.logEvent("#arbeidsforhold bruker trykket på exceleksport");
 };
@@ -116,7 +120,7 @@ export const loggForbiddenFraAltinn = () => {
 };
 
 export const loggInfoOmFeil = async (typeFeil: string,  bedriftsnummer: string) => {
-    //amplitude.logEvent('#arbeidsforhold FEILER ' + typeFeil, {bedriftsnummer: bedriftsnummer });
+    amplitude.logEvent('#arbeidsforhold FEILER ', {bedriftsnummer: bedriftsnummer , typeFeil});
 };
 
 /*export const loggBedriftsInfo = async (organisasjonNr: string, juridiskOrgNr: string): Promise<number> => {
