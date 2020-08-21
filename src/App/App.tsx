@@ -159,7 +159,7 @@ const App = () => {
                         }
                     })
                     .catch(error => {
-                        loggInfoOmFeil(error.response.status, valgtOrganisasjon.OrganizationNumber )
+                        loggInfoOmFeil(error.response.status, organisasjon.OrganizationNumber )
                         if (error.response.status === 401) {
                             redirectTilLogin();
                         }
