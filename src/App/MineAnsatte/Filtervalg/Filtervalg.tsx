@@ -9,11 +9,12 @@ interface Props {
     skalFiltrerePaVarsler: boolean;
     anallVarsler: number;
     filtrerPaAktiveAvsluttede: string;
+    setParameterIUrl: (parameter: string, variabel: string) => void;
 }
 
 const Filtervalg: FunctionComponent<Props> = props => {
     const klikkpaaFilterVarsel = () => {
-        props.setfiltrerPaVarsler();
+      props.setParameterIUrl("varsler", ((!props.skalFiltrerePaVarsler).toString()))
     };
 
     const arrayMedToggleTekst = [
