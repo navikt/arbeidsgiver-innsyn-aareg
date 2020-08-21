@@ -3,23 +3,23 @@ import { Link } from 'react-router-dom';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
+import { loggBrukerTrykketPaVarsel } from '../../../amplitudefunksjonerForLogging';
 import './PopOverStyling.less';
-import {loggBrukerTrykketPaVarsel} from "../../../amplitudefunksjonerForLogging";
 
 interface Props {
     setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
     arbeidsforhold: Arbeidsforhold;
     nesteArbeidsforhold?: Arbeidsforhold;
     valgtBedrift: string;
-};
+}
 
 const NavnPopover = (props: Props) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
     const [skalVisePopover, setSkalVisePopover] = useState(true);
 
-    const maxBreddeAvKolonne = 160;
+    const maxBreddeAvKolonne = 158;
 
-    const oppdaterValgtArbeidsforhold= (arbeidsforhold: Arbeidsforhold) => {
+    const oppdaterValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
         props.setValgtArbeidsforhold(arbeidsforhold);
         if (props.arbeidsforhold.varsler?.length) {
             loggBrukerTrykketPaVarsel();
@@ -35,24 +35,15 @@ const NavnPopover = (props: Props) => {
     }, [anker]);
 
     const url = window.location.href.toString();
-    const indeksqueryStart = url.indexOf("?");
-    const sistedelAvUrl = url.substr(indeksqueryStart,url.length)
+    const indeksqueryStart = url.indexOf('?');
+    const sistedelAvUrl = url.substr(indeksqueryStart, url.length);
 
     return (
-        <div
-            className="pop-over-container"
-            onClick={() =>
-                oppdaterValgtArbeidsforhold(
-                    props.arbeidsforhold
-                )
-            }
-        >
+        <div className="pop-over-container">
             <Link
-                to={
-                    'enkeltarbeidsforhold/'+sistedelAvUrl+
-                    '&arbeidsforhold=' +
-                    props.arbeidsforhold.navArbeidsforholdId
-                }
+                to={`enkeltarbeidsforhold/${sistedelAvUrl}&arbeidsforhold=${props.arbeidsforhold.navArbeidsforholdId}`}
+                onClick={() => oppdaterValgtArbeidsforhold(props.arbeidsforhold)}
+                className="lenke"
             >
                 <Normaltekst
                     className="pop-over"

@@ -23,17 +23,17 @@ const Ansatt: FunctionComponent<Props> = props => {
 
     return (
         <li className="arbeidsforhold">
-            <ul className="arbeidsforhold__liste">
+            <ul className="arbeidsforhold__liste" aria-label="Ansatt detaljer">
                 <li className="attributt">
                     <div className="attributt__navn">Navn</div>
-                    <div className="attributt__verdi" onClick={() => oppdaterValgtArbeidsforhold(props.arbeidsforhold)}>
+                    <div className="attributt__verdi">
                         <Link
                             to={
-                                'enkeltarbeidsforhold/?bedrift=' +
-                                props.valgtBedrift +
-                                '&arbeidsforhold=' +
-                                props.arbeidsforhold.navArbeidsforholdId
+                                `enkeltarbeidsforhold/?bedrift=${props.valgtBedrift}&arbeidsforhold=${props.arbeidsforhold.navArbeidsforholdId}`
                             }
+                            onClick={() => oppdaterValgtArbeidsforhold(props.arbeidsforhold)}
+                            className="lenke"
+                            aria-label={'Navn: ' + props.arbeidsforhold.arbeidstaker.navn}
                         >
                             {props.arbeidsforhold.arbeidstaker.navn}
                         </Link>
