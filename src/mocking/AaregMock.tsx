@@ -1,13 +1,12 @@
 import fetchMock from 'fetch-mock';
-import { hentArbeidsforholdLink } from '../App/lenker';
+import { hentArbeidsforholdLinkNyBackend} from '../App/lenker';
 import { AaregMockObjekt } from './funksjonerForAlageAAregMock';
 const delay = new Promise(res => setTimeout(res, 4000));
-
 fetchMock
     .get(
-        hentArbeidsforholdLink(),
+        hentArbeidsforholdLinkNyBackend(),
         delay.then(() => {
-            return AaregMockObjekt;
+          return AaregMockObjekt;
         })
     )
     .spy();
