@@ -9,8 +9,8 @@ import './HovedBanner.less';
 interface Props extends RouteComponentProps {
     byttOrganisasjon: (org: Organisasjon) => void;
     organisasjoner: Organisasjon[];
-    url: string;
     valgtOrganisasjon: Organisasjon;
+    setEndringIUrlAlert: (endret: string) => void
 }
 
 const Banner: FunctionComponent<Props> = props => {
@@ -48,9 +48,9 @@ const Banner: FunctionComponent<Props> = props => {
         if (organisasjon) {
             props.byttOrganisasjon(organisasjon);
             if (sjekkAtManBytterBedriftIkkeVedRefresh()) {
-                nullStillUrlParametere()
-                window.location.reload();
+                nullStillUrlParametere();
                 sjekkOmBrukerErPaaEnkeltArbeidsforholdSide(organisasjon);
+                props.setEndringIUrlAlert(window.location.href);
             }
         }
     };
