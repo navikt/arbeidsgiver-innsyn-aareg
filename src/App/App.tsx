@@ -23,7 +23,7 @@ import {AlertStripeFeil} from 'nav-frontend-alertstriper';
 import amplitude from "../utils/amplitude";
 import {
     loggForbiddenFraAltinn,
-    loggInfoOmFeil,
+    loggInfoOmFeil, loggInfoOmFeilFraAltinn,
 } from "./amplitudefunksjonerForLogging";
 import {
     hentAntallArbeidsforholdFraAaregNyBackend,
@@ -91,13 +91,15 @@ const App = () => {
                         );
                         setOrganisasjonerLasteState(APISTATUS.OK);
                     })
-                    .catch(() => {
+                    .catch((e: Error) => {
+                        loggInfoOmFeilFraAltinn(e.message);
                         setOrganisasjonerLasteState(APISTATUS.FEILET);
                     });
             })
             .catch((e: Error) => {
                 if(e.message==="Forbidden"){
                     loggForbiddenFraAltinn();
+                    loggInfoOmFeilFraAltinn(e.message);
                     setOrganisasjonerMedTilgang([]);
                     setOrganisasjonerLasteState(APISTATUS.OK);
                 }
