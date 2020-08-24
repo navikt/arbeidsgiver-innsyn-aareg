@@ -3,18 +3,17 @@ import React, { FunctionComponent, SyntheticEvent } from 'react';
 import { ToggleKnappPureProps } from 'nav-frontend-toggle';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
+import Lenke from 'nav-frontend-lenker';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
+import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
+import { loggBrukerTrykketPaVeiledning } from '../../amplitudefunksjonerForLogging';
 import ExcelEksport from '../ExcelEksport/ExcelEksport';
 import Sokefelt from '../Sokefelt/Sokefelt';
 import Filtervalg from '../Filtervalg/Filtervalg';
 import SideBytter from '../SideBytter/SideBytter';
 import { filtreringValgt, tellAntallAktiveOgInaktiveArbeidsforhold } from '../sorteringOgFiltreringsFunksjoner';
-import './MineAnsatteTopp.less';
-import Lenke from 'nav-frontend-lenker';
 import NyFaneIkon from './NyFaneIkon';
-
-import {loggBrukerTrykketPaVeiledning} from "../../amplitudefunksjonerForLogging";
-import {Organisasjon} from "../../Objekter/OrganisasjonFraAltinn";
+import './MineAnsatteTopp.less';
 
 interface Props {
     responsFraAaregisteret: Arbeidsforhold[];
@@ -31,31 +30,28 @@ interface Props {
     setParameterIUrl: (parameter: string, variabel: string) => void;
 }
 
-const MineAnsatteTopp: FunctionComponent<Props> = (
-    {
-        setParameterIUrl,
-        responsFraAaregisteret,
-        lengdeResponsFiltrertListe,
-        listeMedArbeidsforhold,
-        valgtOrganisasjon,
-        soketekst,
-        antallVarsler,
-        antallSider,
-        setIndeksOgGenererListe,
-        skalFiltrerePaVarsler,
-        naVarendeSidetall,
-        filtrerPaAktiveAvsluttede
-    },
-
-) => {
+const MineAnsatteTopp: FunctionComponent<Props> = ({
+    setParameterIUrl,
+    responsFraAaregisteret,
+    lengdeResponsFiltrertListe,
+    listeMedArbeidsforhold,
+    valgtOrganisasjon,
+    soketekst,
+    antallVarsler,
+    antallSider,
+    setIndeksOgGenererListe,
+    skalFiltrerePaVarsler,
+    naVarendeSidetall,
+    filtrerPaAktiveAvsluttede
+}) => {
     const onSoketekstChange = (soketekst: string) => {
-        setParameterIUrl("sok", soketekst);
+        setParameterIUrl('sok', soketekst);
         setIndeksOgGenererListe(1);
     };
 
     const velgFiltrering = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]) => {
         const filtrering = filtreringValgt(event, toggles);
-        setParameterIUrl("filter", filtrering);
+        setParameterIUrl('filter', filtrering);
         setIndeksOgGenererListe(1);
     };
 
@@ -73,11 +69,16 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                         <AlertStripeInfo className="informasjon">
                             <Normaltekst>
                                 Oversikten viser alle arbeidsforhold rapportert etter 01.01.2015 for valgt virksomhet.
-                                Hvis det er feil i et arbeidsforhold, skal du som arbeidsgiver endre dette gjennom a-meldingen.
+                                Hvis det er feil i et arbeidsforhold, skal du som arbeidsgiver endre dette gjennom
+                                a-meldingen.
                             </Normaltekst>
                             <Normaltekst>
                                 {'Se '}
-                                <Lenke href={skatteetatenUrl} target="_blank" onClick={() => loggBrukerTrykketPaVeiledning()}>
+                                <Lenke
+                                    href={skatteetatenUrl}
+                                    target="_blank"
+                                    onClick={() => loggBrukerTrykketPaVeiledning()}
+                                >
                                     <span>Skatteetatens veiledning til a-meldingen</span>
                                     <NyFaneIkon />
                                 </Lenke>
@@ -96,7 +97,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                         <Normaltekst>Arbeidsforhold</Normaltekst>
                         {responsFraAaregisteret.length > 0 && (
                             <Filtervalg
-                                setParameterIUrl = {setParameterIUrl}
+                                setParameterIUrl={setParameterIUrl}
                                 skalFiltrerePaVarsler={skalFiltrerePaVarsler}
                                 filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
                                 anallVarsler={antallVarsler}
@@ -105,10 +106,9 @@ const MineAnsatteTopp: FunctionComponent<Props> = (
                                     responsFraAaregisteret
                                 )}
                                 setfiltrerPaVarsler={() => {
-                                    setParameterIUrl("varsler",(!skalFiltrerePaVarsler).toString());
+                                    setParameterIUrl('varsler', (!skalFiltrerePaVarsler).toString());
                                     setIndeksOgGenererListe(1);
-                                }
-                                }
+                                }}
                             />
                         )}
                         <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
