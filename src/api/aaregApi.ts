@@ -1,27 +1,23 @@
-import {
-   hentAntallArbeidsforholdLinkNyBackend,
-    hentArbeidsforholdLinkNyBackend
-} from '../App/lenker';
+import { hentAntallArbeidsforholdLinkNyBackend, hentArbeidsforholdLinkNyBackend } from '../App/lenker';
 import { ObjektFraAAregisteret } from '../App/Objekter/ObjektFraAAreg';
-import {
-    loggAntallAnsatte,
-    loggSnittTidPerArbeidsforhold,
-    loggTidForAlleArbeidsforhold
-} from '../App/amplitudefunksjonerForLogging';
 import { FetchError } from './api-utils';
+import { overSiktPerUnderenhetPar } from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
 import {
-    overSiktPerUnderenhetPar
-} from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
+    loggAntallAnsatte, loggSnittTidPerArbeidsforhold, loggTidForAlleArbeidsforhold
+} from '../App/amplitudefunksjonerForLogging';
 
-
-export async function hentArbeidsforholdFraAAregNyBackend(underenhet: string, enhet: string, signal: any): Promise<ObjektFraAAregisteret> {
+export async function hentArbeidsforholdFraAAregNyBackend(
+    underenhet: string,
+    enhet: string,
+    signal: any
+): Promise<ObjektFraAAregisteret> {
     let headere = new Headers();
     headere.set('orgnr', underenhet);
     headere.set('jurenhet', enhet);
-    console.log(enhet, underenhet);
-    console.log("headere: ", headere.get('orgnr'));
     const startTtid = new Date();
+
     let response: Response = await fetch(hentArbeidsforholdLinkNyBackend(), { headers: headere, signal: signal });
+
     if (response.ok) {
         const jsonRespons: ObjektFraAAregisteret = await response.json();
         loggAntallAnsatte(jsonRespons.arbeidsforholdoversikter.length);
@@ -34,15 +30,19 @@ export async function hentArbeidsforholdFraAAregNyBackend(underenhet: string, en
     }
 }
 
-export async function hentAntallArbeidsforholdFraAaregNyBackend(underenhet: string, enhet: string, signal: any): Promise<number> {
+export async function hentAntallArbeidsforholdFraAaregNyBackend(
+    underenhet: string,
+    enhet: string,
+    signal: any
+): Promise<number> {
     const headere = new Headers();
     headere.set('jurenhet', enhet);
     headere.set('orgnr', underenhet);
-    let respons = await fetch(hentAntallArbeidsforholdLinkNyBackend(), { headers: headere, signal: signal  });
+    let respons = await fetch(hentAntallArbeidsforholdLinkNyBackend(), { headers: headere, signal: signal });
     if (respons.ok) {
-        const jsonRespons: overSiktPerUnderenhetPar= await respons.json();
-        return jsonRespons.second
+        const jsonRespons: overSiktPerUnderenhetPar = await respons.json();
+        return jsonRespons.second;
     } else {
-        return -1
+        return -1;
     }
 }

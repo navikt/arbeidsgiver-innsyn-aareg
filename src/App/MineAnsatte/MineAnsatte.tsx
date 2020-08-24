@@ -1,39 +1,34 @@
-import React, {FunctionComponent, useEffect, useState} from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { Normaltekst, Systemtittel, Element } from 'nav-frontend-typografi';
+import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
+import Chevron from 'nav-frontend-chevron';
+import Lenke from 'nav-frontend-lenker';
 import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import { linkTilMinSideArbeidsgiver } from '../lenker';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
-import {
-    regnUtantallSider,
-    regnUtArbeidsForholdSomSkalVisesPaEnSide
-} from './pagineringsFunksjoner';
+import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
 import Progressbar from './Progressbar/Progressbar';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
-import { Normaltekst, Systemtittel, Element } from 'nav-frontend-typografi';
-import { linkTilMinSideArbeidsgiver} from '../lenker';
-import Lenke from 'nav-frontend-lenker';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
-import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
-import { RouteComponentProps, withRouter } from 'react-router';
-import Chevron from "nav-frontend-chevron";
 
 interface Props extends RouteComponentProps {
     valgtOrganisasjon: Organisasjon;
     listeFraAareg: Arbeidsforhold[];
     antallArbeidsforhold: number;
     visProgressbar: boolean;
-    setVisProgressbar: (skalVises: boolean) => void
+    setVisProgressbar: (skalVises: boolean) => void;
     aaregLasteState: APISTATUS;
     feilkode: string;
     forMangeArbeidsforhold: boolean;
     antallArbeidsforholdUkjent: boolean;
-    setEndringIUrlAlert: (endret: string) => void
+    setEndringIUrlAlert: (endret: string) => void;
     endringIUrlAlert: string;
-
-
 }
 
 export enum SorteringsAttributt {
@@ -53,94 +48,105 @@ export interface KolonneState {
     erValgt: boolean;
     sorteringsAttributt: SorteringsAttributt;
     reversSortering: boolean;
-
 }
 
 const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) => {
     return (
         <>
-            <Element>For mange arbeidsforhold </Element>
+            <Element>For mange arbeidsforhold</Element>
             {'Vi har ikke kapasitet til å hente flere enn ' + MAKS_ANTALL_ARBEIDSFORHOLD + ' avsluttede eller aktive arbeidsforhold om gangen. '}
             {'Vi jobber med å forbedre systemet slik at flere arbeidsforhold kan vises.'}
-            <br/>
-            <br/>
+            <br />
+            <br />
             {'Du har ' + antall + ' aktive eller avsluttede arbeidsforhold registrert på ' + valgtVirksomhet + '.'}
-            </>
+        </>
     );
 };
 
-const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, listeFraAareg,antallArbeidsforholdUkjent,antallArbeidsforhold, setVisProgressbar, visProgressbar,aaregLasteState,feilkode, forMangeArbeidsforhold,setEndringIUrlAlert, endringIUrlAlert}) =>  {
+const MineAnsatte: FunctionComponent<Props> = ({
+    history,
+    valgtOrganisasjon,
+    listeFraAareg,
+    antallArbeidsforholdUkjent,
+    antallArbeidsforhold,
+    setVisProgressbar,
+    visProgressbar,
+    aaregLasteState,
+    feilkode,
+    forMangeArbeidsforhold,
+    setEndringIUrlAlert,
+    endringIUrlAlert
+}) => {
     const initialUrl = new URL(window.location.href);
-    const sidetall = initialUrl.searchParams.get("side") || "1";
+    const sidetall = initialUrl.searchParams.get('side') || '1';
     const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(parseInt(sidetall));
     const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
 
     //parametere som bestemmer tilstanden på listen som vises
-    const Initialsortering = initialUrl.searchParams.get("sorter") || "0";
+    const Initialsortering = initialUrl.searchParams.get('sorter') || '0';
     const initialKolonne: KolonneState = {
         erValgt: true,
         sorteringsAttributt: parseInt(Initialsortering),
-        reversSortering: initialUrl.searchParams.get("revers") === "true"
+        reversSortering: initialUrl.searchParams.get('revers') === 'true'
     };
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
-    const filtreringsvalg = initialUrl.searchParams.get("filter") || "Alle";
+    const filtreringsvalg = initialUrl.searchParams.get('filter') || 'Alle';
     const [filtrerPaAktiveAvsluttede, setFiltrerPaAktiveAvsluttede] = useState(filtreringsvalg);
-    const sokefeltTekst = initialUrl.searchParams.get("sok") || "";
+    const sokefeltTekst = initialUrl.searchParams.get('sok') || '';
     const [soketekst, setSoketekst] = useState<string>(sokefeltTekst);
-    const filtrertPaVarsler = initialUrl.searchParams.get("varsler") === "true";
+    const filtrertPaVarsler = initialUrl.searchParams.get('varsler') === 'true';
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(filtrertPaVarsler);
 
     const ARBEIDSFORHOLDPERSIDE = 25;
 
     const setIndeksOgGenererListe = (indeks: number) => {
-        setParameterIUrl("side", indeks.toString())
+        setParameterIUrl('side', indeks.toString());
     };
 
     const setParameterIUrl = (parameter: string, variabel: string) => {
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.set(parameter, variabel);
         const { search } = currentUrl;
-        history.replace({ search: search })
-        setEndringIUrlAlert(window.location.href)
-    }
+        history.replace({ search: search });
+        setEndringIUrlAlert(window.location.href);
+    };
 
     useEffect(() => {
-        let currentUrl= new URL(endringIUrlAlert);                                // => 'https://developer.mozilla.org/'
-            if (currentUrl.searchParams.get("filter")) {
-                setFiltrerPaAktiveAvsluttede(currentUrl.searchParams.get("filter")!!)
-            }
-            if (currentUrl.searchParams.get("varsler")) {
-                const filtrerPaVarsler = currentUrl.searchParams.get("varsler") === "true"
-                setSkalFiltrerePaVarsler(filtrerPaVarsler);
-            }
-            if (currentUrl.searchParams.get("sok")) {
-                setSoketekst(currentUrl.searchParams.get("sok")!!)
-            }
-            //sokefeltet er blankt
-            else {setSoketekst("")}
-            let sortering = 0;
-            if (currentUrl.searchParams.get("sorter") && currentUrl.searchParams.get("sorter")) {
-                sortering = parseInt(currentUrl.searchParams.get("sorter")!!);
-            }
-            let revers = false
-            if (currentUrl.searchParams.get("revers") && currentUrl.searchParams.get("revers") === "true") {
-                revers = currentUrl.searchParams.get("revers") === "true";
-            }
-            setNavarendeKolonne({sorteringsAttributt: sortering, reversSortering:revers, erValgt: true })
-            if (currentUrl.searchParams.get("side") && currentUrl.searchParams.get("side")) {
-            setnaVarendeSidetall(parseInt(currentUrl.searchParams.get("side")!!));
+        let currentUrl = new URL(endringIUrlAlert); // => 'https://developer.mozilla.org/'
+        if (currentUrl.searchParams.get('filter')) {
+            setFiltrerPaAktiveAvsluttede(currentUrl.searchParams.get('filter')!!);
         }
-
-
+        if (currentUrl.searchParams.get('varsler')) {
+            const filtrerPaVarsler = currentUrl.searchParams.get('varsler') === 'true';
+            setSkalFiltrerePaVarsler(filtrerPaVarsler);
+        }
+        if (currentUrl.searchParams.get('sok')) {
+            setSoketekst(currentUrl.searchParams.get('sok')!!);
+        }
+        //sokefeltet er blankt
+        else {
+            setSoketekst('');
+        }
+        let sortering = 0;
+        if (currentUrl.searchParams.get('sorter') && currentUrl.searchParams.get('sorter')) {
+            sortering = parseInt(currentUrl.searchParams.get('sorter')!!);
+        }
+        let revers = false;
+        if (currentUrl.searchParams.get('revers') && currentUrl.searchParams.get('revers') === 'true') {
+            revers = currentUrl.searchParams.get('revers') === 'true';
+        }
+        setNavarendeKolonne({ sorteringsAttributt: sortering, reversSortering: revers, erValgt: true });
+        if (currentUrl.searchParams.get('side') && currentUrl.searchParams.get('side')) {
+            setnaVarendeSidetall(parseInt(currentUrl.searchParams.get('side')!!));
+        }
     }, [endringIUrlAlert]);
 
-    const setValgtArbeidsforholdOgSendMedParametere = (arbeidsforhold: Arbeidsforhold ) => {
+    const setValgtArbeidsforholdOgSendMedParametere = (arbeidsforhold: Arbeidsforhold) => {
         const nyUrl = new URL(window.location.href);
         const { search } = nyUrl;
 
-
-        history.replace({pathname: '/enkeltArbeidsforhold', search: search });
-    }
+        history.replace({ pathname: '/enkeltArbeidsforhold', search: search });
+    };
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
@@ -150,10 +156,11 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
             soketekst
         );
         if (navarendeKolonne.reversSortering) {
-                setListeMedArbeidsForhold(sorterArbeidsforhold(oppdatertListe, navarendeKolonne.sorteringsAttributt).reverse());
-
+            setListeMedArbeidsForhold(
+                sorterArbeidsforhold(oppdatertListe, navarendeKolonne.sorteringsAttributt).reverse()
+            );
         } else {
-                setListeMedArbeidsForhold(sorterArbeidsforhold(oppdatertListe, navarendeKolonne.sorteringsAttributt));
+            setListeMedArbeidsForhold(sorterArbeidsforhold(oppdatertListe, navarendeKolonne.sorteringsAttributt));
         }
     }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler]);
 
@@ -188,7 +195,6 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
                 return 'ikke tilgang til forspurt entitet i Aa-reg, Vi opplever problemer med å hente opplysninger, vennligst ta kontakt med brukerstøtte ';
             default:
                 return 'Vi opplever ustabilitet med Aa-registret. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
-
         }
     };
 
@@ -203,18 +209,21 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
                 </Normaltekst>
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
-                        {'Opplysninger for '+ valgtOrganisasjon.Name}
+                        {'Opplysninger for ' + valgtOrganisasjon.Name}
                     </Systemtittel>
-                    {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) && visProgressbar && aaregLasteState !== APISTATUS.FEILET && !forMangeArbeidsforhold && (
-                        <Progressbar
-                            antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
-                            antall={antallArbeidsforhold}
-                            setSkalvises={setVisProgressbar}
-                            erFerdigLastet={aaregLasteState === APISTATUS.OK}
-                            startTid={new Date().getTime()}
-                        />
-                    )}
-                    {aaregLasteState === APISTATUS.OK && !visProgressbar && !forMangeArbeidsforhold &&(
+                    {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) &&
+                        visProgressbar &&
+                        aaregLasteState !== APISTATUS.FEILET &&
+                        !forMangeArbeidsforhold && (
+                            <Progressbar
+                                antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
+                                antall={antallArbeidsforhold}
+                                setSkalvises={setVisProgressbar}
+                                erFerdigLastet={aaregLasteState === APISTATUS.OK}
+                                startTid={new Date().getTime()}
+                            />
+                        )}
+                    {aaregLasteState === APISTATUS.OK && !visProgressbar && !forMangeArbeidsforhold && (
                         <MineAnsatteTopp
                             setParameterIUrl={setParameterIUrl}
                             filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
@@ -231,36 +240,40 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
                         />
                     )}
 
-                    {aaregLasteState === APISTATUS.OK && listeMedArbeidsForhold.length > 0 && !visProgressbar && !forMangeArbeidsforhold && (
-                        <>
-                            {' '}
-                            <TabellMineAnsatte
-                                setParameterIUrl={setParameterIUrl}
-                                className="mine-ansatte__table"
-                                listeMedArbeidsForhold={forholdPaEnSide}
-                                fullListe={listeMedArbeidsForhold}
-                                setNavarendeKolonne={setNavarendeKolonne}
-                                byttSide={setIndeksOgGenererListe}
-                                navarendeKolonne={navarendeKolonne}
-                                setValgtArbeidsforhold={setValgtArbeidsforholdOgSendMedParametere}
-                                valgtBedrift={valgtOrganisasjon.OrganizationNumber}
-                            />
-                            <ListeMedAnsatteForMobil
-                                fullListe={listeMedArbeidsForhold}
-                                listeMedArbeidsForhold={forholdPaEnSide}
-                                className="mine-ansatte__liste"
-                                setValgtArbeidsforhold={setValgtArbeidsforholdOgSendMedParametere}
-                                valgtBedrift={valgtOrganisasjon.OrganizationNumber}
-                            />
-                            { antallSider>1 &&<SideBytter
-                                plassering="nederst"
-                                className="nedre-sidebytter"
-                                byttSide={setIndeksOgGenererListe}
-                                antallSider={antallSider}
-                                naVarendeSidetall={naVarendeSidetall}
-                            />}
-                        </>
-                    )}
+                    {aaregLasteState === APISTATUS.OK &&
+                        listeMedArbeidsForhold.length > 0 &&
+                        !visProgressbar &&
+                        !forMangeArbeidsforhold && (
+                            <>
+                                <TabellMineAnsatte
+                                    setParameterIUrl={setParameterIUrl}
+                                    className="mine-ansatte__table"
+                                    listeMedArbeidsForhold={forholdPaEnSide}
+                                    fullListe={listeMedArbeidsForhold}
+                                    setNavarendeKolonne={setNavarendeKolonne}
+                                    byttSide={setIndeksOgGenererListe}
+                                    navarendeKolonne={navarendeKolonne}
+                                    setValgtArbeidsforhold={setValgtArbeidsforholdOgSendMedParametere}
+                                    valgtBedrift={valgtOrganisasjon.OrganizationNumber}
+                                />
+                                <ListeMedAnsatteForMobil
+                                    fullListe={listeMedArbeidsForhold}
+                                    listeMedArbeidsForhold={forholdPaEnSide}
+                                    className="mine-ansatte__liste"
+                                    setValgtArbeidsforhold={setValgtArbeidsforholdOgSendMedParametere}
+                                    valgtBedrift={valgtOrganisasjon.OrganizationNumber}
+                                />
+                                {antallSider > 1 && (
+                                    <SideBytter
+                                        plassering="nederst"
+                                        className="nedre-sidebytter"
+                                        byttSide={setIndeksOgGenererListe}
+                                        antallSider={antallSider}
+                                        naVarendeSidetall={naVarendeSidetall}
+                                    />
+                                )}
+                            </>
+                        )}
                     {aaregLasteState === APISTATUS.FEILET && (
                         <div className="mine-ansatte__feilmelding-aareg">
                             <AlertStripeFeil>{feilmeldingtekst()}</AlertStripeFeil>
@@ -268,7 +281,10 @@ const MineAnsatte: FunctionComponent<Props> = ({history, valgtOrganisasjon, list
                     )}
                     {forMangeArbeidsforhold && (
                         <div className="mine-ansatte__feilmelding-aareg">
-                            <AlertStripeAdvarsel > {forMangeArbeidsforholdTekst(antallArbeidsforhold, valgtOrganisasjon.Name)}</AlertStripeAdvarsel>
+                            <AlertStripeAdvarsel>
+                                {' '}
+                                {forMangeArbeidsforholdTekst(antallArbeidsforhold, valgtOrganisasjon.Name)}
+                            </AlertStripeAdvarsel>
                         </div>
                     )}
                 </div>
