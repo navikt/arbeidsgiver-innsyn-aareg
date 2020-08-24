@@ -66,7 +66,7 @@ const ExcelEksport = (props: ExcelEksportProps) => {
 
                     <div className="eksport-modal__personvern-info">
                         <Normaltekst className="tekst">
-                            Dennne filen inneholder personopplysninger. Vær varsom dersom du laster ned eller distribuerer filen videre. Ved nedlasting er du selv ansvarlig for å overholde personvernreglene.
+                            Denne filen inneholder personopplysninger. Vær varsom dersom du laster ned eller distribuerer filen videre. Ved nedlasting er du selv ansvarlig for å overholde personvernreglene.
                         </Normaltekst>
                     </div>
 
