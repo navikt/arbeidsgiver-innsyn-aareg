@@ -17,8 +17,6 @@ export const redirectTilLogin = () => {
 };
 
 const LoggInn = () => {
-
-
     return (
         <div className="innloggingsside">
             <div className="innloggingsside__innhold">
@@ -38,11 +36,9 @@ const LoggInn = () => {
                 </Hovedknapp>
 
                 <div className="innloggingsside__besok-ditt-nav">
-                    <Normaltekst>
-                        Ønsker du å se dine tjenester som privatperson?
-                        <p className="logg-inn-lenke">
-                            <Lenke href="https://www.nav.no/person/dittnav/">Logg inn på Ditt NAV</Lenke>
-                        </p>
+                    <Normaltekst>Ønsker du å se dine tjenester som privatperson?</Normaltekst>
+                    <Normaltekst className="logg-inn-lenke">
+                        <Lenke href="https://www.nav.no/person/dittnav/">Logg inn på Ditt NAV</Lenke>
                     </Normaltekst>
                 </div>
             </div>
