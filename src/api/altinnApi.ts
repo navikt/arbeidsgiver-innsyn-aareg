@@ -1,4 +1,3 @@
-
 import {
     hentOrganisasjonerLink,
     hentOrganisasjonerLinkNyBackend,
@@ -6,14 +5,14 @@ import {
     sjekkInnloggetLenke
 } from '../App/lenker';
 import { FetchError } from './api-utils';
-import {Organisasjon, OrganisasjonlowerCase, tomaAltinnOrganisasjon} from "../App/Objekter/OrganisasjonFraAltinn";
+import { Organisasjon, OrganisasjonlowerCase, tomaAltinnOrganisasjon } from '../App/Objekter/OrganisasjonFraAltinn';
 
 export async function sjekkInnlogget(signal: any): Promise<boolean> {
     let respons = await fetch(sjekkInnloggetLenke(), { signal: signal });
     if (respons.ok) {
-        return true
+        return true;
     } else {
-        return false
+        return false;
     }
 }
 
@@ -79,6 +78,6 @@ const mapOrganisasjonerFraLowerCaseTilupper = (organisasjonerRaw: Organisasjonlo
             ParentOrganizationNumber: rawOrg.parentOrganizationNumber,
             Type: rawOrg.type,
             Status: rawOrg.status
-        }
-    })
-}
+        };
+    });
+};
