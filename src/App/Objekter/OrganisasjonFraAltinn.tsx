@@ -7,6 +7,15 @@ export interface Organisasjon {
     ParentOrganizationNumber: any;
 }
 
+export interface OrganisasjonlowerCase {
+    name: string;
+    type: string;
+    organizationNumber: string;
+    organizationForm: string;
+    status: string;
+    parentOrganizationNumber: any;
+}
+
 export const tomaAltinnOrganisasjon: Organisasjon = {
     Name: '',
     Type: '',
