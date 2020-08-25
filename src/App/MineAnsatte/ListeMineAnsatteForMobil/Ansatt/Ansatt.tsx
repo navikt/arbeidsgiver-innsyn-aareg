@@ -2,8 +2,8 @@ import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import AttributtVisning from './AttributtVisning/AttributtVisning';
+import { loggBrukerTrykketPaVarsel } from '../../../amplitudefunksjonerForLogging';
 import './Ansatt.less';
-import {loggBrukerTrykketPaVarsel} from "../../../amplitudefunksjonerForLogging";
 
 interface Props {
     className?: string;
@@ -14,34 +14,26 @@ interface Props {
 }
 
 const Ansatt: FunctionComponent<Props> = props => {
-
-  const oppdaterValgtArbeidsforhold= (arbeidsforhold: Arbeidsforhold) => {
-    props.setValgtArbeidsforhold(arbeidsforhold)
-    if (props.arbeidsforhold.varsler?.length) {
-      loggBrukerTrykketPaVarsel();
-    }
-  };
+    const oppdaterValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
+        props.setValgtArbeidsforhold(arbeidsforhold);
+        if (props.arbeidsforhold.varsler?.length) {
+            loggBrukerTrykketPaVarsel();
+        }
+    };
 
     return (
         <li className="arbeidsforhold">
-            <ul className="arbeidsforhold__liste">
+            <ul className="arbeidsforhold__liste" aria-label="Ansatt detaljer">
                 <li className="attributt">
                     <div className="attributt__navn">Navn</div>
-                    <div
-                        className="attributt__verdi"
-                        onClick={() =>
-                            oppdaterValgtArbeidsforhold(
-                                props.arbeidsforhold
-                            )
-                        }
-                    >
+                    <div className="attributt__verdi">
                         <Link
                             to={
-                                'enkeltarbeidsforhold/?bedrift=' +
-                                props.valgtBedrift +
-                                '&arbeidsforhold=' +
-                                props.arbeidsforhold.navArbeidsforholdId
+                                `enkeltarbeidsforhold/?bedrift=${props.valgtBedrift}&arbeidsforhold=${props.arbeidsforhold.navArbeidsforholdId}`
                             }
+                            onClick={() => oppdaterValgtArbeidsforhold(props.arbeidsforhold)}
+                            className="lenke"
+                            aria-label={'Navn: ' + props.arbeidsforhold.arbeidstaker.navn}
                         >
                             {props.arbeidsforhold.arbeidstaker.navn}
                         </Link>

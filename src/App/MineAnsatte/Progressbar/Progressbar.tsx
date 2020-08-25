@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './Progressbar.less';
 import { Ingress } from 'nav-frontend-typografi';
+import './Progressbar.less';
 
 interface Props {
     startTid: number;

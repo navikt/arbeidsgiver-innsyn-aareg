@@ -1,16 +1,15 @@
 import React from 'react';
 import { Normaltekst, Innholdstittel, Undertittel } from 'nav-frontend-typografi';
+import Lenkepanel from 'nav-frontend-lenkepanel';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Lenke from 'nav-frontend-lenker';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import alertikon from '../LoggInn/TilgangsStyringInfoTekst/infomation-circle-2.svg';
 import nyfane from './nyfane.svg';
 import altinlogo from './altinn-logo.svg';
-import {beOmTilgangIAltinnLink, linkTilMinSideArbeidsgiver} from '../lenker';
+import { beOmTilgangIAltinnLink, linkTilMinSideArbeidsgiver } from '../lenker';
+import { erGyldigOrganisasjon, SERVICEEDITIONINNSYNAAREGISTERET, SERVICEKODEINNSYNAAREGISTERET } from '../App';
 import './IngenTilgangInfo.less';
-import Lenkepanel from 'nav-frontend-lenkepanel';
-
-import {erGyldigOrganisasjon, SERVICEEDITIONINNSYNAAREGISTERET, SERVICEKODEINNSYNAAREGISTERET} from "../App";
 
 type TilgangsInfoProps = {
     bedrifterMedTilgang: Array<Organisasjon> | null;
@@ -18,7 +17,9 @@ type TilgangsInfoProps = {
 };
 
 const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsInfoProps) => {
-    const filtrerteUnderEnheter: Array<Organisasjon> | null | undefined = bedrifterMedTilgang?.filter(organisasjon => erGyldigOrganisasjon(organisasjon))
+    const filtrerteUnderEnheter: Array<Organisasjon> | null | undefined = bedrifterMedTilgang?.filter(organisasjon =>
+        erGyldigOrganisasjon(organisasjon)
+    );
 
     return (
         <div className="ingen-tilgang-info-container">
@@ -47,29 +48,37 @@ const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsIn
                         Du har valgt en virksomhet der du mangler rettigheter for å se arbeidsforhold. Velg en
                         virksomhet der du har tilgang.
                     </Normaltekst>
-                    <Lenkepanel  tittelProps={"normaltekst"} border href={beOmTilgangIAltinnLink(valgtOrganisasjon.OrganizationNumber,SERVICEKODEINNSYNAAREGISTERET,SERVICEEDITIONINNSYNAAREGISTERET)} >
-                        <div className = {"ingen-tilgang-innhold__be-om-tilgang-boks"}>
-                            <img src={altinlogo} alt={"altinnlogo"}/>
-                            <div className = {"ingen-tilgang-innhold__be-om-tilgang-tekst"}>
+                    <Lenkepanel
+                        tittelProps={'normaltekst'}
+                        border
+                        href={beOmTilgangIAltinnLink(
+                            valgtOrganisasjon.OrganizationNumber,
+                            SERVICEKODEINNSYNAAREGISTERET,
+                            SERVICEEDITIONINNSYNAAREGISTERET
+                        )}
+                    >
+                        <div className={'ingen-tilgang-innhold__be-om-tilgang-boks'}>
+                            <img src={altinlogo} alt={'altinnlogo'} />
+                            <div className={'ingen-tilgang-innhold__be-om-tilgang-tekst'}>
                                 <Undertittel>Be om tilgang</Undertittel>
                                 Gå til Altinn for å be om tilgang til denne tjenesten.
                             </div>
                         </div>
                     </Lenkepanel>
                     {filtrerteUnderEnheter && filtrerteUnderEnheter.length > 0 && (
-                            <Ekspanderbartpanel
-                                className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel"
-                                tittel="Disse virksomhetene har tilgang"
-                                border
-                            >
-                                <ul className="ingen-tilgang-innhold__panelinnhold">
-                                    {filtrerteUnderEnheter.map(bedrift => (
-                                        <li key={bedrift.OrganizationNumber}>
-                                            {bedrift.Name + '(' + bedrift.OrganizationNumber + ')'}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </Ekspanderbartpanel>
+                        <Ekspanderbartpanel
+                            className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel"
+                            tittel="Disse virksomhetene har tilgang"
+                            border
+                        >
+                            <ul className="ingen-tilgang-innhold__panelinnhold">
+                                {filtrerteUnderEnheter.map(bedrift => (
+                                    <li key={bedrift.OrganizationNumber}>
+                                        {bedrift.Name + '(' + bedrift.OrganizationNumber + ')'}
+                                    </li>
+                                ))}
+                            </ul>
+                        </Ekspanderbartpanel>
                     )}
 
                     {(!filtrerteUnderEnheter || filtrerteUnderEnheter.length === 0) && (

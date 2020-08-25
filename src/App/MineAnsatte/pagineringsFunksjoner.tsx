@@ -4,23 +4,23 @@ export const regnUtantallSider = (arbeidsForholdPerSide: number, antallArbeidsFo
     return Math.ceil(antallArbeidsForhold / arbeidsForholdPerSide);
 };
 
-export const endreUrlParameter = (url: string,parameter: string, verdi: string) => {
-    const gammelParameter = lesUrlParameter(url, parameter)
+export const endreUrlParameter = (url: string, parameter: string, verdi: string) => {
+    const gammelParameter = lesUrlParameter(url, parameter);
     return url.replace(gammelParameter, verdi);
-}
+};
 
-export const lesUrlParameter = (url: string,parameter: string )=> {
+export const lesUrlParameter = (url: string, parameter: string) => {
     const posisjonIUrl = url.indexOf(parameter);
-    const startPosisjonParameter = posisjonIUrl+parameter.length+1;
+    const startPosisjonParameter = posisjonIUrl + parameter.length + 1;
     let sluttPosisjonParameter = startPosisjonParameter;
     for (var i = startPosisjonParameter; i < url.length; i++) {
-        if (url[i] === "&" || i === url.length-1) {
+        if (url[i] === '&' || i === url.length - 1) {
             sluttPosisjonParameter = i;
-            break
+            break;
         }
     }
-    return url.substr(startPosisjonParameter, sluttPosisjonParameter+1);
-}
+    return url.substr(startPosisjonParameter, sluttPosisjonParameter + 1);
+};
 
 export const regnUtArbeidsForholdSomSkalVisesPaEnSide = (
     naVarendeSideTall: number,
