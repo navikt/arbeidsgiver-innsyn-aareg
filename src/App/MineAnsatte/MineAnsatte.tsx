@@ -183,6 +183,12 @@ const MineAnsatte: FunctionComponent<Props> = ({
         );
     }
 
+    const redirectTilTidligereArbeidsforhold = () => {
+        const currentUrl = new URL(window.location.href);
+        const { search } = currentUrl;
+        history.replace({ search: search, pathname: 'tidligere-arbeidsforhold' });
+    };
+
     const antallVarsler = listeMedArbeidsForhold.filter(forhold => {
         return forhold.varsler;
     }).length;
@@ -202,10 +208,16 @@ const MineAnsatte: FunctionComponent<Props> = ({
         <div className="bakgrunnsside">
             <div className="innhold-container">
                 <Normaltekst className="brodsmule">
+                    <div>
                     <Chevron type={'venstre'} />
                     <Lenke href={linkTilMinSideArbeidsgiver(valgtOrganisasjon.OrganizationNumber)}>
                         Min side – arbeidsgiver
                     </Lenke>
+                        </div>
+                    <button className={'brodsmule__direct-tidligere-arbeidsforhold'} onClick={redirectTilTidligereArbeidsforhold}>
+                        Tidligere arbeidsforhold
+                        <Chevron type={'høyre'} />
+                    </button>
                 </Normaltekst>
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>

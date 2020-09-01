@@ -228,10 +228,34 @@ const App = () => {
                             {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
                                 <>
                                     <Route exact path="/enkeltArbeidsforhold">
-                                        <EnkeltArbeidsforhold
-                                            setValgtArbeidsforhold={setValgtArbeidsforhold}
-                                            valgtArbeidsforhold={valgtArbeidsforhold}
-                                            alleArbeidsforhold={listeFraAareg}
+                                        <MineAnsatte
+                                            endringIUrlAlert={endringIUrlAlert}
+                                            setEndringIUrlAlert={setEndringIUrlAlert}
+                                            setVisProgressbar={setVisProgressbar}
+                                            visProgressbar={visProgressbar}
+                                            antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
+                                            antallArbeidsforhold={antallArbeidsforhold}
+                                            listeFraAareg={listeFraAareg}
+                                            aaregLasteState={aaregLasteState}
+                                            feilkode={feilkode}
+                                            forMangeArbeidsforhold={forMangeArbeidsforhold}
+                                            valgtOrganisasjon={valgtOrganisasjon}
+                                        />
+                                    </Route>
+                                    <Route exact path="/tidligere-arbeidsforhold">
+
+                                        <MineAnsatte
+                                            endringIUrlAlert={endringIUrlAlert}
+                                            setEndringIUrlAlert={setEndringIUrlAlert}
+                                            setVisProgressbar={setVisProgressbar}
+                                            visProgressbar={visProgressbar}
+                                            antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
+                                            antallArbeidsforhold={antallArbeidsforhold}
+                                            listeFraAareg={listeFraAareg}
+                                            aaregLasteState={aaregLasteState}
+                                            feilkode={feilkode}
+                                            forMangeArbeidsforhold={forMangeArbeidsforhold}
+                                            valgtOrganisasjon={valgtOrganisasjon}
                                         />
                                     </Route>
                                     <Route exact path="/">

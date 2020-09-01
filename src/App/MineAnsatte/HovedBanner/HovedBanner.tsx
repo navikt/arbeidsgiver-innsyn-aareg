@@ -43,6 +43,10 @@ const Banner: FunctionComponent<Props> = props => {
         return props.valgtOrganisasjon !== tomaAltinnOrganisasjon;
     };
 
+    console.log(window.location.href)
+
+    const skjulBedriftsmeny = history.location.pathname === "tidligere-arbeidsforhold";
+
     const onOrganisasjonChange = (organisasjon?: Organisasjon) => {
         if (organisasjon) {
             props.byttOrganisasjon(organisasjon);
@@ -56,12 +60,20 @@ const Banner: FunctionComponent<Props> = props => {
 
     return (
         <div className="hovebanner">
-            <Bedriftsmeny
-                sidetittel="Arbeidsforhold"
-                organisasjoner={props.organisasjoner.sort((a, b) => a.Name.localeCompare(b.Name))}
-                onOrganisasjonChange={onOrganisasjonChange}
-                history={history}
+            {skjulBedriftsmeny? <Bedriftsmeny
+                    sidetittel="Tidligere arbeidsforhold"
+                    organisasjoner={[]}
+                    onOrganisasjonChange={onOrganisasjonChange}
+                    history={history}
+
             />
+            : <Bedriftsmeny
+                    sidetittel="Arbeidsforhold"
+                    organisasjoner={props.organisasjoner.sort((a, b) => a.Name.localeCompare(b.Name))}
+                    onOrganisasjonChange={onOrganisasjonChange}
+                    history={history}
+                />
+            }
         </div>
     );
 };

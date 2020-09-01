@@ -15,8 +15,21 @@
         .brodsmule {
             padding: 1.5rem 0 1.5rem 1rem;
             display: flex;
+            justify-content: space-between;
             align-items: center;
             color: #0067C5;
+
+            &__direct-tidligere-arbeidsforhold {
+                color: #0067c5;
+                background: none;
+                text-decoration: underline;
+                cursor: pointer;
+                border: none;
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
 
             @media (min-width: @screen-sm) {
                 padding: 1.5rem 0 2rem 2rem;
