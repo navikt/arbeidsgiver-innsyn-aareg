@@ -15,14 +15,14 @@ export const hentOrganisasjonerLinkNyBackend = () => {
 
 export const hentRettigheterTilAltinnTjenesteLink = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/rettigheter-til-tjeneste/';
-}
+};
 
 export const hentOrganisasjonerLink = () => {
     return landingsURL + 'api/organisasjoner';
 };
 
 export const sjekkInnloggetLenke = () => {
-    return landingsURL + 'api/innlogget';
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/innlogget';
 };
 
 export const hentUnderenhetApiLink = (orgnr: string) => {

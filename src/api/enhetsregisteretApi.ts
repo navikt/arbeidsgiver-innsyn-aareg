@@ -1,10 +1,10 @@
 import {
     ListeMedJuridiskeEnheter,
-    OrganisasjonFraEnhetsregisteret, tomEnhetsregOrg
+    OrganisasjonFraEnhetsregisteret,
+    tomEnhetsregOrg
 } from '../App/Objekter/OrganisasjonFraEnhetsregisteret';
 import { Organisasjon, tomaAltinnOrganisasjon } from '../App/Objekter/OrganisasjonFraAltinn';
-import {hentOverordnetEnhetApiLink, hentUnderenhetApiLink} from "../App/lenker";
-
+import { hentOverordnetEnhetApiLink, hentUnderenhetApiLink } from '../App/lenker';
 
 export async function hentAlleJuridiskeEnheter(listeMedJuridiskeOrgNr: string[]): Promise<Organisasjon[]> {
     const listerMedDefinerteOrgNr = listeMedJuridiskeOrgNr.filter(orgnr => {
