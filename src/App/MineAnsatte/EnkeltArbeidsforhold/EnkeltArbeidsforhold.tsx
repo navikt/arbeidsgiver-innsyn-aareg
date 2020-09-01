@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold/dist';
+import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Chevron from 'nav-frontend-chevron';
 import environment from '../../../utils/environment';
@@ -152,6 +152,9 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
                                 rolle="ARBEIDSGIVER"
                                 fnrArbeidstaker={valgtArbeidsforhold.arbeidstaker.offentligIdent}
                                 customApiUrl={apiURL()}
+                                printActivated={true}
+                                printName={valgtArbeidsforhold.arbeidstaker.navn}
+                                printSSN={valgtArbeidsforhold.arbeidstaker.offentligIdent}
                             />
                         </div>
                     </div>
