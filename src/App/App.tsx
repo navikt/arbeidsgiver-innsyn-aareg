@@ -47,7 +47,9 @@ const App = () => {
     const [organisasjoner, setorganisasjoner] = useState(Array<Organisasjon>());
     const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
-    const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
+    const [tidligereVirksomhet, setTidligereVirksomhet] = useState(tomaAltinnOrganisasjon);
+
+    const [viserGamleArbeidsforhold, setViserGamleArbeidsforhold] = useState(window.location.href.includes('tidligere-arbeidsforhold'));
 
     const [
         abortControllerAntallArbeidsforhold,
@@ -63,6 +65,7 @@ const App = () => {
     const [feilkode, setFeilkode] = useState<string>('');
     const [forMangeArbeidsforhold, setForMangeArbeidsforhold] = useState(false);
     const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
+    const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
 
     const [endringIUrlAlert, setEndringIUrlAlert] = useState(window.location.href);
 
@@ -175,6 +178,11 @@ const App = () => {
         }
     };
 
+    const setTidligereVirksomhetOgHentArbeidsforhold = (organisasjon: Organisasjon) => {
+        setTidligereVirksomhet(organisasjon);
+        hentAntallArbeidsforholdogArbeidsforhold(organisasjon);
+    }
+
     useEffect(() => {
         setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
         if (organisasjonerMedTilgang && valgtOrganisasjon !== tomaAltinnOrganisasjon) {
@@ -217,6 +225,7 @@ const App = () => {
                 <Router basename={basename}>
                     {organisasjonerLasteState !== APISTATUS.LASTER && (
                         <HovedBanner
+                            viserGamleArbeidsforhold={viserGamleArbeidsforhold}
                             setEndringIUrlAlert={setEndringIUrlAlert}
                             valgtOrganisasjon={valgtOrganisasjon}
                             byttOrganisasjon={setValgtOrg}
@@ -228,23 +237,19 @@ const App = () => {
                             {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
                                 <>
                                     <Route exact path="/enkeltArbeidsforhold">
-                                        <MineAnsatte
-                                            endringIUrlAlert={endringIUrlAlert}
-                                            setEndringIUrlAlert={setEndringIUrlAlert}
-                                            setVisProgressbar={setVisProgressbar}
-                                            visProgressbar={visProgressbar}
-                                            antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
-                                            antallArbeidsforhold={antallArbeidsforhold}
-                                            listeFraAareg={listeFraAareg}
-                                            aaregLasteState={aaregLasteState}
-                                            feilkode={feilkode}
-                                            forMangeArbeidsforhold={forMangeArbeidsforhold}
-                                            valgtOrganisasjon={valgtOrganisasjon}
+                                        <EnkeltArbeidsforhold
+                                                setValgtArbeidsforhold={setValgtArbeidsforhold}
+                                                valgtArbeidsforhold={valgtArbeidsforhold}
+                                                alleArbeidsforhold={listeFraAareg}
                                         />
+
                                     </Route>
                                     <Route exact path="/tidligere-arbeidsforhold">
-
+                                        {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                         <MineAnsatte
+                                            setTidligereVirksomhet = {setTidligereVirksomhetOgHentArbeidsforhold  }
+                                            tidligereVirksomheter={organisasjoner}
+                                            setViserGamleArbeidsforhold={setViserGamleArbeidsforhold}
                                             endringIUrlAlert={endringIUrlAlert}
                                             setEndringIUrlAlert={setEndringIUrlAlert}
                                             setVisProgressbar={setVisProgressbar}
@@ -256,7 +261,7 @@ const App = () => {
                                             feilkode={feilkode}
                                             forMangeArbeidsforhold={forMangeArbeidsforhold}
                                             valgtOrganisasjon={valgtOrganisasjon}
-                                        />
+                                        />)}
                                     </Route>
                                     <Route exact path="/">
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.IKKE_TILGANG && (
@@ -270,9 +275,9 @@ const App = () => {
                                                 }
                                             />
                                         )}
-
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
+                                                setViserGamleArbeidsforhold={setViserGamleArbeidsforhold}
                                                 endringIUrlAlert={endringIUrlAlert}
                                                 setEndringIUrlAlert={setEndringIUrlAlert}
                                                 setVisProgressbar={setVisProgressbar}

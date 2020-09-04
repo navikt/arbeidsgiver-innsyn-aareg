@@ -16,6 +16,7 @@ import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
+import VelgTidligereVirksomhet from "./VelgTidligereVirksomhet/VelgTidligereVirksomhet";
 
 interface Props extends RouteComponentProps {
     valgtOrganisasjon: Organisasjon;
@@ -29,6 +30,9 @@ interface Props extends RouteComponentProps {
     antallArbeidsforholdUkjent: boolean;
     setEndringIUrlAlert: (endret: string) => void;
     endringIUrlAlert: string;
+    setViserGamleArbeidsforhold?: (viser: boolean) => void;
+    setTidligereVirksomhet?: (tidligereVirksomhet: Organisasjon) => void;
+    tidligereVirksomheter?: Organisasjon[];
 }
 
 export enum SorteringsAttributt {
@@ -75,7 +79,10 @@ const MineAnsatte: FunctionComponent<Props> = ({
     feilkode,
     forMangeArbeidsforhold,
     setEndringIUrlAlert,
-    endringIUrlAlert
+    endringIUrlAlert,
+    setViserGamleArbeidsforhold,
+    setTidligereVirksomhet,
+    tidligereVirksomheter
 }) => {
     const initialUrl = new URL(window.location.href);
     const sidetall = initialUrl.searchParams.get('side') || '1';
@@ -148,6 +155,8 @@ const MineAnsatte: FunctionComponent<Props> = ({
         history.replace({ pathname: '/enkeltArbeidsforhold', search: search });
     };
 
+    console.log('mine ansatte rendres');
+
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
             listeFraAareg,
@@ -186,6 +195,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const redirectTilTidligereArbeidsforhold = () => {
         const currentUrl = new URL(window.location.href);
         const { search } = currentUrl;
+        setViserGamleArbeidsforhold && setViserGamleArbeidsforhold(true);
         history.replace({ search: search, pathname: 'tidligere-arbeidsforhold' });
     };
 
@@ -223,6 +233,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         {'Opplysninger for ' + valgtOrganisasjon.Name}
                     </Systemtittel>
+                    <VelgTidligereVirksomhet  tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet } tidligereVirksomhet={valgtOrganisasjon}/>
                     {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) &&
                         visProgressbar &&
                         aaregLasteState !== APISTATUS.FEILET &&
@@ -236,6 +247,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                             />
                         )}
                     {aaregLasteState === APISTATUS.OK && !visProgressbar && !forMangeArbeidsforhold && (
+
                         <MineAnsatteTopp
                             setParameterIUrl={setParameterIUrl}
                             filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
