@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, {FunctionComponent} from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Organisasjon, tomaAltinnOrganisasjon } from '../../Objekter/OrganisasjonFraAltinn';
 import { basename } from '../../paths';
@@ -11,6 +11,7 @@ interface Props extends RouteComponentProps {
     organisasjoner: Organisasjon[];
     valgtOrganisasjon: Organisasjon;
     setEndringIUrlAlert: (endret: string) => void;
+    viserGamleArbeidsforhold: boolean
 }
 
 const Banner: FunctionComponent<Props> = props => {
@@ -43,9 +44,7 @@ const Banner: FunctionComponent<Props> = props => {
         return props.valgtOrganisasjon !== tomaAltinnOrganisasjon;
     };
 
-    console.log(window.location.href)
-
-    const skjulBedriftsmeny = history.location.pathname === "tidligere-arbeidsforhold";
+    const skjulBedriftsmeny = props.viserGamleArbeidsforhold;
 
     const onOrganisasjonChange = (organisasjon?: Organisasjon) => {
         if (organisasjon) {
@@ -58,22 +57,19 @@ const Banner: FunctionComponent<Props> = props => {
         }
     };
 
+    const organisasjoner = skjulBedriftsmeny? [] : props.organisasjoner;
+    const overskrift = skjulBedriftsmeny? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
+
+    console.log(organisasjoner);
+
     return (
         <div className="hovebanner">
-            {skjulBedriftsmeny? <Bedriftsmeny
-                    sidetittel="Tidligere arbeidsforhold"
-                    organisasjoner={[]}
-                    onOrganisasjonChange={onOrganisasjonChange}
-                    history={history}
-
-            />
-            : <Bedriftsmeny
-                    sidetittel="Arbeidsforhold"
-                    organisasjoner={props.organisasjoner.sort((a, b) => a.Name.localeCompare(b.Name))}
+             <Bedriftsmeny
+                    sidetittel={overskrift}
+                    organisasjoner={organisasjoner}
                     onOrganisasjonChange={onOrganisasjonChange}
                     history={history}
                 />
-            }
         </div>
     );
 };
