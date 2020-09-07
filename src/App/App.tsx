@@ -77,6 +77,8 @@ const App = () => {
 
     const [endringIUrlAlert, setEndringIUrlAlert] = useState(window.location.href);
 
+    const valgtJuridiskEnhet = organisasjoner.filter(organisasjon => organisasjon.OrganizationNumber === valgtOrganisasjon.ParentOrganizationNumber)[0];
+
     useEffect(() => {
         const abortController = new AbortController();
         const signal = abortController.signal;
@@ -268,6 +270,7 @@ const App = () => {
                                     <Route exact path="/tidligere-arbeidsforhold">
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                         <MineAnsatte
+                                            valgtJuridiskEnhet = {valgtJuridiskEnhet!!}
                                             tidligereVirksomhet = {tidligereVirksomhet}
                                             setTidligereVirksomhet = {setTidligereVirksomhetOgHentArbeidsforhold  }
                                             tidligereVirksomheter={tidligereVirksomheter!!}
@@ -298,6 +301,7 @@ const App = () => {
                                         )}
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
+                                                valgtJuridiskEnhet = {valgtJuridiskEnhet!!}
                                                 tidligereVirksomhet = {tidligereVirksomhet}
                                                 tidligereVirksomheter={tidligereVirksomheter!!}
                                                 endringIUrlAlert={endringIUrlAlert}
