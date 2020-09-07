@@ -157,8 +157,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
         history.replace({ pathname: '/enkeltArbeidsforhold', search: search });
     };
 
-    console.log('mine ansatte rendres');
-
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
             listeFraAareg,
@@ -237,7 +235,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         {'Opplysninger for ' + valgtOrganisasjon.Name}
                     </Systemtittel>
-                    <VelgTidligereVirksomhet  tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet!! } tidligereVirksomhet={tidligereVirksomhet!!}/>
+                    { tidligereVirksomheter?.length && <VelgTidligereVirksomhet tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet!! }/>}
                     {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) &&
                         visProgressbar &&
                         aaregLasteState !== APISTATUS.FEILET &&

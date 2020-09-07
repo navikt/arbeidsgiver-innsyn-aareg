@@ -1,5 +1,4 @@
 import {
-    hentOrganisasjonerLink,
     hentOrganisasjonerLinkNyBackend,
     hentRettigheterTilAltinnTjenesteLink,
     sjekkInnloggetLenke
@@ -13,15 +12,6 @@ export async function sjekkInnlogget(signal: any): Promise<boolean> {
         return true;
     } else {
         return false;
-    }
-}
-
-export async function hentOrganisasjonerFraAltinn(signal: any): Promise<Organisasjon[]> {
-    let respons = await fetch(hentOrganisasjonerLink(), { signal: signal });
-    if (respons.ok) {
-        return await respons.json();
-    } else {
-        throw new FetchError(respons.statusText || respons.type, respons);
     }
 }
 
@@ -68,7 +58,7 @@ export async function hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend(
     }
 }
 
-const mapOrganisasjonerFraLowerCaseTilupper = (organisasjonerRaw: OrganisasjonlowerCase[]): Organisasjon[] => {
+export const mapOrganisasjonerFraLowerCaseTilupper = (organisasjonerRaw: OrganisasjonlowerCase[]): Organisasjon[] => {
     return organisasjonerRaw.map(rawOrg => {
         return {
             ...tomaAltinnOrganisasjon,
