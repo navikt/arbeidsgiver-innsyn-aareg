@@ -33,6 +33,7 @@ interface Props extends RouteComponentProps {
     setViserGamleArbeidsforhold?: (viser: boolean) => void;
     setTidligereVirksomhet?: (tidligereVirksomhet: Organisasjon) => void;
     tidligereVirksomhet?: Organisasjon;
+    valgtJuridiskEnhet: Organisasjon;
     tidligereVirksomheter?: Organisasjon[];
 }
 
@@ -83,8 +84,8 @@ const MineAnsatte: FunctionComponent<Props> = ({
     endringIUrlAlert,
     setViserGamleArbeidsforhold,
     setTidligereVirksomhet,
-    tidligereVirksomhet,
-    tidligereVirksomheter
+    tidligereVirksomheter,
+    valgtJuridiskEnhet
 }) => {
     const initialUrl = new URL(window.location.href);
     const sidetall = initialUrl.searchParams.get('side') || '1';
@@ -107,6 +108,15 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(filtrertPaVarsler);
 
     const ARBEIDSFORHOLDPERSIDE = 25;
+
+    const ERPATIDLIGEREARBEIDSFORHOLD = window.location.href.includes('tidligere-arbeidsforhold')
+    const TILGANGTILTIDLIGEREARBEIDSFORHOLD = tidligereVirksomheter && tidligereVirksomheter.length>0;
+
+    const delOverskrift = "Opplysninger for "
+    const overskriftMedOrganisasjonsdel = ERPATIDLIGEREARBEIDSFORHOLD ?
+        delOverskrift + valgtJuridiskEnhet.Name + " org.nr " + valgtJuridiskEnhet.OrganizationNumber :
+        delOverskrift + valgtOrganisasjon.Name
+
 
     const setIndeksOgGenererListe = (indeks: number) => {
         setParameterIUrl('side', indeks.toString());
@@ -200,6 +210,13 @@ const MineAnsatte: FunctionComponent<Props> = ({
         setEndringIUrlAlert(window.location.href);
     };
 
+    const redirectTilbake = () => {
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.delete('arbeidsforhold');
+        const { search } = currentUrl;
+        history.replace({ search: search, pathname: '/' });
+    };
+
     const antallVarsler = listeMedArbeidsForhold.filter(forhold => {
         return forhold.varsler;
     }).length;
@@ -220,22 +237,29 @@ const MineAnsatte: FunctionComponent<Props> = ({
         <div className="bakgrunnsside">
             <div className="innhold-container">
                 <Normaltekst className="brodsmule">
-                    <div>
-                    <Chevron type={'venstre'} />
-                    <Lenke href={linkTilMinSideArbeidsgiver(valgtOrganisasjon.OrganizationNumber)}>
-                        Min side – arbeidsgiver
-                    </Lenke>
-                        </div>
-                    <button className={'brodsmule__direct-tidligere-arbeidsforhold'} onClick={redirectTilTidligereArbeidsforhold}>
+                    {!ERPATIDLIGEREARBEIDSFORHOLD && <div>
+                        <Chevron type={'venstre'}/>
+                        <Lenke href={linkTilMinSideArbeidsgiver(valgtOrganisasjon.OrganizationNumber)}>
+                            Min side – arbeidsgiver
+                        </Lenke>
+                    </div>
+                    }
+                    { ERPATIDLIGEREARBEIDSFORHOLD &&
+                    <button className={'brodsmule__direct-tidligere-arbeidsforhold'} onClick={redirectTilbake}>
+                        <Chevron type={'venstre'}/>
+                        Tilbake til arbeidsforhold
+                    </button>}
+                    { !ERPATIDLIGEREARBEIDSFORHOLD && TILGANGTILTIDLIGEREARBEIDSFORHOLD && <button className={'brodsmule__direct-tidligere-arbeidsforhold'} onClick={redirectTilTidligereArbeidsforhold}>
                         Tidligere arbeidsforhold
                         <Chevron type={'høyre'} />
-                    </button>
+                    </button>}
+
                 </Normaltekst>
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
-                        {'Opplysninger for ' + valgtOrganisasjon.Name}
+                        {overskriftMedOrganisasjonsdel}
                     </Systemtittel>
-                    { tidligereVirksomheter?.length && <VelgTidligereVirksomhet tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet!! }/>}
+                    { ERPATIDLIGEREARBEIDSFORHOLD && <VelgTidligereVirksomhet tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet!! }/>}
                     {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) &&
                         visProgressbar &&
                         aaregLasteState !== APISTATUS.FEILET &&
@@ -249,7 +273,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
                             />
                         )}
                     {aaregLasteState === APISTATUS.OK && !visProgressbar && !forMangeArbeidsforhold && (
-
                         <MineAnsatteTopp
                             setParameterIUrl={setParameterIUrl}
                             filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
