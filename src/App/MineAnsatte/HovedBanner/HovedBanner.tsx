@@ -11,6 +11,7 @@ interface Props extends RouteComponentProps {
     organisasjoner: Organisasjon[];
     valgtOrganisasjon: Organisasjon;
     setEndringIUrlAlert: (endret: string) => void;
+    erPaTidligereArbeidsforhold: boolean
 }
 
 const Banner: FunctionComponent<Props> = props => {
@@ -43,10 +44,6 @@ const Banner: FunctionComponent<Props> = props => {
         return props.valgtOrganisasjon !== tomaAltinnOrganisasjon;
     };
 
-    console.log(window.location.href)
-
-    const skjulBedriftsmeny = history.location.pathname === "tidligere-arbeidsforhold";
-
     const onOrganisasjonChange = (organisasjon?: Organisasjon) => {
         if (organisasjon) {
             props.byttOrganisasjon(organisasjon);
@@ -60,7 +57,7 @@ const Banner: FunctionComponent<Props> = props => {
 
     return (
         <div className="hovebanner">
-            {skjulBedriftsmeny? <Bedriftsmeny
+            {props.erPaTidligereArbeidsforhold? <Bedriftsmeny
                     sidetittel="Tidligere arbeidsforhold"
                     organisasjoner={[]}
                     onOrganisasjonChange={onOrganisasjonChange}

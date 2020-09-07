@@ -66,6 +66,8 @@ const App = () => {
 
     const [endringIUrlAlert, setEndringIUrlAlert] = useState(window.location.href);
 
+    const TIDLIGEREARBEIDSFORHOLD = window.location.href.includes('tidligere-arbeidsforhold');
+
     useEffect(() => {
         const abortController = new AbortController();
         const signal = abortController.signal;
@@ -217,6 +219,7 @@ const App = () => {
                 <Router basename={basename}>
                     {organisasjonerLasteState !== APISTATUS.LASTER && (
                         <HovedBanner
+                            erPaTidligereArbeidsforhold={TIDLIGEREARBEIDSFORHOLD}
                             setEndringIUrlAlert={setEndringIUrlAlert}
                             valgtOrganisasjon={valgtOrganisasjon}
                             byttOrganisasjon={setValgtOrg}
@@ -228,22 +231,13 @@ const App = () => {
                             {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
                                 <>
                                     <Route exact path="/enkeltArbeidsforhold">
-                                        <MineAnsatte
-                                            endringIUrlAlert={endringIUrlAlert}
-                                            setEndringIUrlAlert={setEndringIUrlAlert}
-                                            setVisProgressbar={setVisProgressbar}
-                                            visProgressbar={visProgressbar}
-                                            antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
-                                            antallArbeidsforhold={antallArbeidsforhold}
-                                            listeFraAareg={listeFraAareg}
-                                            aaregLasteState={aaregLasteState}
-                                            feilkode={feilkode}
-                                            forMangeArbeidsforhold={forMangeArbeidsforhold}
-                                            valgtOrganisasjon={valgtOrganisasjon}
+                                        <EnkeltArbeidsforhold
+                                            setValgtArbeidsforhold={setValgtArbeidsforhold}
+                                            valgtArbeidsforhold={valgtArbeidsforhold}
+                                            alleArbeidsforhold={listeFraAareg}
                                         />
                                     </Route>
                                     <Route exact path="/tidligere-arbeidsforhold">
-
                                         <MineAnsatte
                                             endringIUrlAlert={endringIUrlAlert}
                                             setEndringIUrlAlert={setEndringIUrlAlert}
