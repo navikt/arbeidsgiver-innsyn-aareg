@@ -202,7 +202,20 @@ const MineAnsatte: FunctionComponent<Props> = ({
         );
     }
 
+    const nullStillUrlParametere = () => {
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('side', '1');
+        currentUrl.searchParams.set('filter', 'Alle');
+        currentUrl.searchParams.set('varsler', 'false');
+        currentUrl.searchParams.set('sok', '');
+        currentUrl.searchParams.set('sorter', '0');
+        currentUrl.searchParams.set('revers', 'false');
+        const { search } = currentUrl;
+        history.replace(search);
+    };
+
     const redirectTilTidligereArbeidsforhold = () => {
+        nullStillUrlParametere();
         const currentUrl = new URL(window.location.href);
         const { search } = currentUrl;
         setViserGamleArbeidsforhold && setViserGamleArbeidsforhold(true);
