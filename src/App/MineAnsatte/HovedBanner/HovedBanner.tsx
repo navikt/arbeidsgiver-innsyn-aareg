@@ -60,8 +60,6 @@ const Banner: FunctionComponent<Props> = props => {
     const organisasjoner = skjulBedriftsmeny? [] : props.organisasjoner;
     const overskrift = skjulBedriftsmeny? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
 
-    console.log(organisasjoner);
-
     return (
         <div className="hovebanner">
              <Bedriftsmeny

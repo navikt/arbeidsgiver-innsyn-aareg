@@ -164,3 +164,30 @@ export const tilgangTilAtinntjenesteRespons: OrganisasjonlowerCase[] = [
         status: 'Active'
     },
 ];
+
+export const tidligerVirksomheter: OrganisasjonlowerCase[] = [
+    {
+        name: 'MALMEFJORDEN OG RIDABU REGNSKAP',
+        type: 'Enterprise',
+        parentOrganizationNumber: null,
+        organizationNumber: '810825472',
+        organizationForm: 'AS',
+        status: 'Active'
+    },
+    {
+        name: 'MAURA OG KOLBU REGNSKAP',
+        type: 'Business',
+        parentOrganizationNumber: '810825472',
+        organizationNumber: '910825518',
+        organizationForm: 'BEDR',
+        status: 'Active'
+    },
+    {
+        name: 'GAMLE FREDRIKSTAD OG RAMNES REGNSKAP',
+        type: 'Business',
+        parentOrganizationNumber: '810825472',
+        organizationNumber: '910825526',
+        organizationForm: 'BEDR',
+        status: 'Active'
+    }
+];
