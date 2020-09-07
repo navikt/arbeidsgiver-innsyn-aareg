@@ -32,6 +32,7 @@ interface Props extends RouteComponentProps {
     endringIUrlAlert: string;
     setViserGamleArbeidsforhold?: (viser: boolean) => void;
     setTidligereVirksomhet?: (tidligereVirksomhet: Organisasjon) => void;
+    tidligereVirksomhet?: Organisasjon;
     tidligereVirksomheter?: Organisasjon[];
 }
 
@@ -82,6 +83,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     endringIUrlAlert,
     setViserGamleArbeidsforhold,
     setTidligereVirksomhet,
+    tidligereVirksomhet,
     tidligereVirksomheter
 }) => {
     const initialUrl = new URL(window.location.href);
@@ -235,7 +237,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         {'Opplysninger for ' + valgtOrganisasjon.Name}
                     </Systemtittel>
-                    <VelgTidligereVirksomhet  tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet } tidligereVirksomhet={valgtOrganisasjon}/>
+                    <VelgTidligereVirksomhet  tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet!! } tidligereVirksomhet={tidligereVirksomhet!!}/>
                     {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) &&
                         visProgressbar &&
                         aaregLasteState !== APISTATUS.FEILET &&

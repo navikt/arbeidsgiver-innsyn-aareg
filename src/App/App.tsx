@@ -248,6 +248,7 @@ const App = () => {
                                     <Route exact path="/tidligere-arbeidsforhold">
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                         <MineAnsatte
+                                            tidligereVirksomhet = {tidligereVirksomhet}
                                             setTidligereVirksomhet = {setTidligereVirksomhetOgHentArbeidsforhold  }
                                             tidligereVirksomheter={organisasjoner}
                                             setViserGamleArbeidsforhold={setViserGamleArbeidsforhold}
@@ -278,6 +279,7 @@ const App = () => {
                                         )}
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
+                                                tidligereVirksomhet = {tidligereVirksomhet}
                                                 setViserGamleArbeidsforhold={setViserGamleArbeidsforhold}
                                                 endringIUrlAlert={endringIUrlAlert}
                                                 setEndringIUrlAlert={setEndringIUrlAlert}
