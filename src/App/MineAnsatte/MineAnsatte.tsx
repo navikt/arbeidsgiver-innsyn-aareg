@@ -187,11 +187,13 @@ const MineAnsatte: FunctionComponent<Props> = ({
         const currentUrl = new URL(window.location.href);
         const { search } = currentUrl;
         history.replace({ search: search, pathname: 'tidligere-arbeidsforhold' });
+        setEndringIUrlAlert(window.location.href);
     };
 
     const antallVarsler = listeMedArbeidsForhold.filter(forhold => {
         return forhold.varsler;
     }).length;
+
 
     const feilmeldingtekst = () => {
         switch (feilkode) {
