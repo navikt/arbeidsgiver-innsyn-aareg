@@ -8,12 +8,21 @@ import { APISTATUS } from '../api/api-utils';
 import { Organisasjon, tomaAltinnOrganisasjon } from './Objekter/OrganisasjonFraAltinn';
 import { Arbeidsforhold } from './Objekter/ArbeidsForhold';
 import amplitude from '../utils/amplitude';
-import { loggForbiddenFraAltinn, loggInfoOmFeil, loggInfoOmFeilFraAltinn } from './amplitudefunksjonerForLogging';
+import {
+    loggForbiddenFraAltinn,
+    loggInfoOmFeil,
+    loggInfoOmFeilFraAltinn,
+    loggInfoOmFeilTidligereOrganisasjoner
+} from './amplitudefunksjonerForLogging';
 import {
     hentOrganisasjonerFraAltinnNyBackend,
     hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend
 } from '../api/altinnApi';
-import { hentAntallArbeidsforholdFraAaregNyBackend, hentArbeidsforholdFraAAregNyBackend } from '../api/aaregApi';
+import {
+    hentAntallArbeidsforholdFraAaregNyBackend,
+    hentArbeidsforholdFraAAregNyBackend,
+    hentTidligereVirksomheter
+} from '../api/aaregApi';
 import LoginBoundary from './LoggInnBoundary';
 import { redirectTilLogin } from './LoggInn/LoggInn';
 import EnkeltArbeidsforhold from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
@@ -48,8 +57,7 @@ const App = () => {
     const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
     const [tidligereVirksomhet, setTidligereVirksomhet] = useState(tomaAltinnOrganisasjon);
-
-    const [viserGamleArbeidsforhold, setViserGamleArbeidsforhold] = useState(window.location.href.includes('tidligere-arbeidsforhold'));
+    const [tidligereVirksomheter, setTidligereVirksomheter] = useState<Array<Organisasjon> | null>(null);
 
     const [
         abortControllerAntallArbeidsforhold,
@@ -104,6 +112,18 @@ const App = () => {
             abortController.abort();
         };
     }, []);
+
+    useEffect(() => {
+        if (valgtOrganisasjon.ParentOrganizationNumber.length) {
+            const abortController = new AbortController();
+            const signal = abortController.signal;
+            hentTidligereVirksomheter(valgtOrganisasjon.ParentOrganizationNumber, signal)
+                .then(virksomheter => setTidligereVirksomheter(virksomheter))
+                .catch(e =>
+                loggInfoOmFeilTidligereOrganisasjoner(e,valgtOrganisasjon.ParentOrganizationNumber ))
+        }
+
+    }, [valgtOrganisasjon]);
 
     const abortTidligereRequests = () => {
         if (abortControllerAntallArbeidsforhold && abortControllerArbeidsforhold) {
@@ -250,8 +270,7 @@ const App = () => {
                                         <MineAnsatte
                                             tidligereVirksomhet = {tidligereVirksomhet}
                                             setTidligereVirksomhet = {setTidligereVirksomhetOgHentArbeidsforhold  }
-                                            tidligereVirksomheter={organisasjoner}
-                                            setViserGamleArbeidsforhold={setViserGamleArbeidsforhold}
+                                            tidligereVirksomheter={tidligereVirksomheter!!}
                                             endringIUrlAlert={endringIUrlAlert}
                                             setEndringIUrlAlert={setEndringIUrlAlert}
                                             setVisProgressbar={setVisProgressbar}
@@ -280,7 +299,7 @@ const App = () => {
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
                                                 tidligereVirksomhet = {tidligereVirksomhet}
-                                                setViserGamleArbeidsforhold={setViserGamleArbeidsforhold}
+                                                tidligereVirksomheter={tidligereVirksomheter!!}
                                                 endringIUrlAlert={endringIUrlAlert}
                                                 setEndringIUrlAlert={setEndringIUrlAlert}
                                                 setVisProgressbar={setVisProgressbar}
