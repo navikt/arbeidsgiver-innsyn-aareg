@@ -85,6 +85,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     setViserGamleArbeidsforhold,
     setTidligereVirksomhet,
     tidligereVirksomheter,
+    tidligereVirksomhet,
     valgtJuridiskEnhet
 }) => {
     const initialUrl = new URL(window.location.href);
@@ -272,7 +273,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         {overskriftMedOrganisasjonsdel}
                     </Systemtittel>
-                    { ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && <VelgTidligereVirksomhet tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet!! }/>}
+                    { ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && <VelgTidligereVirksomhet tidligereVirksomhet = {tidligereVirksomhet}tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet!! }/>}
                     {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) &&
                         visProgressbar &&
                         aaregLasteState !== APISTATUS.FEILET &&
