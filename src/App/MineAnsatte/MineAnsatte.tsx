@@ -272,7 +272,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         {overskriftMedOrganisasjonsdel}
                     </Systemtittel>
-                    { ERPATIDLIGEREARBEIDSFORHOLD && <VelgTidligereVirksomhet tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet!! }/>}
+                    { ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && <VelgTidligereVirksomhet tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet!! }/>}
                     {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) &&
                         visProgressbar &&
                         aaregLasteState !== APISTATUS.FEILET &&
