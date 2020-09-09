@@ -27,7 +27,7 @@ const VelgTidligereVirksomhet = ({ tidligereOrganisasjoner, setTidligereVirksomh
           setTidligereVirksomhet(organisasjon[0]);
         }
         else {
-
+          setTidligereVirksomhet(tidligereOrganisasjoner[0]);
         }
       }
       else {
