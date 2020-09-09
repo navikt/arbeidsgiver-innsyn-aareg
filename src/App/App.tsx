@@ -195,8 +195,6 @@ const App = () => {
 
     const setValgtOrg = (organisasjon: Organisasjon) => {
         setValgtOrganisasjon(organisasjon);
-        const juridiskEnhet = organisasjoner.filter(organisasjon => organisasjon.OrganizationNumber === valgtOrganisasjon.ParentOrganizationNumber)[0];
-        juridiskEnhet && setValgtEnhet(juridiskEnhet);
         abortTidligereRequests();
         if (organisasjon.OrganizationNumber.length && harTilgang(organisasjon.OrganizationNumber)) {
             hentAntallArbeidsforholdogArbeidsforhold(organisasjon);
@@ -205,6 +203,8 @@ const App = () => {
 
     const setTidligereVirksomhetOgHentArbeidsforhold = (organisasjon: Organisasjon) => {
         setTidligereVirksomhet(organisasjon);
+        const juridiskEnhet = organisasjoner.filter(organisasjon => organisasjon.OrganizationNumber === valgtOrganisasjon.ParentOrganizationNumber)[0];
+        juridiskEnhet && setValgtEnhet(juridiskEnhet);
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.set('tidligereVirksomhet', organisasjon.OrganizationNumber);
         hentAntallArbeidsforholdogArbeidsforhold(organisasjon);
@@ -306,6 +306,7 @@ const App = () => {
                                         )}
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
+                                                setTidligereVirksomhet={setTidligereVirksomhet}
                                                 valgtJuridiskEnhet = {valgtEnhet}
                                                 tidligereVirksomhet = {tidligereVirksomhet}
                                                 tidligereVirksomheter={tidligereVirksomheter!!}
