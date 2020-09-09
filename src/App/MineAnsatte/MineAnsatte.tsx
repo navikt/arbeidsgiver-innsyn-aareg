@@ -6,7 +6,7 @@ import Chevron from 'nav-frontend-chevron';
 import Lenke from 'nav-frontend-lenker';
 import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
-import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import {Organisasjon} from '../Objekter/OrganisasjonFraAltinn';
 import { linkTilMinSideArbeidsgiver } from '../lenker';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
@@ -31,7 +31,7 @@ interface Props extends RouteComponentProps {
     setEndringIUrlAlert: (endret: string) => void;
     endringIUrlAlert: string;
     setViserGamleArbeidsforhold?: (viser: boolean) => void;
-    setTidligereVirksomhet?: (tidligereVirksomhet: Organisasjon) => void;
+    setTidligereVirksomhet: (tidligereVirksomhet: Organisasjon) => void;
     tidligereVirksomhet?: Organisasjon;
     valgtJuridiskEnhet: Organisasjon;
     tidligereVirksomheter?: Organisasjon[];
@@ -114,6 +114,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const TILGANGTILTIDLIGEREARBEIDSFORHOLD = tidligereVirksomheter && tidligereVirksomheter.length>0;
 
     const delOverskrift = "Opplysninger for "
+    console.log(valgtJuridiskEnhet);
     const overskriftMedOrganisasjonsdel = ERPATIDLIGEREARBEIDSFORHOLD ?
         delOverskrift + valgtJuridiskEnhet.Name + " org.nr " + valgtJuridiskEnhet.OrganizationNumber :
         delOverskrift + valgtOrganisasjon.Name
@@ -234,7 +235,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
         return forhold.varsler;
     }).length;
 
-
     const feilmeldingtekst = () => {
         switch (feilkode) {
             case '408':
@@ -272,7 +272,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         {overskriftMedOrganisasjonsdel}
                     </Systemtittel>
-                    { ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && <VelgTidligereVirksomhet tidligereVirksomhet = {tidligereVirksomhet}tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet!! }/>}
+                    { ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && <VelgTidligereVirksomhet redirectTilbake={redirectTilbake} tidligereVirksomhet = {tidligereVirksomhet}tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet!! }/>}
                     {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) &&
                         visProgressbar &&
                         aaregLasteState !== APISTATUS.FEILET &&
