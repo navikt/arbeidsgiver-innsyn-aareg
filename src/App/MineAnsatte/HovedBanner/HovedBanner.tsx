@@ -24,6 +24,8 @@ const Banner: FunctionComponent<Props> = props => {
         }
     };
 
+    const brukerErPaTidligereArbeidsforhold = window.location.href.includes('tidligere-arbeidsforhold');
+
     const redirectTilListeVisning = (organisasjon: Organisasjon) => {
         window.location.href = basename + '/?bedrift=' + organisasjon.OrganizationNumber;
     };
@@ -44,8 +46,6 @@ const Banner: FunctionComponent<Props> = props => {
         return props.valgtOrganisasjon !== tomaAltinnOrganisasjon;
     };
 
-    const skjulBedriftsmeny = history.location.pathname === "tidligere-arbeidsforhold";
-
     const onOrganisasjonChange = (organisasjon?: Organisasjon) => {
         if (organisasjon) {
             props.byttOrganisasjon(organisasjon);
@@ -54,17 +54,22 @@ const Banner: FunctionComponent<Props> = props => {
                 sjekkOmBrukerErPaaEnkeltArbeidsforholdSide(organisasjon);
                 props.setEndringIUrlAlert(window.location.href);
             }
+            const currentUrl = new URL(window.location.href);
+            const { search } = currentUrl;
+            history.replace({ search: search, pathname: '/' });
         }
     };
 
-    const organisasjoner = skjulBedriftsmeny? [] : props.organisasjoner;
-    const overskrift = skjulBedriftsmeny? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
+    const organisasjonerIBedriftsmenyen = brukerErPaTidligereArbeidsforhold? [] : props.organisasjoner;
+    const overskrift = brukerErPaTidligereArbeidsforhold? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
+
+    console.log(organisasjonerIBedriftsmenyen);
 
     return (
         <div className="hovebanner">
              <Bedriftsmeny
                     sidetittel={overskrift}
-                    organisasjoner={organisasjoner}
+                    organisasjoner={props.organisasjoner}
                     onOrganisasjonChange={onOrganisasjonChange}
                     history={history}
                 />
