@@ -60,10 +60,7 @@ const Banner: FunctionComponent<Props> = props => {
         }
     };
 
-    const organisasjonerIBedriftsmenyen = brukerErPaTidligereArbeidsforhold? [] : props.organisasjoner;
     const overskrift = brukerErPaTidligereArbeidsforhold? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
-
-    console.log(organisasjonerIBedriftsmenyen);
 
     return (
         <div className="hovebanner">

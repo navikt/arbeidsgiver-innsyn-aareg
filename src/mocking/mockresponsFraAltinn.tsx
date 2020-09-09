@@ -124,6 +124,22 @@ export const testRespons: OrganisasjonlowerCase[] = [
 ];
 export const tilgangTilAtinntjenesteRespons: OrganisasjonlowerCase[] = [
     {
+        name: 'STØ OG BERGER',
+        type: 'Enterprise',
+        parentOrganizationNumber: null,
+        organizationNumber: '910712217',
+        organizationForm: 'AS',
+        status: 'Active'
+    },
+    {
+        name: 'UTVIK OG ETNE',
+        type: 'Business',
+        parentOrganizationNumber: '910712217',
+        organizationNumber: '910712233',
+        organizationForm: 'BEDR',
+        status: 'Active'
+    },
+    {
         name: 'MALMEFJORDEN OG RIDABU REGNSKAP',
         type: 'Enterprise',
         parentOrganizationNumber: null,
