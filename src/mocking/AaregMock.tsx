@@ -1,6 +1,6 @@
-import fetchMock, {MockOptions, MockOptionsMethodGet} from 'fetch-mock';
+import fetchMock from 'fetch-mock';
 import {hentArbeidsforholdLinkNyBackend, hentTidligereVirksomheterLink} from '../App/lenker';
-import {AaregMockObjekt, AaregMockObjektForNedlagtVirksomhet} from './funksjonerForAlageAAregMock';
+import {AaregMockObjekt} from './funksjonerForAlageAAregMock';
 import {tidligerVirksomheter} from "./mockresponsFraAltinn";
 const delay = new Promise(res => setTimeout(res, 4000));
 fetchMock
@@ -12,7 +12,7 @@ fetchMock
     )
     .spy();
 
-let headere = {"orgnr": "954168395", "jurenhet": "810825472"};
+//let headere = {"orgnr": "954168395", "jurenhet": "810825472"};
 
 /*fetchMock
     .get(
@@ -25,7 +25,7 @@ let headere = {"orgnr": "954168395", "jurenhet": "810825472"};
 
  */
 
-fetchMock
+/*fetchMock
     .get(
         hentArbeidsforholdLinkNyBackend(),AaregMockObjektForNedlagtVirksomhet,{
             delay: 1000, // fake a slow network
@@ -33,6 +33,8 @@ fetchMock
                 orgnr: "954168395", jurenhet: "810825472"
             }})
     .spy();
+
+ */
 
 fetchMock
     .get(

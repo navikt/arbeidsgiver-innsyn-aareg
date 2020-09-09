@@ -164,7 +164,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const setValgtArbeidsforholdOgSendMedParametere = (arbeidsforhold: Arbeidsforhold) => {
         const nyUrl = new URL(window.location.href);
         const { search } = nyUrl;
-
         history.replace({ pathname: '/enkeltArbeidsforhold', search: search });
     };
 
