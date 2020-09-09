@@ -17,6 +17,7 @@ import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatte
 import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
 import VelgTidligereVirksomhet from "./VelgTidligereVirksomhet/VelgTidligereVirksomhet";
+import {nullStillSorteringIUrlParametere} from "./urlFunksjoner";
 
 interface Props extends RouteComponentProps {
     valgtOrganisasjon: Organisasjon;
@@ -163,19 +164,13 @@ const MineAnsatte: FunctionComponent<Props> = ({
         }
     }, [endringIUrlAlert]);
 
-    const setValgtArbeidsforholdOgSendMedParametere = (arbeidsforhold: Arbeidsforhold) => {
-        const nyUrl = new URL(window.location.href);
-        const { search } = nyUrl;
-        history.replace({ pathname: '/enkeltArbeidsforhold', search: search });
-    };
-
     const endreTidligereVirksomhetOgNullstillParametere = (organisasjon: Organisasjon) => {
         setTidligereVirksomhet(organisasjon)
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.set('tidligereVirksomhet', organisasjon.OrganizationNumber);
-        const { search } = currentUrl;
-        history.replace(search);
-        nullStillUrlParametere()
+        const search  = nullStillSorteringIUrlParametere()
+        history.replace({search: search});
+        setEndringIUrlAlert(window.location.href);
     }
 
     useEffect(() => {
@@ -213,34 +208,19 @@ const MineAnsatte: FunctionComponent<Props> = ({
         );
     }
 
-    const nullStillUrlParametere = () => {
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('side', '1');
-        currentUrl.searchParams.set('filter', 'Alle');
-        currentUrl.searchParams.set('varsler', 'false');
-        currentUrl.searchParams.set('sok', '');
-        currentUrl.searchParams.set('sorter', '0');
-        currentUrl.searchParams.set('revers', 'false');
-        const { search } = currentUrl;
-        history.replace(search);
-    };
-
     const redirectTilTidligereArbeidsforhold = () => {
-        nullStillUrlParametere();
-        const currentUrl = new URL(window.location.href);
-        const { search } = currentUrl;
+        const search   = nullStillSorteringIUrlParametere();
         setViserGamleArbeidsforhold && setViserGamleArbeidsforhold(true);
         history.replace({ search: search, pathname: 'tidligere-arbeidsforhold' });
         setEndringIUrlAlert(window.location.href);
     };
 
     const redirectTilbake = () => {
-        nullStillUrlParametere();
         setTidligereVirksomhet(tomaAltinnOrganisasjon);
         setValgtOrganisasjon(valgtOrganisasjon);
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.delete('arbeidsforhold');
-        const { search } = currentUrl;
+        const search   = nullStillSorteringIUrlParametere();
         history.replace({ search: search, pathname: '/' });
     };
 
@@ -322,21 +302,13 @@ const MineAnsatte: FunctionComponent<Props> = ({
                             <>
                                 <TabellMineAnsatte
                                     setParameterIUrl={setParameterIUrl}
-                                    className="mine-ansatte__table"
                                     listeMedArbeidsForhold={forholdPaEnSide}
-                                    fullListe={listeMedArbeidsForhold}
                                     setNavarendeKolonne={setNavarendeKolonne}
                                     byttSide={setIndeksOgGenererListe}
                                     navarendeKolonne={navarendeKolonne}
-                                    setValgtArbeidsforhold={setValgtArbeidsforholdOgSendMedParametere}
-                                    valgtBedrift={valgtOrganisasjon.OrganizationNumber}
                                 />
                                 <ListeMedAnsatteForMobil
-                                    fullListe={listeMedArbeidsForhold}
                                     listeMedArbeidsForhold={forholdPaEnSide}
-                                    className="mine-ansatte__liste"
-                                    setValgtArbeidsforhold={setValgtArbeidsforholdOgSendMedParametere}
-                                    valgtBedrift={valgtOrganisasjon.OrganizationNumber}
                                 />
                                 {antallSider > 1 && (
                                     <SideBytter
