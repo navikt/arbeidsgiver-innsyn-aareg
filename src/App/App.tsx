@@ -203,11 +203,13 @@ const App = () => {
 
     const setTidligereVirksomhetOgHentArbeidsforhold = (organisasjon: Organisasjon) => {
         setTidligereVirksomhet(organisasjon);
-        const juridiskEnhet = organisasjoner.filter(organisasjon => organisasjon.OrganizationNumber === valgtOrganisasjon.ParentOrganizationNumber)[0];
-        juridiskEnhet && setValgtEnhet(juridiskEnhet);
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('tidligereVirksomhet', organisasjon.OrganizationNumber);
-        hentAntallArbeidsforholdogArbeidsforhold(organisasjon);
+        if (organisasjon !== tomaAltinnOrganisasjon) {
+            const juridiskEnhet = organisasjoner.filter(organisasjon => organisasjon.OrganizationNumber === valgtOrganisasjon.ParentOrganizationNumber)[0];
+            juridiskEnhet && setValgtEnhet(juridiskEnhet);
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('tidligereVirksomhet', organisasjon.OrganizationNumber);
+            hentAntallArbeidsforholdogArbeidsforhold(organisasjon);
+        }
     }
 
     useEffect(() => {
