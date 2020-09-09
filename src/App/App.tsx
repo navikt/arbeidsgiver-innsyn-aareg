@@ -56,6 +56,7 @@ const App = () => {
     const [organisasjoner, setorganisasjoner] = useState(Array<Organisasjon>());
     const [organisasjonerMedTilgang, setOrganisasjonerMedTilgang] = useState<Array<Organisasjon> | null>(null);
     const [valgtOrganisasjon, setValgtOrganisasjon] = useState(tomaAltinnOrganisasjon);
+    const [valgtEnhet, setValgtEnhet] = useState(tomaAltinnOrganisasjon);
     const [tidligereVirksomhet, setTidligereVirksomhet] = useState(tomaAltinnOrganisasjon);
     const [tidligereVirksomheter, setTidligereVirksomheter] = useState<Array<Organisasjon> | null>(null);
 
@@ -76,8 +77,6 @@ const App = () => {
     const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
 
     const [endringIUrlAlert, setEndringIUrlAlert] = useState(window.location.href);
-
-    const valgtJuridiskEnhet = organisasjoner.filter(organisasjon => organisasjon.OrganizationNumber === valgtOrganisasjon.ParentOrganizationNumber)[0];
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -120,12 +119,14 @@ const App = () => {
             const abortController = new AbortController();
             const signal = abortController.signal;
             hentTidligereVirksomheter(valgtOrganisasjon.ParentOrganizationNumber, signal)
-                .then(virksomheter => setTidligereVirksomheter(virksomheter))
+                .then(virksomheter => {
+                    setTidligereVirksomheter(virksomheter)
+        })
                 .catch(e =>
                 loggInfoOmFeilTidligereOrganisasjoner(e,valgtOrganisasjon.ParentOrganizationNumber ))
         }
 
-    }, [valgtOrganisasjon]);
+    }, [valgtOrganisasjon.ParentOrganizationNumber]);
 
     const abortTidligereRequests = () => {
         if (abortControllerAntallArbeidsforhold && abortControllerArbeidsforhold) {
@@ -194,6 +195,8 @@ const App = () => {
 
     const setValgtOrg = (organisasjon: Organisasjon) => {
         setValgtOrganisasjon(organisasjon);
+        const juridiskEnhet = organisasjoner.filter(organisasjon => organisasjon.OrganizationNumber === valgtOrganisasjon.ParentOrganizationNumber)[0];
+        juridiskEnhet && setValgtEnhet(juridiskEnhet);
         abortTidligereRequests();
         if (organisasjon.OrganizationNumber.length && harTilgang(organisasjon.OrganizationNumber)) {
             hentAntallArbeidsforholdogArbeidsforhold(organisasjon);
@@ -202,6 +205,8 @@ const App = () => {
 
     const setTidligereVirksomhetOgHentArbeidsforhold = (organisasjon: Organisasjon) => {
         setTidligereVirksomhet(organisasjon);
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('tidligereVirksomhet', organisasjon.OrganizationNumber);
         hentAntallArbeidsforholdogArbeidsforhold(organisasjon);
     }
 
@@ -270,7 +275,7 @@ const App = () => {
                                     <Route exact path="/tidligere-arbeidsforhold">
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                         <MineAnsatte
-                                            valgtJuridiskEnhet = {valgtJuridiskEnhet!!}
+                                            valgtJuridiskEnhet = {valgtEnhet}
                                             tidligereVirksomhet = {tidligereVirksomhet}
                                             setTidligereVirksomhet = {setTidligereVirksomhetOgHentArbeidsforhold  }
                                             tidligereVirksomheter={tidligereVirksomheter!!}
@@ -301,7 +306,7 @@ const App = () => {
                                         )}
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
-                                                valgtJuridiskEnhet = {valgtJuridiskEnhet!!}
+                                                valgtJuridiskEnhet = {valgtEnhet}
                                                 tidligereVirksomhet = {tidligereVirksomhet}
                                                 tidligereVirksomheter={tidligereVirksomheter!!}
                                                 endringIUrlAlert={endringIUrlAlert}
