@@ -189,5 +189,14 @@ export const tidligerVirksomheter: OrganisasjonlowerCase[] = [
         organizationNumber: '954168395',
         organizationForm: 'AS',
         status: 'Active'
+    },
+    {
+        name: 'HASLUM OG HAUGNES REGNSKAP',
+        type: 'BEDR',
+        parentOrganizationNumber: '810825472',
+        organizationNumber: '954168399',
+        organizationForm: 'AS',
+        status: 'Active'
     }
+
 ];
