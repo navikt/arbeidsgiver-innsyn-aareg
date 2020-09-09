@@ -5,6 +5,7 @@ import { basename } from '../../paths';
 import Bedriftsmeny from '@navikt/bedriftsmeny';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import './HovedBanner.less';
+import {nullStillSorteringIUrlParametere} from "../urlFunksjoner";
 
 interface Props extends RouteComponentProps {
     byttOrganisasjon: (org: Organisasjon) => void;
@@ -30,17 +31,6 @@ const Banner: FunctionComponent<Props> = props => {
         window.location.href = basename + '/?bedrift=' + organisasjon.OrganizationNumber;
     };
 
-    const nullStillUrlParametere = () => {
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('side', '1');
-        currentUrl.searchParams.set('filter', 'Alle');
-        currentUrl.searchParams.set('varsler', 'false');
-        currentUrl.searchParams.set('sok', '');
-        currentUrl.searchParams.set('sorter', '0');
-        currentUrl.searchParams.set('revers', 'false');
-        const { search } = currentUrl;
-        history.replace(search);
-    };
 
     const sjekkAtManBytterBedriftIkkeVedRefresh = () => {
         return props.valgtOrganisasjon !== tomaAltinnOrganisasjon;
@@ -50,7 +40,7 @@ const Banner: FunctionComponent<Props> = props => {
         if (organisasjon) {
             props.byttOrganisasjon(organisasjon);
             if (sjekkAtManBytterBedriftIkkeVedRefresh()) {
-                nullStillUrlParametere();
+                history.replace(nullStillSorteringIUrlParametere());
                 sjekkOmBrukerErPaaEnkeltArbeidsforholdSide(organisasjon);
                 props.setEndringIUrlAlert(window.location.href);
             }
