@@ -49,6 +49,9 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
         setIndeksOgGenererListe(1);
     };
 
+    const viserTidligereVirksomhet = window.location.href.includes('tidligere-arbeidsforhold');
+    const tekstFornedlagtVirksomhet = viserTidligereVirksomhet? ' Merk at dette er en nedlagt eller overdratt virksomhet, så ingen av disse arbeidsforholdene skal være aktive.' : '';
+
     const velgFiltrering = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]) => {
         const filtrering = filtreringValgt(event, toggles);
         setParameterIUrl('filter', filtrering);
@@ -60,17 +63,14 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
         <>
             {responsFraAaregisteret.length === 0 ? (
                 <AlertStripeInfo className="mine-ansatte__informasjon">
-                    Det finnes ingen arbeidsforhold rapportert inn til Aa-registeret etter 01.01.2015 for valgt
-                    underenhet. Dersom dette er feil må det rettes opp via a-meldingen.
+                    Det finnes ingen arbeidsforhold rapportert inn til Aa-registeret etter 01.01.2015 for valgt underenhet. Dersom dette er feil må det rettes opp via a-meldingen.
                 </AlertStripeInfo>
             ) : responsFraAaregisteret.length > 0 ? (
                 <>
                     <div className="mine-ansatte__header">
                         <AlertStripeInfo className="informasjon">
                             <Normaltekst>
-                                Oversikten viser alle arbeidsforhold rapportert etter 01.01.2015 for valgt virksomhet.
-                                Hvis det er feil i et arbeidsforhold, skal du som arbeidsgiver endre dette gjennom
-                                a-meldingen.
+                                {"Oversikten viser alle arbeidsforhold rapportert etter 01.01.2015 for valgt virksomhet." + tekstFornedlagtVirksomhet + " Hvis du finner feil i oversikten, skal du som arbeidsgiver endre dette gjennoma-meldingen."}
                             </Normaltekst>
                             <Normaltekst>
                                 {'Se '}

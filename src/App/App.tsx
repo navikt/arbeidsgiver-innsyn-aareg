@@ -203,6 +203,7 @@ const App = () => {
 
     const setTidligereVirksomhetOgHentArbeidsforhold = (organisasjon: Organisasjon) => {
         setTidligereVirksomhet(organisasjon);
+        console.log('setter tidligere virksomhet: ', organisasjon);
         if (organisasjon !== tomaAltinnOrganisasjon) {
             const juridiskEnhet = organisasjoner.filter(organisasjon => organisasjon.OrganizationNumber === valgtOrganisasjon.ParentOrganizationNumber)[0];
             juridiskEnhet && setValgtEnhet(juridiskEnhet);
