@@ -4,25 +4,18 @@ import Ansatt from './Ansatt/Ansatt';
 import './ListeMineAnsatteForMobil.less';
 
 interface Props {
-    className?: string;
-    listeMedArbeidsForhold: Arbeidsforhold[];
-    fullListe: Arbeidsforhold[];
-    nesteArbeidsforhold?: Arbeidsforhold;
-    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
-    valgtBedrift: string;
+    listeMedArbeidsForhold: Arbeidsforhold[],
 }
 
-const ListeMedAnsatteForMobil: FunctionComponent<Props> = (props: Props) => {
+const ListeMedAnsatteForMobil: FunctionComponent<Props> = (props) => {
     const rader = props.listeMedArbeidsForhold.map(forhold => (
         <Ansatt
             key={forhold.navArbeidsforholdId}
-            setValgtArbeidsforhold={props.setValgtArbeidsforhold}
-            valgtBedrift={props.valgtBedrift}
             arbeidsforhold={forhold}
         />
     ));
 
-    return <ul className={props.className}>{rader}</ul>;
+    return <ul >{rader}</ul>;
 };
 
 export default ListeMedAnsatteForMobil;
