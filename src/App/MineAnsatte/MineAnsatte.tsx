@@ -6,7 +6,7 @@ import Chevron from 'nav-frontend-chevron';
 import Lenke from 'nav-frontend-lenker';
 import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
-import {Organisasjon} from '../Objekter/OrganisasjonFraAltinn';
+import {Organisasjon, tomaAltinnOrganisasjon} from '../Objekter/OrganisasjonFraAltinn';
 import { linkTilMinSideArbeidsgiver } from '../lenker';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
@@ -168,6 +168,11 @@ const MineAnsatte: FunctionComponent<Props> = ({
         history.replace({ pathname: '/enkeltArbeidsforhold', search: search });
     };
 
+    const endreTidligereVirksomhetOgNullstillParametere = (organisasjon: Organisasjon) => {
+        setTidligereVirksomhet(organisasjon)
+        nullStillUrlParametere()
+    }
+
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
             listeFraAareg,
@@ -225,6 +230,8 @@ const MineAnsatte: FunctionComponent<Props> = ({
     };
 
     const redirectTilbake = () => {
+        nullStillUrlParametere();
+        setTidligereVirksomhet(tomaAltinnOrganisasjon);
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.delete('arbeidsforhold');
         const { search } = currentUrl;
@@ -272,7 +279,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         {overskriftMedOrganisasjonsdel}
                     </Systemtittel>
-                    { ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && <VelgTidligereVirksomhet redirectTilbake={redirectTilbake} tidligereVirksomhet = {tidligereVirksomhet}tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhet!! }/>}
+                    { ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && <VelgTidligereVirksomhet redirectTilbake={redirectTilbake} tidligereVirksomhet = {tidligereVirksomhet}tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={endreTidligereVirksomhetOgNullstillParametere }/>}
                     {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) &&
                         visProgressbar &&
                         aaregLasteState !== APISTATUS.FEILET &&
