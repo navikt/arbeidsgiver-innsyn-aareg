@@ -170,6 +170,10 @@ const MineAnsatte: FunctionComponent<Props> = ({
 
     const endreTidligereVirksomhetOgNullstillParametere = (organisasjon: Organisasjon) => {
         setTidligereVirksomhet(organisasjon)
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('tidligereVirksomhet', organisasjon.OrganizationNumber);
+        const { search } = currentUrl;
+        history.replace(search);
         nullStillUrlParametere()
     }
 
