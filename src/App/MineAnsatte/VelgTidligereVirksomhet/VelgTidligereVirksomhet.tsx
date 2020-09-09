@@ -2,8 +2,9 @@ import React from 'react';
 import './VelgTidligereVirksomhet.less';
 import {Organisasjon, tomaAltinnOrganisasjon} from "../../Objekter/OrganisasjonFraAltinn";
 import {Select} from "nav-frontend-skjema";
+import {RouteComponentProps, withRouter} from "react-router";
 
-interface Props {
+interface Props extends RouteComponentProps {
   tidligereOrganisasjoner?: Organisasjon[];
   setTidligereVirksomhet: (virksomhet: Organisasjon) => void;
   tidligereVirksomhet?: Organisasjon;
@@ -16,8 +17,22 @@ const VelgTidligereVirksomhet = ({ tidligereOrganisasjoner, setTidligereVirksomh
     >{virksomhet.Name}</option>
   })
 
-  if (tidligereVirksomhet === tomaAltinnOrganisasjon && tidligereOrganisasjoner ){
-    setTidligereVirksomhet(tidligereOrganisasjoner[0])
+  const currentUrl = new URL(window.location.href);
+  const parameterForTidligereVirksomhet = currentUrl.searchParams.get('tidligereVirksomhet');
+
+    if (tidligereVirksomhet === tomaAltinnOrganisasjon && tidligereOrganisasjoner){
+      if (parameterForTidligereVirksomhet) {
+        const organisasjon = tidligereOrganisasjoner.filter(organisasjon => organisasjon.OrganizationNumber === parameterForTidligereVirksomhet);
+        if (organisasjon.length) {
+          setTidligereVirksomhet(organisasjon[0]);
+        }
+        else {
+
+        }
+      }
+      else {
+        setTidligereVirksomhet(tidligereOrganisasjoner[0]);
+      }
   }
 
   return (
@@ -34,4 +49,4 @@ const VelgTidligereVirksomhet = ({ tidligereOrganisasjoner, setTidligereVirksomh
   );
 };
 
-export default VelgTidligereVirksomhet;
+export default withRouter(VelgTidligereVirksomhet);
