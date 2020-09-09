@@ -12,28 +12,33 @@ interface Props extends RouteComponentProps {
 }
 
 const VelgTidligereVirksomhet = ({ tidligereOrganisasjoner, setTidligereVirksomhet, tidligereVirksomhet, redirectTilbake}: Props) => {
-    const objekter = tidligereOrganisasjoner && tidligereOrganisasjoner.map((virksomhet) => {
-    return <option id={'tidligere-virksomhet'} value={virksomhet.OrganizationNumber} key={virksomhet.OrganizationNumber}
-    >{virksomhet.Name}</option>
-  })
 
   const currentUrl = new URL(window.location.href);
   const parameterForTidligereVirksomhet = currentUrl.searchParams.get('tidligereVirksomhet');
 
-    if (tidligereVirksomhet === tomaAltinnOrganisasjon && tidligereOrganisasjoner){
-      if (parameterForTidligereVirksomhet) {
-        const organisasjon = tidligereOrganisasjoner.filter(organisasjon => organisasjon.OrganizationNumber === parameterForTidligereVirksomhet);
-        if (organisasjon.length) {
-          setTidligereVirksomhet(organisasjon[0]);
-        }
-        else {
-          setTidligereVirksomhet(tidligereOrganisasjoner[0]);
-        }
+  if (tidligereVirksomhet === tomaAltinnOrganisasjon && tidligereOrganisasjoner){
+    if (parameterForTidligereVirksomhet) {
+      const organisasjon = tidligereOrganisasjoner.filter(organisasjon => organisasjon.OrganizationNumber === parameterForTidligereVirksomhet);
+      if (organisasjon.length) {
+        setTidligereVirksomhet(organisasjon[0]);
       }
       else {
         setTidligereVirksomhet(tidligereOrganisasjoner[0]);
       }
+    }
+    else {
+      setTidligereVirksomhet(tidligereOrganisasjoner[0]);
+    }
   }
+
+    const objekter = tidligereOrganisasjoner && tidligereOrganisasjoner.map((virksomhet) => {
+      const erValgt = virksomhet.OrganizationNumber === tidligereVirksomhet?.OrganizationNumber;
+    return (
+      <option title={virksomhet.Name +", " +virksomhet.OrganizationNumber} className={"mine-ansatte__velg-tidligere-virksomhet-option"} selected={erValgt} id={'tidligere-virksomhet'} value={virksomhet.OrganizationNumber} key={virksomhet.OrganizationNumber}
+    >{virksomhet.Name +", " +virksomhet.OrganizationNumber}
+      </option>
+    );
+  })
 
   return (
       <div className={'mine-ansatte__velg-tidligere-virksomhet'}>
