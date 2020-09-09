@@ -114,7 +114,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const TILGANGTILTIDLIGEREARBEIDSFORHOLD = tidligereVirksomheter && tidligereVirksomheter.length>0;
 
     const delOverskrift = "Opplysninger for "
-    console.log(valgtJuridiskEnhet);
     const overskriftMedOrganisasjonsdel = ERPATIDLIGEREARBEIDSFORHOLD ?
         delOverskrift + valgtJuridiskEnhet.Name + " org.nr " + valgtJuridiskEnhet.OrganizationNumber :
         delOverskrift + valgtOrganisasjon.Name
