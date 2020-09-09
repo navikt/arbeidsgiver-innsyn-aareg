@@ -276,6 +276,7 @@ const App = () => {
                                     <Route exact path="/tidligere-arbeidsforhold">
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                         <MineAnsatte
+                                            setValgtOrganisasjon={setValgtOrg}
                                             valgtJuridiskEnhet = {valgtEnhet}
                                             tidligereVirksomhet = {tidligereVirksomhet}
                                             setTidligereVirksomhet = {setTidligereVirksomhetOgHentArbeidsforhold  }
@@ -307,6 +308,7 @@ const App = () => {
                                         )}
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
+                                                setValgtOrganisasjon={setValgtOrg}
                                                 setTidligereVirksomhet={setTidligereVirksomhet}
                                                 valgtJuridiskEnhet = {valgtEnhet}
                                                 tidligereVirksomhet = {tidligereVirksomhet}

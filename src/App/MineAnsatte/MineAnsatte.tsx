@@ -20,6 +20,7 @@ import VelgTidligereVirksomhet from "./VelgTidligereVirksomhet/VelgTidligereVirk
 
 interface Props extends RouteComponentProps {
     valgtOrganisasjon: Organisasjon;
+    setValgtOrganisasjon: (organisasjon: Organisasjon) => void;
     listeFraAareg: Arbeidsforhold[];
     antallArbeidsforhold: number;
     visProgressbar: boolean;
@@ -72,6 +73,7 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
 const MineAnsatte: FunctionComponent<Props> = ({
     history,
     valgtOrganisasjon,
+    setValgtOrganisasjon,
     listeFraAareg,
     antallArbeidsforholdUkjent,
     antallArbeidsforhold,
@@ -235,6 +237,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const redirectTilbake = () => {
         nullStillUrlParametere();
         setTidligereVirksomhet(tomaAltinnOrganisasjon);
+        setValgtOrganisasjon(valgtOrganisasjon);
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.delete('arbeidsforhold');
         const { search } = currentUrl;

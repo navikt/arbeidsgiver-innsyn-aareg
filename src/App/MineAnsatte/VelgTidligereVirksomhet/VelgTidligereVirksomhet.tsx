@@ -12,7 +12,6 @@ interface Props extends RouteComponentProps {
 }
 
 const VelgTidligereVirksomhet = ({ tidligereOrganisasjoner, setTidligereVirksomhet, tidligereVirksomhet, redirectTilbake}: Props) => {
-
   const currentUrl = new URL(window.location.href);
   const parameterForTidligereVirksomhet = currentUrl.searchParams.get('tidligereVirksomhet');
 
