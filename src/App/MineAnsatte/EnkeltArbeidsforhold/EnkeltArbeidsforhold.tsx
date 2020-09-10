@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, {FunctionComponent, useContext} from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
@@ -7,6 +7,7 @@ import environment from '../../../utils/environment';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from '../sorteringOgFiltreringsFunksjoner';
 import './EnkeltArbeidsforhold.less';
+import {Feature, FeatureToggleContext} from "../../FeatureToggleProvider";
 
 interface Props extends RouteComponentProps {
     valgtArbeidsforhold: Arbeidsforhold | null;
@@ -41,7 +42,8 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
     window.scrollTo(0, 0);
-
+    const featureToggleContext = useContext(FeatureToggleContext);
+    const tillatPrintAvArbeidsforhold = featureToggleContext[Feature.tillatPrint];
     const redirectTilbake = () => {
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.delete('arbeidsforhold');
@@ -145,6 +147,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
                                     </div>
                                 </span>
                             </div>
+                            {tillatPrintAvArbeidsforhold && (
                             <DetaljertArbeidsforhold
                                 locale={locale}
                                 miljo={miljo()}
@@ -155,7 +158,17 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
                                 printActivated={true}
                                 printName={valgtArbeidsforhold.arbeidstaker.navn}
                                 printSSN={valgtArbeidsforhold.arbeidstaker.offentligIdent}
-                            />
+                            />)}
+                            {!tillatPrintAvArbeidsforhold && (
+                                <DetaljertArbeidsforhold
+                                    locale={locale}
+                                    miljo={miljo()}
+                                    navArbeidsforholdId={parseInt(arbeidsforholdIdFraUrl)}
+                                    rolle="ARBEIDSGIVER"
+                                    fnrArbeidstaker={valgtArbeidsforhold.arbeidstaker.offentligIdent}
+                                    customApiUrl={apiURL()}
+                                />)
+                            }
                         </div>
                     </div>
                 </div>

@@ -24,6 +24,7 @@ if (process.env.REACT_APP_MOCK) {
     require('./mocking/altinnMock');
     require('./mocking/enkeltArbeidsforholdMock');
     require('./mocking/BeregnetTidForArbeidsforholdMock');
+    require('./mocking/UnleashMock')
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));
