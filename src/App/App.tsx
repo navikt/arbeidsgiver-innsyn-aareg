@@ -61,7 +61,7 @@ const App = () => {
     const [valgtJuridiskEnhet, setValgtJuridiskEnhet] = useState(tomaAltinnOrganisasjon);
 
     const [tidligereVirksomhet, setTidligereVirksomhet] = useState(tomaAltinnOrganisasjon);
-    const [tidligereVirksomheter, setTidligereVirksomheter] = useState<Array<Organisasjon> | null>(null);
+    const [tidligereVirksomheter, setTidligereVirksomheter] = useState<Array<Organisasjon> | undefined>(undefined);
 
     const [
         abortControllerAntallArbeidsforhold,
@@ -79,7 +79,7 @@ const App = () => {
     const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
     const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
 
-    const [endringIUrlAlert, setEndringIUrlAlert] = useState(window.location.href);
+    const [nåværendeUrlString, setNåværendeUrlString] = useState(window.location.href);
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -256,7 +256,7 @@ const App = () => {
                     {organisasjonerFraAltinnLasteState !== APISTATUS.LASTER && (
                         <HovedBanner
                             erPaTidligereArbeidsforhold={true}
-                            setEndringIUrlAlert={setEndringIUrlAlert}
+                            setEndringIUrlAlert={setNåværendeUrlString}
                             valgtOrganisasjon={valgtAktivOrganisasjon}
                             byttOrganisasjon={setValgtOrg}
                             organisasjoner={organisasjonerFraAltinnLasteState === APISTATUS.OK ? organisasjonerFraAltinn : []}
@@ -278,22 +278,22 @@ const App = () => {
                                     <Route exact path="/tidligere-arbeidsforhold">
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                         <MineAnsatte
-                                            setValgtOrganisasjon={setValgtOrg}
+                                            valgtAktivOrganisasjon={valgtAktivOrganisasjon}
                                             valgtJuridiskEnhet = {valgtJuridiskEnhet}
-                                            tidligereVirksomhet = {tidligereVirksomhet}
+                                            valgtTidligereVirksomhet= {tidligereVirksomhet}
+                                            hentOgSetAntallOgArbeidsforhold = {hentOgSetAntallOgArbeidsforhold}
                                             setTidligereVirksomhet = {setTidligereVirksomhetOgHentArbeidsforhold  }
-                                            tidligereVirksomheter={tidligereVirksomheter!!}
-                                            endringIUrlAlert={endringIUrlAlert}
-                                            setEndringIUrlAlert={setEndringIUrlAlert}
+                                            tidligereVirksomheter={tidligereVirksomheter}
+                                            nåværendeUrlString={nåværendeUrlString}
+                                            setNåværendeUrlString={setNåværendeUrlString}
                                             setVisProgressbar={setVisProgressbar}
                                             visProgressbar={visProgressbar}
                                             antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
                                             antallArbeidsforhold={antallArbeidsforhold}
-                                            listeFraAareg={listeMedArbeidsforholdFraAareg}
+                                            listeMedArbeidsforhold={listeMedArbeidsforholdFraAareg}
                                             aaregLasteState={aaregLasteState}
-                                            feilkode={feilkodeFraAareg}
+                                            feilkodeFraAareg={feilkodeFraAareg}
                                             forMangeArbeidsforhold={forMangeArbeidsforhold}
-                                            valgtOrganisasjon={valgtAktivOrganisasjon}
                                         />)}
                                     </Route>
                                     <Route exact path="/">
@@ -310,22 +310,22 @@ const App = () => {
                                         )}
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                             <MineAnsatte
-                                                setValgtOrganisasjon={setValgtOrg}
+                                                valgtAktivOrganisasjon={valgtAktivOrganisasjon}
+                                                hentOgSetAntallOgArbeidsforhold={hentOgSetAntallOgArbeidsforhold}
                                                 setTidligereVirksomhet={setTidligereVirksomhet}
                                                 valgtJuridiskEnhet = {valgtJuridiskEnhet}
-                                                tidligereVirksomhet = {tidligereVirksomhet}
-                                                tidligereVirksomheter={tidligereVirksomheter!!}
-                                                endringIUrlAlert={endringIUrlAlert}
-                                                setEndringIUrlAlert={setEndringIUrlAlert}
+                                                valgtTidligereVirksomhet= {tidligereVirksomhet}
+                                                tidligereVirksomheter={tidligereVirksomheter}
+                                                nåværendeUrlString={nåværendeUrlString}
+                                                setNåværendeUrlString={setNåværendeUrlString}
                                                 setVisProgressbar={setVisProgressbar}
                                                 visProgressbar={visProgressbar}
                                                 antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
                                                 antallArbeidsforhold={antallArbeidsforhold}
-                                                listeFraAareg={listeMedArbeidsforholdFraAareg}
+                                                listeMedArbeidsforhold={listeMedArbeidsforholdFraAareg}
                                                 aaregLasteState={aaregLasteState}
-                                                feilkode={feilkodeFraAareg}
+                                                feilkodeFraAareg={feilkodeFraAareg}
                                                 forMangeArbeidsforhold={forMangeArbeidsforhold}
-                                                valgtOrganisasjon={valgtAktivOrganisasjon}
                                             />
                                         )}
                                     </Route>

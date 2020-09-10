@@ -6,7 +6,7 @@ import Chevron from 'nav-frontend-chevron';
 import Lenke from 'nav-frontend-lenker';
 import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
-import {Organisasjon, tomaAltinnOrganisasjon} from '../Objekter/OrganisasjonFraAltinn';
+import {Organisasjon} from '../Objekter/OrganisasjonFraAltinn';
 import { linkTilMinSideArbeidsgiver } from '../lenker';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
@@ -20,21 +20,21 @@ import VelgTidligereVirksomhet from "./VelgTidligereVirksomhet/VelgTidligereVirk
 import {nullStillSorteringIUrlParametere} from "./urlFunksjoner";
 
 interface Props extends RouteComponentProps {
-    valgtOrganisasjon: Organisasjon;
-    setValgtOrganisasjon: (organisasjon: Organisasjon) => void;
-    listeFraAareg: Arbeidsforhold[];
+    valgtJuridiskEnhet: Organisasjon;
+    valgtAktivOrganisasjon: Organisasjon;
+    valgtTidligereVirksomhet?: Organisasjon;
+    hentOgSetAntallOgArbeidsforhold: (organisasjon: Organisasjon) => void;
+    listeMedArbeidsforhold: Arbeidsforhold[];
     antallArbeidsforhold: number;
     visProgressbar: boolean;
     setVisProgressbar: (skalVises: boolean) => void;
     aaregLasteState: APISTATUS;
-    feilkode: string;
+    feilkodeFraAareg: string;
     forMangeArbeidsforhold: boolean;
     antallArbeidsforholdUkjent: boolean;
-    setEndringIUrlAlert: (endret: string) => void;
-    endringIUrlAlert: string;
+    setNåværendeUrlString: (endret: string) => void;
+    nåværendeUrlString: string;
     setTidligereVirksomhet: (tidligereVirksomhet: Organisasjon) => void;
-    tidligereVirksomhet?: Organisasjon;
-    valgtJuridiskEnhet: Organisasjon;
     tidligereVirksomheter?: Organisasjon[];
 }
 
@@ -72,67 +72,66 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
 
 const MineAnsatte: FunctionComponent<Props> = ({
     history,
-    valgtOrganisasjon,
-    setValgtOrganisasjon,
-    listeFraAareg,
+    valgtAktivOrganisasjon,
+    listeMedArbeidsforhold,
     antallArbeidsforholdUkjent,
     antallArbeidsforhold,
     setVisProgressbar,
     visProgressbar,
     aaregLasteState,
-    feilkode,
+    feilkodeFraAareg,
     forMangeArbeidsforhold,
-    setEndringIUrlAlert,
-    endringIUrlAlert,
+    setNåværendeUrlString,
+    nåværendeUrlString,
     setTidligereVirksomhet,
+    hentOgSetAntallOgArbeidsforhold,
     tidligereVirksomheter,
-    tidligereVirksomhet,
+    valgtTidligereVirksomhet,
     valgtJuridiskEnhet
 }) => {
-    const initialUrl = new URL(window.location.href);
-    const sidetall = initialUrl.searchParams.get('side') || '1';
+    const naVærendeUrl = new URL(window.location.href);
+    const sidetall = naVærendeUrl.searchParams.get('side') || '1';
     const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(parseInt(sidetall));
     const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
 
     //parametere som bestemmer tilstanden på listen som vises
-    const Initialsortering = initialUrl.searchParams.get('sorter') || '0';
+    const Initialsortering = naVærendeUrl.searchParams.get('sorter') || '0';
     const initialKolonne: KolonneState = {
         erValgt: true,
         sorteringsAttributt: parseInt(Initialsortering),
-        reversSortering: initialUrl.searchParams.get('revers') === 'true'
+        reversSortering: naVærendeUrl.searchParams.get('revers') === 'true'
     };
     const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
-    const filtreringsvalg = initialUrl.searchParams.get('filter') || 'Alle';
+    const filtreringsvalg = naVærendeUrl.searchParams.get('filter') || 'Alle';
     const [filtrerPaAktiveAvsluttede, setFiltrerPaAktiveAvsluttede] = useState(filtreringsvalg);
-    const sokefeltTekst = initialUrl.searchParams.get('sok') || '';
+    const sokefeltTekst = naVærendeUrl.searchParams.get('sok') || '';
     const [soketekst, setSoketekst] = useState<string>(sokefeltTekst);
-    const filtrertPaVarsler = initialUrl.searchParams.get('varsler') === 'true';
+    const filtrertPaVarsler = naVærendeUrl.searchParams.get('varsler') === 'true';
     const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(filtrertPaVarsler);
 
     const ARBEIDSFORHOLDPERSIDE = 25;
 
-    const ERPATIDLIGEREARBEIDSFORHOLD = window.location.href.includes('tidligere-arbeidsforhold')
+    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
     const TILGANGTILTIDLIGEREARBEIDSFORHOLD = tidligereVirksomheter && tidligereVirksomheter.length>0;
 
     const delOverskrift = "Opplysninger for "
     const overskriftMedOrganisasjonsdel = ERPATIDLIGEREARBEIDSFORHOLD ?
         delOverskrift + valgtJuridiskEnhet.Name + " org.nr " + valgtJuridiskEnhet.OrganizationNumber :
-        delOverskrift + valgtOrganisasjon.Name
+        delOverskrift + valgtAktivOrganisasjon.Name
 
     const setSideTallIUrlOgGenererListe = (indeks: number) => {
         setParameterIUrl('side', indeks.toString());
     };
 
     const setParameterIUrl = (parameter: string, variabel: string) => {
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set(parameter, variabel);
-        const { search } = currentUrl;
+        naVærendeUrl.searchParams.set(parameter, variabel);
+        const { search } = naVærendeUrl;
         history.replace({ search: search });
-        setEndringIUrlAlert(window.location.href);
+        setNåværendeUrlString(naVærendeUrl.toString());
     };
 
     useEffect(() => {
-        let currentUrl = new URL(endringIUrlAlert); // => 'https://developer.mozilla.org/'
+        let currentUrl = new URL(nåværendeUrlString); // => 'https://developer.mozilla.org/'
         if (currentUrl.searchParams.get('filter')) {
             setFiltrerPaAktiveAvsluttede(currentUrl.searchParams.get('filter')!!);
         }
@@ -159,20 +158,19 @@ const MineAnsatte: FunctionComponent<Props> = ({
         if (currentUrl.searchParams.get('side') && currentUrl.searchParams.get('side')) {
             setnaVarendeSidetall(parseInt(currentUrl.searchParams.get('side')!!));
         }
-    }, [endringIUrlAlert]);
+    }, [nåværendeUrlString]);
 
-    const endreTidligereVirksomhetOgNullstillParametere = (organisasjon: Organisasjon) => {
+    const setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere = (organisasjon: Organisasjon) => {
         setTidligereVirksomhet(organisasjon)
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('tidligereVirksomhet', organisasjon.OrganizationNumber);
+        naVærendeUrl.searchParams.set('tidligereVirksomhet', organisasjon.OrganizationNumber);
         const search  = nullStillSorteringIUrlParametere()
         history.replace({search: search});
-        setEndringIUrlAlert(window.location.href);
+        setNåværendeUrlString(window.location.href);
     }
 
     useEffect(() => {
         const oppdatertListe = byggListeBasertPaPArametere(
-            listeFraAareg,
+            listeMedArbeidsforhold,
             filtrerPaAktiveAvsluttede,
             skalFiltrerePaVarsler,
             soketekst
@@ -184,7 +182,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
         } else {
             setListeMedArbeidsForhold(sorterArbeidsforhold(oppdatertListe, navarendeKolonne.sorteringsAttributt));
         }
-    }, [listeFraAareg, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler]);
+    }, [listeMedArbeidsforhold, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler]);
 
     const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, listeMedArbeidsForhold.length);
 
@@ -208,14 +206,12 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const redirectTilTidligereArbeidsforhold = () => {
         const search   = nullStillSorteringIUrlParametere();
         history.replace({ search: search, pathname: 'tidligere-arbeidsforhold' });
-        setEndringIUrlAlert(window.location.href);
+        setNåværendeUrlString(window.location.href);
     };
 
     const redirectTilbake = () => {
-        setTidligereVirksomhet(tomaAltinnOrganisasjon);
-        setValgtOrganisasjon(valgtOrganisasjon);
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.delete('arbeidsforhold');
+        hentOgSetAntallOgArbeidsforhold(valgtAktivOrganisasjon);
+        naVærendeUrl.searchParams.delete('arbeidsforhold');
         const search   = nullStillSorteringIUrlParametere();
         history.replace({ search: search, pathname: '/' });
     };
@@ -225,7 +221,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     }).length;
 
     const feilmeldingtekst = () => {
-        switch (feilkode) {
+        switch (feilkodeFraAareg) {
             case '408':
                 return 'Det oppstod en feil da vi prøvde å hente dine arbeidsforhold. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
             case '403':
@@ -241,7 +237,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                 <Normaltekst className="brodsmule">
                     {!ERPATIDLIGEREARBEIDSFORHOLD && <div>
                         <Chevron type={'venstre'}/>
-                        <Lenke href={linkTilMinSideArbeidsgiver(valgtOrganisasjon.OrganizationNumber)}>
+                        <Lenke href={linkTilMinSideArbeidsgiver(valgtAktivOrganisasjon.OrganizationNumber)}>
                             Min side – arbeidsgiver
                         </Lenke>
                     </div>
@@ -261,7 +257,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         {overskriftMedOrganisasjonsdel}
                     </Systemtittel>
-                    { ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && <VelgTidligereVirksomhet redirectTilbake={redirectTilbake} tidligereVirksomhet = {tidligereVirksomhet}tidligereOrganisasjoner={tidligereVirksomheter} setTidligereVirksomhet={endreTidligereVirksomhetOgNullstillParametere }/>}
+                    { ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && <VelgTidligereVirksomhet valgtTidligereVirksomhet= {valgtTidligereVirksomhet} tidligereVirksomheter={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere }/>}
                     {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) &&
                         visProgressbar &&
                         aaregLasteState !== APISTATUS.FEILET &&
@@ -278,14 +274,14 @@ const MineAnsatte: FunctionComponent<Props> = ({
                         <MineAnsatteTopp
                             setParameterIUrl={setParameterIUrl}
                             filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
-                            valgtOrganisasjon={valgtOrganisasjon}
+                            valgtOrganisasjon={valgtAktivOrganisasjon}
                             setIndeksOgGenererListe={setSideTallIUrlOgGenererListe}
                             antallSider={antallSider}
                             antallVarsler={antallVarsler}
                             lengdeResponsFiltrertListe={listeMedArbeidsForhold.length}
                             listeMedArbeidsforhold={listeMedArbeidsForhold}
                             naVarendeSidetall={naVarendeSidetall}
-                            responsFraAaregisteret={listeFraAareg}
+                            responsFraAaregisteret={listeMedArbeidsforhold}
                             soketekst={soketekst}
                             skalFiltrerePaVarsler={skalFiltrerePaVarsler}
                         />
@@ -326,7 +322,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                         <div className="mine-ansatte__feilmelding-aareg">
                             <AlertStripeAdvarsel>
                                 {' '}
-                                {forMangeArbeidsforholdTekst(antallArbeidsforhold, valgtOrganisasjon.Name)}
+                                {forMangeArbeidsforholdTekst(antallArbeidsforhold, valgtAktivOrganisasjon.Name)}
                             </AlertStripeAdvarsel>
                         </div>
                     )}
