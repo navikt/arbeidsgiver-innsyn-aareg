@@ -32,7 +32,6 @@ interface Props extends RouteComponentProps {
     antallArbeidsforholdUkjent: boolean;
     setEndringIUrlAlert: (endret: string) => void;
     endringIUrlAlert: string;
-    setViserGamleArbeidsforhold?: (viser: boolean) => void;
     setTidligereVirksomhet: (tidligereVirksomhet: Organisasjon) => void;
     tidligereVirksomhet?: Organisasjon;
     valgtJuridiskEnhet: Organisasjon;
@@ -85,7 +84,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
     forMangeArbeidsforhold,
     setEndringIUrlAlert,
     endringIUrlAlert,
-    setViserGamleArbeidsforhold,
     setTidligereVirksomhet,
     tidligereVirksomheter,
     tidligereVirksomhet,
@@ -121,8 +119,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
         delOverskrift + valgtJuridiskEnhet.Name + " org.nr " + valgtJuridiskEnhet.OrganizationNumber :
         delOverskrift + valgtOrganisasjon.Name
 
-
-    const setIndeksOgGenererListe = (indeks: number) => {
+    const setSideTallIUrlOgGenererListe = (indeks: number) => {
         setParameterIUrl('side', indeks.toString());
     };
 
@@ -210,7 +207,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
 
     const redirectTilTidligereArbeidsforhold = () => {
         const search   = nullStillSorteringIUrlParametere();
-        setViserGamleArbeidsforhold && setViserGamleArbeidsforhold(true);
         history.replace({ search: search, pathname: 'tidligere-arbeidsforhold' });
         setEndringIUrlAlert(window.location.href);
     };
@@ -283,7 +279,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                             setParameterIUrl={setParameterIUrl}
                             filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
                             valgtOrganisasjon={valgtOrganisasjon}
-                            setIndeksOgGenererListe={setIndeksOgGenererListe}
+                            setIndeksOgGenererListe={setSideTallIUrlOgGenererListe}
                             antallSider={antallSider}
                             antallVarsler={antallVarsler}
                             lengdeResponsFiltrertListe={listeMedArbeidsForhold.length}
@@ -304,7 +300,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                                     setParameterIUrl={setParameterIUrl}
                                     listeMedArbeidsForhold={forholdPaEnSide}
                                     setNavarendeKolonne={setNavarendeKolonne}
-                                    byttSide={setIndeksOgGenererListe}
+                                    byttSide={setSideTallIUrlOgGenererListe}
                                     navarendeKolonne={navarendeKolonne}
                                 />
                                 <ListeMedAnsatteForMobil
@@ -314,7 +310,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                                     <SideBytter
                                         plassering="nederst"
                                         className="nedre-sidebytter"
-                                        byttSide={setIndeksOgGenererListe}
+                                        byttSide={setSideTallIUrlOgGenererListe}
                                         antallSider={antallSider}
                                         naVarendeSidetall={naVarendeSidetall}
                                     />
