@@ -15,12 +15,16 @@ const NavnPopover: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
     const [skalVisePopover, setSkalVisePopover] = useState(true);
 
+    const naVærendeUrl = new URL(window.location.href);
+    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
+
     const maxBreddeAvKolonne = 158;
 
     const oppdaterValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
         const nyUrl = new URL(window.location.href);
         const { search } = nyUrl;
-        history.replace({ pathname: '/enkeltArbeidsforhold', search: search });
+        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold' : '/enkeltArbeidsforhold'
+        history.replace({ pathname: redirectPath, search: search });
         if (arbeidsforhold.varsler?.length) {
             loggBrukerTrykketPaVarsel();
         }

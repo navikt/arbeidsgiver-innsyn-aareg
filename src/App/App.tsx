@@ -80,6 +80,8 @@ const App = () => {
     const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
 
     const [nåværendeUrlString, setNåværendeUrlString] = useState(window.location.href);
+    const ERPATIDLIGEREARBEIDSFORHOLD = window.location.href.includes('tidligere-arbeidsforhold')
+    const enkeltArbeidsforholdPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold' : '/enkeltArbeidsforhold';
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -266,7 +268,7 @@ const App = () => {
                         <>
                             {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
                                 <>
-                                    <Route exact path="/enkeltArbeidsforhold">
+                                    <Route exact path={enkeltArbeidsforholdPath}>
                                         <EnkeltArbeidsforhold
                                             setValgtArbeidsforhold={setValgtArbeidsforhold}
                                             valgtArbeidsforhold={valgtArbeidsforhold}
