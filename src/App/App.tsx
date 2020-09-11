@@ -201,20 +201,14 @@ const App = () => {
 
     const setValgtOrg = (organisasjon: Organisasjon) => {
         setValgtAktivOrganisasjon(organisasjon);
+        const juridiskEnhet = organisasjonerFraAltinn.filter(organisasjon => organisasjon.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber)[0];
+        juridiskEnhet && setValgtJuridiskEnhet(juridiskEnhet);
+        hentOgSetAntallOgArbeidsforhold(organisasjon);
         abortTidligereRequests();
         if (organisasjon.OrganizationNumber.length && harTilgang(organisasjon.OrganizationNumber)) {
             hentOgSetAntallOgArbeidsforhold(organisasjon);
         }
     };
-
-    const setTidligereVirksomhetOgHentArbeidsforhold = (organisasjon: Organisasjon) => {
-        setTidligereVirksomhet(organisasjon);
-        if (organisasjon !== tomaAltinnOrganisasjon) {
-            const juridiskEnhet = organisasjonerFraAltinn.filter(organisasjon => organisasjon.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber)[0];
-            juridiskEnhet && setValgtJuridiskEnhet(juridiskEnhet);
-            hentOgSetAntallOgArbeidsforhold(organisasjon);
-        }
-    }
 
     useEffect(() => {
         setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
@@ -285,7 +279,7 @@ const App = () => {
                                             valgtJuridiskEnhet = {valgtJuridiskEnhet}
                                             valgtTidligereVirksomhet= {tidligereVirksomhet}
                                             hentOgSetAntallOgArbeidsforhold = {hentOgSetAntallOgArbeidsforhold}
-                                            setTidligereVirksomhet = {setTidligereVirksomhetOgHentArbeidsforhold  }
+                                            setTidligereVirksomhet = {setTidligereVirksomhet }
                                             tidligereVirksomheter={tidligereVirksomheter}
                                             nåværendeUrlString={nåværendeUrlString}
                                             setNåværendeUrlString={setNåværendeUrlString}
