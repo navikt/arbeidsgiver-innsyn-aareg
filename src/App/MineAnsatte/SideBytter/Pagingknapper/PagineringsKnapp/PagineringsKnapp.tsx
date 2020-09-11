@@ -6,17 +6,17 @@ const CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
 interface Props {
     sidetall: number;
     siderTilsammen: number;
-    naVarendeIndeks: number;
+    nåVærendeSidetall: number;
     setParameterIUrl: (parameter: string, variabel: string) => void;
 }
 
 const GraSirkelMedNr = (props: Props) => {
     let ariaLabel = 'Goto Page ' + props.sidetall.toString();
     let className = 'valg';
-    const erNavarendeSide = props.naVarendeIndeks === props.sidetall;
+    const erNavarendeSide = props.nåVærendeSidetall === props.sidetall;
 
     if (erNavarendeSide) {
-        ariaLabel = 'Current Page, ' + props.naVarendeIndeks.toString();
+        ariaLabel = 'Current Page, ' + props.nåVærendeSidetall.toString();
         className = className + ' er-valgt';
     }
 
@@ -31,7 +31,7 @@ const GraSirkelMedNr = (props: Props) => {
             onClick={() => onChange()}
             id={props.sidetall.toString()}
             aria-label={ariaLabel}
-            aria-current={props.naVarendeIndeks === props.sidetall}
+            aria-current={props.nåVærendeSidetall === props.sidetall}
         >
             <CSSTransitionGroup
                 transitionName="valg"
