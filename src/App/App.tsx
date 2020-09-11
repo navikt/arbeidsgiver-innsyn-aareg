@@ -141,6 +141,7 @@ const App = () => {
     };
 
     const hentOgSetAntallOgArbeidsforhold = (organisasjon: Organisasjon) => {
+        console.log('kaller hent arbeidsforhold med: ', organisasjon.OrganizationNumber)
         setAaregLasteState(APISTATUS.LASTER);
         setAntallArbeidsforholdUkjent(true);
         const abortControllerAntallKall = new AbortController();

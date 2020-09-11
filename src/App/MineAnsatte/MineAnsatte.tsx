@@ -124,7 +124,8 @@ const MineAnsatte: FunctionComponent<Props> = ({
     };
 
     const setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere = (organisasjon: Organisasjon) => {
-        setTidligereVirksomhet(organisasjon)
+        setTidligereVirksomhet(organisasjon);
+        hentOgSetAntallOgArbeidsforhold(organisasjon)
         naVærendeUrl.searchParams.set('tidligereVirksomhet', organisasjon.OrganizationNumber);
         const search  = nullStillSorteringIUrlParametere()
         history.replace({search: search});
