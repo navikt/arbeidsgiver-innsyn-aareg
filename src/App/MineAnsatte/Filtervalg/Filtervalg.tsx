@@ -13,10 +13,6 @@ interface Props {
 }
 
 const Filtervalg: FunctionComponent<Props> = props => {
-    const klikkpaaFilterVarsel = () => {
-      props.setParameterIUrl("varsler", ((!props.skalFiltrerePaVarsler).toString()))
-    };
-
     const arrayMedToggleTekst = [
         'Alle (' + props.overSiktOverAntallAktiveOgInaktive[0] + ')',
         'Aktive (' + props.overSiktOverAntallAktiveOgInaktive[1].toString() + ')',
@@ -38,7 +34,7 @@ const Filtervalg: FunctionComponent<Props> = props => {
             <div className={'varselKnapp'}>
                 <ToggleKnappPure
                     children={'varslinger (' + props.anallVarsler.toString() + ')'}
-                    onClick={klikkpaaFilterVarsel}
+                    onClick={props.setfiltrerPaVarsler}
                     pressed={props.skalFiltrerePaVarsler}
                 />
             </div>
