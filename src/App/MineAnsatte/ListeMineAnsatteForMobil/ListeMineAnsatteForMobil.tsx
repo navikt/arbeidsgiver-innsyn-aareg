@@ -5,6 +5,7 @@ import './ListeMineAnsatteForMobil.less';
 
 interface Props {
     listeMedArbeidsForhold: Arbeidsforhold[],
+    className?: string;
 }
 
 const ListeMedAnsatteForMobil: FunctionComponent<Props> = (props) => {
@@ -15,7 +16,7 @@ const ListeMedAnsatteForMobil: FunctionComponent<Props> = (props) => {
         />
     ));
 
-    return <ul >{rader}</ul>;
+    return <ul className={props.className}>{rader}</ul>;
 };
 
 export default ListeMedAnsatteForMobil;

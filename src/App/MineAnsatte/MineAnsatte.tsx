@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Normaltekst, Systemtittel, Element } from 'nav-frontend-typografi';
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -24,7 +24,7 @@ interface Props extends RouteComponentProps {
     valgtAktivOrganisasjon: Organisasjon;
     valgtTidligereVirksomhet?: Organisasjon;
     hentOgSetAntallOgArbeidsforhold: (organisasjon: Organisasjon) => void;
-    listeMedArbeidsforhold: Arbeidsforhold[];
+    listeMedArbeidsforholdFraAareg: Arbeidsforhold[];
     antallArbeidsforhold: number;
     visProgressbar: boolean;
     setVisProgressbar: (skalVises: boolean) => void;
@@ -73,7 +73,7 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
 const MineAnsatte: FunctionComponent<Props> = ({
     history,
     valgtAktivOrganisasjon,
-    listeMedArbeidsforhold,
+    listeMedArbeidsforholdFraAareg,
     antallArbeidsforholdUkjent,
     antallArbeidsforhold,
     setVisProgressbar,
@@ -82,7 +82,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
     feilkodeFraAareg,
     forMangeArbeidsforhold,
     setNåværendeUrlString,
-    nåværendeUrlString,
     setTidligereVirksomhet,
     hentOgSetAntallOgArbeidsforhold,
     tidligereVirksomheter,
@@ -91,23 +90,17 @@ const MineAnsatte: FunctionComponent<Props> = ({
 }) => {
     const naVærendeUrl = new URL(window.location.href);
     const sidetall = naVærendeUrl.searchParams.get('side') || '1';
-    const [naVarendeSidetall, setnaVarendeSidetall] = useState<number>(parseInt(sidetall));
-    const [listeMedArbeidsForhold, setListeMedArbeidsForhold] = useState(Array<Arbeidsforhold>());
 
     //parametere som bestemmer tilstanden på listen som vises
-    const Initialsortering = naVærendeUrl.searchParams.get('sorter') || '0';
-    const initialKolonne: KolonneState = {
+    const sortertPå = naVærendeUrl.searchParams.get('sorter') || '0';
+    const valgtKolonne: KolonneState = {
         erValgt: true,
-        sorteringsAttributt: parseInt(Initialsortering),
+        sorteringsAttributt: parseInt(sortertPå),
         reversSortering: naVærendeUrl.searchParams.get('revers') === 'true'
     };
-    const [navarendeKolonne, setNavarendeKolonne] = useState(initialKolonne);
     const filtreringsvalg = naVærendeUrl.searchParams.get('filter') || 'Alle';
-    const [filtrerPaAktiveAvsluttede, setFiltrerPaAktiveAvsluttede] = useState(filtreringsvalg);
     const sokefeltTekst = naVærendeUrl.searchParams.get('sok') || '';
-    const [soketekst, setSoketekst] = useState<string>(sokefeltTekst);
     const filtrertPaVarsler = naVærendeUrl.searchParams.get('varsler') === 'true';
-    const [skalFiltrerePaVarsler, setSkalFiltrerePaVarsler] = useState<boolean>(filtrertPaVarsler);
 
     const ARBEIDSFORHOLDPERSIDE = 25;
 
@@ -124,41 +117,12 @@ const MineAnsatte: FunctionComponent<Props> = ({
     };
 
     const setParameterIUrl = (parameter: string, variabel: string) => {
-        naVærendeUrl.searchParams.set(parameter, variabel);
-        const { search } = naVærendeUrl;
+        const url = new URL(window.location.href);
+        url.searchParams.set(parameter, variabel);
+        const { search } = url;
         history.replace({ search: search });
-        setNåværendeUrlString(naVærendeUrl.toString());
+        setNåværendeUrlString(url.toString());
     };
-
-    useEffect(() => {
-        let currentUrl = new URL(nåværendeUrlString); // => 'https://developer.mozilla.org/'
-        if (currentUrl.searchParams.get('filter')) {
-            setFiltrerPaAktiveAvsluttede(currentUrl.searchParams.get('filter')!!);
-        }
-        if (currentUrl.searchParams.get('varsler')) {
-            const filtrerPaVarsler = currentUrl.searchParams.get('varsler') === 'true';
-            setSkalFiltrerePaVarsler(filtrerPaVarsler);
-        }
-        if (currentUrl.searchParams.get('sok')) {
-            setSoketekst(currentUrl.searchParams.get('sok')!!);
-        }
-        //sokefeltet er blankt
-        else {
-            setSoketekst('');
-        }
-        let sortering = 0;
-        if (currentUrl.searchParams.get('sorter') && currentUrl.searchParams.get('sorter')) {
-            sortering = parseInt(currentUrl.searchParams.get('sorter')!!);
-        }
-        let revers = false;
-        if (currentUrl.searchParams.get('revers') && currentUrl.searchParams.get('revers') === 'true') {
-            revers = currentUrl.searchParams.get('revers') === 'true';
-        }
-        setNavarendeKolonne({ sorteringsAttributt: sortering, reversSortering: revers, erValgt: true });
-        if (currentUrl.searchParams.get('side') && currentUrl.searchParams.get('side')) {
-            setnaVarendeSidetall(parseInt(currentUrl.searchParams.get('side')!!));
-        }
-    }, [nåværendeUrlString]);
 
     const setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere = (organisasjon: Organisasjon) => {
         setTidligereVirksomhet(organisasjon)
@@ -168,40 +132,18 @@ const MineAnsatte: FunctionComponent<Props> = ({
         setNåværendeUrlString(window.location.href);
     }
 
-    useEffect(() => {
-        const oppdatertListe = byggListeBasertPaPArametere(
-            listeMedArbeidsforhold,
-            filtrerPaAktiveAvsluttede,
-            skalFiltrerePaVarsler,
-            soketekst
-        );
-        if (navarendeKolonne.reversSortering) {
-            setListeMedArbeidsForhold(
-                sorterArbeidsforhold(oppdatertListe, navarendeKolonne.sorteringsAttributt).reverse()
-            );
-        } else {
-            setListeMedArbeidsForhold(sorterArbeidsforhold(oppdatertListe, navarendeKolonne.sorteringsAttributt));
-        }
-    }, [listeMedArbeidsforhold, soketekst, navarendeKolonne, filtrerPaAktiveAvsluttede, skalFiltrerePaVarsler]);
-
-    const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, listeMedArbeidsForhold.length);
-
-    let forholdPaEnSide: Arbeidsforhold[] = [];
-    if (navarendeKolonne.reversSortering) {
-        forholdPaEnSide = regnUtArbeidsForholdSomSkalVisesPaEnSide(
-            naVarendeSidetall,
-            ARBEIDSFORHOLDPERSIDE,
-            antallSider,
-            sorterArbeidsforhold(listeMedArbeidsForhold, navarendeKolonne.sorteringsAttributt).reverse()
-        );
-    } else {
-        forholdPaEnSide = regnUtArbeidsForholdSomSkalVisesPaEnSide(
-            naVarendeSidetall,
-            ARBEIDSFORHOLDPERSIDE,
-            antallSider,
-            sorterArbeidsforhold(listeMedArbeidsForhold, navarendeKolonne.sorteringsAttributt)
-        );
-    }
+    const filtrertListe = byggListeBasertPaPArametere(
+        listeMedArbeidsforholdFraAareg,
+        filtreringsvalg,
+        filtrertPaVarsler,
+        sokefeltTekst
+    );
+    const sortertListe: Arbeidsforhold[] = valgtKolonne.reversSortering ?  sorterArbeidsforhold(filtrertListe, valgtKolonne.sorteringsAttributt).reverse() : sorterArbeidsforhold(filtrertListe, valgtKolonne.sorteringsAttributt)
+    const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, sortertListe.length);
+    const listeForNåværendeSidetall = regnUtArbeidsForholdSomSkalVisesPaEnSide(
+        parseInt(sidetall),
+        ARBEIDSFORHOLDPERSIDE,
+        sortertListe);
 
     const redirectTilTidligereArbeidsforhold = () => {
         const search   = nullStillSorteringIUrlParametere();
@@ -216,7 +158,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
         history.replace({ search: search, pathname: '/' });
     };
 
-    const antallVarsler = listeMedArbeidsForhold.filter(forhold => {
+    const antallVarsler = listeMedArbeidsforholdFraAareg.filter(forhold => {
         return forhold.varsler;
     }).length;
 
@@ -273,34 +215,34 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     {aaregLasteState === APISTATUS.OK && !visProgressbar && !forMangeArbeidsforhold && (
                         <MineAnsatteTopp
                             setParameterIUrl={setParameterIUrl}
-                            filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
+                            filtrerPaAktiveAvsluttede={filtreringsvalg}
                             valgtOrganisasjon={valgtAktivOrganisasjon}
                             setIndeksOgGenererListe={setSideTallIUrlOgGenererListe}
                             antallSider={antallSider}
                             antallVarsler={antallVarsler}
-                            lengdeResponsFiltrertListe={listeMedArbeidsForhold.length}
-                            listeMedArbeidsforhold={listeMedArbeidsForhold}
-                            naVarendeSidetall={naVarendeSidetall}
-                            responsFraAaregisteret={listeMedArbeidsforhold}
-                            soketekst={soketekst}
-                            skalFiltrerePaVarsler={skalFiltrerePaVarsler}
+                            lengdeResponsFiltrertListe={sortertListe.length}
+                            listeMedArbeidsforhold={listeMedArbeidsforholdFraAareg}
+                            naVarendeSidetall={parseInt(sidetall)}
+                            responsFraAaregisteret={listeMedArbeidsforholdFraAareg}
+                            soketekst={sokefeltTekst}
+                            skalFiltrerePaVarsler={filtrertPaVarsler}
                         />
                     )}
 
                     {aaregLasteState === APISTATUS.OK &&
-                        listeMedArbeidsForhold.length > 0 &&
+                    listeForNåværendeSidetall.length > 0 &&
                         !visProgressbar &&
                         !forMangeArbeidsforhold && (
                             <>
                                 <TabellMineAnsatte
                                     setParameterIUrl={setParameterIUrl}
-                                    listeMedArbeidsForhold={forholdPaEnSide}
-                                    setNavarendeKolonne={setNavarendeKolonne}
+                                    listeMedArbeidsForhold={listeForNåværendeSidetall}
                                     byttSide={setSideTallIUrlOgGenererListe}
-                                    navarendeKolonne={navarendeKolonne}
+                                    navarendeKolonne={valgtKolonne}
                                 />
                                 <ListeMedAnsatteForMobil
-                                    listeMedArbeidsForhold={forholdPaEnSide}
+                                    className="mine-ansatte__liste"
+                                    listeMedArbeidsForhold={listeForNåværendeSidetall}
                                 />
                                 {antallSider > 1 && (
                                     <SideBytter
@@ -308,7 +250,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                                         className="nedre-sidebytter"
                                         byttSide={setSideTallIUrlOgGenererListe}
                                         antallSider={antallSider}
-                                        naVarendeSidetall={naVarendeSidetall}
+                                        naVarendeSidetall={parseInt(sidetall)}
                                     />
                                 )}
                             </>

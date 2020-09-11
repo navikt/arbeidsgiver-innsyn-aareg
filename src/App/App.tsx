@@ -290,7 +290,7 @@ const App = () => {
                                             visProgressbar={visProgressbar}
                                             antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
                                             antallArbeidsforhold={antallArbeidsforhold}
-                                            listeMedArbeidsforhold={listeMedArbeidsforholdFraAareg}
+                                            listeMedArbeidsforholdFraAareg={listeMedArbeidsforholdFraAareg}
                                             aaregLasteState={aaregLasteState}
                                             feilkodeFraAareg={feilkodeFraAareg}
                                             forMangeArbeidsforhold={forMangeArbeidsforhold}
@@ -322,7 +322,7 @@ const App = () => {
                                                 visProgressbar={visProgressbar}
                                                 antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
                                                 antallArbeidsforhold={antallArbeidsforhold}
-                                                listeMedArbeidsforhold={listeMedArbeidsforholdFraAareg}
+                                                listeMedArbeidsforholdFraAareg={listeMedArbeidsforholdFraAareg}
                                                 aaregLasteState={aaregLasteState}
                                                 feilkodeFraAareg={feilkodeFraAareg}
                                                 forMangeArbeidsforhold={forMangeArbeidsforhold}

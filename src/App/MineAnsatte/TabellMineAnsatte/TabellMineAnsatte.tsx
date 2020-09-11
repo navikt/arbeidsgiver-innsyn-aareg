@@ -10,7 +10,6 @@ import './TabellMineAnsatte.less';
 
 interface Props {
     listeMedArbeidsForhold: Arbeidsforhold[];
-    setNavarendeKolonne: (kolonne: KolonneState) => void;
     byttSide: (indeks: number) => void;
     navarendeKolonne: KolonneState;
     setParameterIUrl: (parameter: string, variabel: string) => void;
@@ -49,7 +48,6 @@ const TabellMineAnsatte: FunctionComponent<Props> = (props) => {
             <table className="tabell tabell--stripet">
                 <KolonnerFullSkjerm
                     setParameterIUrl={props.setParameterIUrl}
-                    setNavarendeKolonne={props.setNavarendeKolonne}
                     navarendeKolonne={props.navarendeKolonne}
                 />
                 <tbody>{rader}</tbody>
