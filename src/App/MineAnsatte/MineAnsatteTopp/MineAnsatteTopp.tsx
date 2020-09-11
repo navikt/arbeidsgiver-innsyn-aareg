@@ -106,8 +106,9 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
                                     responsFraAaregisteret
                                 )}
                                 setfiltrerPaVarsler={() => {
-                                    setParameterIUrl('varsler', (!skalFiltrerePaVarsler).toString());
+                                    console.log('trykker på filtrer varsler')
                                     setIndeksOgGenererListe(1);
+                                    setParameterIUrl('varsler', (!skalFiltrerePaVarsler).toString());
                                 }}
                             />
                         )}
