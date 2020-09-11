@@ -39,14 +39,13 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
     soketekst,
     antallVarsler,
     antallSider,
-    setIndeksOgGenererListe,
     skalFiltrerePaVarsler,
     naVarendeSidetall,
     filtrerPaAktiveAvsluttede
 }) => {
     const onSoketekstChange = (soketekst: string) => {
         setParameterIUrl('sok', soketekst);
-        setIndeksOgGenererListe(1);
+        setParameterIUrl('side', '1');
     };
 
     const viserTidligereVirksomhet = window.location.href.includes('tidligere-arbeidsforhold');
@@ -55,7 +54,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
     const velgFiltrering = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]) => {
         const filtrering = filtreringValgt(event, toggles);
         setParameterIUrl('filter', filtrering);
-        setIndeksOgGenererListe(1);
+        setParameterIUrl('side', '1');
     };
 
     const skatteetatenUrl = 'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/';
@@ -106,8 +105,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
                                     responsFraAaregisteret
                                 )}
                                 setfiltrerPaVarsler={() => {
-                                    console.log('trykker på filtrer varsler')
-                                    setIndeksOgGenererListe(1);
+                                    setParameterIUrl('side', '1');
                                     setParameterIUrl('varsler', (!skalFiltrerePaVarsler).toString());
                                 }}
                             />
@@ -122,7 +120,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
                             <SideBytter
                                 plassering="overst"
                                 className="ovre-sidebytter"
-                                byttSide={setIndeksOgGenererListe}
+                                setParameterIUrl={setParameterIUrl}
                                 antallSider={antallSider}
                                 naVarendeSidetall={naVarendeSidetall}
                             />

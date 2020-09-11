@@ -3,7 +3,7 @@ import PagineringsKnapp from './PagineringsKnapp/PagineringsKnapp';
 
 interface Props {
     className?: string;
-    byttSide: (indeks: number) => void;
+    setParameterIUrl: (parameter: string, variabel: string) => void;
     siderTilsammen: number;
     naVarendeIndeks: number;
 }
@@ -15,23 +15,23 @@ const SisteDel: FunctionComponent<Props> = props => {
                 sidetall={1}
                 siderTilsammen={props.siderTilsammen}
                 naVarendeIndeks={props.naVarendeIndeks}
-                byttSide={props.byttSide}
+                setParameterIUrl={props.setParameterIUrl}
             />
             ...
             <PagineringsKnapp
-                byttSide={props.byttSide}
+                setParameterIUrl={props.setParameterIUrl}
                 naVarendeIndeks={props.naVarendeIndeks}
                 sidetall={props.siderTilsammen - 2}
                 siderTilsammen={props.siderTilsammen}
             />
             <PagineringsKnapp
-                byttSide={props.byttSide}
+                setParameterIUrl={props.setParameterIUrl}
                 sidetall={props.siderTilsammen - 1}
                 siderTilsammen={props.siderTilsammen}
                 naVarendeIndeks={props.naVarendeIndeks}
             />
             <PagineringsKnapp
-                byttSide={props.byttSide}
+                setParameterIUrl={props.setParameterIUrl}
                 sidetall={props.siderTilsammen}
                 siderTilsammen={props.siderTilsammen}
                 naVarendeIndeks={props.naVarendeIndeks}

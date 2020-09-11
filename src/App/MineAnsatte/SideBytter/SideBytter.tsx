@@ -8,12 +8,12 @@ import './SideBytter.less';
 interface Props {
     className: string;
     antallSider: number;
-    byttSide: (indeks: number) => void;
+    setParameterIUrl: (parameter: string, variabel: string) => void;
     naVarendeSidetall: number;
     plassering: string;
 }
 
-const SideBytter = ({ className, antallSider, byttSide, naVarendeSidetall, plassering }: Props) => {
+const SideBytter = ({ className, antallSider, setParameterIUrl, naVarendeSidetall, plassering }: Props) => {
     const chevronOverst = document.getElementById('sidebytter-chevron-hoyre-overst');
     const chevronNederst = document.getElementById('sidebytter-chevron-hoyre-nederst');
     if (chevronOverst && chevronNederst) {
@@ -34,7 +34,7 @@ const SideBytter = ({ className, antallSider, byttSide, naVarendeSidetall, plass
                     className="sidebytter__chevron"
                     id={'sidebytter-chevron-venstre-' + plassering}
                     onClick={() => {
-                        byttSide(naVarendeSidetall - 1);
+                        setParameterIUrl('side',(naVarendeSidetall - 1).toString());
                     }}
                     aria-label={'Goto Page ' + (naVarendeSidetall - 1).toString()}
                 >
@@ -42,17 +42,17 @@ const SideBytter = ({ className, antallSider, byttSide, naVarendeSidetall, plass
                 </button>}
 
                 {(naVarendeSidetall < 3 || antallSider < 4) && (
-                    <TreForste byttSide={byttSide} siderTilsammen={antallSider} naVarendeIndeks={naVarendeSidetall} />
+                    <TreForste setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} naVarendeIndeks={naVarendeSidetall} />
                 )}
                 {antallSider > 3 && naVarendeSidetall > 2 && naVarendeSidetall < antallSider - 1 && (
-                    <Midtdel naVarendeIndeks={naVarendeSidetall} byttSide={byttSide} siderTilsammen={antallSider} />
+                    <Midtdel naVarendeIndeks={naVarendeSidetall} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
                 )}
                 {antallSider > 3 && naVarendeSidetall >= antallSider - 1 && (
-                    <TreSiste naVarendeIndeks={naVarendeSidetall} byttSide={byttSide} siderTilsammen={antallSider} />
+                    <TreSiste naVarendeIndeks={naVarendeSidetall} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
                 )}
                 <button
                     className={"sidebytter__chevron"}
-                    onClick={() => byttSide(naVarendeSidetall + 1)}
+                    onClick={() => setParameterIUrl('side',(naVarendeSidetall + 1).toString())}
                     aria-label={'Goto Page ' + (naVarendeSidetall - 1).toString()}
                     id={'sidebytter-chevron-hoyre-' + plassering}
                 >
