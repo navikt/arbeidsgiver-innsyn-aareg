@@ -18,6 +18,7 @@ import SideBytter from './SideBytter/SideBytter';
 import './MineAnsatte.less';
 import VelgTidligereVirksomhet from "./VelgTidligereVirksomhet/VelgTidligereVirksomhet";
 import {nullStillSorteringIUrlParametere} from "./urlFunksjoner";
+import {MAKS_ANTALL_ARBEIDSFORHOLD} from "../App";
 
 interface Props extends RouteComponentProps {
     valgtJuridiskEnhet: Organisasjon;
@@ -30,7 +31,6 @@ interface Props extends RouteComponentProps {
     setVisProgressbar: (skalVises: boolean) => void;
     aaregLasteState: APISTATUS;
     feilkodeFraAareg: string;
-    forMangeArbeidsforhold: boolean;
     antallArbeidsforholdUkjent: boolean;
     setNåværendeUrlString: (endret: string) => void;
     nåværendeUrlString: string;
@@ -48,8 +48,6 @@ export enum SorteringsAttributt {
     PERMITTERINGSPROSENT,
     STILLINGSPROSENT
 }
-
-const MAKS_ANTALL_ARBEIDSFORHOLD = 10000;
 
 export interface KolonneState {
     erValgt: boolean;
@@ -75,12 +73,10 @@ const MineAnsatte: FunctionComponent<Props> = ({
     valgtAktivOrganisasjon,
     listeMedArbeidsforholdFraAareg,
     antallArbeidsforholdUkjent,
-    antallArbeidsforhold,
     setVisProgressbar,
     visProgressbar,
     aaregLasteState,
     feilkodeFraAareg,
-    forMangeArbeidsforhold,
     setNåværendeUrlString,
     setTidligereVirksomhet,
     hentOgSetAntallOgArbeidsforhold,
@@ -101,11 +97,12 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const sokefeltTekst = naVærendeUrl.searchParams.get('sok') || '';
     const filtrertPaVarsler = naVærendeUrl.searchParams.get('varsler') === 'true';
     const sidetall = naVærendeUrl.searchParams.get('side') || '1'
+    const antallArbeidsforhold = listeMedArbeidsforholdFraAareg.length
 
     const ARBEIDSFORHOLDPERSIDE = 25;
-
     const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
     const TILGANGTILTIDLIGEREARBEIDSFORHOLD = tidligereVirksomheter && tidligereVirksomheter.length>0;
+    const forMangeArbeidsforhold = antallArbeidsforhold >= MAKS_ANTALL_ARBEIDSFORHOLD;
 
     const delOverskrift = "Opplysninger for "
     const overskriftMedOrganisasjonsdel = ERPATIDLIGEREARBEIDSFORHOLD ?

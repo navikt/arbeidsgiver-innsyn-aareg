@@ -37,6 +37,7 @@ enum TILGANGSSTATE {
     IKKE_TILGANG
 }
 
+export const MAKS_ANTALL_ARBEIDSFORHOLD = 10000;
 export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
 
@@ -49,8 +50,6 @@ export const erGyldigOrganisasjon = (organisasjon: Organisasjon) => {
 };
 
 const App = () => {
-    const MAKS_ANTALL_ARBEIDSFORHOLD = 10000;
-
     const [tilgangArbeidsforholdState, setTilgangArbeidsforholdState] = useState(TILGANGSSTATE.LASTER);
 
     const [organisasjonerFraAltinnLasteState, setOrganisasjonerFraAltinnLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
@@ -75,7 +74,6 @@ const App = () => {
     const [abortControllerArbeidsforhold, setAbortControllerArbeidsforhold] = useState<AbortController | null>(null);
 
     const [feilkodeFraAareg, setFeilkodeFraAareg] = useState<string>('');
-    const [forMangeArbeidsforhold, setForMangeArbeidsforhold] = useState(false);
     const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
     const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
 
@@ -148,7 +146,6 @@ const App = () => {
         const signal = abortControllerAntallKall.signal;
         setAbortControllerAntallArbeidsforhold(abortControllerAntallKall);
         setAntallArbeidsforhold(0);
-        setForMangeArbeidsforhold(false);
 
         hentAntallArbeidsforholdFraAaregNyBackend(
             organisasjon.OrganizationNumber,
@@ -158,7 +155,6 @@ const App = () => {
             if (antall === -1) {
                 setAntallArbeidsforholdUkjent(true);
             } else if (antallArbeidsforhold > MAKS_ANTALL_ARBEIDSFORHOLD) {
-                setForMangeArbeidsforhold(true);
                 setVisProgressbar(false);
                 setAaregLasteState(APISTATUS.OK);
             } else {
@@ -290,7 +286,6 @@ const App = () => {
                                             listeMedArbeidsforholdFraAareg={listeMedArbeidsforholdFraAareg}
                                             aaregLasteState={aaregLasteState}
                                             feilkodeFraAareg={feilkodeFraAareg}
-                                            forMangeArbeidsforhold={forMangeArbeidsforhold}
                                         />)}
                                     </Route>
                                     <Route exact path="/">
@@ -322,7 +317,6 @@ const App = () => {
                                                 listeMedArbeidsforholdFraAareg={listeMedArbeidsforholdFraAareg}
                                                 aaregLasteState={aaregLasteState}
                                                 feilkodeFraAareg={feilkodeFraAareg}
-                                                forMangeArbeidsforhold={forMangeArbeidsforhold}
                                             />
                                         )}
                                     </Route>
