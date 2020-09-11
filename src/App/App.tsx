@@ -138,6 +138,8 @@ const App = () => {
         }
     };
 
+    console.log(visProgressbar);
+
     const hentOgSetAntallOgArbeidsforhold = (organisasjon: Organisasjon) => {
         console.log('kaller hent arbeidsforhold med: ', organisasjon.OrganizationNumber)
         setAaregLasteState(APISTATUS.LASTER);
@@ -152,16 +154,17 @@ const App = () => {
             organisasjon.ParentOrganizationNumber,
             signal
         ).then(antall => {
+            console.log('antall kall ferdig');
             if (antall === -1) {
                 setAntallArbeidsforholdUkjent(true);
-            } else if (antallArbeidsforhold > MAKS_ANTALL_ARBEIDSFORHOLD) {
+                setVisProgressbar(true);
+            } else if (antall > MAKS_ANTALL_ARBEIDSFORHOLD) {
                 setVisProgressbar(false);
                 setAaregLasteState(APISTATUS.OK);
             } else {
-                setVisProgressbar(true);
                 setAntallArbeidsforholdUkjent(false);
                 setAntallArbeidsforhold(antall);
-                setAntallArbeidsforhold(antall);
+                setVisProgressbar(true);
             }
             if (antall <= MAKS_ANTALL_ARBEIDSFORHOLD) {
                 const abortControllerArbeidsforhold = new AbortController();
@@ -265,8 +268,6 @@ const App = () => {
                                             valgtArbeidsforhold={valgtArbeidsforhold}
                                             alleArbeidsforhold={listeMedArbeidsforholdFraAareg}
                                         />
-
-
                                     </Route>
                                     <Route exact path="/tidligere-arbeidsforhold">
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
