@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-import React, { FunctionComponent, SyntheticEvent } from 'react';
-import { ToggleKnappPureProps } from 'nav-frontend-toggle';
+import React, { FunctionComponent } from 'react';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
@@ -11,7 +10,7 @@ import ExcelEksport from '../ExcelEksport/ExcelEksport';
 import Sokefelt from '../Sokefelt/Sokefelt';
 import Filtervalg from '../Filtervalg/Filtervalg';
 import SideBytter from '../SideBytter/SideBytter';
-import { filtreringValgt, tellAntallAktiveOgInaktiveArbeidsforhold } from '../sorteringOgFiltreringsFunksjoner';
+import { tellAntallAktiveOgInaktiveArbeidsforhold } from '../sorteringOgFiltreringsFunksjoner';
 import NyFaneIkon from './NyFaneIkon';
 import './MineAnsatteTopp.less';
 
@@ -20,10 +19,7 @@ interface Props {
     filtrertOgSortertListe: Arbeidsforhold[];
     valgtOrganisasjon: Organisasjon;
     antallSider: number;
-    soketekst: string;
     antallVarsler: number;
-    skalFiltrerePaVarsler: boolean;
-    filtrerPaAktiveAvsluttede: string;
     setParameterIUrl: (parameter: string, variabel: string) => void;
 }
 
@@ -32,25 +28,12 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
     alleArbeidsforhold,
     filtrertOgSortertListe,
     valgtOrganisasjon,
-    soketekst,
     antallVarsler,
     antallSider,
-    skalFiltrerePaVarsler,
-    filtrerPaAktiveAvsluttede
-}) => {
-    const onSoketekstChange = (soketekst: string) => {
-        setParameterIUrl('sok', soketekst);
-        setParameterIUrl('side', '1');
-    };
 
+}) => {
     const viserTidligereVirksomhet = window.location.href.includes('tidligere-arbeidsforhold');
     const tekstFornedlagtVirksomhet = viserTidligereVirksomhet? ' Merk at dette er en nedlagt eller overdratt virksomhet, så ingen av disse arbeidsforholdene skal være aktive.' : '';
-
-    const velgFiltrering = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]) => {
-        const filtrering = filtreringValgt(event, toggles);
-        setParameterIUrl('filter', filtrering);
-        setParameterIUrl('side', '1');
-    };
 
     const skatteetatenUrl = 'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/';
     return (
@@ -92,20 +75,13 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
                         {alleArbeidsforhold.length > 0 && (
                             <Filtervalg
                                 setParameterIUrl={setParameterIUrl}
-                                skalFiltrerePaVarsler={skalFiltrerePaVarsler}
-                                filtrerPaAktiveAvsluttede={filtrerPaAktiveAvsluttede}
                                 anallVarsler={antallVarsler}
-                                filtreringValgt={velgFiltrering}
                                 overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(
                                     alleArbeidsforhold
                                 )}
-                                setfiltrerPaVarsler={() => {
-                                    setParameterIUrl('side', '1');
-                                    setParameterIUrl('varsler', (!skalFiltrerePaVarsler).toString());
-                                }}
                             />
                         )}
-                        <Sokefelt onChange={onSoketekstChange} soketekst={soketekst} />
+                        <Sokefelt setParameterIUrl={setParameterIUrl} />
                     </div>
                     <div className="mine-ansatte__topp">
                         <Normaltekst className="mine-ansatte__antall-forhold" tabIndex={0}>

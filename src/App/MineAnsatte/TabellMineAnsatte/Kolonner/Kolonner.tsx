@@ -1,9 +1,8 @@
 import React from 'react';
 import Kolonne from './Kolonne/Kolonne';
-import { KolonneState, SorteringsAttributt } from '../../MineAnsatte';
+import { SorteringsAttributt } from '../../MineAnsatte';
 
 interface Props {
-    navarendeKolonne: KolonneState;
     setParameterIUrl: (parameter: string, variabel: string) => void;
 }
 

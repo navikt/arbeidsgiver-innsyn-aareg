@@ -20,7 +20,7 @@ const Banner: FunctionComponent<Props> = props => {
 
     const sjekkOmBrukerErPaaEnkeltArbeidsforholdSide = (organisasjon: Organisasjon) => {
         const url = window.location.href;
-        if (url.indexOf('/enkeltArbeidsforhold') >= 0) {
+        if (url.indexOf('/enkeltarbeidsforhold') >= 0) {
             redirectTilListeVisning(organisasjon);
         }
     };
@@ -44,9 +44,6 @@ const Banner: FunctionComponent<Props> = props => {
                 sjekkOmBrukerErPaaEnkeltArbeidsforholdSide(organisasjon);
                 props.setEndringIUrlAlert(window.location.href);
             }
-            const currentUrl = new URL(window.location.href);
-            const { search } = currentUrl;
-            history.replace({ search: search, pathname: '/' });
         }
     };
 

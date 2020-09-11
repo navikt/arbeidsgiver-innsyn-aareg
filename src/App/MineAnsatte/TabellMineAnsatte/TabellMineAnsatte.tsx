@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import 'nav-frontend-tabell-style';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
-import { KolonneState } from '../MineAnsatte';
 import KolonnerFullSkjerm from './Kolonner/Kolonner';
 import YrkesbeskrivelsePopover from './KolonnerMedTooltip/YrkesbeskrivelsePopover';
 import NavnPopover from './KolonnerMedTooltip/NavnPopover';
@@ -11,7 +10,6 @@ import './TabellMineAnsatte.less';
 interface Props {
     listeMedArbeidsForhold: Arbeidsforhold[];
     byttSide: (indeks: number) => void;
-    navarendeKolonne: KolonneState;
     setParameterIUrl: (parameter: string, variabel: string) => void;
 }
 
@@ -48,7 +46,6 @@ const TabellMineAnsatte: FunctionComponent<Props> = (props) => {
             <table className="tabell tabell--stripet">
                 <KolonnerFullSkjerm
                     setParameterIUrl={props.setParameterIUrl}
-                    navarendeKolonne={props.navarendeKolonne}
                 />
                 <tbody>{rader}</tbody>
             </table>
