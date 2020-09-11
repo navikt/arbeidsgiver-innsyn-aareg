@@ -7,7 +7,7 @@ interface Props {
     sidetall: number;
     siderTilsammen: number;
     naVarendeIndeks: number;
-    byttSide: (indeks: number) => void;
+    setParameterIUrl: (parameter: string, variabel: string) => void;
 }
 
 const GraSirkelMedNr = (props: Props) => {
@@ -21,8 +21,7 @@ const GraSirkelMedNr = (props: Props) => {
     }
 
     const onChange = () => {
-        props.byttSide(props.sidetall);
-
+        props.setParameterIUrl('side', props.sidetall.toString())
     }
 
     return (

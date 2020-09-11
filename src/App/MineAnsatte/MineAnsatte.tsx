@@ -247,7 +247,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                                     <SideBytter
                                         plassering="nederst"
                                         className="nedre-sidebytter"
-                                        byttSide={setSideTallIUrlOgGenererListe}
+                                        setParameterIUrl={setParameterIUrl}
                                         antallSider={antallSider}
                                         naVarendeSidetall={parseInt(sidetall)}
                                     />

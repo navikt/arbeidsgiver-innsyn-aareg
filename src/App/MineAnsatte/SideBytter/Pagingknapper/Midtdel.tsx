@@ -3,7 +3,7 @@ import PagineringsKnapp from './PagineringsKnapp/PagineringsKnapp';
 
 interface Props {
     className?: string;
-    byttSide: (indeks: number) => void;
+    setParameterIUrl: (parameter: string, variabel: string) => void;
     naVarendeIndeks: number;
     siderTilsammen: number;
 }
@@ -15,26 +15,26 @@ const Midtdel: FunctionComponent<Props> = props => {
                 naVarendeIndeks={props.naVarendeIndeks}
                 siderTilsammen={props.siderTilsammen}
                 sidetall={1}
-                byttSide={props.byttSide}
+                setParameterIUrl={props.setParameterIUrl}
             />
             ...
             <PagineringsKnapp
                 naVarendeIndeks={props.naVarendeIndeks}
                 siderTilsammen={props.siderTilsammen}
                 sidetall={props.naVarendeIndeks - 1}
-                byttSide={props.byttSide}
+                setParameterIUrl={props.setParameterIUrl}
             />
             <PagineringsKnapp
                 naVarendeIndeks={props.naVarendeIndeks}
                 siderTilsammen={props.siderTilsammen}
                 sidetall={props.naVarendeIndeks}
-                byttSide={props.byttSide}
+                setParameterIUrl={props.setParameterIUrl}
             />
             <PagineringsKnapp
                 siderTilsammen={props.siderTilsammen}
                 sidetall={props.naVarendeIndeks + 1}
                 naVarendeIndeks={props.naVarendeIndeks}
-                byttSide={props.byttSide}
+                setParameterIUrl={props.setParameterIUrl}
             />
             {props.naVarendeIndeks < props.siderTilsammen - 1 && (
                 <>
@@ -43,7 +43,7 @@ const Midtdel: FunctionComponent<Props> = props => {
                         naVarendeIndeks={props.naVarendeIndeks}
                         siderTilsammen={props.siderTilsammen}
                         sidetall={props.siderTilsammen}
-                        byttSide={props.byttSide}
+                        setParameterIUrl={props.setParameterIUrl}
                     />
                 </>
             )}
