@@ -137,12 +137,12 @@ const MineAnsatte: FunctionComponent<Props> = ({
         filtrertPaVarsler,
         sokefeltTekst
     );
-    const sortertListe: Arbeidsforhold[] = valgtKolonne.reversSortering ?  sorterArbeidsforhold(filtrertListe, valgtKolonne.sorteringsAttributt).reverse() : sorterArbeidsforhold(filtrertListe, valgtKolonne.sorteringsAttributt)
-    const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, sortertListe.length);
+    const filtrertOgSortertListe: Arbeidsforhold[] = valgtKolonne.reversSortering ?  sorterArbeidsforhold(filtrertListe, valgtKolonne.sorteringsAttributt).reverse() : sorterArbeidsforhold(filtrertListe, valgtKolonne.sorteringsAttributt)
+    const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, filtrertOgSortertListe.length);
     const listeForNåværendeSidetall = regnUtArbeidsForholdSomSkalVisesPaEnSide(
         parseInt(sidetall),
         ARBEIDSFORHOLDPERSIDE,
-        sortertListe);
+        filtrertOgSortertListe);
 
     const redirectTilTidligereArbeidsforhold = () => {
         const search   = nullStillSorteringIUrlParametere();
@@ -216,13 +216,10 @@ const MineAnsatte: FunctionComponent<Props> = ({
                             setParameterIUrl={setParameterIUrl}
                             filtrerPaAktiveAvsluttede={filtreringsvalg}
                             valgtOrganisasjon={valgtAktivOrganisasjon}
-                            setIndeksOgGenererListe={setSideTallIUrlOgGenererListe}
                             antallSider={antallSider}
                             antallVarsler={antallVarsler}
-                            lengdeResponsFiltrertListe={sortertListe.length}
-                            listeMedArbeidsforhold={listeMedArbeidsforholdFraAareg}
-                            naVarendeSidetall={parseInt(sidetall)}
-                            responsFraAaregisteret={listeMedArbeidsforholdFraAareg}
+                            filtrertOgSortertListe={filtrertOgSortertListe}
+                            alleArbeidsforhold={listeMedArbeidsforholdFraAareg}
                             soketekst={sokefeltTekst}
                             skalFiltrerePaVarsler={filtrertPaVarsler}
                         />
@@ -249,7 +246,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
                                         className="nedre-sidebytter"
                                         setParameterIUrl={setParameterIUrl}
                                         antallSider={antallSider}
-                                        naVarendeSidetall={parseInt(sidetall)}
                                     />
                                 )}
                             </>

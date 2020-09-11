@@ -5,7 +5,7 @@ interface Props {
     className?: string;
     setParameterIUrl: (parameter: string, variabel: string) => void;
     siderTilsammen: number;
-    naVarendeIndeks: number;
+    nåVærendeSidetall: number;
 }
 
 const SisteDel: FunctionComponent<Props> = props => {
@@ -14,13 +14,13 @@ const SisteDel: FunctionComponent<Props> = props => {
             <PagineringsKnapp
                 sidetall={1}
                 siderTilsammen={props.siderTilsammen}
-                naVarendeIndeks={props.naVarendeIndeks}
+                nåVærendeSidetall={props.nåVærendeSidetall}
                 setParameterIUrl={props.setParameterIUrl}
             />
             ...
             <PagineringsKnapp
                 setParameterIUrl={props.setParameterIUrl}
-                naVarendeIndeks={props.naVarendeIndeks}
+                nåVærendeSidetall={props.nåVærendeSidetall}
                 sidetall={props.siderTilsammen - 2}
                 siderTilsammen={props.siderTilsammen}
             />
@@ -28,13 +28,13 @@ const SisteDel: FunctionComponent<Props> = props => {
                 setParameterIUrl={props.setParameterIUrl}
                 sidetall={props.siderTilsammen - 1}
                 siderTilsammen={props.siderTilsammen}
-                naVarendeIndeks={props.naVarendeIndeks}
+                nåVærendeSidetall={props.nåVærendeSidetall}
             />
             <PagineringsKnapp
                 setParameterIUrl={props.setParameterIUrl}
                 sidetall={props.siderTilsammen}
                 siderTilsammen={props.siderTilsammen}
-                naVarendeIndeks={props.naVarendeIndeks}
+                nåVærendeSidetall={props.nåVærendeSidetall}
             />
         </>
     );

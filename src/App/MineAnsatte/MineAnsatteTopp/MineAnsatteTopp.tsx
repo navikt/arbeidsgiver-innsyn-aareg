@@ -16,15 +16,12 @@ import NyFaneIkon from './NyFaneIkon';
 import './MineAnsatteTopp.less';
 
 interface Props {
-    responsFraAaregisteret: Arbeidsforhold[];
-    lengdeResponsFiltrertListe: number;
-    listeMedArbeidsforhold: Arbeidsforhold[];
+    alleArbeidsforhold: Arbeidsforhold[];
+    filtrertOgSortertListe: Arbeidsforhold[];
     valgtOrganisasjon: Organisasjon;
     antallSider: number;
     soketekst: string;
     antallVarsler: number;
-    setIndeksOgGenererListe: (indeks: number) => void;
-    naVarendeSidetall: number;
     skalFiltrerePaVarsler: boolean;
     filtrerPaAktiveAvsluttede: string;
     setParameterIUrl: (parameter: string, variabel: string) => void;
@@ -32,15 +29,13 @@ interface Props {
 
 const MineAnsatteTopp: FunctionComponent<Props> = ({
     setParameterIUrl,
-    responsFraAaregisteret,
-    lengdeResponsFiltrertListe,
-    listeMedArbeidsforhold,
+    alleArbeidsforhold,
+    filtrertOgSortertListe,
     valgtOrganisasjon,
     soketekst,
     antallVarsler,
     antallSider,
     skalFiltrerePaVarsler,
-    naVarendeSidetall,
     filtrerPaAktiveAvsluttede
 }) => {
     const onSoketekstChange = (soketekst: string) => {
@@ -60,11 +55,11 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
     const skatteetatenUrl = 'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/';
     return (
         <>
-            {responsFraAaregisteret.length === 0 ? (
+            {alleArbeidsforhold.length === 0 ? (
                 <AlertStripeInfo className="mine-ansatte__informasjon">
                     Det finnes ingen arbeidsforhold rapportert inn til Aa-registeret etter 01.01.2015 for valgt underenhet. Dersom dette er feil må det rettes opp via a-meldingen.
                 </AlertStripeInfo>
-            ) : responsFraAaregisteret.length > 0 ? (
+            ) : alleArbeidsforhold.length > 0 ? (
                 <>
                     <div className="mine-ansatte__header">
                         <AlertStripeInfo className="informasjon">
@@ -83,10 +78,10 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
                                 </Lenke>
                             </Normaltekst>
                         </AlertStripeInfo>
-                        {lengdeResponsFiltrertListe > 0 && (
+                        {filtrertOgSortertListe.length > 0 && (
                             <ExcelEksport
                                 className="excel-export"
-                                arbeidsforholdListe={listeMedArbeidsforhold}
+                                arbeidsforholdListe={filtrertOgSortertListe}
                                 navnBedrift={valgtOrganisasjon.Name}
                                 orgnrBedrift={valgtOrganisasjon.OrganizationNumber}
                             />
@@ -94,7 +89,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
                     </div>
                     <div className="mine-ansatte__sok-og-filter">
                         <Normaltekst>Arbeidsforhold</Normaltekst>
-                        {responsFraAaregisteret.length > 0 && (
+                        {alleArbeidsforhold.length > 0 && (
                             <Filtervalg
                                 setParameterIUrl={setParameterIUrl}
                                 skalFiltrerePaVarsler={skalFiltrerePaVarsler}
@@ -102,7 +97,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
                                 anallVarsler={antallVarsler}
                                 filtreringValgt={velgFiltrering}
                                 overSiktOverAntallAktiveOgInaktive={tellAntallAktiveOgInaktiveArbeidsforhold(
-                                    responsFraAaregisteret
+                                    alleArbeidsforhold
                                 )}
                                 setfiltrerPaVarsler={() => {
                                     setParameterIUrl('side', '1');
@@ -114,7 +109,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
                     </div>
                     <div className="mine-ansatte__topp">
                         <Normaltekst className="mine-ansatte__antall-forhold" tabIndex={0}>
-                            Viser {lengdeResponsFiltrertListe} av {responsFraAaregisteret.length} arbeidsforhold
+                            Viser {filtrertOgSortertListe.length} av {alleArbeidsforhold.length} arbeidsforhold
                         </Normaltekst>
                         {antallSider > 1 && (
                             <SideBytter
@@ -122,14 +117,13 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
                                 className="ovre-sidebytter"
                                 setParameterIUrl={setParameterIUrl}
                                 antallSider={antallSider}
-                                naVarendeSidetall={naVarendeSidetall}
                             />
                         )}
                     </div>
                 </>
             ) : null}
 
-            {responsFraAaregisteret.length > 0 && lengdeResponsFiltrertListe === 0 && (
+            { alleArbeidsforhold.length > 0 && filtrertOgSortertListe.length === 0 && (
                 <div className="mine-ansatte__bytt-filtrering">
                     <Systemtittel>Finner ingen arbeidsforhold.</Systemtittel>
                     <Ingress>Prøv å endre søkeord eller bytt filtreringsvalg.</Ingress>

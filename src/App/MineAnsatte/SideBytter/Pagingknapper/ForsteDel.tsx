@@ -6,23 +6,23 @@ interface Props {
     className?: string;
     setParameterIUrl: (parameter: string, variabel: string) => void;
     siderTilsammen: number;
-    naVarendeIndeks: number;
+    nåVærendeSidetall: number;
 }
 
 const ForsteDel: FunctionComponent<Props> = props => {
     return (
         <>
             <PagineringsKnapp
-                naVarendeIndeks={props.naVarendeIndeks}
                 sidetall={1}
                 siderTilsammen={props.siderTilsammen}
+                nåVærendeSidetall={props.nåVærendeSidetall}
                 setParameterIUrl={props.setParameterIUrl}
             />
 
             <PagineringsKnapp
                 sidetall={2}
                 siderTilsammen={props.siderTilsammen}
-                naVarendeIndeks={props.naVarendeIndeks}
+                nåVærendeSidetall={props.nåVærendeSidetall}
                 setParameterIUrl={props.setParameterIUrl}
             />
 
@@ -30,7 +30,7 @@ const ForsteDel: FunctionComponent<Props> = props => {
                 <PagineringsKnapp
                     sidetall={3}
                     siderTilsammen={props.siderTilsammen}
-                    naVarendeIndeks={props.naVarendeIndeks}
+                    nåVærendeSidetall={props.nåVærendeSidetall}
                     setParameterIUrl={props.setParameterIUrl}
                 />
             )}
@@ -41,7 +41,7 @@ const ForsteDel: FunctionComponent<Props> = props => {
                     <PagineringsKnapp
                         sidetall={props.siderTilsammen}
                         siderTilsammen={props.siderTilsammen}
-                        naVarendeIndeks={props.naVarendeIndeks}
+                        nåVærendeSidetall={props.nåVærendeSidetall}
                         setParameterIUrl={props.setParameterIUrl}
                     />
                 </>
