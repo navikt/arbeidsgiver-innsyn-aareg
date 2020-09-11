@@ -4,7 +4,7 @@ import './PagineringsKnapp/PagineringsKnapp.less';
 
 interface Props {
     className?: string;
-    byttSide: (indeks: number) => void;
+    setParameterIUrl: (parameter: string, variabel: string) => void;
     siderTilsammen: number;
     naVarendeIndeks: number;
 }
@@ -16,14 +16,14 @@ const ForsteDel: FunctionComponent<Props> = props => {
                 naVarendeIndeks={props.naVarendeIndeks}
                 sidetall={1}
                 siderTilsammen={props.siderTilsammen}
-                byttSide={props.byttSide}
+                setParameterIUrl={props.setParameterIUrl}
             />
 
             <PagineringsKnapp
                 sidetall={2}
                 siderTilsammen={props.siderTilsammen}
                 naVarendeIndeks={props.naVarendeIndeks}
-                byttSide={props.byttSide}
+                setParameterIUrl={props.setParameterIUrl}
             />
 
             {props.siderTilsammen > 2 && (
@@ -31,7 +31,7 @@ const ForsteDel: FunctionComponent<Props> = props => {
                     sidetall={3}
                     siderTilsammen={props.siderTilsammen}
                     naVarendeIndeks={props.naVarendeIndeks}
-                    byttSide={props.byttSide}
+                    setParameterIUrl={props.setParameterIUrl}
                 />
             )}
 
@@ -42,7 +42,7 @@ const ForsteDel: FunctionComponent<Props> = props => {
                         sidetall={props.siderTilsammen}
                         siderTilsammen={props.siderTilsammen}
                         naVarendeIndeks={props.naVarendeIndeks}
-                        byttSide={props.byttSide}
+                        setParameterIUrl={props.setParameterIUrl}
                     />
                 </>
             )}
