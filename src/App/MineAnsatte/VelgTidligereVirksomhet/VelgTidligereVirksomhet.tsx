@@ -7,35 +7,30 @@ import {RouteComponentProps, withRouter} from "react-router";
 interface Props extends RouteComponentProps {
   tidligereVirksomheter?: Organisasjon[];
   setTidligereVirksomhet: (virksomhet: Organisasjon) => void;
+  redirectTilbake: () => void;
   valgtTidligereVirksomhet?: Organisasjon;
 }
 
-const VelgTidligereVirksomhet = ({ tidligereVirksomheter, setTidligereVirksomhet, valgtTidligereVirksomhet}: Props) => {
-  const currentUrl = new URL(window.location.href);
-  const parameterForTidligereVirksomhet = currentUrl.searchParams.get('tidligereVirksomhet');
-
-  if (valgtTidligereVirksomhet === tomaAltinnOrganisasjon && tidligereVirksomheter){
-    if (parameterForTidligereVirksomhet) {
-      const organisasjon = tidligereVirksomheter.filter(organisasjon => organisasjon.OrganizationNumber === parameterForTidligereVirksomhet);
-      if (organisasjon.length) {
-        setTidligereVirksomhet(organisasjon[0]);
-      }
-      else {
-        setTidligereVirksomhet(tidligereVirksomheter[0]);
-      }
-    }
-    else {
-      setTidligereVirksomhet(tidligereVirksomheter[0]);
-    }
+const VelgTidligereVirksomhet = ({ tidligereVirksomheter, setTidligereVirksomhet, valgtTidligereVirksomhet, redirectTilbake}: Props) => {
+  if (!tidligereVirksomheter?.length) {
+      redirectTilbake();
   }
 
+  if (valgtTidligereVirksomhet === tomaAltinnOrganisasjon) {
+      setTidligereVirksomhet(tidligereVirksomheter!![0]);
+    }
+
     const objekter = tidligereVirksomheter && tidligereVirksomheter.map((virksomhet) => {
-      const erValgt = virksomhet.OrganizationNumber === valgtTidligereVirksomhet?.OrganizationNumber;
-    return (
-      <option title={virksomhet.Name +", " +virksomhet.OrganizationNumber} className={"mine-ansatte__velg-tidligere-virksomhet-option"} selected={erValgt} id={'tidligere-virksomhet'} value={virksomhet.OrganizationNumber} key={virksomhet.OrganizationNumber}
-    >{virksomhet.Name +", " +virksomhet.OrganizationNumber}
-      </option>
-    );
+            const erValgt = virksomhet.OrganizationNumber === valgtTidligereVirksomhet?.OrganizationNumber;
+            return (
+                <option title={virksomhet.Name +", " +virksomhet.OrganizationNumber}
+                        className={"mine-ansatte__velg-tidligere-virksomhet-option"}
+                        selected={erValgt} id={'tidligere-virksomhet'}
+                        value={virksomhet.OrganizationNumber}
+                        key={virksomhet.OrganizationNumber}>
+                    {virksomhet.Name +", " +virksomhet.OrganizationNumber}
+                </option>
+        );
   })
 
   return (
