@@ -6,7 +6,7 @@ import Chevron from 'nav-frontend-chevron';
 import Lenke from 'nav-frontend-lenker';
 import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
-import {Organisasjon} from '../Objekter/OrganisasjonFraAltinn';
+import {Organisasjon, tomaAltinnOrganisasjon} from '../Objekter/OrganisasjonFraAltinn';
 import { linkTilMinSideArbeidsgiver } from '../lenker';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
@@ -22,7 +22,7 @@ import {nullStillSorteringIUrlParametere} from "./urlFunksjoner";
 interface Props extends RouteComponentProps {
     valgtJuridiskEnhet: Organisasjon;
     valgtAktivOrganisasjon: Organisasjon;
-    valgtTidligereVirksomhet?: Organisasjon;
+    valgtTidligereVirksomhet: Organisasjon;
     hentOgSetAntallOgArbeidsforhold: (organisasjon: Organisasjon) => void;
     listeMedArbeidsforholdFraAareg: Arbeidsforhold[];
     antallArbeidsforhold: number;
@@ -89,6 +89,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     valgtJuridiskEnhet
 }) => {
     const naVærendeUrl = new URL(window.location.href);
+
     //parametere som bestemmer tilstanden på listen som vises
     const sortertPå = naVærendeUrl.searchParams.get('sorter') || '0';
     const valgtKolonne: KolonneState = {
@@ -126,10 +127,9 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere = (organisasjon: Organisasjon) => {
         setTidligereVirksomhet(organisasjon);
         hentOgSetAntallOgArbeidsforhold(organisasjon)
-        naVærendeUrl.searchParams.set('tidligereVirksomhet', organisasjon.OrganizationNumber);
         const search  = nullStillSorteringIUrlParametere()
         history.replace({search: search});
-        setNåværendeUrlString(window.location.href);
+        setParameterIUrl('tidligereVirksomhet', organisasjon.OrganizationNumber);
     }
 
     const filtrertListe = byggListeBasertPaPArametere(
@@ -148,12 +148,12 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const redirectTilTidligereArbeidsforhold = () => {
         const search   = nullStillSorteringIUrlParametere();
         history.replace({ search: search, pathname: 'tidligere-arbeidsforhold' });
+        valgtTidligereVirksomhet !== tomaAltinnOrganisasjon && hentOgSetAntallOgArbeidsforhold(valgtTidligereVirksomhet);
         setNåværendeUrlString(window.location.href);
     };
 
     const redirectTilbake = () => {
         hentOgSetAntallOgArbeidsforhold(valgtAktivOrganisasjon);
-        naVærendeUrl.searchParams.delete('arbeidsforhold');
         const search   = nullStillSorteringIUrlParametere();
         history.replace({ search: search, pathname: '/' });
     };
@@ -199,7 +199,13 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         {overskriftMedOrganisasjonsdel}
                     </Systemtittel>
-                    { ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && <VelgTidligereVirksomhet valgtTidligereVirksomhet= {valgtTidligereVirksomhet} tidligereVirksomheter={tidligereVirksomheter} setTidligereVirksomhet={setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere }/>}
+                    { ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar &&
+                    <VelgTidligereVirksomhet
+                        redirectTilbake={redirectTilbake}
+                        valgtTidligereVirksomhet= {valgtTidligereVirksomhet}
+                        tidligereVirksomheter={tidligereVirksomheter}
+                        setTidligereVirksomhet={setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere }
+                    />}
                     {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) &&
                         visProgressbar &&
                         aaregLasteState !== APISTATUS.FEILET &&
