@@ -89,8 +89,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
     valgtJuridiskEnhet
 }) => {
     const naVærendeUrl = new URL(window.location.href);
-    const sidetall = naVærendeUrl.searchParams.get('side') || '1';
-
     //parametere som bestemmer tilstanden på listen som vises
     const sortertPå = naVærendeUrl.searchParams.get('sorter') || '0';
     const valgtKolonne: KolonneState = {
@@ -101,6 +99,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const filtreringsvalg = naVærendeUrl.searchParams.get('filter') || 'Alle';
     const sokefeltTekst = naVærendeUrl.searchParams.get('sok') || '';
     const filtrertPaVarsler = naVærendeUrl.searchParams.get('varsler') === 'true';
+    const sidetall = naVærendeUrl.searchParams.get('side') || '1'
 
     const ARBEIDSFORHOLDPERSIDE = 25;
 
