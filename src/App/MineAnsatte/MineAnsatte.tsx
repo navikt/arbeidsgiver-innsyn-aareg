@@ -8,7 +8,9 @@ import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import {Organisasjon, tomaAltinnOrganisasjon} from '../Objekter/OrganisasjonFraAltinn';
 import { linkTilMinSideArbeidsgiver } from '../lenker';
-import { byggListeBasertPaPArametere, sorterArbeidsforhold } from './sorteringOgFiltreringsFunksjoner';
+import {
+    lagListeBasertPaUrl
+} from './sorteringOgFiltreringsFunksjoner';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
 import Progressbar from './Progressbar/Progressbar';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
@@ -72,6 +74,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     history,
     valgtAktivOrganisasjon,
     listeMedArbeidsforholdFraAareg,
+    antallArbeidsforhold,
     antallArbeidsforholdUkjent,
     setVisProgressbar,
     visProgressbar,
@@ -85,19 +88,9 @@ const MineAnsatte: FunctionComponent<Props> = ({
     valgtJuridiskEnhet
 }) => {
     const naVærendeUrl = new URL(window.location.href);
-
-    //parametere som bestemmer tilstanden på listen som vises
-    const sortertPå = naVærendeUrl.searchParams.get('sorter') || '0';
-    const valgtKolonne: KolonneState = {
-        erValgt: true,
-        sorteringsAttributt: parseInt(sortertPå),
-        reversSortering: naVærendeUrl.searchParams.get('revers') === 'true'
-    };
-    const filtreringsvalg = naVærendeUrl.searchParams.get('filter') || 'Alle';
-    const sokefeltTekst = naVærendeUrl.searchParams.get('sok') || '';
-    const filtrertPaVarsler = naVærendeUrl.searchParams.get('varsler') === 'true';
     const sidetall = naVærendeUrl.searchParams.get('side') || '1'
-    const antallArbeidsforhold = listeMedArbeidsforholdFraAareg.length
+
+    console.log('rendrer mine ansatte');
 
     const ARBEIDSFORHOLDPERSIDE = 25;
     const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
@@ -129,13 +122,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
         setParameterIUrl('tidligereVirksomhet', organisasjon.OrganizationNumber);
     }
 
-    const filtrertListe = byggListeBasertPaPArametere(
-        listeMedArbeidsforholdFraAareg,
-        filtreringsvalg,
-        filtrertPaVarsler,
-        sokefeltTekst
-    );
-    const filtrertOgSortertListe: Arbeidsforhold[] = valgtKolonne.reversSortering ?  sorterArbeidsforhold(filtrertListe, valgtKolonne.sorteringsAttributt).reverse() : sorterArbeidsforhold(filtrertListe, valgtKolonne.sorteringsAttributt)
+    const filtrertOgSortertListe: Arbeidsforhold[] = lagListeBasertPaUrl(listeMedArbeidsforholdFraAareg);
     const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, filtrertOgSortertListe.length);
     const listeForNåværendeSidetall = regnUtArbeidsForholdSomSkalVisesPaEnSide(
         parseInt(sidetall),
@@ -218,14 +205,11 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     {aaregLasteState === APISTATUS.OK && !visProgressbar && !forMangeArbeidsforhold && (
                         <MineAnsatteTopp
                             setParameterIUrl={setParameterIUrl}
-                            filtrerPaAktiveAvsluttede={filtreringsvalg}
                             valgtOrganisasjon={valgtAktivOrganisasjon}
                             antallSider={antallSider}
                             antallVarsler={antallVarsler}
                             filtrertOgSortertListe={filtrertOgSortertListe}
                             alleArbeidsforhold={listeMedArbeidsforholdFraAareg}
-                            soketekst={sokefeltTekst}
-                            skalFiltrerePaVarsler={filtrertPaVarsler}
                         />
                     )}
 
@@ -238,7 +222,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
                                     setParameterIUrl={setParameterIUrl}
                                     listeMedArbeidsForhold={listeForNåværendeSidetall}
                                     byttSide={setSideTallIUrlOgGenererListe}
-                                    navarendeKolonne={valgtKolonne}
                                 />
                                 <ListeMedAnsatteForMobil
                                     className="mine-ansatte__liste"
