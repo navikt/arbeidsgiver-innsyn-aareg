@@ -38,15 +38,19 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
     alleArbeidsforhold,
     setValgtArbeidsforhold
 }) => {
+
+    const naVærendeUrl = new URL(window.location.href);
+    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
+
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
     window.scrollTo(0, 0);
 
     const redirectTilbake = () => {
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.delete('arbeidsforhold');
-        const { search } = currentUrl;
-        history.replace({ search: search, pathname: '/' });
+        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold' : '/'
+        naVærendeUrl.searchParams.delete('arbeidsforhold');
+        const { search } = naVærendeUrl;
+        history.replace({ search: search, pathname: redirectPath });
     };
 
     if (arbeidsforholdIdFraUrl === null) {
