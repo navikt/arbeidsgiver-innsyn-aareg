@@ -8,17 +8,18 @@ import './Kolonne.less';
 interface Props {
     label: string;
     attributt: SorteringsAttributt;
-    setNavarendeKolonne: (kolonne: KolonneState) => void;
-    navarendeKolonne: KolonneState;
     setParameterIUrl: (parameter: string, variabel: string) => void;
 }
 
 const Kolonne = (props: Props) => {
-    const erValgt = props.navarendeKolonne.sorteringsAttributt === props.attributt;
-    const erReversSortert = erValgt && props.navarendeKolonne.reversSortering === true;
+    const naVærendeUrl = new URL(window.location.href);
+
+    const nåVærendeSorteringsParameter = parseInt(naVærendeUrl.searchParams.get('sorter')!!);
+    const erReversSortert = naVærendeUrl.searchParams.get('revers') === 'true'
+    const erValgt = nåVærendeSorteringsParameter === props.attributt;
 
     let kolonneState: KolonneState = {
-        erValgt: props.navarendeKolonne.sorteringsAttributt === props.attributt,
+        erValgt: erValgt,
         sorteringsAttributt: props.attributt,
         reversSortering: erReversSortert
     };
@@ -39,7 +40,6 @@ const Kolonne = (props: Props) => {
             kolonneState.reversSortering = !kolonneState.reversSortering;
             props.setParameterIUrl("revers", kolonneState.reversSortering.toString())
         }
-        props.setNavarendeKolonne(kolonneState);
     };
 
     return (
