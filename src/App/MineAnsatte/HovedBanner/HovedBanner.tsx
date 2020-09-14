@@ -18,7 +18,7 @@ interface Props extends RouteComponentProps {
 const Banner: FunctionComponent<Props> = props => {
     const { history } = props;
 
-    const sjekkOmBrukerErPaaEnkeltArbeidsforholdSide = (organisasjon: Organisasjon) => {
+    const redirectHvisbrukerErPaaEnkeltArbeidsforholdSide = (organisasjon: Organisasjon) => {
         const url = window.location.href;
         if (url.indexOf('/enkeltarbeidsforhold') >= 0) {
             redirectTilListeVisning(organisasjon);
@@ -31,7 +31,6 @@ const Banner: FunctionComponent<Props> = props => {
         window.location.href = basename + '/?bedrift=' + organisasjon.OrganizationNumber;
     };
 
-
     const sjekkAtManBytterBedriftIkkeVedRefresh = () => {
         return props.valgtOrganisasjon !== tomaAltinnOrganisasjon;
     };
@@ -41,7 +40,8 @@ const Banner: FunctionComponent<Props> = props => {
             props.byttOrganisasjon(organisasjon);
             if (sjekkAtManBytterBedriftIkkeVedRefresh()) {
                 history.replace(nullStillSorteringIUrlParametere());
-                sjekkOmBrukerErPaaEnkeltArbeidsforholdSide(organisasjon);
+                redirectHvisbrukerErPaaEnkeltArbeidsforholdSide(organisasjon);
+                brukerErPaTidligereArbeidsforhold && redirectTilListeVisning(organisasjon);
                 props.setEndringIUrlAlert(window.location.href);
             }
         }
