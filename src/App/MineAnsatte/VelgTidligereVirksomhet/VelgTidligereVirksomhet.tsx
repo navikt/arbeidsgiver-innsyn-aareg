@@ -3,6 +3,7 @@ import './VelgTidligereVirksomhet.less';
 import {Organisasjon, tomaAltinnOrganisasjon} from "../../Objekter/OrganisasjonFraAltinn";
 import {Select} from "nav-frontend-skjema";
 import {RouteComponentProps, withRouter} from "react-router";
+import UnderenhetIkon from "./UnderenhetIkon";
 
 interface Props extends RouteComponentProps {
   tidligereVirksomheter?: Organisasjon[];
@@ -35,12 +36,16 @@ const VelgTidligereVirksomhet = ({ tidligereVirksomheter, setTidligereVirksomhet
 
   return (
       <div className={'mine-ansatte__velg-tidligere-virksomhet'}>
-        <Select placeholder={'Velg tidligere virksomhet'} onChange={event => {
-          const fullVirksomhet = tidligereVirksomheter?.filter(virksomhet => {
-            return virksomhet.OrganizationNumber === event.target.value;
-          })[0]
-          setTidligereVirksomhet(fullVirksomhet!!);
-        }} id = {'velg-tidligere-virksomhet' }  >
+        <Select
+            label={<div className={'mine-ansatte__velg-tidligere-virksomhet-label'} > <UnderenhetIkon/> Nedlagt/omstrukturert virksomhet</div>}
+            placeholder={'Velg tidligere virksomhet'}
+            onChange={event => {
+                const fullVirksomhet = tidligereVirksomheter?.filter(virksomhet => {
+                return virksomhet.OrganizationNumber === event.target.value;
+                 })[0]
+                setTidligereVirksomhet(fullVirksomhet!!);
+            }}
+            id = {'velg-tidligere-virksomhet' }  >
           {objekter}
         </Select>
       </div>
