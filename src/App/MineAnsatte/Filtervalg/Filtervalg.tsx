@@ -13,7 +13,7 @@ const Filtervalg: FunctionComponent<Props> = props => {
     const filtrerPaAktiveAvsluttedeVariabel = getSorteringsOgFiltreringsValg('filter');
     const filtreringsValg = filtrerPaAktiveAvsluttedeVariabel ? filtrerPaAktiveAvsluttedeVariabel : 'Alle';
     const skalFiltrerePåVarselVariabel = getSorteringsOgFiltreringsValg('varsler');
-    const skalFiltrerePaVarsler = skalFiltrerePåVarselVariabel ? skalFiltrerePåVarselVariabel : 'true';
+    const skalFiltrerePåVarsler = !!(skalFiltrerePåVarselVariabel && skalFiltrerePåVarselVariabel === 'true');
 
     const arrayMedToggleTekst = [
         'Alle (' + props.overSiktOverAntallAktiveOgInaktive[0] + ')',
@@ -44,9 +44,9 @@ const Filtervalg: FunctionComponent<Props> = props => {
                     children={'varslinger (' + props.anallVarsler.toString() + ')'}
                     onClick={ () => {
                         props.setParameterIUrl('side', '1');
-                        props.setParameterIUrl('varsler', (!skalFiltrerePaVarsler).toString())
+                        props.setParameterIUrl('varsler', (!skalFiltrerePåVarsler).toString())
                     }}
-                    pressed={skalFiltrerePaVarsler==='true'}
+                    pressed={skalFiltrerePåVarsler}
                 />
             </div>
         </div>
