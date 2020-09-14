@@ -23,9 +23,9 @@ import {nullStillSorteringIUrlParametere} from "./urlFunksjoner";
 import {MAKS_ANTALL_ARBEIDSFORHOLD} from "../App";
 
 interface Props extends RouteComponentProps {
-    valgtJuridiskEnhet: Organisasjon;
     valgtAktivOrganisasjon: Organisasjon;
     valgtTidligereVirksomhet: Organisasjon;
+    organisasjonerFraAltinn: Organisasjon[];
     hentOgSetAntallOgArbeidsforhold: (organisasjon: Organisasjon) => void;
     listeMedArbeidsforholdFraAareg: Arbeidsforhold[];
     antallArbeidsforhold: number;
@@ -85,17 +85,17 @@ const MineAnsatte: FunctionComponent<Props> = ({
     hentOgSetAntallOgArbeidsforhold,
     tidligereVirksomheter,
     valgtTidligereVirksomhet,
-    valgtJuridiskEnhet
+    organisasjonerFraAltinn,
 }) => {
     const naVærendeUrl = new URL(window.location.href);
     const sidetall = naVærendeUrl.searchParams.get('side') || '1'
-
-    console.log('rendrer mine ansatte');
 
     const ARBEIDSFORHOLDPERSIDE = 25;
     const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
     const TILGANGTILTIDLIGEREARBEIDSFORHOLD = tidligereVirksomheter && tidligereVirksomheter.length>0;
     const forMangeArbeidsforhold = antallArbeidsforhold >= MAKS_ANTALL_ARBEIDSFORHOLD;
+
+    const valgtJuridiskEnhet = organisasjonerFraAltinn.filter(organisasjon => organisasjon.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber)[0];
 
     const delOverskrift = "Opplysninger for "
     const overskriftMedOrganisasjonsdel = ERPATIDLIGEREARBEIDSFORHOLD ?
