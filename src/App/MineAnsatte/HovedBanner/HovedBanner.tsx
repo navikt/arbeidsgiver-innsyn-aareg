@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, {FunctionComponent} from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Organisasjon, tomaAltinnOrganisasjon } from '../../Objekter/OrganisasjonFraAltinn';
 import { basename } from '../../paths';
@@ -10,9 +10,8 @@ import {nullStillSorteringIUrlParametere} from "../urlFunksjoner";
 interface Props extends RouteComponentProps {
     byttOrganisasjon: (org: Organisasjon) => void;
     organisasjoner: Organisasjon[];
-    valgtOrganisasjon: Organisasjon;
     setEndringIUrlAlert: (endret: string) => void;
-    erPaTidligereArbeidsforhold: boolean
+    valgtAktivOrganisasjon: Organisasjon;
 }
 
 const Banner: FunctionComponent<Props> = props => {
@@ -32,10 +31,11 @@ const Banner: FunctionComponent<Props> = props => {
     };
 
     const sjekkAtManBytterBedriftIkkeVedRefresh = () => {
-        return props.valgtOrganisasjon !== tomaAltinnOrganisasjon;
+        return props.valgtAktivOrganisasjon !== tomaAltinnOrganisasjon;
     };
 
     const onOrganisasjonChange = (organisasjon?: Organisasjon) => {
+        console.log('on ogchanger');
         if (organisasjon) {
             props.byttOrganisasjon(organisasjon);
             if (sjekkAtManBytterBedriftIkkeVedRefresh()) {
@@ -47,17 +47,17 @@ const Banner: FunctionComponent<Props> = props => {
         }
     };
 
+    const organisasjoner = brukerErPaTidligereArbeidsforhold? [] : props.organisasjoner;
     const overskrift = brukerErPaTidligereArbeidsforhold? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
 
     return (
         <div className="hovebanner">
              <Bedriftsmeny
                     sidetittel={overskrift}
-                    organisasjoner={props.organisasjoner}
+                    organisasjoner={organisasjoner}
                     onOrganisasjonChange={onOrganisasjonChange}
                     history={history}
                 />
-            }
         </div>
     );
 };
