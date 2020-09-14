@@ -35,7 +35,6 @@ const Banner: FunctionComponent<Props> = props => {
     };
 
     const onOrganisasjonChange = (organisasjon?: Organisasjon) => {
-        console.log('on ogchanger');
         if (organisasjon) {
             props.byttOrganisasjon(organisasjon);
             if (sjekkAtManBytterBedriftIkkeVedRefresh()) {
