@@ -21,8 +21,7 @@ const NavnPopover: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
     const maxBreddeAvKolonne = 158;
 
     const oppdaterValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
-        const nyUrl = new URL(window.location.href);
-        const { search } = nyUrl;
+        const { search } = naVærendeUrl;
         const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold' : '/enkeltArbeidsforhold'
         history.replace({ pathname: redirectPath, search: search });
         if (arbeidsforhold.varsler?.length) {
@@ -38,14 +37,12 @@ const NavnPopover: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
         }
     }, [anker]);
 
-    const url = window.location.href.toString();
-    const indeksqueryStart = url.indexOf('?');
-    const sistedelAvUrl = url.substr(indeksqueryStart, url.length);
+    const spørringdelAvUrl = naVærendeUrl.search;
 
     return (
         <div className="pop-over-container">
             <Link
-                to={`enkeltarbeidsforhold/${sistedelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
+                to={`enkeltarbeidsforhold/${spørringdelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
                 onClick={() => oppdaterValgtArbeidsforhold(arbeidsforhold)}
                 className="lenke"
             >

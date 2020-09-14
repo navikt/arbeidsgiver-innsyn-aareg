@@ -14,8 +14,7 @@ const Ansatt: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
     const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
 
     const oppdaterValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
-        const nyUrl = new URL(window.location.href);
-        const { search } = nyUrl;
+        const { search } = naVærendeUrl;
         const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold' : '/enkeltArbeidsforhold'
         history.replace({ pathname: redirectPath, search: search });
         if (arbeidsforhold.varsler?.length) {
@@ -23,9 +22,7 @@ const Ansatt: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
         }
     };
 
-    const url = window.location.href.toString();
-    const indeksqueryStart = url.indexOf('?');
-    const sistedelAvUrl = url.substr(indeksqueryStart, url.length);
+    const spørringdelAvUrl = naVærendeUrl.search;
 
     return (
         <li className="arbeidsforhold">
@@ -34,7 +31,7 @@ const Ansatt: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
                     <div className="attributt__navn">Navn</div>
                     <div className="attributt__verdi">
                         <Link
-                            to={`enkeltarbeidsforhold/${sistedelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
+                            to={`enkeltarbeidsforhold/${spørringdelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
                             onClick={() => oppdaterValgtArbeidsforhold(arbeidsforhold)}
                             className="lenke"
                             aria-label={'Navn: ' + arbeidsforhold.arbeidstaker.navn}
