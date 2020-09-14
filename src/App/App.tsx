@@ -57,7 +57,6 @@ const App = () => {
     const [organisasjonerFraAltinnMedTilgang, setOrganisasjonerFraAltinnMedTilgang] = useState<Array<Organisasjon> | null>(null);
 
     const [valgtAktivOrganisasjon, setValgtAktivOrganisasjon] = useState(tomaAltinnOrganisasjon);
-    const [valgtJuridiskEnhet, setValgtJuridiskEnhet] = useState(tomaAltinnOrganisasjon);
 
     const [tidligereVirksomhet, setTidligereVirksomhet] = useState(tomaAltinnOrganisasjon);
     const [tidligereVirksomheter, setTidligereVirksomheter] = useState<Array<Organisasjon> | undefined>(undefined);
@@ -82,19 +81,25 @@ const App = () => {
     const enkeltArbeidsforholdPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold' : '/enkeltArbeidsforhold';
 
     useEffect(() => {
+        if (ERPATIDLIGEREARBEIDSFORHOLD && valgtAktivOrganisasjon === tomaAltinnOrganisasjon) {
+            window.location.href = basename;
+        }
+    }, [valgtAktivOrganisasjon, ERPATIDLIGEREARBEIDSFORHOLD]);
+
+    useEffect(() => {
         const abortController = new AbortController();
         const signal = abortController.signal;
 
         hentOrganisasjonerFraAltinnNyBackend(signal)
             .then(organisasjonsliste => {
-                setorganisasjoneFraAltinn(organisasjonsliste.filter(organisasjon => erGyldigOrganisasjon(organisasjon)));
+                setorganisasjoneFraAltinn(organisasjonsliste);
                 hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend(
                     SERVICEKODEINNSYNAAREGISTERET,
                     SERVICEEDITIONINNSYNAAREGISTERET,
                     signal
                 )
                     .then(organisasjonerMedTilgangFraAltinn => {
-                        setOrganisasjonerFraAltinnMedTilgang(organisasjonerMedTilgangFraAltinn);
+                        setOrganisasjonerFraAltinnMedTilgang(organisasjonerMedTilgangFraAltinn.filter(organisasjon => erGyldigOrganisasjon(organisasjon)))
                         setOrganisasjonerFraAltinnLasteState(APISTATUS.OK);
                     })
                     .catch((e: Error) => {
@@ -138,10 +143,7 @@ const App = () => {
         }
     };
 
-    console.log(visProgressbar);
-
     const hentOgSetAntallOgArbeidsforhold = (organisasjon: Organisasjon) => {
-        console.log('kaller hent arbeidsforhold med: ', organisasjon.OrganizationNumber)
         setAaregLasteState(APISTATUS.LASTER);
         setAntallArbeidsforholdUkjent(true);
         const abortControllerAntallKall = new AbortController();
@@ -154,7 +156,6 @@ const App = () => {
             organisasjon.ParentOrganizationNumber,
             signal
         ).then(antall => {
-            console.log('antall kall ferdig');
             if (antall === -1) {
                 setAntallArbeidsforholdUkjent(true);
                 setVisProgressbar(true);
@@ -200,8 +201,6 @@ const App = () => {
 
     const setValgtOrg = (organisasjon: Organisasjon) => {
         setValgtAktivOrganisasjon(organisasjon);
-        const juridiskEnhet = organisasjonerFraAltinn.filter(organisasjon => organisasjon.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber)[0];
-        juridiskEnhet && setValgtJuridiskEnhet(juridiskEnhet);
         hentOgSetAntallOgArbeidsforhold(organisasjon);
         abortTidligereRequests();
         if (organisasjon.OrganizationNumber.length && harTilgang(organisasjon.OrganizationNumber)) {
@@ -251,9 +250,8 @@ const App = () => {
                 <Router basename={basename}>
                     {organisasjonerFraAltinnLasteState !== APISTATUS.LASTER && (
                         <HovedBanner
-                            erPaTidligereArbeidsforhold={true}
                             setEndringIUrlAlert={setNåværendeUrlString}
-                            valgtOrganisasjon={valgtAktivOrganisasjon}
+                            valgtAktivOrganisasjon={valgtAktivOrganisasjon}
                             byttOrganisasjon={setValgtOrg}
                             organisasjoner={organisasjonerFraAltinnLasteState === APISTATUS.OK ? organisasjonerFraAltinn : []}
                         />
@@ -273,7 +271,6 @@ const App = () => {
                                         {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
                                         <MineAnsatte
                                             valgtAktivOrganisasjon={valgtAktivOrganisasjon}
-                                            valgtJuridiskEnhet = {valgtJuridiskEnhet}
                                             valgtTidligereVirksomhet= {tidligereVirksomhet}
                                             hentOgSetAntallOgArbeidsforhold = {hentOgSetAntallOgArbeidsforhold}
                                             setTidligereVirksomhet = {setTidligereVirksomhet }
@@ -287,6 +284,7 @@ const App = () => {
                                             listeMedArbeidsforholdFraAareg={listeMedArbeidsforholdFraAareg}
                                             aaregLasteState={aaregLasteState}
                                             feilkodeFraAareg={feilkodeFraAareg}
+                                            organisasjonerFraAltinn={organisasjonerFraAltinn}
                                         />)}
                                     </Route>
                                     <Route exact path="/">
@@ -306,7 +304,6 @@ const App = () => {
                                                 valgtAktivOrganisasjon={valgtAktivOrganisasjon}
                                                 hentOgSetAntallOgArbeidsforhold={hentOgSetAntallOgArbeidsforhold}
                                                 setTidligereVirksomhet={setTidligereVirksomhet}
-                                                valgtJuridiskEnhet = {valgtJuridiskEnhet}
                                                 valgtTidligereVirksomhet= {tidligereVirksomhet}
                                                 tidligereVirksomheter={tidligereVirksomheter}
                                                 nåværendeUrlString={nåværendeUrlString}
@@ -318,6 +315,7 @@ const App = () => {
                                                 listeMedArbeidsforholdFraAareg={listeMedArbeidsforholdFraAareg}
                                                 aaregLasteState={aaregLasteState}
                                                 feilkodeFraAareg={feilkodeFraAareg}
+                                                organisasjonerFraAltinn={organisasjonerFraAltinn}
                                             />
                                         )}
                                     </Route>

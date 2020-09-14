@@ -12,7 +12,7 @@ interface Props extends RouteComponentProps {
 }
 
 const VelgTidligereVirksomhet = ({ tidligereVirksomheter, setTidligereVirksomhet, valgtTidligereVirksomhet, redirectTilbake}: Props) => {
-  if (!tidligereVirksomheter?.length) {
+  if (tidligereVirksomheter === undefined) {
       redirectTilbake();
   }
 

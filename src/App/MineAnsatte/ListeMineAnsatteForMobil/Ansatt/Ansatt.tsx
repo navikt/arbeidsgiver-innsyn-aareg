@@ -10,10 +10,14 @@ interface Props extends RouteComponentProps{
 }
 
 const Ansatt: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
-    const oppdaterValgtArbeidsforhold = () => {
+    const naVærendeUrl = new URL(window.location.href);
+    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
+
+    const oppdaterValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
         const nyUrl = new URL(window.location.href);
         const { search } = nyUrl;
-        history.replace({ pathname: '/enkeltArbeidsforhold', search: search });
+        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold' : '/enkeltArbeidsforhold'
+        history.replace({ pathname: redirectPath, search: search });
         if (arbeidsforhold.varsler?.length) {
             loggBrukerTrykketPaVarsel();
         }
@@ -31,7 +35,7 @@ const Ansatt: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
                     <div className="attributt__verdi">
                         <Link
                             to={`enkeltarbeidsforhold/${sistedelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
-                            onClick={() => oppdaterValgtArbeidsforhold()}
+                            onClick={() => oppdaterValgtArbeidsforhold(arbeidsforhold)}
                             className="lenke"
                             aria-label={'Navn: ' + arbeidsforhold.arbeidstaker.navn}
                         >
