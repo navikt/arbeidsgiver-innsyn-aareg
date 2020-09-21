@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useContext} from 'react';
+import React, {FunctionComponent} from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
@@ -7,7 +7,6 @@ import environment from '../../../utils/environment';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { byggListeBasertPaPArametere, sorterArbeidsforhold } from '../sorteringOgFiltreringsFunksjoner';
 import './EnkeltArbeidsforhold.less';
-import {Feature, FeatureToggleContext} from "../../FeatureToggleProvider";
 
 interface Props extends RouteComponentProps {
     valgtArbeidsforhold: Arbeidsforhold | null;
