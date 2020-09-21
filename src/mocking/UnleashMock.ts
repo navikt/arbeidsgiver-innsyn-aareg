@@ -5,6 +5,11 @@ const delay = new Promise(res => setTimeout(res, 500));
 fetchMock
     .get(
         'begin:'+hentFeatureTogglesLenke(),
-        delay.then(() => 500)
+        delay.then(() => {
+            return {
+                "innsynaareg.vishistorikk": true,
+                "innsynaareg.tillatPrint": true
+            }
+        })
     )
     .spy();
