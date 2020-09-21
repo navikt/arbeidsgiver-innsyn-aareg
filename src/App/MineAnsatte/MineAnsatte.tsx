@@ -159,6 +159,8 @@ const MineAnsatte: FunctionComponent<Props> = ({
         }
     };
 
+    console.log("vis progressbar: " +visProgressbar, aaregLasteState);
+
     return (
         <div className="bakgrunnsside">
             <div className="innhold-container">
