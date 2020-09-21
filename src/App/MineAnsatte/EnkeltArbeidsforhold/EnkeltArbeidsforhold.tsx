@@ -16,6 +16,7 @@ interface Props extends RouteComponentProps {
     nesteArbeidsforhold?: Arbeidsforhold;
     alleArbeidsforhold: Arbeidsforhold[];
     setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
+    setVisProgressbar: (vis: boolean) => void;
 }
 
 const miljo = () => {
@@ -39,7 +40,8 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
     history,
     valgtArbeidsforhold,
     alleArbeidsforhold,
-    setValgtArbeidsforhold
+    setValgtArbeidsforhold,
+    setVisProgressbar
 }) => {
 
     const naVærendeUrl = new URL(window.location.href);
@@ -53,6 +55,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
         const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold' : '/'
         naVærendeUrl.searchParams.delete('arbeidsforhold');
         const { search } = naVærendeUrl;
+        setVisProgressbar(false);
         history.replace({ search: search, pathname: redirectPath });
     };
 
