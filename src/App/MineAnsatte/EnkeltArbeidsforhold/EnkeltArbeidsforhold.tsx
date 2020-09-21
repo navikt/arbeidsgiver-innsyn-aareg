@@ -42,8 +42,6 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
     window.scrollTo(0, 0);
-    const featureToggleContext = useContext(FeatureToggleContext);
-    const tillatPrintAvArbeidsforhold = featureToggleContext[Feature.tillatPrint];
     const redirectTilbake = () => {
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.delete('arbeidsforhold');
@@ -147,7 +145,6 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
                                     </div>
                                 </span>
                             </div>
-                            {tillatPrintAvArbeidsforhold && (
                             <DetaljertArbeidsforhold
                                 locale={locale}
                                 miljo={miljo()}
@@ -158,17 +155,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
                                 printActivated={true}
                                 printName={valgtArbeidsforhold.arbeidstaker.navn}
                                 printSSN={valgtArbeidsforhold.arbeidstaker.offentligIdent}
-                            />)}
-                            {!tillatPrintAvArbeidsforhold && (
-                                <DetaljertArbeidsforhold
-                                    locale={locale}
-                                    miljo={miljo()}
-                                    navArbeidsforholdId={parseInt(arbeidsforholdIdFraUrl)}
-                                    rolle="ARBEIDSGIVER"
-                                    fnrArbeidstaker={valgtArbeidsforhold.arbeidstaker.offentligIdent}
-                                    customApiUrl={apiURL()}
-                                />)
-                            }
+                            />
                         </div>
                     </div>
                 </div>
