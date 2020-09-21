@@ -36,6 +36,7 @@ interface Props extends RouteComponentProps {
     antallArbeidsforholdUkjent: boolean;
     setNåværendeUrlString: (endret: string) => void;
     nåværendeUrlString: string;
+    tilgangTilTidligereArbeidsforhold: boolean,
     setTidligereVirksomhet: (tidligereVirksomhet: Organisasjon) => void;
     tidligereVirksomheter?: Organisasjon[];
 }
@@ -86,13 +87,14 @@ const MineAnsatte: FunctionComponent<Props> = ({
     tidligereVirksomheter,
     valgtTidligereVirksomhet,
     organisasjonerFraAltinn,
+    tilgangTilTidligereArbeidsforhold,
 }) => {
     const naVærendeUrl = new URL(window.location.href);
     const sidetall = naVærendeUrl.searchParams.get('side') || '1'
 
     const ARBEIDSFORHOLDPERSIDE = 25;
     const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
-    const TILGANGTILTIDLIGEREARBEIDSFORHOLD = tidligereVirksomheter && tidligereVirksomheter.length>0;
+    const TILGANGTILTIDLIGEREARBEIDSFORHOLD = tilgangTilTidligereArbeidsforhold && tidligereVirksomheter && tidligereVirksomheter.length>0;
     const forMangeArbeidsforhold = antallArbeidsforhold >= MAKS_ANTALL_ARBEIDSFORHOLD;
 
     const valgtJuridiskEnhet = organisasjonerFraAltinn.filter(organisasjon => organisasjon.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber)[0];
