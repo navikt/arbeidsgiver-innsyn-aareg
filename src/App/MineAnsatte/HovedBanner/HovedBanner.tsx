@@ -8,9 +8,10 @@ import {nullStillSorteringIUrlParametere} from "../urlFunksjoner";
 
 interface Props extends RouteComponentProps {
     byttOrganisasjon: (org: Organisasjon) => void;
-    organisasjoner: Organisasjon[];
+    organisasjoner: Organisasjon[] | undefined;
     setEndringIUrlAlert: (endret: string) => void;
     valgtAktivOrganisasjon: Organisasjon;
+    sidetittel: string;
 }
 
 const Banner: FunctionComponent<Props> = props => {
@@ -41,14 +42,11 @@ const Banner: FunctionComponent<Props> = props => {
         }
     };
 
-    const organisasjoner = erPåTidligereArbeidsforhold? [] : props.organisasjoner;
-    const overskrift = erPåTidligereArbeidsforhold? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
-
     return (
         <div className="hovebanner">
              <Bedriftsmeny
-                    sidetittel={overskrift}
-                    organisasjoner={organisasjoner}
+                    sidetittel={props.sidetittel}
+                    organisasjoner={props.organisasjoner}
                     onOrganisasjonChange={onOrganisasjonChange}
                     history={history}
                 />
