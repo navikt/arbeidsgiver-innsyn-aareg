@@ -257,14 +257,23 @@ const App = () => {
         <div className="app">
             <LoginBoundary>
                 <Router basename={basename}>
-                    {organisasjonerFraAltinnLasteState !== APISTATUS.LASTER && (
+                    {organisasjonerFraAltinnLasteState !== APISTATUS.LASTER && ERPATIDLIGEREARBEIDSFORHOLD?
                         <HovedBanner
+                            setEndringIUrlAlert={setNåværendeUrlString}
+                            valgtAktivOrganisasjon={valgtAktivOrganisasjon}
+                            byttOrganisasjon={setValgtOrg}
+                            organisasjoner={undefined}
+                            sidetittel={'Tidligere arbeidsforhold'}
+                        />
+                        :
+                        <HovedBanner
+                            sidetittel={'Arbeidsforhold'}
                             setEndringIUrlAlert={setNåværendeUrlString}
                             valgtAktivOrganisasjon={valgtAktivOrganisasjon}
                             byttOrganisasjon={setValgtOrg}
                             organisasjoner={organisasjonerFraAltinnLasteState === APISTATUS.OK ? organisasjonerFraAltinn : []}
                         />
-                    )}
+                    }
                     {organisasjonerFraAltinnLasteState === APISTATUS.OK ? (
                         <>
                             {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
