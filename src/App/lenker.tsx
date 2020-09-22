@@ -1,10 +1,12 @@
 import environment from '../utils/environment';
+import {alleFeatures} from "./FeatureToggleProvider";
 
 const landingsURL = '/arbeidsforhold/';
 
 export const hentArbeidsforholdLinkNyBackend = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/arbeidsforhold';
 };
+
 export const hentAntallArbeidsforholdLinkNyBackend = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/antall-arbeidsforhold';
 };
@@ -32,6 +34,14 @@ export const hentUnderenhetApiLink = (orgnr: string) => {
 export const hentOverordnetEnhetApiLink = (orgnr: string) => {
     return `https://data.brreg.no/enhetsregisteret/api/enheter/${orgnr}`;
 };
+
+export const hentFeatureTogglesLenke = ():string => {
+    const featureBaseUrl = landingsURL + 'arbeidsgiver-arbeidsforhold/api/feature';
+    const query = alleFeatures.map(feature => `feature=${feature}`).join('&');
+    return `${featureBaseUrl}?${query}`;
+};
+
+
 
 export const linkTilMinSideArbeidsgiver = (orgnr: string) => {
     const orgNrDel = orgnr.length>0 ? '?bedrift=' + orgnr : '';
