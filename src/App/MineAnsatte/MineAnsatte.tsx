@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, {FunctionComponent, useContext} from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Normaltekst, Systemtittel, Element } from 'nav-frontend-typografi';
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -21,6 +21,7 @@ import './MineAnsatte.less';
 import VelgTidligereVirksomhet from "./VelgTidligereVirksomhet/VelgTidligereVirksomhet";
 import {nullStillSorteringIUrlParametere} from "./urlFunksjoner";
 import {MAKS_ANTALL_ARBEIDSFORHOLD} from "../App";
+import {Feature, FeatureToggleContext} from "../FeatureToggleProvider";
 
 interface Props extends RouteComponentProps {
     valgtAktivOrganisasjon: Organisasjon;
@@ -90,7 +91,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     tilgangTilTidligereArbeidsforhold,
 }) => {
     const naVærendeUrl = new URL(window.location.href);
-    const sidetall = naVærendeUrl.searchParams.get('side') || '1'
+    const sidetall = naVærendeUrl.searchParams.get('side') || '1';
 
     const ARBEIDSFORHOLDPERSIDE = 25;
     const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
@@ -98,6 +99,10 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const forMangeArbeidsforhold = antallArbeidsforhold >= MAKS_ANTALL_ARBEIDSFORHOLD;
 
     const valgtJuridiskEnhet = organisasjonerFraAltinn.filter(organisasjon => organisasjon.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber)[0];
+
+    const featureToggleContext = useContext(FeatureToggleContext);
+    const visHistorikkLenke = featureToggleContext[Feature.visHistorikk];
+
 
     const delOverskrift = "Opplysninger for "
     const overskriftMedOrganisasjonsdel = ERPATIDLIGEREARBEIDSFORHOLD ?
@@ -177,7 +182,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                         <Chevron type={'venstre'}/>
                         Tilbake til arbeidsforhold
                     </button>}
-                    { !ERPATIDLIGEREARBEIDSFORHOLD && TILGANGTILTIDLIGEREARBEIDSFORHOLD && <button className={'brodsmule__direct-tidligere-arbeidsforhold'} onClick={redirectTilTidligereArbeidsforhold}>
+                    {visHistorikkLenke && !ERPATIDLIGEREARBEIDSFORHOLD && TILGANGTILTIDLIGEREARBEIDSFORHOLD && <button className={'brodsmule__direct-tidligere-arbeidsforhold'} onClick={redirectTilTidligereArbeidsforhold}>
                         Tidligere arbeidsforhold
                         <Chevron type={'høyre'} />
                     </button>}
