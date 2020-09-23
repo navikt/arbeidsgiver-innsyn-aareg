@@ -30,6 +30,7 @@ import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import './App.less';
+import {FeatureToggleProvider} from "./FeatureToggleProvider";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -257,6 +258,7 @@ const App = () => {
         <div className="app">
             <LoginBoundary>
                 <Router basename={basename}>
+                    <FeatureToggleProvider>
                     {organisasjonerFraAltinnLasteState !== APISTATUS.LASTER &&
                         <HovedBanner
                             setEndringIUrlAlert={setNåværendeUrlString}
@@ -323,6 +325,7 @@ const App = () => {
                             </AlertStripeFeil>
                         </div>
                     )}
+                    </FeatureToggleProvider>
                 </Router>
             </LoginBoundary>
         </div>
