@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, {FunctionComponent} from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
@@ -50,7 +50,6 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
     const locale = 'nb' as 'nb' | 'en';
     const arbeidsforholdIdFraUrl = getSorteringsOgFiltreringsValg('arbeidsforhold');
     window.scrollTo(0, 0);
-
     const redirectTilbake = () => {
         const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold' : '/'
         naVærendeUrl.searchParams.delete('arbeidsforhold');
