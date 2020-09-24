@@ -4,34 +4,34 @@ import './PagineringsKnapp/PagineringsKnapp.less';
 
 interface Props {
     className?: string;
-    byttSide: (indeks: number) => void;
+    setParameterIUrl: (parameter: string, variabel: string) => void;
     siderTilsammen: number;
-    naVarendeIndeks: number;
+    nåVærendeSidetall: number;
 }
 
 const ForsteDel: FunctionComponent<Props> = props => {
     return (
         <>
             <PagineringsKnapp
-                naVarendeIndeks={props.naVarendeIndeks}
                 sidetall={1}
                 siderTilsammen={props.siderTilsammen}
-                byttSide={props.byttSide}
+                nåVærendeSidetall={props.nåVærendeSidetall}
+                setParameterIUrl={props.setParameterIUrl}
             />
 
             <PagineringsKnapp
                 sidetall={2}
                 siderTilsammen={props.siderTilsammen}
-                naVarendeIndeks={props.naVarendeIndeks}
-                byttSide={props.byttSide}
+                nåVærendeSidetall={props.nåVærendeSidetall}
+                setParameterIUrl={props.setParameterIUrl}
             />
 
             {props.siderTilsammen > 2 && (
                 <PagineringsKnapp
                     sidetall={3}
                     siderTilsammen={props.siderTilsammen}
-                    naVarendeIndeks={props.naVarendeIndeks}
-                    byttSide={props.byttSide}
+                    nåVærendeSidetall={props.nåVærendeSidetall}
+                    setParameterIUrl={props.setParameterIUrl}
                 />
             )}
 
@@ -41,8 +41,8 @@ const ForsteDel: FunctionComponent<Props> = props => {
                     <PagineringsKnapp
                         sidetall={props.siderTilsammen}
                         siderTilsammen={props.siderTilsammen}
-                        naVarendeIndeks={props.naVarendeIndeks}
-                        byttSide={props.byttSide}
+                        nåVærendeSidetall={props.nåVærendeSidetall}
+                        setParameterIUrl={props.setParameterIUrl}
                     />
                 </>
             )}

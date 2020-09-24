@@ -277,3 +277,8 @@ export const AaregMockObjekt: ObjektFraAAregisteret = {
     ...tomResponsFraAareg,
     arbeidsforholdoversikter: genererMockingAvArbeidsForhold(80)
 };
+
+export const AaregMockObjektForNedlagtVirksomhet: ObjektFraAAregisteret = {
+    ...tomResponsFraAareg,
+    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(44)
+};

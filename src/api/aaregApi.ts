@@ -1,10 +1,18 @@
-import { hentAntallArbeidsforholdLinkNyBackend, hentArbeidsforholdLinkNyBackend } from '../App/lenker';
-import { ObjektFraAAregisteret } from '../App/Objekter/ObjektFraAAreg';
-import { FetchError } from './api-utils';
-import { overSiktPerUnderenhetPar } from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
 import {
-    loggAntallAnsatte, loggSnittTidPerArbeidsforhold, loggTidForAlleArbeidsforhold
+    hentAntallArbeidsforholdLinkNyBackend,
+    hentArbeidsforholdLinkNyBackend,
+    hentTidligereVirksomheterLink
+} from '../App/lenker';
+import {ObjektFraAAregisteret} from '../App/Objekter/ObjektFraAAreg';
+import {FetchError} from './api-utils';
+import {overSiktPerUnderenhetPar} from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
+import {
+    loggAntallAnsatte,
+    loggSnittTidPerArbeidsforhold,
+    loggTidForAlleArbeidsforhold
 } from '../App/amplitudefunksjonerForLogging';
+import {Organisasjon} from "../App/Objekter/OrganisasjonFraAltinn";
+import {mapOrganisasjonerFraLowerCaseTilupper} from "./altinnApi";
 
 export async function hentArbeidsforholdFraAAregNyBackend(
     underenhet: string,
@@ -44,5 +52,20 @@ export async function hentAntallArbeidsforholdFraAaregNyBackend(
         return jsonRespons.second;
     } else {
         return -1;
+    }
+}
+
+export async function hentTidligereVirksomheter(
+    enhet: string,
+    signal: any
+): Promise<Organisasjon[]> {
+    let headere = new Headers();
+    headere.set('jurenhet', enhet);
+    let response: Response = await fetch(hentTidligereVirksomheterLink, { headers: headere, signal: signal });
+    if (response.ok) {
+        const organisasjoner = await response.json();
+        return mapOrganisasjonerFraLowerCaseTilupper(organisasjoner);
+    } else {
+        throw new FetchError(response.statusText || response.type, response);
     }
 }

@@ -1,25 +1,28 @@
 import React, { FunctionComponent } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import AttributtVisning from './AttributtVisning/AttributtVisning';
 import { loggBrukerTrykketPaVarsel } from '../../../amplitudefunksjonerForLogging';
 import './Ansatt.less';
 
-interface Props {
-    className?: string;
+interface Props extends RouteComponentProps{
     arbeidsforhold: Arbeidsforhold;
-    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
-    valgtBedrift: string;
-    nesteArbeidsforhold?: Arbeidsforhold;
 }
 
-const Ansatt: FunctionComponent<Props> = props => {
+const Ansatt: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
+    const naVærendeUrl = new URL(window.location.href);
+    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
+
     const oppdaterValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
-        props.setValgtArbeidsforhold(arbeidsforhold);
-        if (props.arbeidsforhold.varsler?.length) {
+        const { search } = naVærendeUrl;
+        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold' : '/enkeltArbeidsforhold'
+        history.replace({ pathname: redirectPath, search: search });
+        if (arbeidsforhold.varsler?.length) {
             loggBrukerTrykketPaVarsel();
         }
     };
+
+    const spørringdelAvUrl = naVærendeUrl.search;
 
     return (
         <li className="arbeidsforhold">
@@ -28,32 +31,30 @@ const Ansatt: FunctionComponent<Props> = props => {
                     <div className="attributt__navn">Navn</div>
                     <div className="attributt__verdi">
                         <Link
-                            to={
-                                `enkeltarbeidsforhold/?bedrift=${props.valgtBedrift}&arbeidsforhold=${props.arbeidsforhold.navArbeidsforholdId}`
-                            }
-                            onClick={() => oppdaterValgtArbeidsforhold(props.arbeidsforhold)}
+                            to={`enkeltarbeidsforhold/${spørringdelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
+                            onClick={() => oppdaterValgtArbeidsforhold(arbeidsforhold)}
                             className="lenke"
-                            aria-label={'Navn: ' + props.arbeidsforhold.arbeidstaker.navn}
+                            aria-label={'Navn: ' + arbeidsforhold.arbeidstaker.navn}
                         >
-                            {props.arbeidsforhold.arbeidstaker.navn}
+                            {arbeidsforhold.arbeidstaker.navn}
                         </Link>
                     </div>
                 </li>
                 <AttributtVisning
                     attributt="Offentlig Ident"
-                    attributtVerdi={props.arbeidsforhold.arbeidstaker.offentligIdent}
+                    attributtVerdi={arbeidsforhold.arbeidstaker.offentligIdent}
                 />
-                <AttributtVisning attributt="Startet" attributtVerdi={props.arbeidsforhold.ansattFom} />
-                <AttributtVisning attributt="Slutter" attributtVerdi={props.arbeidsforhold.ansattTom} />
+                <AttributtVisning attributt="Startet" attributtVerdi={arbeidsforhold.ansattFom} />
+                <AttributtVisning attributt="Slutter" attributtVerdi={arbeidsforhold.ansattTom} />
                 <AttributtVisning
                     attributt="Stillingsprosent %"
-                    attributtVerdi={props.arbeidsforhold.stillingsprosent}
+                    attributtVerdi={arbeidsforhold.stillingsprosent}
                 />
-                <AttributtVisning attributt="Yrke" attributtVerdi={props.arbeidsforhold.yrkesbeskrivelse} />
-                {props.arbeidsforhold.varsler && (
+                <AttributtVisning attributt="Yrke" attributtVerdi={arbeidsforhold.yrkesbeskrivelse} />
+                {arbeidsforhold.varsler && (
                     <AttributtVisning
                         attributt="Varsling"
-                        attributtVerdi={props.arbeidsforhold.varsler[0].varslingskodeForklaring}
+                        attributtVerdi={arbeidsforhold.varsler[0].varslingskodeForklaring}
                     />
                 )}
             </ul>
@@ -61,4 +62,4 @@ const Ansatt: FunctionComponent<Props> = props => {
     );
 };
 
-export default Ansatt;
+export default withRouter(Ansatt);

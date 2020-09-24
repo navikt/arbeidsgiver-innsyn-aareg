@@ -123,6 +123,10 @@ export const loggInfoOmFeil = (typeFeil: string,  bedriftsnummer: string) => {
     amplitude.logEvent('#arbeidsforhold FEILER ', {bedriftsnummer: bedriftsnummer , typeFeil});
 };
 
+export const loggInfoOmFeilTidligereOrganisasjoner = (typeFeil: string,  bedriftsnummer: string) => {
+    amplitude.logEvent('#arbeidsforhold TIDLIGERE ORGANISASJONER FEILER ', {bedriftsnummer: bedriftsnummer , typeFeil});
+};
+
 export const loggInfoOmFeilFraAltinn = (typeFeil: string) => {
     amplitude.logEvent('#arbeidsforhold FEILER MOT ALTINN', {typeFeil});
 };

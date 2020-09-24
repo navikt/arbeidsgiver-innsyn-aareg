@@ -25,7 +25,6 @@ export const lesUrlParameter = (url: string, parameter: string) => {
 export const regnUtArbeidsForholdSomSkalVisesPaEnSide = (
     naVarendeSideTall: number,
     arbeidsForholdPerSide: number,
-    antallSider: number,
     listeMedArbeidsForhold: Arbeidsforhold[]
 ): Arbeidsforhold[] => {
     const forsteElementPaSiden = arbeidsForholdPerSide * naVarendeSideTall - (arbeidsForholdPerSide - 1);
