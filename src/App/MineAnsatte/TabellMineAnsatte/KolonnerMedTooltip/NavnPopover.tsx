@@ -1,27 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, {FunctionComponent, useEffect, useState} from 'react';
+import {Link, RouteComponentProps} from 'react-router-dom';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import { loggBrukerTrykketPaVarsel } from '../../../amplitudefunksjonerForLogging';
 import './PopOverStyling.less';
+import {withRouter} from "react-router";
 
-interface Props {
-    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
+interface Props extends RouteComponentProps {
     arbeidsforhold: Arbeidsforhold;
-    nesteArbeidsforhold?: Arbeidsforhold;
-    valgtBedrift: string;
 }
 
-const NavnPopover = (props: Props) => {
+const NavnPopover: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
     const [skalVisePopover, setSkalVisePopover] = useState(true);
+
+    const naVærendeUrl = new URL(window.location.href);
+    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
 
     const maxBreddeAvKolonne = 158;
 
     const oppdaterValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
-        props.setValgtArbeidsforhold(arbeidsforhold);
-        if (props.arbeidsforhold.varsler?.length) {
+        const { search } = naVærendeUrl;
+        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold' : '/enkeltArbeidsforhold'
+        history.replace({ pathname: redirectPath, search: search });
+        if (arbeidsforhold.varsler?.length) {
             loggBrukerTrykketPaVarsel();
         }
     };
@@ -34,15 +37,13 @@ const NavnPopover = (props: Props) => {
         }
     }, [anker]);
 
-    const url = window.location.href.toString();
-    const indeksqueryStart = url.indexOf('?');
-    const sistedelAvUrl = url.substr(indeksqueryStart, url.length);
+    const spørringdelAvUrl = naVærendeUrl.search;
 
     return (
         <div className="pop-over-container">
             <Link
-                to={`enkeltarbeidsforhold/${sistedelAvUrl}&arbeidsforhold=${props.arbeidsforhold.navArbeidsforholdId}`}
-                onClick={() => oppdaterValgtArbeidsforhold(props.arbeidsforhold)}
+                to={`enkeltarbeidsforhold/${spørringdelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
+                onClick={() => oppdaterValgtArbeidsforhold(arbeidsforhold)}
                 className="lenke"
             >
                 <Normaltekst
@@ -52,11 +53,11 @@ const NavnPopover = (props: Props) => {
                     }}
                     onMouseLeave={(e: any) => setAnker(undefined)}
                 >
-                    {props.arbeidsforhold.arbeidstaker.navn}
+                    {arbeidsforhold.arbeidstaker.navn}
                 </Normaltekst>
                 {skalVisePopover && (
                     <Popover ankerEl={anker} orientering={PopoverOrientering.Over}>
-                        <p style={{ padding: '1rem' }}>{props.arbeidsforhold.arbeidstaker.navn}</p>
+                        <p style={{ padding: '1rem' }}>{arbeidsforhold.arbeidstaker.navn}</p>
                     </Popover>
                 )}
             </Link>
@@ -64,4 +65,4 @@ const NavnPopover = (props: Props) => {
     );
 };
 
-export default NavnPopover;
+export default withRouter(NavnPopover)
