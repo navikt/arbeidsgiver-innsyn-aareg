@@ -124,6 +124,14 @@ export const testRespons: OrganisasjonlowerCase[] = [
 ];
 export const tilgangTilAtinntjenesteRespons: OrganisasjonlowerCase[] = [
     {
+        name: 'UTVIK OG ETNE',
+        type: 'Business',
+        parentOrganizationNumber: '910712217',
+        organizationNumber: '910712233',
+        organizationForm: 'BEDR',
+        status: 'Active'
+    },
+    {
         name: 'MALMEFJORDEN OG RIDABU REGNSKAP',
         type: 'Enterprise',
         parentOrganizationNumber: null,
@@ -163,4 +171,24 @@ export const tilgangTilAtinntjenesteRespons: OrganisasjonlowerCase[] = [
         organizationForm: 'BEDR',
         status: 'Active'
     },
+];
+
+export const tidligerVirksomheter: OrganisasjonlowerCase[] = [
+    {
+        name: 'HASLUM OG HOLTE REGNSKAP',
+        type: 'BEDR',
+        parentOrganizationNumber: '810825472',
+        organizationNumber: '954168395',
+        organizationForm: 'AS',
+        status: 'Active'
+    },
+    {
+        name: 'HASLUM OG HAUGNES REGNSKAP',
+        type: 'BEDR',
+        parentOrganizationNumber: '810825472',
+        organizationNumber: '954168399',
+        organizationForm: 'AS',
+        status: 'Active'
+    }
+
 ];
