@@ -3,8 +3,8 @@ import PagineringsKnapp from './PagineringsKnapp/PagineringsKnapp';
 
 interface Props {
     className?: string;
-    byttSide: (indeks: number) => void;
-    naVarendeIndeks: number;
+    setParameterIUrl: (parameter: string, variabel: string) => void;
+    nåVærendeSidetall: number;
     siderTilsammen: number;
 }
 
@@ -12,38 +12,38 @@ const Midtdel: FunctionComponent<Props> = props => {
     return (
         <>
             <PagineringsKnapp
-                naVarendeIndeks={props.naVarendeIndeks}
+                nåVærendeSidetall={props.nåVærendeSidetall}
                 siderTilsammen={props.siderTilsammen}
                 sidetall={1}
-                byttSide={props.byttSide}
+                setParameterIUrl={props.setParameterIUrl}
             />
             ...
             <PagineringsKnapp
-                naVarendeIndeks={props.naVarendeIndeks}
+                nåVærendeSidetall={props.nåVærendeSidetall}
                 siderTilsammen={props.siderTilsammen}
-                sidetall={props.naVarendeIndeks - 1}
-                byttSide={props.byttSide}
+                sidetall={props.nåVærendeSidetall - 1}
+                setParameterIUrl={props.setParameterIUrl}
             />
             <PagineringsKnapp
-                naVarendeIndeks={props.naVarendeIndeks}
+                nåVærendeSidetall={props.nåVærendeSidetall}
                 siderTilsammen={props.siderTilsammen}
-                sidetall={props.naVarendeIndeks}
-                byttSide={props.byttSide}
+                sidetall={props.nåVærendeSidetall}
+                setParameterIUrl={props.setParameterIUrl}
             />
             <PagineringsKnapp
                 siderTilsammen={props.siderTilsammen}
-                sidetall={props.naVarendeIndeks + 1}
-                naVarendeIndeks={props.naVarendeIndeks}
-                byttSide={props.byttSide}
+                sidetall={props.nåVærendeSidetall + 1}
+                nåVærendeSidetall={props.nåVærendeSidetall}
+                setParameterIUrl={props.setParameterIUrl}
             />
-            {props.naVarendeIndeks < props.siderTilsammen - 1 && (
+            {props.nåVærendeSidetall < props.siderTilsammen - 1 && (
                 <>
                     ...
                     <PagineringsKnapp
-                        naVarendeIndeks={props.naVarendeIndeks}
+                        nåVærendeSidetall={props.nåVærendeSidetall}
                         siderTilsammen={props.siderTilsammen}
                         sidetall={props.siderTilsammen}
-                        byttSide={props.byttSide}
+                        setParameterIUrl={props.setParameterIUrl}
                     />
                 </>
             )}

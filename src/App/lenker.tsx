@@ -11,6 +11,8 @@ export const hentAntallArbeidsforholdLinkNyBackend = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/antall-arbeidsforhold';
 };
 
+export const hentTidligereVirksomheterLink = landingsURL + 'arbeidsgiver-arbeidsforhold/api/tidligere-virksomheter';
+
 export const hentOrganisasjonerLinkNyBackend = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/organisasjoner';
 };
@@ -82,3 +84,5 @@ export const beOmTilgangIAltinnLink = (
         );
     }
 };
+
+
