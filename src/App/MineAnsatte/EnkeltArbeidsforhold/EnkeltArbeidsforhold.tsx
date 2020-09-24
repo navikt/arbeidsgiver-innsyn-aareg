@@ -5,7 +5,10 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Chevron from 'nav-frontend-chevron';
 import environment from '../../../utils/environment';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
-import { byggListeBasertPaPArametere, sorterArbeidsforhold } from '../sorteringOgFiltreringsFunksjoner';
+import {
+    getSorteringsOgFiltreringsValg,
+    lagListeBasertPaUrl,
+} from '../sorteringOgFiltreringsFunksjoner';
 import './EnkeltArbeidsforhold.less';
 
 interface Props extends RouteComponentProps {
@@ -13,6 +16,7 @@ interface Props extends RouteComponentProps {
     nesteArbeidsforhold?: Arbeidsforhold;
     alleArbeidsforhold: Arbeidsforhold[];
     setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
+    setVisProgressbar: (vis: boolean) => void;
 }
 
 const miljo = () => {
@@ -36,63 +40,40 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
     history,
     valgtArbeidsforhold,
     alleArbeidsforhold,
-    setValgtArbeidsforhold
+    setValgtArbeidsforhold,
+    setVisProgressbar
 }) => {
+
+    const naVærendeUrl = new URL(window.location.href);
+    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
+
     const locale = 'nb' as 'nb' | 'en';
-    const arbeidsforholdIdFraUrl = new URL(window.location.href).searchParams.get('arbeidsforhold');
+    const arbeidsforholdIdFraUrl = getSorteringsOgFiltreringsValg('arbeidsforhold');
     window.scrollTo(0, 0);
     const redirectTilbake = () => {
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.delete('arbeidsforhold');
-        const { search } = currentUrl;
-        history.replace({ search: search, pathname: '/' });
+        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold' : '/'
+        naVærendeUrl.searchParams.delete('arbeidsforhold');
+        const { search } = naVærendeUrl;
+        setVisProgressbar(false);
+        history.replace({ search: search, pathname: redirectPath });
     };
 
     if (arbeidsforholdIdFraUrl === null) {
         redirectTilbake();
     }
 
-    const finnParametereFraUrlOgGenererListe = () => {
-        const currentUrl = new URL(window.location.href);
-        let filter = 'Alle';
-        if (currentUrl.searchParams.get('filter') && currentUrl.searchParams.get('filter') !== 'Alle') {
-            filter = currentUrl.searchParams.get('filter')!!;
-        }
-        let skalFiltrere = false;
-        if (currentUrl.searchParams.get('varsler') && currentUrl.searchParams.get('varsler') === 'true') {
-            skalFiltrere = true;
-        }
-        let sok = '';
-        if (currentUrl.searchParams.get('sok') && currentUrl.searchParams.get('sok') !== '') {
-            sok = currentUrl.searchParams.get('sok')!!;
-        }
-        let sorter = 0;
-        if (currentUrl.searchParams.get('sorter') && currentUrl.searchParams.get('sorter') !== '1') {
-            sorter = parseInt(currentUrl.searchParams.get('sorter')!!);
-        }
-        let revers = false;
-        if (currentUrl.searchParams.get('revers') && currentUrl.searchParams.get('revers') !== 'false') {
-            revers = true;
-        }
-        const listeBasertPaParametere = byggListeBasertPaPArametere(alleArbeidsforhold, filter, skalFiltrere, sok);
-        if (revers) {
-            return sorterArbeidsforhold(listeBasertPaParametere, sorter).reverse();
-        }
-        return sorterArbeidsforhold(listeBasertPaParametere, sorter);
-    };
-
-    const arbeidsforhold = finnParametereFraUrlOgGenererListe();
-    const indeksValgtArbeidsforhold = arbeidsforhold.findIndex(arbeidsforhold => {
+    const filtrertOgSortertListe: Arbeidsforhold[] = lagListeBasertPaUrl(alleArbeidsforhold)
+    const indeksValgtArbeidsforhold = filtrertOgSortertListe.findIndex(arbeidsforhold => {
         return arbeidsforhold.navArbeidsforholdId === arbeidsforholdIdFraUrl;
     });
 
-    if (arbeidsforhold.length && indeksValgtArbeidsforhold === -1) {
+    if (filtrertOgSortertListe.length && indeksValgtArbeidsforhold === -1) {
         redirectTilbake();
     }
 
-    const nesteArbeidsforhold = arbeidsforhold[indeksValgtArbeidsforhold + 1];
-    const forrigeArbeidsforhold = arbeidsforhold[indeksValgtArbeidsforhold - 1];
-    setValgtArbeidsforhold(arbeidsforhold[indeksValgtArbeidsforhold]);
+    const nesteArbeidsforhold = filtrertOgSortertListe[indeksValgtArbeidsforhold + 1];
+    const forrigeArbeidsforhold = filtrertOgSortertListe[indeksValgtArbeidsforhold - 1];
+    setValgtArbeidsforhold(filtrertOgSortertListe[indeksValgtArbeidsforhold]);
 
     const redirectTilArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
         setTimeout(() => {}, 2500);
