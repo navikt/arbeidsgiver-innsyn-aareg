@@ -38,7 +38,7 @@ enum TILGANGSSTATE {
     IKKE_TILGANG
 }
 
-export const MAKS_ANTALL_ARBEIDSFORHOLD = 10000;
+export const MAKS_ANTALL_ARBEIDSFORHOLD = 25000;
 export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
 
@@ -165,6 +165,7 @@ const App = () => {
                 setVisProgressbar(true);
             } else if (antall > MAKS_ANTALL_ARBEIDSFORHOLD) {
                 setVisProgressbar(false);
+                setAntallArbeidsforhold(antall);
                 setAaregLasteState(APISTATUS.OK);
             } else {
                 setAntallArbeidsforholdUkjent(false);
@@ -183,11 +184,15 @@ const App = () => {
                     .then(respons => {
                         setListeMedArbeidsforholdFraAareg(respons.arbeidsforholdoversikter);
                         setAaregLasteState(APISTATUS.OK);
-                        if (!antallArbeidsforholdUkjent) {
+                        if (antallArbeidsforholdUkjent) {
                             setAntallArbeidsforhold(respons.arbeidsforholdoversikter.length);
+                        }
+                        if (respons.arbeidsforholdoversikter.length === 0) {
+                            setVisProgressbar(false);
                         }
                     })
                     .catch(error => {
+                        console.log(error);
                         loggInfoOmFeil(error.response.status, organisasjon.OrganizationNumber);
                         if (error.response.status === 401) {
                             redirectTilLogin();
