@@ -49,6 +49,9 @@ export async function hentAntallArbeidsforholdFraAaregNyBackend(
     let respons = await fetch(hentAntallArbeidsforholdLinkNyBackend(), { headers: headere, signal: signal });
     if (respons.ok) {
         const jsonRespons: overSiktPerUnderenhetPar = await respons.json();
+        if (jsonRespons.second === 0){
+            return -1
+        }
         return jsonRespons.second;
     } else {
         return -1;
