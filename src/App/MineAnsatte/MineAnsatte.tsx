@@ -113,8 +113,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
         setParameterIUrl('side', indeks.toString());
     };
 
-    console.log(antallArbeidsforhold, "antall arbeidsforhold");
-
     const setParameterIUrl = (parameter: string, variabel: string) => {
         const url = new URL(window.location.href);
         url.searchParams.set(parameter, variabel);
