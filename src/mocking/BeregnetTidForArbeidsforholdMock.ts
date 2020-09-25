@@ -5,7 +5,7 @@ fetchMock
     .get(
         hentAntallArbeidsforholdLinkNyBackend(),
         delay.then(() => {
-            return {first: '910825518', second: 70};
+            return {first: '910825518', second: 300};
         })
     )
     .spy();
