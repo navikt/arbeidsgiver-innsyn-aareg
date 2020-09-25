@@ -164,7 +164,8 @@ const MineAnsatte: FunctionComponent<Props> = ({
         }
     };
 
-    console.log("vis progressbar: " +visProgressbar, aaregLasteState);
+    console.log("vis progressbar: " +visProgressbar, "lastestate", aaregLasteState);
+    console.log("antall ukjent:", antallArbeidsforholdUkjent, antallArbeidsforhold);
 
     return (
         <div className="bakgrunnsside">

@@ -183,11 +183,15 @@ const App = () => {
                     .then(respons => {
                         setListeMedArbeidsforholdFraAareg(respons.arbeidsforholdoversikter);
                         setAaregLasteState(APISTATUS.OK);
-                        if (!antallArbeidsforholdUkjent) {
+                        if (antallArbeidsforholdUkjent) {
                             setAntallArbeidsforhold(respons.arbeidsforholdoversikter.length);
+                        }
+                        if (respons.arbeidsforholdoversikter.length === 0) {
+                            setVisProgressbar(false);
                         }
                     })
                     .catch(error => {
+                        console.log(error);
                         loggInfoOmFeil(error.response.status, organisasjon.OrganizationNumber);
                         if (error.response.status === 401) {
                             redirectTilLogin();
