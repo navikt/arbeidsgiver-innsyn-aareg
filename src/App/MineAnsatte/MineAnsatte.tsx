@@ -113,6 +113,8 @@ const MineAnsatte: FunctionComponent<Props> = ({
         setParameterIUrl('side', indeks.toString());
     };
 
+    console.log(antallArbeidsforhold, "antall arbeidsforhold");
+
     const setParameterIUrl = (parameter: string, variabel: string) => {
         const url = new URL(window.location.href);
         url.searchParams.set(parameter, variabel);
@@ -163,9 +165,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
                 return 'Vi opplever ustabilitet med Aa-registret. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
         }
     };
-
-    console.log("vis progressbar: " +visProgressbar, "lastestate", aaregLasteState);
-    console.log("antall ukjent:", antallArbeidsforholdUkjent, antallArbeidsforhold);
 
     return (
         <div className="bakgrunnsside">
