@@ -62,25 +62,6 @@ export const listeMedEtterNavn: string[] = [
     'Morgenstierne'
 ];
 
-export const datoer: string[] = [
-    '1996-01-29',
-    '1999-04-01',
-    '1998-12-01',
-    '1990-04-18',
-    '1990-02-14',
-    '1980-05-01',
-    '2000-05-17',
-    '1814-05-17',
-    '2020-04-29',
-    '2021-08-13',
-    '2024-12-17',
-    '2020-01-28',
-    '2021-02-15',
-    '2025-05-01',
-    '2020-12-24',
-    '2020-03-03'
-];
-
 export const yrker: string[] = [
     'aa dette er et langt yrkesnavn',
     'Systemutvikler',
@@ -190,21 +171,23 @@ const setProsent = (): string => {
     return prosent[indeks];
 };
 
-const setTom = (datoFom: string): string => {
-    let indeks = genererRandomIndex(datoer.length);
-    let datoTom: string = datoer[indeks];
-    while (new Date(datoTom) < new Date(datoFom)) {
-        indeks = genererRandomIndex(datoer.length);
-        datoTom = datoer[indeks];
-    }
-    const nyDatoTom = datoTom;
-    return nyDatoTom;
-};
+const tilfeldigDatoITidsintervall = (startdato: Date, sluttdato: Date) => {
+    return new Date(startdato.getTime() + Math.random() * (sluttdato.getTime() - startdato.getTime()));
+}
 
-const setFom = (): string => {
-    const indeks = genererRandomIndex(datoer.length);
-    return datoer[indeks];
-};
+const formaterDato = (dato: Date): string => {
+    const måned = dato.getMonth() + 1;
+    if (måned === 0) {
+        console.log(dato);
+    }
+    const månedSomString = måned<10 ? '0'+måned.toString() : måned.toString();
+    const dag = dato.getDate();
+    if (dag === 0) {
+        console.log(dag);
+    }
+    const dagSomString = dag<10 ? '0'+dag.toString() : dag.toString();
+    return dato.getFullYear() +'-'+månedSomString+'-'+dagSomString
+}
 
 const setYrke = (): string => {
     const indeks = genererRandomIndex(yrker.length);
@@ -245,12 +228,14 @@ const setVarslingskode = (): Varsel[] | undefined => {
 };
 
 const lagAnsattForhold = (): Arbeidsforhold => {
-    const fomDato: string = setFom();
-    const tomDato: string = setTom(fomDato);
+    const arbeidsforholdStarttidspunkt: Date =
+        tilfeldigDatoITidsintervall(new Date(2015,1,1), new Date());
+    const arbeidsforholdSluttidspunkt: Date =
+        tilfeldigDatoITidsintervall(arbeidsforholdStarttidspunkt, new Date(2022,1,1));
     return {
         ...tomtArbeidsForhold,
-        ansattFom: fomDato,
-        ansattTom: tomDato,
+        ansattFom: formaterDato(arbeidsforholdStarttidspunkt),
+        ansattTom: formaterDato(arbeidsforholdSluttidspunkt),
         yrkesbeskrivelse: setYrke(),
         varsler: setVarslingskode(),
         permisjonPermitteringsprosent: setProsent(),
@@ -264,12 +249,14 @@ const lagAnsattForhold = (): Arbeidsforhold => {
 };
 
 const lagAvluttetAnsattForhold = (): Arbeidsforhold => {
-    const fomDato: string = setFom();
-    const tomDato: string = setFom();
+    const arbeidsforholdStarttidspunkt: Date =
+        tilfeldigDatoITidsintervall(new Date(2015,1,1), new Date());
+    const arbeidsforholdSluttidspunkt: Date =
+        tilfeldigDatoITidsintervall(arbeidsforholdStarttidspunkt, new Date())
     return {
         ...tomtArbeidsForhold,
-        ansattFom: fomDato,
-        ansattTom: tomDato,
+        ansattFom: formaterDato(arbeidsforholdStarttidspunkt),
+        ansattTom: formaterDato(arbeidsforholdSluttidspunkt),
         yrkesbeskrivelse: setYrke(),
         varsler: setVarslingskode(),
         permisjonPermitteringsprosent: setProsent(),

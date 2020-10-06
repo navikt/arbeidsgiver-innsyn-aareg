@@ -147,13 +147,14 @@ const App = () => {
         }
     };
 
-    const hentOgSetAntallOgArbeidsforhold = (organisasjon: Organisasjon) => {
+    const hentOgSetAntallOgArbeidsforhold = (organisasjon: Organisasjon, erTidligereVirksomhet: boolean) => {
         setAaregLasteState(APISTATUS.LASTER);
         setAntallArbeidsforholdUkjent(true);
         const abortControllerAntallKall = new AbortController();
         const signal = abortControllerAntallKall.signal;
         setAbortControllerAntallArbeidsforhold(abortControllerAntallKall);
         setAntallArbeidsforhold(0);
+        console.log('er på tidligere arbeidsforhold ' + ERPATIDLIGEREARBEIDSFORHOLD)
 
         hentAntallArbeidsforholdFraAaregNyBackend(
             organisasjon.OrganizationNumber,
@@ -179,7 +180,7 @@ const App = () => {
                 hentArbeidsforholdFraAAregNyBackend(
                     organisasjon.OrganizationNumber,
                     organisasjon.ParentOrganizationNumber,
-                    signal, ERPATIDLIGEREARBEIDSFORHOLD
+                    signal, erTidligereVirksomhet
                 )
                     .then(respons => {
                         setListeMedArbeidsforholdFraAareg(respons.arbeidsforholdoversikter);
@@ -218,7 +219,7 @@ const App = () => {
         }
         abortTidligereRequests();
         if (organisasjon.OrganizationNumber.length && harTilgang(organisasjon.OrganizationNumber)) {
-            hentOgSetAntallOgArbeidsforhold(organisasjon);
+            hentOgSetAntallOgArbeidsforhold(organisasjon, false);
         }
     };
 
