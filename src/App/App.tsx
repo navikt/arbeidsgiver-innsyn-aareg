@@ -154,7 +154,6 @@ const App = () => {
         const signal = abortControllerAntallKall.signal;
         setAbortControllerAntallArbeidsforhold(abortControllerAntallKall);
         setAntallArbeidsforhold(0);
-        console.log('er på tidligere arbeidsforhold ' + ERPATIDLIGEREARBEIDSFORHOLD)
 
         hentAntallArbeidsforholdFraAaregNyBackend(
             organisasjon.OrganizationNumber,
