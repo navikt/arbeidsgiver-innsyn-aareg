@@ -18,7 +18,7 @@ const VarslingPopover = (props: PopoverProps) => {
                 onMouseLeave={(e: any) => setAnker(undefined)}
             />
             <Popover ankerEl={anker}>
-                <div style={{ padding: '1rem 1rem 0 1rem ' }}>
+                <div style={{ padding: '1rem 1rem 0 1rem ' }} className={'varsel-popover'}>
                     {props.varsler.map(varsel => (
                         <div key={varsel.varslingskode} style={{ padding: '0 0 1rem 0' }}>
                             {varsel.varslingskodeForklaring}
