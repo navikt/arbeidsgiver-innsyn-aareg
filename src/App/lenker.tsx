@@ -7,6 +7,10 @@ export const hentArbeidsforholdLinkNyBackend = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/arbeidsforhold';
 };
 
+export const hentTidligereArbeidsforholdLinkNyBackend = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/tidligere-arbeidsforhold';
+};
+
 export const hentAntallArbeidsforholdLinkNyBackend = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/antall-arbeidsforhold';
 };

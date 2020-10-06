@@ -263,10 +263,30 @@ const lagAnsattForhold = (): Arbeidsforhold => {
     };
 };
 
-const genererMockingAvArbeidsForhold = (antall: number): Arbeidsforhold[] => {
+const lagAvluttetAnsattForhold = (): Arbeidsforhold => {
+    const fomDato: string = setFom();
+    const tomDato: string = setFom();
+    return {
+        ...tomtArbeidsForhold,
+        ansattFom: fomDato,
+        ansattTom: tomDato,
+        yrkesbeskrivelse: setYrke(),
+        varsler: setVarslingskode(),
+        permisjonPermitteringsprosent: setProsent(),
+        stillingsprosent: setProsent(),
+        arbeidstaker: {
+            ...tomtArbeidsForhold.arbeidstaker,
+            offentligIdent: setFnr(),
+            navn: setNavn()
+        }
+    };
+};
+
+const genererMockingAvArbeidsForhold = (antall: number, kunAvsluttede: boolean): Arbeidsforhold[] => {
     const listeMedArbeidsForhold: Arbeidsforhold[] = [];
     for (let i: number = 0; i < antall; i++) {
-        listeMedArbeidsForhold.push(lagAnsattForhold());
+        const lagAnsattFunksjon = kunAvsluttede ? lagAvluttetAnsattForhold() : lagAnsattForhold()
+        listeMedArbeidsForhold.push(lagAnsattFunksjon);
     }
     return listeMedArbeidsForhold.map(forhold => {
         return { ...forhold, navArbeidsforholdId: listeMedArbeidsForhold.indexOf(forhold).toString() };
@@ -275,10 +295,10 @@ const genererMockingAvArbeidsForhold = (antall: number): Arbeidsforhold[] => {
 
 export const AaregMockObjekt: ObjektFraAAregisteret = {
     ...tomResponsFraAareg,
-    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(300)
+    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(300, false)
 };
 
 export const AaregMockObjektForNedlagtVirksomhet: ObjektFraAAregisteret = {
     ...tomResponsFraAareg,
-    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(0)
+    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(104, true)
 };
