@@ -179,7 +179,7 @@ const App = () => {
                 hentArbeidsforholdFraAAregNyBackend(
                     organisasjon.OrganizationNumber,
                     organisasjon.ParentOrganizationNumber,
-                    signal
+                    signal, ERPATIDLIGEREARBEIDSFORHOLD
                 )
                     .then(respons => {
                         setListeMedArbeidsforholdFraAareg(respons.arbeidsforholdoversikter);
