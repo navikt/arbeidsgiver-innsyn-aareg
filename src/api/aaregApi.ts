@@ -1,6 +1,6 @@
 import {
     hentAntallArbeidsforholdLinkNyBackend,
-    hentArbeidsforholdLinkNyBackend,
+    hentArbeidsforholdLinkNyBackend, hentTidligereArbeidsforholdLinkNyBackend,
     hentTidligereVirksomheterLink
 } from '../App/lenker';
 import {ObjektFraAAregisteret} from '../App/Objekter/ObjektFraAAreg';
@@ -17,15 +17,16 @@ import {mapOrganisasjonerFraLowerCaseTilupper} from "./altinnApi";
 export async function hentArbeidsforholdFraAAregNyBackend(
     underenhet: string,
     enhet: string,
-    signal: any
+    signal: any,
+    erTidligereArbeidsforhold: boolean
 ): Promise<ObjektFraAAregisteret> {
     let headere = new Headers();
     headere.set('orgnr', underenhet);
     headere.set('jurenhet', enhet);
     const startTtid = new Date();
-
-    let response: Response = await fetch(hentArbeidsforholdLinkNyBackend(), { headers: headere, signal: signal });
-
+    const linkTilEndepunkt = erTidligereArbeidsforhold ?
+        hentTidligereArbeidsforholdLinkNyBackend() : hentArbeidsforholdLinkNyBackend()
+    let response: Response = await fetch(linkTilEndepunkt, { headers: headere, signal: signal });
     if (response.ok) {
         const jsonRespons: ObjektFraAAregisteret = await response.json();
         loggAntallAnsatte(jsonRespons.arbeidsforholdoversikter.length);
