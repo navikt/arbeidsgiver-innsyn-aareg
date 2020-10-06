@@ -198,7 +198,6 @@ export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold:
             antallOversikt[1]++;
         }
     });
-    console.log(antallOversikt)
     return antallOversikt;
 };
 

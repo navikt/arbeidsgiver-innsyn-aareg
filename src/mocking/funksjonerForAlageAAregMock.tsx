@@ -177,14 +177,8 @@ const tilfeldigDatoITidsintervall = (startdato: Date, sluttdato: Date) => {
 
 const formaterDato = (dato: Date): string => {
     const måned = dato.getMonth() + 1;
-    if (måned === 0) {
-        console.log(dato);
-    }
     const månedSomString = måned<10 ? '0'+måned.toString() : måned.toString();
     const dag = dato.getDate();
-    if (dag === 0) {
-        console.log(dag);
-    }
     const dagSomString = dag<10 ? '0'+dag.toString() : dag.toString();
     return dato.getFullYear() +'-'+månedSomString+'-'+dagSomString
 }
