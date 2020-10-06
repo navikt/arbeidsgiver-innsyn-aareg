@@ -216,7 +216,6 @@ const App = () => {
         else {
             setTilgangTilTidligereArbeidsforhold(false);
         }
-        hentOgSetAntallOgArbeidsforhold(organisasjon);
         abortTidligereRequests();
         if (organisasjon.OrganizationNumber.length && harTilgang(organisasjon.OrganizationNumber)) {
             hentOgSetAntallOgArbeidsforhold(organisasjon);
