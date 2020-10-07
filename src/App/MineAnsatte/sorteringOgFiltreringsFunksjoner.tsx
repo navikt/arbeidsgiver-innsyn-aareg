@@ -165,7 +165,7 @@ export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], filt
         return arbeidsforhold.filter(forhold => {
             if (forhold.ansattTom) {
                 const avslutningsdato = new Date(forhold.ansattTom);
-                return avslutningsdato > navarendeDato;
+                return avslutningsdato >= navarendeDato;
             } else {
                 return true;
             }
@@ -175,7 +175,7 @@ export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], filt
         return arbeidsforhold.filter(forhold => {
             if (forhold.ansattTom) {
                 const avslutningsdato = new Date(forhold.ansattTom);
-                return avslutningsdato <= navarendeDato;
+                return avslutningsdato < navarendeDato;
             } else {
                 return false;
             }
@@ -189,7 +189,7 @@ export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold:
     listeMedArbeidsforhold.forEach(forhold => {
         if (forhold.ansattTom) {
             const avslutningsdato = new Date(forhold.ansattTom);
-            if (avslutningsdato <= navarendeDato) {
+            if (avslutningsdato < navarendeDato) {
                 antallOversikt[2]++;
             } else {
                 antallOversikt[1]++;
