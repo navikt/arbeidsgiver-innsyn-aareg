@@ -119,7 +119,7 @@ export const loggForbiddenFraAltinn = () => {
     amplitude.logEvent("#arbeidsforhold 403 fra altinn");
 };
 
-export const loggInfoOmFeil = (typeFeil: string,  bedriftsnummer: string) => {
+export const loggInfoOmFeil = ( typeFeil: string,bedriftsnummer: string) => {
     amplitude.logEvent('#arbeidsforhold FEILER ', {bedriftsnummer: bedriftsnummer , typeFeil});
 };
 
