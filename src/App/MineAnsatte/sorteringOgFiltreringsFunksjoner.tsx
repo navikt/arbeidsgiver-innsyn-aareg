@@ -165,7 +165,7 @@ export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], filt
         return arbeidsforhold.filter(forhold => {
             if (forhold.ansattTom) {
                 const avslutningsdato = new Date(forhold.ansattTom);
-                return avslutningsdato > navarendeDato;
+                return avslutningsdato >= navarendeDato;
             } else {
                 return true;
             }
