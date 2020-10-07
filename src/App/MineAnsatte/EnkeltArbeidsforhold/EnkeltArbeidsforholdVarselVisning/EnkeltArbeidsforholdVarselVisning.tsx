@@ -11,11 +11,13 @@ const EnkeltArbeidsforholdVarselVisning: FunctionComponent<Props> = ( props:Prop
         return (
             <div className="enkelt-arbeidsforhold-varsel-container">
             <AlertStripeAdvarsel>
+                <ul className={'enkelt-arbeidsforhold-varsel-liste'}>
                 {props.valgtArbeidsforhold.varsler.map(varsel => (
-                    <div key={varsel.varslingskode} style={{ padding: '0 0 1rem 0' }}>
+                    <li key={varsel.varslingskode} style={{ padding: '0 0 1rem 0' }}>
                         {varsel.varslingskodeForklaring}
-                    </div>
+                    </li>
                 ))}
+                </ul>
              </AlertStripeAdvarsel>
             </div>
         )
