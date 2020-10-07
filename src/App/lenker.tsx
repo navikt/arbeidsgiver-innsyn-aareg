@@ -3,17 +3,21 @@ import {alleFeatures} from "./FeatureToggleProvider";
 
 const landingsURL = '/arbeidsforhold/';
 
-export const hentArbeidsforholdLinkNyBackend = () => {
+export const hentArbeidsforholdLink = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/arbeidsforhold';
 };
 
-export const hentAntallArbeidsforholdLinkNyBackend = () => {
+export const hentTidligereArbeidsforholdLink = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/tidligere-arbeidsforhold';
+};
+
+export const hentAntallArbeidsforholdLink = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/antall-arbeidsforhold';
 };
 
 export const hentTidligereVirksomheterLink = landingsURL + 'arbeidsgiver-arbeidsforhold/api/tidligere-virksomheter';
 
-export const hentOrganisasjonerLinkNyBackend = () => {
+export const hentOrganisasjonerLink = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/organisasjoner';
 };
 
@@ -21,9 +25,6 @@ export const hentRettigheterTilAltinnTjenesteLink = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/rettigheter-til-tjeneste/';
 };
 
-export const hentOrganisasjonerLink = () => {
-    return landingsURL + 'api/organisasjoner';
-};
 
 export const sjekkInnloggetLenke = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/innlogget';
