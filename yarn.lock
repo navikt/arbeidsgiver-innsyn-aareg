@@ -8208,10 +8208,10 @@ nav-frontend-paneler-style@^0.3.21:
   resolved "https://registry.yarnpkg.com/nav-frontend-paneler-style/-/nav-frontend-paneler-style-0.3.21.tgz#bc9f39f8fe6d947a226d5147048cc45ab09e4f13"
   integrity sha512-bo3pmByEHH3Hnl8OphcCEcz23nqs3VK05xF+f3m9quzi+TcPHpYSe+V6NrBzFAA6UB6clRo7b8l5j/ANY7prDg==
 
-nav-frontend-popover-style@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/nav-frontend-popover-style/-/nav-frontend-popover-style-0.0.5.tgz#707dcf5a4e7e6ec237b72e00c2cfdf83903b01b8"
-  integrity sha512-5Sn/g0fS2S4sXbgWHqen9ODLGqj/bEPJgnkK2UX2v5gCszXCnLH+XL4qbBdYk7UeoAQTfksUYXjqqa4HI8SKnA==
+nav-frontend-popover-style@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/nav-frontend-popover-style/-/nav-frontend-popover-style-0.0.6.tgz#b376c2b213b5dcdbaa972e0bd7b2c596b8787bea"
+  integrity sha512-GAom3FiWAbHn/rS+HrczGEK9odb3yB7BkQgHDjkS8nB++3r/wMuCa2FNL3se27W2Q5oK+kfWFyXNftgOpPP7bw==
 
 nav-frontend-popover@^0.0.28:
   version "0.0.28"

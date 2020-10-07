@@ -124,7 +124,7 @@ export const fodselsNr: string[] = [
     '21123832989'
 ];
 
-export const varlingskoder: string[] = ['ERKONK', 'EROPPH', 'ERVIRK', 'IBARBG', 'IBKAOR'];
+export const varlingskoder: string[] = ['ERKONK', 'EROPPH', 'ERVIRK', 'IBARBG', 'IBKAOR','AFIDHI','IBPPAG','NAVEND','PPIDHI'];
 type varslingsId = typeof varlingskoder[number];
 export const prosent: string[] = ['10', '20', '30', '80', '100'];
 
@@ -193,11 +193,15 @@ const setFnr = (): string => {
     return fodselsNr[indeks];
 };
 const varselkodeBeskrivelser: Record<varslingsId, string> = {
-    ERKONK: 'Maskinell sluttdato: Konkurs',
-    EROPPH: 'Maskinell sluttdato: Opphørt i Enhetsregisteret',
-    ERVIRK: 'Maskinell sluttdato: Virksomhetoverdragelse',
-    IBARBG: 'Maskinell sluttdato: Ikke bekreftet',
-    IBKAOR: 'Maskinell sluttdato: Ikke bekreftet i a-ordningen'
+    ERKONK: 'Kontroller sluttdatoen. NAV har satt samme sluttdato som konkursåpningsdato i Konkursregisteret.',
+    EROPPH: 'Kontroller sluttdatoen. NAV har satt samme sluttdato som datoen foretaket opphørte i Enhetsregisteret.',
+    ERVIRK: 'Kontroller sluttdatoen.  NAV har satt samme sluttdato som datoen da foretaket ble overdratt til en annen juridisk enhet i Enhetsregisteret.',
+    IBARBG: 'Kontroller sluttdatoen. Du har ikke bekreftet arbeidsforholdet. NAV har satt sluttdato til siste dato i den kalendermåneden du sist bekreftet arbeidsforholdet.',
+    IBKAOR: 'Maskinell sluttdato: Ikke bekreftet i a-ordningen',
+    IBPPAG: 'Kontroller sluttdatoen. Du har ikke bekreftet permisjon/permitteringen. NAV har satt sluttdato til siste dato i den kalendermåneden du sist bekreftet opplysningen.',
+    AFIDHI: 'NAV har slått sammen dette arbeidsforholdet med et annet da opplysningene er så like at vi tolker det som ett og samme arbeidsforhold. Hvis du tror det er feil, sjekk at du ikke savner et tidligere arbeidsforhold',
+    NAVEND: 'NAV har opprettet eller endret arbeidsforholdet',
+    PPIDHI: 'NAV har slått sammen denne permitteringen/permisjonen med en annen da opplysningene er så like at vi tolker det som en og samme. Hvis du tror det er feil, sjekk at du ikke savner en permittering eller permisjon på dette arbeidsforholdet.'
 };
 
 const genererTilfeldigVarsel = (indeks: number): Varsel => {
