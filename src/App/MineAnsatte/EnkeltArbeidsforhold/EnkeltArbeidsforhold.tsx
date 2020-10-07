@@ -10,6 +10,7 @@ import {
     lagListeBasertPaUrl,
 } from '../sorteringOgFiltreringsFunksjoner';
 import './EnkeltArbeidsforhold.less';
+import EnkeltArbeidsforholdVarselVisning from "./EnkeltArbeidsforholdVarselVisning/EnkeltArbeidsforholdVarselVisning";
 
 interface Props extends RouteComponentProps {
     valgtArbeidsforhold: Arbeidsforhold | null;
@@ -115,6 +116,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
                             </div>
                         </div>
                         <div className="enkelt-arbeidsforhold">
+                            <EnkeltArbeidsforholdVarselVisning valgtArbeidsforhold={valgtArbeidsforhold} />
                             <div className="af-detaljert__header">
                                 <span className="af-detaljert__kolonne">
                                     <div className="af-detaljert__arbeidsgiver">
