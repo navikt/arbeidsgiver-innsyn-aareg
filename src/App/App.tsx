@@ -192,8 +192,8 @@ const App = () => {
                         }
                     })
                     .catch(error => {
-                        console.log(error);
-                        loggInfoOmFeil(error.response.status, organisasjon.OrganizationNumber);
+                        const feilmelding = error.response.status ? error.response.status : 'Ukjent feil'
+                        loggInfoOmFeil(feilmelding, organisasjon.OrganizationNumber, );
                         if (error.response.status === 401) {
                             redirectTilLogin();
                         }
