@@ -1,7 +1,7 @@
 import fetchMock from 'fetch-mock';
 import {
-    hentArbeidsforholdLinkNyBackend,
-    hentTidligereArbeidsforholdLinkNyBackend,
+    hentArbeidsforholdLink,
+    hentTidligereArbeidsforholdLink,
     hentTidligereVirksomheterLink
 } from '../App/lenker';
 import {AaregMockObjekt, AaregMockObjektForNedlagtVirksomhet} from './funksjonerForAlageAAregMock';
@@ -9,7 +9,7 @@ import {tidligerVirksomheter} from "./mockresponsFraAltinn";
 const delay = new Promise(res => setTimeout(res, 4000));
 fetchMock
     .get(
-        hentArbeidsforholdLinkNyBackend(),
+        hentArbeidsforholdLink(),
         delay.then(() => {
           return AaregMockObjekt;
         })
@@ -18,7 +18,7 @@ fetchMock
 
 fetchMock
     .get(
-        hentTidligereArbeidsforholdLinkNyBackend(),
+        hentTidligereArbeidsforholdLink(),
         delay.then(() => {
             return AaregMockObjektForNedlagtVirksomhet;
         })
