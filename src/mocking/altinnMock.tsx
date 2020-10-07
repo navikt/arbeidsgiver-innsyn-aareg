@@ -1,12 +1,12 @@
 import fetchMock from 'fetch-mock';
 import { testRespons, tilgangTilAtinntjenesteRespons } from './mockresponsFraAltinn';
-import { hentOrganisasjonerLinkNyBackend} from '../App/lenker';
+import { hentOrganisasjonerLink} from '../App/lenker';
 
 const delay = new Promise(res => setTimeout(res, 500));
 
 fetchMock
     .get(
-        hentOrganisasjonerLinkNyBackend(),
+        hentOrganisasjonerLink(),
         delay.then(() => {
             return testRespons;
         })

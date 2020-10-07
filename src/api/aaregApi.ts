@@ -1,6 +1,6 @@
 import {
-    hentAntallArbeidsforholdLinkNyBackend,
-    hentArbeidsforholdLinkNyBackend, hentTidligereArbeidsforholdLinkNyBackend,
+    hentAntallArbeidsforholdLink,
+    hentArbeidsforholdLink, hentTidligereArbeidsforholdLink,
     hentTidligereVirksomheterLink
 } from '../App/lenker';
 import {ObjektFraAAregisteret} from '../App/Objekter/ObjektFraAAreg';
@@ -14,18 +14,16 @@ import {
 import {Organisasjon} from "../App/Objekter/OrganisasjonFraAltinn";
 import {mapOrganisasjonerFraLowerCaseTilupper} from "./altinnApi";
 
-export async function hentArbeidsforholdFraAAregNyBackend(
+export async function hentArbeidsforholdFraAAreg(
     underenhet: string,
     enhet: string,
     signal: any,
     erTidligereArbeidsforhold: boolean
 ): Promise<ObjektFraAAregisteret> {
-    let headere = new Headers();
-    headere.set('orgnr', underenhet);
-    headere.set('jurenhet', enhet);
+    const headere = lagHeadere(enhet,underenhet);
     const startTtid = new Date();
     const linkTilEndepunkt = erTidligereArbeidsforhold ?
-        hentTidligereArbeidsforholdLinkNyBackend() : hentArbeidsforholdLinkNyBackend()
+        hentTidligereArbeidsforholdLink() : hentArbeidsforholdLink()
     let response: Response = await fetch(linkTilEndepunkt, { headers: headere, signal: signal });
     if (response.ok) {
         const jsonRespons: ObjektFraAAregisteret = await response.json();
@@ -39,15 +37,13 @@ export async function hentArbeidsforholdFraAAregNyBackend(
     }
 }
 
-export async function hentAntallArbeidsforholdFraAaregNyBackend(
+export async function hentAntallArbeidsforholdFraAareg(
     underenhet: string,
     enhet: string,
     signal: any
 ): Promise<number> {
-    const headere = new Headers();
-    headere.set('jurenhet', enhet);
-    headere.set('orgnr', underenhet);
-    let respons = await fetch(hentAntallArbeidsforholdLinkNyBackend(), { headers: headere, signal: signal });
+    const headere = lagHeadere(enhet,underenhet);
+    let respons = await fetch(hentAntallArbeidsforholdLink(), { headers: headere, signal: signal });
     if (respons.ok) {
         const jsonRespons: overSiktPerUnderenhetPar = await respons.json();
         if (jsonRespons.second === 0){
@@ -63,8 +59,7 @@ export async function hentTidligereVirksomheter(
     enhet: string,
     signal: any
 ): Promise<Organisasjon[]> {
-    let headere = new Headers();
-    headere.set('jurenhet', enhet);
+    const headere = lagHeadere(enhet)
     let response: Response = await fetch(hentTidligereVirksomheterLink, { headers: headere, signal: signal });
     if (response.ok) {
         const organisasjoner = await response.json();
@@ -72,4 +67,11 @@ export async function hentTidligereVirksomheter(
     } else {
         throw new FetchError(response.statusText || response.type, response);
     }
+}
+
+const lagHeadere = (jurenhet: string ,orgnr?: string) => {
+    const headere = new Headers();
+    headere.set('jurenhet', jurenhet);
+    orgnr && headere.set('orgnr', orgnr);
+    return headere
 }
