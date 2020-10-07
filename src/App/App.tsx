@@ -15,12 +15,12 @@ import {
     loggInfoOmFeilTidligereOrganisasjoner
 } from './amplitudefunksjonerForLogging';
 import {
-    hentOrganisasjonerFraAltinnNyBackend,
-    hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend
+    hentOrganisasjonerFraAltinn,
+    hentOrganisasjonerMedTilgangTilAltinntjeneste
 } from '../api/altinnApi';
 import {
-    hentAntallArbeidsforholdFraAaregNyBackend,
-    hentArbeidsforholdFraAAregNyBackend,
+    hentAntallArbeidsforholdFraAareg,
+    hentArbeidsforholdFraAAreg,
     hentTidligereVirksomheter
 } from '../api/aaregApi';
 import LoginBoundary from './LoggInnBoundary';
@@ -94,10 +94,10 @@ const App = () => {
         const abortController = new AbortController();
         const signal = abortController.signal;
 
-        hentOrganisasjonerFraAltinnNyBackend(signal)
+        hentOrganisasjonerFraAltinn(signal)
             .then(organisasjonsliste => {
                 setorganisasjoneFraAltinn(organisasjonsliste);
-                hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend(
+                hentOrganisasjonerMedTilgangTilAltinntjeneste(
                     SERVICEKODEINNSYNAAREGISTERET,
                     SERVICEEDITIONINNSYNAAREGISTERET,
                     signal
@@ -155,7 +155,7 @@ const App = () => {
         setAbortControllerAntallArbeidsforhold(abortControllerAntallKall);
         setAntallArbeidsforhold(0);
 
-        hentAntallArbeidsforholdFraAaregNyBackend(
+        hentAntallArbeidsforholdFraAareg(
             organisasjon.OrganizationNumber,
             organisasjon.ParentOrganizationNumber,
             signal
@@ -176,7 +176,7 @@ const App = () => {
                 const abortControllerArbeidsforhold = new AbortController();
                 setAbortControllerArbeidsforhold(abortControllerArbeidsforhold);
                 const signal = abortControllerArbeidsforhold.signal;
-                hentArbeidsforholdFraAAregNyBackend(
+                hentArbeidsforholdFraAAreg(
                     organisasjon.OrganizationNumber,
                     organisasjon.ParentOrganizationNumber,
                     signal, erTidligereVirksomhet
