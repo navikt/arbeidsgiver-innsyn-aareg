@@ -1,16 +1,31 @@
 import fetchMock from 'fetch-mock';
-import {hentArbeidsforholdLinkNyBackend, hentTidligereVirksomheterLink} from '../App/lenker';
-import {AaregMockObjekt} from './funksjonerForAlageAAregMock';
+import {
+    hentArbeidsforholdLink,
+    hentTidligereArbeidsforholdLink,
+    hentTidligereVirksomheterLink
+} from '../App/lenker';
+import {AaregMockObjekt, AaregMockObjektForNedlagtVirksomhet} from './funksjonerForAlageAAregMock';
 import {tidligerVirksomheter} from "./mockresponsFraAltinn";
 const delay = new Promise(res => setTimeout(res, 4000));
 fetchMock
     .get(
-        hentArbeidsforholdLinkNyBackend(),
+        hentArbeidsforholdLink(),
         delay.then(() => {
           return AaregMockObjekt;
         })
     )
     .spy();
+
+fetchMock
+    .get(
+        hentTidligereArbeidsforholdLink(),
+        delay.then(() => {
+            return AaregMockObjektForNedlagtVirksomhet;
+        })
+    )
+    .spy();
+
+
 
 //let headere = {"orgnr": "954168395", "jurenhet": "810825472"};
 

@@ -27,7 +27,7 @@ interface Props extends RouteComponentProps {
     valgtAktivOrganisasjon: Organisasjon;
     valgtTidligereVirksomhet: Organisasjon;
     organisasjonerFraAltinn: Organisasjon[];
-    hentOgSetAntallOgArbeidsforhold: (organisasjon: Organisasjon) => void;
+    hentOgSetAntallOgArbeidsforhold: (organisasjon: Organisasjon, erTidligereArbeidsforhold: boolean) => void;
     listeMedArbeidsforholdFraAareg: Arbeidsforhold[];
     antallArbeidsforhold: number;
     visProgressbar: boolean;
@@ -123,7 +123,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
 
     const setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere = (organisasjon: Organisasjon) => {
         setTidligereVirksomhet(organisasjon);
-        hentOgSetAntallOgArbeidsforhold(organisasjon)
+        hentOgSetAntallOgArbeidsforhold(organisasjon, true)
         const search  = nullStillSorteringIUrlParametere()
         history.replace({search: search});
         setParameterIUrl('tidligereVirksomhet', organisasjon.OrganizationNumber);
@@ -139,12 +139,12 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const redirectTilTidligereArbeidsforhold = () => {
         const search   = nullStillSorteringIUrlParametere();
         history.replace({ search: search, pathname: 'tidligere-arbeidsforhold' });
-        valgtTidligereVirksomhet !== tomaAltinnOrganisasjon && hentOgSetAntallOgArbeidsforhold(valgtTidligereVirksomhet);
+        valgtTidligereVirksomhet !== tomaAltinnOrganisasjon && hentOgSetAntallOgArbeidsforhold(valgtTidligereVirksomhet, true);
         setNåværendeUrlString(window.location.href);
     };
 
     const redirectTilbake = () => {
-        hentOgSetAntallOgArbeidsforhold(valgtAktivOrganisasjon);
+        hentOgSetAntallOgArbeidsforhold(valgtAktivOrganisasjon,false);
         const search   = nullStillSorteringIUrlParametere();
         history.replace({ search: search, pathname: '/' });
     };

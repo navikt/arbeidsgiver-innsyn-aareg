@@ -15,12 +15,12 @@ import {
     loggInfoOmFeilTidligereOrganisasjoner
 } from './amplitudefunksjonerForLogging';
 import {
-    hentOrganisasjonerFraAltinnNyBackend,
-    hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend
+    hentOrganisasjonerFraAltinn,
+    hentOrganisasjonerMedTilgangTilAltinntjeneste
 } from '../api/altinnApi';
 import {
-    hentAntallArbeidsforholdFraAaregNyBackend,
-    hentArbeidsforholdFraAAregNyBackend,
+    hentAntallArbeidsforholdFraAareg,
+    hentArbeidsforholdFraAAreg,
     hentTidligereVirksomheter
 } from '../api/aaregApi';
 import LoginBoundary from './LoggInnBoundary';
@@ -94,10 +94,10 @@ const App = () => {
         const abortController = new AbortController();
         const signal = abortController.signal;
 
-        hentOrganisasjonerFraAltinnNyBackend(signal)
+        hentOrganisasjonerFraAltinn(signal)
             .then(organisasjonsliste => {
                 setorganisasjoneFraAltinn(organisasjonsliste);
-                hentOrganisasjonerMedTilgangTilAltinntjenesteNyBackend(
+                hentOrganisasjonerMedTilgangTilAltinntjeneste(
                     SERVICEKODEINNSYNAAREGISTERET,
                     SERVICEEDITIONINNSYNAAREGISTERET,
                     signal
@@ -147,7 +147,7 @@ const App = () => {
         }
     };
 
-    const hentOgSetAntallOgArbeidsforhold = (organisasjon: Organisasjon) => {
+    const hentOgSetAntallOgArbeidsforhold = (organisasjon: Organisasjon, erTidligereVirksomhet: boolean) => {
         setAaregLasteState(APISTATUS.LASTER);
         setAntallArbeidsforholdUkjent(true);
         const abortControllerAntallKall = new AbortController();
@@ -155,7 +155,7 @@ const App = () => {
         setAbortControllerAntallArbeidsforhold(abortControllerAntallKall);
         setAntallArbeidsforhold(0);
 
-        hentAntallArbeidsforholdFraAaregNyBackend(
+        hentAntallArbeidsforholdFraAareg(
             organisasjon.OrganizationNumber,
             organisasjon.ParentOrganizationNumber,
             signal
@@ -176,10 +176,10 @@ const App = () => {
                 const abortControllerArbeidsforhold = new AbortController();
                 setAbortControllerArbeidsforhold(abortControllerArbeidsforhold);
                 const signal = abortControllerArbeidsforhold.signal;
-                hentArbeidsforholdFraAAregNyBackend(
+                hentArbeidsforholdFraAAreg(
                     organisasjon.OrganizationNumber,
                     organisasjon.ParentOrganizationNumber,
-                    signal
+                    signal, erTidligereVirksomhet
                 )
                     .then(respons => {
                         setListeMedArbeidsforholdFraAareg(respons.arbeidsforholdoversikter);
@@ -192,8 +192,8 @@ const App = () => {
                         }
                     })
                     .catch(error => {
-                        console.log(error);
-                        loggInfoOmFeil(error.response.status, organisasjon.OrganizationNumber);
+                        const feilmelding = error.response.status ? error.response.status : 'Ukjent feil'
+                        loggInfoOmFeil(feilmelding, organisasjon.OrganizationNumber, );
                         if (error.response.status === 401) {
                             redirectTilLogin();
                         }
@@ -218,7 +218,7 @@ const App = () => {
         }
         abortTidligereRequests();
         if (organisasjon.OrganizationNumber.length && harTilgang(organisasjon.OrganizationNumber)) {
-            hentOgSetAntallOgArbeidsforhold(organisasjon);
+            hentOgSetAntallOgArbeidsforhold(organisasjon, false);
         }
     };
 
