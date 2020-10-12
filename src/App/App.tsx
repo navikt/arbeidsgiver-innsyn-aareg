@@ -127,7 +127,7 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        if (valgtAktivOrganisasjon.ParentOrganizationNumber.length) {
+        if (valgtAktivOrganisasjon.ParentOrganizationNumber.length  && tilgangTilTidligereArbeidsforhold) {
             const abortController = new AbortController();
             const signal = abortController.signal;
             hentTidligereVirksomheter(valgtAktivOrganisasjon.ParentOrganizationNumber, signal)
@@ -138,7 +138,7 @@ const App = () => {
                 loggInfoOmFeilTidligereOrganisasjoner(e,valgtAktivOrganisasjon.ParentOrganizationNumber ))
         }
 
-    }, [valgtAktivOrganisasjon.ParentOrganizationNumber]);
+    }, [valgtAktivOrganisasjon.ParentOrganizationNumber, tilgangTilTidligereArbeidsforhold]);
 
     const abortTidligereRequests = () => {
         if (abortControllerAntallArbeidsforhold && abortControllerArbeidsforhold) {
