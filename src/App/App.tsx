@@ -138,7 +138,7 @@ const App = () => {
                 loggInfoOmFeilTidligereOrganisasjoner(e,valgtAktivOrganisasjon.ParentOrganizationNumber ))
         }
 
-    }, [valgtAktivOrganisasjon.ParentOrganizationNumber]);
+    }, [valgtAktivOrganisasjon.ParentOrganizationNumber, tilgangTilTidligereArbeidsforhold]);
 
     const abortTidligereRequests = () => {
         if (abortControllerAntallArbeidsforhold && abortControllerArbeidsforhold) {
