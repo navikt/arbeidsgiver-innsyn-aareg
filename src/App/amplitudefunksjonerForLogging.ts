@@ -119,6 +119,14 @@ export const loggForbiddenFraAltinn = () => {
     amplitude.logEvent("#arbeidsforhold 403 fra altinn");
 };
 
+export const loggTrykketPåTidligereArbeidsforholdSide = () => {
+    amplitude.logEvent("sidevisning" ,
+        {url: "http://arbeidsgiver.nav.no/arbeidsforhold/tidligere-arbeidsforhold",
+            tjeneste: "arbeidsgiver-arbeidsforhold"
+    }
+    );
+};
+
 export const loggInfoOmFeil = ( typeFeil: string,bedriftsnummer: string) => {
     amplitude.logEvent('#arbeidsforhold FEILER ', {bedriftsnummer: bedriftsnummer , typeFeil});
 };
