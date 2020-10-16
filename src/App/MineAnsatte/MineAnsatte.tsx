@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useContext} from 'react';
+import React, {FunctionComponent} from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Normaltekst, Systemtittel, Element } from 'nav-frontend-typografi';
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -21,7 +21,7 @@ import './MineAnsatte.less';
 import VelgTidligereVirksomhet from "./VelgTidligereVirksomhet/VelgTidligereVirksomhet";
 import {nullStillSorteringIUrlParametere} from "./urlFunksjoner";
 import {MAKS_ANTALL_ARBEIDSFORHOLD} from "../App";
-import {Feature, FeatureToggleContext} from "../FeatureToggleProvider";
+import {loggTrykketPåTidligereArbeidsforholdSide} from "../amplitudefunksjonerForLogging";
 
 interface Props extends RouteComponentProps {
     valgtAktivOrganisasjon: Organisasjon;
@@ -100,10 +100,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
 
     const valgtJuridiskEnhet = organisasjonerFraAltinn.filter(organisasjon => organisasjon.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber)[0];
 
-    const featureToggleContext = useContext(FeatureToggleContext);
-    const visHistorikkLenke = featureToggleContext[Feature.visHistorikk];
-
-
     const delOverskrift = "Opplysninger for "
     const overskriftMedOrganisasjonsdel = ERPATIDLIGEREARBEIDSFORHOLD ?
         delOverskrift + valgtJuridiskEnhet.Name + " org.nr " + valgtJuridiskEnhet.OrganizationNumber :
@@ -158,7 +154,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
             case '408':
                 return 'Det oppstod en feil da vi prøvde å hente dine arbeidsforhold. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
             case '403':
-                return 'ikke tilgang til forspurt entitet i Aa-reg, Vi opplever problemer med å hente opplysninger, vennligst ta kontakt med brukerstøtte ';
+                return 'ikke tilgang til forespurt entitet i Aa-reg, Vi opplever problemer med å hente opplysninger, kontakt brukerstøtte dersom du mener du har tilgang';
             default:
                 return 'Vi opplever ustabilitet med Aa-registret. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
         }
@@ -180,11 +176,15 @@ const MineAnsatte: FunctionComponent<Props> = ({
                         <Chevron type={'venstre'}/>
                         Tilbake til arbeidsforhold
                     </button>}
-                    {visHistorikkLenke && !ERPATIDLIGEREARBEIDSFORHOLD && TILGANGTILTIDLIGEREARBEIDSFORHOLD && <button className={'brodsmule__direct-tidligere-arbeidsforhold'} onClick={redirectTilTidligereArbeidsforhold}>
-                        Tidligere arbeidsforhold
+                    {!ERPATIDLIGEREARBEIDSFORHOLD && TILGANGTILTIDLIGEREARBEIDSFORHOLD &&
+                    <button className={'brodsmule__direct-tidligere-arbeidsforhold'}
+                            onClick={ () => {
+                                loggTrykketPåTidligereArbeidsforholdSide();
+                                redirectTilTidligereArbeidsforhold();
+                            }}>
+                        {"Arbeidsforhold i tidligere virksomheter for " +valgtJuridiskEnhet.Name}
                         <Chevron type={'høyre'} />
                     </button>}
-
                 </Normaltekst>
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
