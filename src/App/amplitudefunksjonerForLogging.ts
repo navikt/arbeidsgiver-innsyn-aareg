@@ -1,5 +1,6 @@
 import amplitude from "../utils/amplitude";
 import environment from "../utils/environment";
+import {Arbeidsforhold} from "./Objekter/ArbeidsForhold";
 
 export const loggAntallAnsatte = (antall: number) => {
     let logg = "#arbeidsforhold antall arbeidsforhold: ";
@@ -99,14 +100,6 @@ export const loggBrukerTrykketPaVarsel = () => {
     amplitude.logEvent("#arbeidsforhold trykket pa ansatt med varsel" + environment.MILJO);
 };
 
-export const loggNyBackendFungerer= (beskjed: string, antall?: Number) => {
-    amplitude.logEvent("#arbeidsforhold ny backend "+ beskjed, {antall});
-}
-
-export const loggHvilkenOrganisasjonFeiler= (organisasjonsnummer: string) => {
-    amplitude.logEvent("#arbeidsforhold kall mislykkes", {organisasjonsnummer});
-}
-
 export const loggBrukerTrykketPaExcel = () => {
     amplitude.logEvent("#arbeidsforhold bruker trykket på exceleksport");
 };
@@ -119,16 +112,17 @@ export const loggForbiddenFraAltinn = () => {
     amplitude.logEvent("#arbeidsforhold 403 fra altinn");
 };
 
-export const loggTrykketPåTidligereArbeidsforholdSide = () => {
+export const loggTrykketPåTidligereArbeidsforholdSide = (arbeidsforhold?: Arbeidsforhold[]) => {
+
     amplitude.logEvent("sidevisning" ,
         {url: "http://arbeidsgiver.nav.no/arbeidsforhold/tidligere-arbeidsforhold",
-            tjeneste: "arbeidsgiver-arbeidsforhold"
+            tjeneste: "arbeidsgiver-arbeidsforhold", antallArbeidsforhold: arbeidsforhold?.length
     }
     );
 };
 
-export const loggInfoOmFeil = ( typeFeil: string,bedriftsnummer: string) => {
-    amplitude.logEvent('#arbeidsforhold FEILER ', {bedriftsnummer: bedriftsnummer , typeFeil});
+export const loggInfoOmFeil = ( typeFeil: string,bedriftsnummer: string, erTidligereArbeidsfohold: boolean) => {
+    amplitude.logEvent('#arbeidsforhold FEILER ', {bedriftsnummer: bedriftsnummer , typeFeil, erTidligereArbeidsforhold: erTidligereArbeidsfohold});
 };
 
 export const loggInfoOmFeilTidligereOrganisasjoner = (typeFeil: string,  bedriftsnummer: string) => {
