@@ -3,5 +3,9 @@
   "api-gw-url": "https://api-gw-q1.oera.no",
   "selvbetjening-login-url": "https://loginservice-q.nav.no/login?redirect=https://arbeidsgiver-q.nav.no/arbeidsforhold",
   "logout-url": "https://loginservice-q.nav.no/slo",
-  "decorator-external-url": "https://appres-q1.nav.no/common-html/v4/navno?header-withmenu=true&styles=true&scripts=true&footer-withmenu=true"
+  "decorator-external-url": "https://appres-q1.nav.no/common-html/v4/navno?header-withmenu=true&styles=true&scripts=true&footer-withmenu=true",
+  "namespace": "default",
+  "vault-enabled": true,
+  "webproxy-enabled": true,
+  "labs": false
 }

@@ -8,7 +8,7 @@ import { TilgangsStyringInfoTekst } from './TilgangsStyringInfoTekst/TilgangsSty
 import './Logginn.less';
 
 export const redirectTilLogin = () => {
-    if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs') {
+    if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs'||environment.MILJO === 'labs-gcp') {
         window.location.href = '/arbeidsforhold/redirect-til-login';
     } else {
         document.cookie = 'selvbetjening-idtoken =0123456789..*; path=/;';
