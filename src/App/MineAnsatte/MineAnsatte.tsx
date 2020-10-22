@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useEffect} from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Normaltekst, Systemtittel, Element } from 'nav-frontend-typografi';
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -125,6 +125,12 @@ const MineAnsatte: FunctionComponent<Props> = ({
         setParameterIUrl('tidligereVirksomhet', organisasjon.OrganizationNumber);
     }
 
+    useEffect(() => {
+        if (ERPATIDLIGEREARBEIDSFORHOLD) {
+            loggTrykketPåTidligereArbeidsforholdSide(listeMedArbeidsforholdFraAareg);
+        }
+    }, [ERPATIDLIGEREARBEIDSFORHOLD, listeMedArbeidsforholdFraAareg]);
+
     const filtrertOgSortertListe: Arbeidsforhold[] = lagListeBasertPaUrl(listeMedArbeidsforholdFraAareg);
     const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, filtrertOgSortertListe.length);
     const listeForNåværendeSidetall = regnUtArbeidsForholdSomSkalVisesPaEnSide(
@@ -179,7 +185,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     {!ERPATIDLIGEREARBEIDSFORHOLD && TILGANGTILTIDLIGEREARBEIDSFORHOLD &&
                     <button className={'brodsmule__direct-tidligere-arbeidsforhold'}
                             onClick={ () => {
-                                loggTrykketPåTidligereArbeidsforholdSide();
                                 redirectTilTidligereArbeidsforhold();
                             }}>
                         {"Arbeidsforhold i tidligere virksomheter for " +valgtJuridiskEnhet.Name}
