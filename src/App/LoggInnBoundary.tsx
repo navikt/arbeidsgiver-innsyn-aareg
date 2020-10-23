@@ -26,7 +26,7 @@ const LoginBoundary: FunctionComponent = props => {
         const getLoginStatus = async () => {
             const abortController = new AbortController();
             const signal = abortController.signal;
-            if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs') {
+            if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs' || environment.MILJO === 'labs-gcp') {
                 let innloggingsstatus = await sjekkInnlogget(signal);
                 if (innloggingsstatus) {
                     setInnlogget(Tilgang.TILGANG);
