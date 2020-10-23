@@ -2,7 +2,7 @@ apiVersion: 'nais.io/v1alpha1'
 kind: 'Application'
 metadata:
   name: bedriftsoversikt-og-ansatte
-  namespace: default
+  namespace: '{{{namespace}}}'
   labels:
     team: arbeidsgiver
 spec:
@@ -18,8 +18,8 @@ spec:
     path: /arbeidsforhold/internal/isReady
     initialDelay: 20
   vault:
-    enabled: true
-  webproxy: true
+    enabled: {{vault-enabled}}
+  webproxy: {{webproxy-enabled}}
   env:
     - name: NODE_EXTRA_CA_CERTS
       value: /etc/ssl/ca-bundle.pem
@@ -27,3 +27,11 @@ spec:
       value: '{{{api-gw-url}}}'
     - name: LOGIN_URL
       value: '{{{selvbetjening-login-url}}}'
+  {{#if labs}}
+  accessPolicy:
+    outbound:
+      rules:
+        - application: arbeidsgiver-arbeidsforhold-api
+      external:
+        - host: www.nav.no
+  {{/if}}

@@ -1,0 +1,11 @@
+{
+  "ingress": "https://arbeidsgiver.labs.nais.io/arbeidsforhold",
+  "api-gw-url": "http://arbeidsgiver-arbeidsforhold-api",
+  "selvbetjening-login-url": "https://min-side-ag-fakelogin.labs.nais.io/login?issuer=selvbetjening&sub=123456789&domain=labs.nais.io&redirect=https://arbeidsgiver.labs.nais.io/arbeidsforhold",
+  "logout-url": "https://min-side-ag-fakelogin.labs.nais.io/logout?domain=labs.nais.io",
+  "decorator-external-url": "https://www.nav.no/dekoratoren/?simple=true",
+  "namespace": "arbeidsgiver",
+  "vault-enabled": false,
+  "webproxy-enabled": false,
+  "labs": true
+}
