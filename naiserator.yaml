@@ -27,6 +27,8 @@ spec:
       value: '{{{api-gw-url}}}'
     - name: LOGIN_URL
       value: '{{{selvbetjening-login-url}}}'
+    - name: DECORATOR_EXTERNAL_URL
+      value: '{{{decorator-external-url}}}'
   {{#if labs}}
   accessPolicy:
     outbound:
