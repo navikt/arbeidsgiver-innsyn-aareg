@@ -20,14 +20,21 @@ interface BrodsmuleProps {
     brodsmuler: Brodsmule[];
 }
 
-const Brodsmulesti = ({ erPaaArbeidsforhold, erPaaEnkeltArbeidsforhold, setVisProgressbar, hentOgSetAntallOgArbeidsforhold, valgtOrg, brodsmuler }: BrodsmuleProps) => {
+const Brodsmulesti = ({
+    erPaaArbeidsforhold,
+    erPaaEnkeltArbeidsforhold,
+    setVisProgressbar,
+    hentOgSetAntallOgArbeidsforhold,
+    valgtOrg,
+    brodsmuler
+}: BrodsmuleProps) => {
     const history = useHistory();
-    const naVærendeUrl = new URL(window.location.href);
-    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold');
+    const orgnrDel = valgtOrg?.OrganizationNumber ? `?bedrift=${valgtOrg.OrganizationNumber}` : '';
 
     onBreadcrumbClick(breadcrumb => {
         if (erPaaArbeidsforhold) {
-            if (hentOgSetAntallOgArbeidsforhold) hentOgSetAntallOgArbeidsforhold(valgtOrg ?? tomaAltinnOrganisasjon, false);
+            if (hentOgSetAntallOgArbeidsforhold)
+                hentOgSetAntallOgArbeidsforhold(valgtOrg ?? tomaAltinnOrganisasjon, false);
             const search = nullStillSorteringIUrlParametere();
             history.replace({ search: search, pathname: breadcrumb.url });
         }
@@ -39,15 +46,17 @@ const Brodsmulesti = ({ erPaaArbeidsforhold, erPaaEnkeltArbeidsforhold, setVisPr
             setVisProgressbar && setVisProgressbar(false);
             history.replace({ search: search, pathname: breadcrumb.url });
         }
-            history.push(breadcrumb.url);
+        history.push(breadcrumb.url + orgnrDel);
     });
 
     let defaultBrodsmule = [
-        { url: linkTilMinSideArbeidsgiver(valgtOrg?.OrganizationNumber || ''), title: 'Min side – arbeidsgiver', handleInApp: false },
-        { url: '/', title: 'Arbeidsforhold', handleInApp: true },
+        {
+            url: linkTilMinSideArbeidsgiver(valgtOrg?.OrganizationNumber || ''),
+            title: 'Min side – arbeidsgiver',
+            handleInApp: false
+        },
+        { url: '/', title: 'Arbeidsforhold', handleInApp: true }
     ];
-
-    if (ERPATIDLIGEREARBEIDSFORHOLD) defaultBrodsmule.concat([{ url: '/tidligere-arbeidsforhold', title: 'Tidligere arbeidsforhold', handleInApp: true }]);
 
     const breadcrumbs = defaultBrodsmule.concat(brodsmuler);
 
