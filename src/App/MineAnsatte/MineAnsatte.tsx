@@ -173,7 +173,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     return (
         <div className="bakgrunnsside">
             <div className="innhold-container">
-                <Brodsmulesti erPaaArbeidsforhold={true} valgtOrg={valgtAktivOrganisasjon} hentOgSetAntallOgArbeidsforhold={hentOgSetAntallOgArbeidsforhold} brodsmuler={[ { url: '/tidligere-arbeidsforhold', title: 'Tidligere arbeidsforhold', handleInApp: true }]} />
+                <Brodsmulesti erPaaArbeidsforhold={true} valgtOrg={valgtAktivOrganisasjon} hentOgSetAntallOgArbeidsforhold={hentOgSetAntallOgArbeidsforhold} brodsmuler={[]} />
 
                 {ERPATIDLIGEREARBEIDSFORHOLD && (
                     <button className="brodsmule__direct-tidligere-arbeidsforhold" onClick={redirectTilbake}>

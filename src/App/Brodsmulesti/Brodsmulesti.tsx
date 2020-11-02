@@ -48,9 +48,9 @@ const Brodsmulesti = ({ erPaaArbeidsforhold, erPaaEnkeltArbeidsforhold, setVisPr
     ];
 
     if (ERPATIDLIGEREARBEIDSFORHOLD) defaultBrodsmule.concat([{ url: '/tidligere-arbeidsforhold', title: 'Tidligere arbeidsforhold', handleInApp: true }]);
-    console.log('defaultBrodsmule', defaultBrodsmule);
+
     const breadcrumbs = defaultBrodsmule.concat(brodsmuler);
-    console.log('breadcrumbs', breadcrumbs);
+
     setBreadcrumbs(breadcrumbs);
 
     return <></>;
