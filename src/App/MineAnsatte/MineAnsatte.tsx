@@ -1,27 +1,24 @@
-import React, {FunctionComponent, useEffect} from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Normaltekst, Systemtittel, Element } from 'nav-frontend-typografi';
+import { Systemtittel, Element } from 'nav-frontend-typografi';
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import Chevron from 'nav-frontend-chevron';
-import Lenke from 'nav-frontend-lenker';
 import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
-import {Organisasjon, tomaAltinnOrganisasjon} from '../Objekter/OrganisasjonFraAltinn';
-import { linkTilMinSideArbeidsgiver } from '../lenker';
-import {
-    lagListeBasertPaUrl
-} from './sorteringOgFiltreringsFunksjoner';
+import { Organisasjon, tomaAltinnOrganisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import { lagListeBasertPaUrl } from './sorteringOgFiltreringsFunksjoner';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
 import Progressbar from './Progressbar/Progressbar';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import SideBytter from './SideBytter/SideBytter';
+import VelgTidligereVirksomhet from './VelgTidligereVirksomhet/VelgTidligereVirksomhet';
+import { nullStillSorteringIUrlParametere } from './urlFunksjoner';
+import { MAKS_ANTALL_ARBEIDSFORHOLD } from '../App';
+import { loggTrykketPåTidligereArbeidsforholdSide } from '../amplitudefunksjonerForLogging';
+import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import './MineAnsatte.less';
-import VelgTidligereVirksomhet from "./VelgTidligereVirksomhet/VelgTidligereVirksomhet";
-import {nullStillSorteringIUrlParametere} from "./urlFunksjoner";
-import {MAKS_ANTALL_ARBEIDSFORHOLD} from "../App";
-import {loggTrykketPåTidligereArbeidsforholdSide} from "../amplitudefunksjonerForLogging";
 
 interface Props extends RouteComponentProps {
     valgtAktivOrganisasjon: Organisasjon;
@@ -37,7 +34,7 @@ interface Props extends RouteComponentProps {
     antallArbeidsforholdUkjent: boolean;
     setNåværendeUrlString: (endret: string) => void;
     nåværendeUrlString: string;
-    tilgangTilTidligereArbeidsforhold: boolean,
+    tilgangTilTidligereArbeidsforhold: boolean;
     setTidligereVirksomhet: (tidligereVirksomhet: Organisasjon) => void;
     tidligereVirksomheter?: Organisasjon[];
 }
@@ -63,7 +60,9 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
     return (
         <>
             <Element>For mange arbeidsforhold</Element>
-            {'Vi har ikke kapasitet til å hente flere enn ' + MAKS_ANTALL_ARBEIDSFORHOLD + ' avsluttede eller aktive arbeidsforhold om gangen. '}
+            {'Vi har ikke kapasitet til å hente flere enn ' +
+                MAKS_ANTALL_ARBEIDSFORHOLD +
+                ' avsluttede eller aktive arbeidsforhold om gangen. '}
             {'Vi jobber med å forbedre systemet slik at flere arbeidsforhold kan vises.'}
             <br />
             <br />
@@ -88,22 +87,25 @@ const MineAnsatte: FunctionComponent<Props> = ({
     tidligereVirksomheter,
     valgtTidligereVirksomhet,
     organisasjonerFraAltinn,
-    tilgangTilTidligereArbeidsforhold,
+    tilgangTilTidligereArbeidsforhold
 }) => {
     const naVærendeUrl = new URL(window.location.href);
     const sidetall = naVærendeUrl.searchParams.get('side') || '1';
 
     const ARBEIDSFORHOLDPERSIDE = 25;
-    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
-    const TILGANGTILTIDLIGEREARBEIDSFORHOLD = tilgangTilTidligereArbeidsforhold && tidligereVirksomheter && tidligereVirksomheter.length>0;
+    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold');
+    const TILGANGTILTIDLIGEREARBEIDSFORHOLD =
+        tilgangTilTidligereArbeidsforhold && tidligereVirksomheter && tidligereVirksomheter.length > 0;
     const forMangeArbeidsforhold = antallArbeidsforhold >= MAKS_ANTALL_ARBEIDSFORHOLD;
 
-    const valgtJuridiskEnhet = organisasjonerFraAltinn.filter(organisasjon => organisasjon.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber)[0];
+    const valgtJuridiskEnhet = organisasjonerFraAltinn.filter(
+        organisasjon => organisasjon.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber
+    )[0];
 
-    const delOverskrift = "Opplysninger for "
-    const overskriftMedOrganisasjonsdel = ERPATIDLIGEREARBEIDSFORHOLD ?
-        delOverskrift + valgtJuridiskEnhet.Name + " org.nr " + valgtJuridiskEnhet.OrganizationNumber :
-        delOverskrift + valgtAktivOrganisasjon.Name
+    const delOverskrift = 'Opplysninger for ';
+    const overskriftMedOrganisasjonsdel = ERPATIDLIGEREARBEIDSFORHOLD
+        ? delOverskrift + valgtJuridiskEnhet.Name + ' org.nr ' + valgtJuridiskEnhet.OrganizationNumber
+        : delOverskrift + valgtAktivOrganisasjon.Name;
 
     const setSideTallIUrlOgGenererListe = (indeks: number) => {
         setParameterIUrl('side', indeks.toString());
@@ -119,11 +121,11 @@ const MineAnsatte: FunctionComponent<Props> = ({
 
     const setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere = (organisasjon: Organisasjon) => {
         setTidligereVirksomhet(organisasjon);
-        hentOgSetAntallOgArbeidsforhold(organisasjon, true)
-        const search  = nullStillSorteringIUrlParametere()
-        history.replace({search: search});
+        hentOgSetAntallOgArbeidsforhold(organisasjon, true);
+        const search = nullStillSorteringIUrlParametere();
+        history.replace({ search: search });
         setParameterIUrl('tidligereVirksomhet', organisasjon.OrganizationNumber);
-    }
+    };
 
     useEffect(() => {
         if (ERPATIDLIGEREARBEIDSFORHOLD) {
@@ -136,18 +138,20 @@ const MineAnsatte: FunctionComponent<Props> = ({
     const listeForNåværendeSidetall = regnUtArbeidsForholdSomSkalVisesPaEnSide(
         parseInt(sidetall),
         ARBEIDSFORHOLDPERSIDE,
-        filtrertOgSortertListe);
+        filtrertOgSortertListe
+    );
 
     const redirectTilTidligereArbeidsforhold = () => {
-        const search   = nullStillSorteringIUrlParametere();
+        const search = nullStillSorteringIUrlParametere();
         history.replace({ search: search, pathname: 'tidligere-arbeidsforhold' });
-        valgtTidligereVirksomhet !== tomaAltinnOrganisasjon && hentOgSetAntallOgArbeidsforhold(valgtTidligereVirksomhet, true);
+        valgtTidligereVirksomhet !== tomaAltinnOrganisasjon &&
+            hentOgSetAntallOgArbeidsforhold(valgtTidligereVirksomhet, true);
         setNåværendeUrlString(window.location.href);
     };
 
     const redirectTilbake = () => {
-        hentOgSetAntallOgArbeidsforhold(valgtAktivOrganisasjon,false);
-        const search   = nullStillSorteringIUrlParametere();
+        hentOgSetAntallOgArbeidsforhold(valgtAktivOrganisasjon, false);
+        const search = nullStillSorteringIUrlParametere();
         history.replace({ search: search, pathname: '/' });
     };
 
@@ -169,39 +173,37 @@ const MineAnsatte: FunctionComponent<Props> = ({
     return (
         <div className="bakgrunnsside">
             <div className="innhold-container">
-                <Normaltekst className="brodsmule">
-                    {!ERPATIDLIGEREARBEIDSFORHOLD && <div>
-                        <Chevron type={'venstre'}/>
-                        <Lenke href={linkTilMinSideArbeidsgiver(valgtAktivOrganisasjon.OrganizationNumber)}>
-                            Min side – arbeidsgiver
-                        </Lenke>
-                    </div>
-                    }
-                    { ERPATIDLIGEREARBEIDSFORHOLD &&
-                    <button className={'brodsmule__direct-tidligere-arbeidsforhold'} onClick={redirectTilbake}>
-                        <Chevron type={'venstre'}/>
+                <Brodsmulesti erPaaArbeidsforhold={true} valgtOrg={valgtAktivOrganisasjon} hentOgSetAntallOgArbeidsforhold={hentOgSetAntallOgArbeidsforhold} brodsmuler={[ { url: '/tidligere-arbeidsforhold', title: 'Tidligere arbeidsforhold', handleInApp: true }]} />
+
+                {ERPATIDLIGEREARBEIDSFORHOLD && (
+                    <button className="brodsmule__direct-tidligere-arbeidsforhold" onClick={redirectTilbake}>
+                        <Chevron type="venstre" />
                         Tilbake til arbeidsforhold
-                    </button>}
-                    {!ERPATIDLIGEREARBEIDSFORHOLD && TILGANGTILTIDLIGEREARBEIDSFORHOLD &&
-                    <button className={'brodsmule__direct-tidligere-arbeidsforhold'}
-                            onClick={ () => {
-                                redirectTilTidligereArbeidsforhold();
-                            }}>
-                        {"Arbeidsforhold i tidligere virksomheter for " +valgtJuridiskEnhet.Name}
-                        <Chevron type={'høyre'} />
-                    </button>}
-                </Normaltekst>
+                    </button>
+                )}
+                {!ERPATIDLIGEREARBEIDSFORHOLD && TILGANGTILTIDLIGEREARBEIDSFORHOLD && (
+                    <button
+                        className="brodsmule__direct-tidligere-arbeidsforhold"
+                        onClick={() => {
+                            redirectTilTidligereArbeidsforhold();
+                        }}
+                    >
+                        {'Arbeidsforhold i tidligere virksomheter for ' + valgtJuridiskEnhet.Name}
+                        <Chevron type="høyre" />
+                    </button>
+                )}
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         {overskriftMedOrganisasjonsdel}
                     </Systemtittel>
-                    { ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar &&
-                    <VelgTidligereVirksomhet
-                        redirectTilbake={redirectTilbake}
-                        valgtTidligereVirksomhet= {valgtTidligereVirksomhet}
-                        tidligereVirksomheter={tidligereVirksomheter}
-                        setTidligereVirksomhet={setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere }
-                    />}
+                    {ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && (
+                        <VelgTidligereVirksomhet
+                            redirectTilbake={redirectTilbake}
+                            valgtTidligereVirksomhet={valgtTidligereVirksomhet}
+                            tidligereVirksomheter={tidligereVirksomheter}
+                            setTidligereVirksomhet={setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere}
+                        />
+                    )}
                     {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) &&
                         visProgressbar &&
                         aaregLasteState !== APISTATUS.FEILET &&
@@ -226,7 +228,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     )}
 
                     {aaregLasteState === APISTATUS.OK &&
-                    listeForNåværendeSidetall.length > 0 &&
+                        listeForNåværendeSidetall.length > 0 &&
                         !visProgressbar &&
                         !forMangeArbeidsforhold && (
                             <>
