@@ -281,6 +281,7 @@ const App = () => {
                                             valgtArbeidsforhold={valgtArbeidsforhold}
                                             alleArbeidsforhold={listeMedArbeidsforholdFraAareg}
                                             setVisProgressbar={setVisProgressbar}
+                                            valgtOrganisasjon={valgtAktivOrganisasjon}
                                         />
                                     </Route>
                                     <Route exact path={arbeidsforholdPath}>
