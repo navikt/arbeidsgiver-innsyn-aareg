@@ -92,7 +92,12 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
         <>
             {arbeidsforholdIdFraUrl && valgtArbeidsforhold && (
                 <div className="enkelt-arbeidsforhold-container">
-                    <Brodsmulesti erPaaEnkeltArbeidsforhold={true} setVisProgressbar={setVisProgressbar} valgtOrg={valgtOrganisasjon} brodsmuler={[ { url: '/', title: 'Detaljer', handleInApp: true }]} />
+                    <Brodsmulesti
+                        erPaaEnkeltArbeidsforhold={true}
+                        setVisProgressbar={setVisProgressbar}
+                        valgtOrg={valgtOrganisasjon}
+                        brodsmuler={[ { url: '/', title: 'Detaljer', handleInApp: true }]}
+                    />
                     <div className="enkelt-arbeidsforhold-innhold">
                         <div className="enkelt-arbeidsforhold-innhold__topp">
                             <button className="brodsmule" onClick={redirectTilbake}>
