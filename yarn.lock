@@ -1435,6 +1435,11 @@
   resolved "https://registry.yarnpkg.com/@navikt/fnrvalidator/-/fnrvalidator-1.1.3.tgz#1bd136977a708120b6069276b0069b2a9cc9ae73"
   integrity sha512-xBwlPOI08kbByUWI4Yyd6NbIYLFs78I0h05mlHPjmrPPikyM89IQRbMac+6ovkgpi2s63OV6ryv3w4QqPubwiw==
 
+"@navikt/nav-dekoratoren-moduler@^1.0.21":
+  version "1.0.21"
+  resolved "https://registry.yarnpkg.com/@navikt/nav-dekoratoren-moduler/-/nav-dekoratoren-moduler-1.0.21.tgz#69daa78d70ef5a7ec2bc4650c41e1e15bd966e07"
+  integrity sha512-xch4Z6BxVE1L+yKXGWLwnehjJUwH1jZJLbaYeQw5uulz0JIZOH/DGbY/SQHk42EP16kuo5Nkf1qAix8ZDI66uA==
+
 "@nodelib/fs.stat@^1.1.2":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
@@ -8228,15 +8233,15 @@ nav-frontend-skjema@^3.0.17:
   resolved "https://registry.yarnpkg.com/nav-frontend-skjema/-/nav-frontend-skjema-3.0.18.tgz#77544d5e9a50d194053a0c0b11d1ff566acb78f6"
   integrity sha512-zP7X5fFWmUiHqqw8/PLDX8IbSBoeTwrC7phpg2FsUN7FbFlvs3kXMC4szfKz0HagGqqdOF66ginixMFrWGsP9Q==
 
-nav-frontend-spinner-style@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/nav-frontend-spinner-style/-/nav-frontend-spinner-style-0.2.5.tgz#c782c63589776e768a45d6049047b1a60b6805be"
-  integrity sha512-PWSfscmNMbrnXRcXQUgBquU5479bNmO/sw3IwML6s6K/qyEYggRvJdGCbBEYyxXmoeDDjXGd2tkIVy5gja387A==
+nav-frontend-spinner-style@^0.2.8:
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/nav-frontend-spinner-style/-/nav-frontend-spinner-style-0.2.8.tgz#0e5d96561bed3a9a58d911d6767b550ea4d7f5dd"
+  integrity sha512-5cYxBgDMoS39TnXOYXP0t7+ChNfbtCVp5wr5vOcLNIQfrQY9tCY/SWR/ZASLVWMhKR5qqnI5rvUHPCyz4LtP4Q==
 
-nav-frontend-spinner@^1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/nav-frontend-spinner/-/nav-frontend-spinner-1.0.23.tgz#bcb22205f81769ef0aaaebdbdb32fd06420d88c9"
-  integrity sha512-Eu6VEhKKmwRgDgXPAubw+Wf48vqc/CReF+o/wXbs65pFBMDEDQj7gSxQCaS1WxpxELleYxN5b5vGUoTsKeFi+A==
+nav-frontend-spinner@^2.0.10:
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/nav-frontend-spinner/-/nav-frontend-spinner-2.0.10.tgz#4a039dfa4e5ad9306637214d78b708665cd41d5f"
+  integrity sha512-2iQhgtsIsKGUW6swcOTAQdByWpOSrbUKhjtek0D/18GMRh5DSxgCvKfIExHUXB2ntMusSrwykpZK0LxtDed1Wg==
 
 nav-frontend-tabell-style@^0.2.23:
   version "0.2.23"
