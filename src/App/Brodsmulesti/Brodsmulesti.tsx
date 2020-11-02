@@ -39,14 +39,14 @@ const Brodsmulesti = ({
             history.replace({ search: search, pathname: breadcrumb.url });
         }
 
-        if (erPaaEnkeltArbeidsforhold) {
+        else if (erPaaEnkeltArbeidsforhold) {
             const naVærendeUrl = new URL(window.location.href);
             naVærendeUrl.searchParams.delete('arbeidsforhold');
             const { search } = naVærendeUrl;
             setVisProgressbar && setVisProgressbar(false);
             history.replace({ search: search, pathname: breadcrumb.url });
         }
-        history.push(breadcrumb.url + orgnrDel);
+        else history.push(breadcrumb.url + orgnrDel);
     });
 
     let defaultBrodsmule = [
@@ -58,8 +58,9 @@ const Brodsmulesti = ({
         { url: '/', title: 'Arbeidsforhold', handleInApp: true }
     ];
 
+    console.log('defaultBrodsmule', defaultBrodsmule);
     const breadcrumbs = defaultBrodsmule.concat(brodsmuler);
-
+    console.log('breadcrumbs', breadcrumbs);
     setBreadcrumbs(breadcrumbs);
 
     return <></>;
