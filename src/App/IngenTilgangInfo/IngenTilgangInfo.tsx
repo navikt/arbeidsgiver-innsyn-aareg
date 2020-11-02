@@ -7,8 +7,9 @@ import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import alertikon from '../LoggInn/TilgangsStyringInfoTekst/infomation-circle-2.svg';
 import nyfane from './nyfane.svg';
 import altinlogo from './altinn-logo.svg';
-import { beOmTilgangIAltinnLink, linkTilMinSideArbeidsgiver } from '../lenker';
+import { beOmTilgangIAltinnLink } from '../lenker';
 import { erGyldigOrganisasjon, SERVICEEDITIONINNSYNAAREGISTERET, SERVICEKODEINNSYNAAREGISTERET } from '../App';
+import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import './IngenTilgangInfo.less';
 
 type TilgangsInfoProps = {
@@ -23,12 +24,7 @@ const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsIn
 
     return (
         <div className="ingen-tilgang-info-container">
-            <Normaltekst className="brodsmule">
-                <Lenke href={linkTilMinSideArbeidsgiver(valgtOrganisasjon.OrganizationNumber)}>
-                    Min side – arbeidsgiver
-                </Lenke>
-                {' / arbeidsforhold /'}
-            </Normaltekst>
+            <Brodsmulesti valgtOrg={valgtOrganisasjon} brodsmuler={[]} />
             <div className="ingen-tilgang">
                 <div className="ingen-tilgang-header">
                     <div className="ingen-tilgang-header__innhold">
