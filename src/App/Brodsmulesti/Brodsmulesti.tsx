@@ -40,6 +40,8 @@ const Brodsmulesti = ({
         }
 
         else if (erPaaEnkeltArbeidsforhold) {
+            const abc = document.querySelector('.brodsmulesti .lenke:active') as HTMLElement;
+            abc.style.backgroundColor = '#fff'
             const naVærendeUrl = new URL(window.location.href);
             naVærendeUrl.searchParams.delete('arbeidsforhold');
             const { search } = naVærendeUrl;
