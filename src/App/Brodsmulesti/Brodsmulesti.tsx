@@ -1,9 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
 import { linkTilMinSideArbeidsgiver } from '../lenker';
-import { nullStillSorteringIUrlParametere } from '../MineAnsatte/urlFunksjoner';
-import { Organisasjon, tomaAltinnOrganisasjon } from '../Objekter/OrganisasjonFraAltinn';
 
 interface Brodsmule {
     url: string;
@@ -12,56 +10,26 @@ interface Brodsmule {
 }
 
 interface BrodsmuleProps {
-    erPaaArbeidsforhold?: boolean;
-    erPaaEnkeltArbeidsforhold?: boolean;
-    setVisProgressbar?: (bool: boolean) => void;
-    hentOgSetAntallOgArbeidsforhold?: (organisasjon: Organisasjon, erTidligereArbeidsforhold: boolean) => void;
-    valgtOrg?: Organisasjon;
-    brodsmuler: Brodsmule[];
+    valgtOrg?: string;
 }
 
-const Brodsmulesti = ({
-    erPaaArbeidsforhold,
-    erPaaEnkeltArbeidsforhold,
-    setVisProgressbar,
-    hentOgSetAntallOgArbeidsforhold,
-    valgtOrg,
-    brodsmuler
-}: BrodsmuleProps) => {
+const Brodsmulesti = ({ valgtOrg }: BrodsmuleProps) => {
     const history = useHistory();
-    const orgnrDel = valgtOrg?.OrganizationNumber ? `?bedrift=${valgtOrg.OrganizationNumber}` : '';
 
     onBreadcrumbClick(breadcrumb => {
-        if (erPaaArbeidsforhold) {
-            if (hentOgSetAntallOgArbeidsforhold)
-                hentOgSetAntallOgArbeidsforhold(valgtOrg ?? tomaAltinnOrganisasjon, false);
-            const search = nullStillSorteringIUrlParametere();
-            history.replace({ search: search, pathname: breadcrumb.url });
-        }
-
-        else if (erPaaEnkeltArbeidsforhold) {
-            const naVærendeUrl = new URL(window.location.href);
-            naVærendeUrl.searchParams.delete('arbeidsforhold');
-            const { search } = naVærendeUrl;
-            setVisProgressbar && setVisProgressbar(false);
-            history.replace({ search: search, pathname: breadcrumb.url });
-            const abc = document.querySelector('.brodsmulesti .lenke:active') as HTMLElement;
-            abc.style.backgroundColor = '#fffff';
-        }
-        else history.push(breadcrumb.url + orgnrDel);
+        history.push(breadcrumb.url);
     });
 
-    let defaultBrodsmule = [
+    const brodsmuler: Brodsmule[] = [
         {
-            url: linkTilMinSideArbeidsgiver(valgtOrg?.OrganizationNumber || ''),
+            url: linkTilMinSideArbeidsgiver(valgtOrg || ''),
             title: 'Min side – arbeidsgiver',
             handleInApp: false
         },
         { url: '/', title: 'Arbeidsforhold', handleInApp: true }
     ];
 
-    const breadcrumbs = defaultBrodsmule.concat(brodsmuler);
-    setBreadcrumbs(breadcrumbs);
+    setBreadcrumbs(brodsmuler);
 
     return <></>;
 };

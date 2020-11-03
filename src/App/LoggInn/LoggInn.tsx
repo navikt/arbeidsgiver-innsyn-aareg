@@ -20,7 +20,7 @@ export const redirectTilLogin = () => {
 const LoggInn = () => {
     return (
         <div className="innloggingsside">
-            <Brodsmulesti brodsmuler={[]} />
+            <Brodsmulesti />
             <div className="innloggingsside__innhold">
                 <div className="innloggingsside__circle">
                     <img src={handshake} className="handtrykkbilde" alt="bilde av håndtrykk" />
