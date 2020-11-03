@@ -40,13 +40,13 @@ const Brodsmulesti = ({
         }
 
         else if (erPaaEnkeltArbeidsforhold) {
-            const abc = document.querySelector('.brodsmulesti .lenke:active') as HTMLElement;
-            abc.style.backgroundColor = '#fffff';
             const naVærendeUrl = new URL(window.location.href);
             naVærendeUrl.searchParams.delete('arbeidsforhold');
             const { search } = naVærendeUrl;
             setVisProgressbar && setVisProgressbar(false);
             history.replace({ search: search, pathname: breadcrumb.url });
+            const abc = document.querySelector('.brodsmulesti .lenke:active') as HTMLElement;
+            abc.style.backgroundColor = '#fffff';
         }
         else history.push(breadcrumb.url + orgnrDel);
     });
