@@ -24,7 +24,7 @@ const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsIn
 
     return (
         <div className="ingen-tilgang-info-container">
-            <Brodsmulesti valgtOrg={valgtOrganisasjon} brodsmuler={[]} />
+            <Brodsmulesti valgtOrg={valgtOrganisasjon.OrganizationNumber} />
             <div className="ingen-tilgang">
                 <div className="ingen-tilgang-header">
                     <div className="ingen-tilgang-header__innhold">
