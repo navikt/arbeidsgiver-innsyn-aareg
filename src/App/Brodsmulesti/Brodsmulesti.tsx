@@ -58,9 +58,7 @@ const Brodsmulesti = ({
         { url: '/', title: 'Arbeidsforhold', handleInApp: true }
     ];
 
-    console.log('defaultBrodsmule', defaultBrodsmule);
     const breadcrumbs = defaultBrodsmule.concat(brodsmuler);
-    console.log('breadcrumbs', breadcrumbs);
     setBreadcrumbs(breadcrumbs);
 
     return <></>;

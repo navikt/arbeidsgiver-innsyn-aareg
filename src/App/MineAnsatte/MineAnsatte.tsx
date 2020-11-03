@@ -179,24 +179,26 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     hentOgSetAntallOgArbeidsforhold={hentOgSetAntallOgArbeidsforhold}
                     brodsmuler={[]}
                 />
+                <div className="brodsmule">
+                    {ERPATIDLIGEREARBEIDSFORHOLD && (
+                        <button className="brodsmule__direct-tidligere-arbeidsforhold" onClick={redirectTilbake}>
+                            <Chevron type="venstre" />
+                            Tilbake til arbeidsforhold
+                        </button>
+                    )}
+                    {!ERPATIDLIGEREARBEIDSFORHOLD && TILGANGTILTIDLIGEREARBEIDSFORHOLD && (
+                            <button
+                                className="brodsmule__direct-tidligere-arbeidsforhold"
+                                onClick={() => {
+                                    redirectTilTidligereArbeidsforhold();
+                                }}
+                            >
+                                {'Arbeidsforhold i tidligere virksomheter for ' + valgtJuridiskEnhet.Name}
+                                <Chevron type="høyre" />
+                            </button>
 
-                {ERPATIDLIGEREARBEIDSFORHOLD && (
-                    <button className="brodsmule__direct-tidligere-arbeidsforhold" onClick={redirectTilbake}>
-                        <Chevron type="venstre" />
-                        Tilbake til arbeidsforhold
-                    </button>
-                )}
-                {!ERPATIDLIGEREARBEIDSFORHOLD && TILGANGTILTIDLIGEREARBEIDSFORHOLD && (
-                    <button
-                        className="brodsmule__direct-tidligere-arbeidsforhold"
-                        onClick={() => {
-                            redirectTilTidligereArbeidsforhold();
-                        }}
-                    >
-                        {'Arbeidsforhold i tidligere virksomheter for ' + valgtJuridiskEnhet.Name}
-                        <Chevron type="høyre" />
-                    </button>
-                )}
+                    )}
+                </div>
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
                         {overskriftMedOrganisasjonsdel}
