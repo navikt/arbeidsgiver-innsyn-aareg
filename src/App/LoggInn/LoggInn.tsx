@@ -5,13 +5,14 @@ import { Ingress, Normaltekst, Sidetittel } from 'nav-frontend-typografi';
 import environment from '../../utils/environment';
 import handshake from './handshake.svg';
 import { TilgangsStyringInfoTekst } from './TilgangsStyringInfoTekst/TilgangsStyringInfoTekst';
+import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import './Logginn.less';
 
 export const redirectTilLogin = () => {
-    if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs'||environment.MILJO === 'labs-gcp') {
+    if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs'|| environment.MILJO === 'labs-gcp') {
         window.location.href = '/arbeidsforhold/redirect-til-login';
     } else {
-        document.cookie = 'selvbetjening-idtoken =0123456789..*; path=/;';
+        document.cookie = 'selvbetjening-idtoken=0123456789..*; path=/;';
         window.location.href = '/arbeidsforhold/';
     }
 };
@@ -19,6 +20,7 @@ export const redirectTilLogin = () => {
 const LoggInn = () => {
     return (
         <div className="innloggingsside">
+            <Brodsmulesti />
             <div className="innloggingsside__innhold">
                 <div className="innloggingsside__circle">
                     <img src={handshake} className="handtrykkbilde" alt="bilde av håndtrykk" />
