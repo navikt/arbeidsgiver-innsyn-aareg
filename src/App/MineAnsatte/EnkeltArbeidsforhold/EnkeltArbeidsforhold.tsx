@@ -11,6 +11,8 @@ import {
 } from '../sorteringOgFiltreringsFunksjoner';
 import './EnkeltArbeidsforhold.less';
 import EnkeltArbeidsforholdVarselVisning from "./EnkeltArbeidsforholdVarselVisning/EnkeltArbeidsforholdVarselVisning";
+import Brodsmulesti from '../../Brodsmulesti/Brodsmulesti';
+import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
 
 interface Props extends RouteComponentProps {
     valgtArbeidsforhold: Arbeidsforhold | null;
@@ -18,6 +20,7 @@ interface Props extends RouteComponentProps {
     alleArbeidsforhold: Arbeidsforhold[];
     setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
     setVisProgressbar: (vis: boolean) => void;
+    valgtOrganisasjon: Organisasjon;
 }
 
 const miljo = () => {
@@ -42,28 +45,29 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
     valgtArbeidsforhold,
     alleArbeidsforhold,
     setValgtArbeidsforhold,
-    setVisProgressbar
+    setVisProgressbar,
+    valgtOrganisasjon
 }) => {
 
-    const naVærendeUrl = new URL(window.location.href);
-    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
-
-    const locale = 'nb' as 'nb' | 'en';
-    const arbeidsforholdIdFraUrl = getSorteringsOgFiltreringsValg('arbeidsforhold');
-    window.scrollTo(0, 0);
     const redirectTilbake = () => {
-        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold' : '/'
+        const naVærendeUrl = new URL(window.location.href);
+        const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold');
+        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold' : '/';
         naVærendeUrl.searchParams.delete('arbeidsforhold');
         const { search } = naVærendeUrl;
         setVisProgressbar(false);
         history.replace({ search: search, pathname: redirectPath });
     };
 
+    const locale = 'nb' as 'nb' | 'en';
+    const arbeidsforholdIdFraUrl = getSorteringsOgFiltreringsValg('arbeidsforhold');
+    window.scrollTo(0, 0);
+
     if (arbeidsforholdIdFraUrl === null) {
         redirectTilbake();
     }
 
-    const filtrertOgSortertListe: Arbeidsforhold[] = lagListeBasertPaUrl(alleArbeidsforhold)
+    const filtrertOgSortertListe: Arbeidsforhold[] = lagListeBasertPaUrl(alleArbeidsforhold);
     const indeksValgtArbeidsforhold = filtrertOgSortertListe.findIndex(arbeidsforhold => {
         return arbeidsforhold.navArbeidsforholdId === arbeidsforholdIdFraUrl;
     });
@@ -88,10 +92,11 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
         <>
             {arbeidsforholdIdFraUrl && valgtArbeidsforhold && (
                 <div className="enkelt-arbeidsforhold-container">
+                    <Brodsmulesti valgtOrg={valgtOrganisasjon.OrganizationNumber} />
                     <div className="enkelt-arbeidsforhold-innhold">
-                        <div className={'enkelt-arbeidsforhold-innhold__topp'}>
+                        <div className="enkelt-arbeidsforhold-innhold__topp">
                             <button className="brodsmule" onClick={redirectTilbake}>
-                                <Chevron type={'venstre'} />
+                                <Chevron type="venstre" />
                                 <Normaltekst>Tilbake til liste</Normaltekst>
                             </button>
                             <div className="enkelt-arbeidsforhold-innhold__fram-tilbake-knapp">
@@ -100,7 +105,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
                                         className="brodsmule"
                                         onClick={() => redirectTilArbeidsforhold(forrigeArbeidsforhold)}
                                     >
-                                        <Chevron type={'venstre'} />
+                                        <Chevron type="venstre" />
                                         <Normaltekst>Forrige</Normaltekst>
                                     </button>
                                 )}
