@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import { Element } from 'nav-frontend-typografi';
 import './PagineringsKnapp.less';
 const CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
@@ -8,30 +8,33 @@ interface Props {
     siderTilsammen: number;
     nåVærendeSidetall: number;
     setParameterIUrl: (parameter: string, variabel: string) => void;
+    erØversteSidebytter: boolean
 }
 
 const GraSirkelMedNr = (props: Props) => {
-    let ariaLabel = 'Goto Page ' + props.sidetall.toString();
+    let ariaLabel = 'Gå til side ' + props.sidetall.toString();
     let className = 'valg';
     const erNavarendeSide = props.nåVærendeSidetall === props.sidetall;
 
     if (erNavarendeSide) {
-        ariaLabel = 'Current Page, ' + props.nåVærendeSidetall.toString();
+        ariaLabel = 'Nåværende side, ' + props.nåVærendeSidetall.toString();
         className = className + ' er-valgt';
     }
 
-    const onChange = () => {
-        props.setParameterIUrl('side', props.sidetall.toString())
+    const onChange = (sidetall: number) => {
+        props.setParameterIUrl('side', sidetall.toString())
     }
 
     return (
         <button
+            id={'pagineringsknapp-'+props.sidetall}
             key={props.sidetall}
+            role={"navigasjon"}
             className={className}
-            onClick={() => onChange()}
-            id={props.sidetall.toString()}
+            onClick={() => onChange(props.sidetall)}
             aria-label={ariaLabel}
             aria-current={props.nåVærendeSidetall === props.sidetall}
+
         >
             <CSSTransitionGroup
                 transitionName="valg"
