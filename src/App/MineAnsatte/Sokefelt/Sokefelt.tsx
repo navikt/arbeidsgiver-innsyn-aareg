@@ -2,14 +2,14 @@ import React, {FunctionComponent} from 'react';
 import { Input } from 'nav-frontend-skjema';
 import Forstorrelsesglass from './Forstørrelsesglass';
 import './Sokefelt.less';
-import {getSorteringsOgFiltreringsValg} from "../sorteringOgFiltreringsFunksjoner";
+import {getVariabelFraUrl} from "../sorteringOgFiltreringsFunksjoner";
 
 interface Props {
     setParameterIUrl: (parameter: string, variabel: string) => void;
 }
 
 const Sokefelt: FunctionComponent<Props> = (props: Props) => {
-    const søketekstvariabel = getSorteringsOgFiltreringsValg('sok');
+    const søketekstvariabel = getVariabelFraUrl('sok');
     const søkeTekst = søketekstvariabel ? søketekstvariabel : '';
 
     const onSoketekstChange = (soketekst: string) => {

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, SyntheticEvent } from 'react';
 import { ToggleGruppe, ToggleKnappPure, ToggleKnappPureProps } from 'nav-frontend-toggle';
 import './Filtervalg.less';
-import {filtreringValgt, getSorteringsOgFiltreringsValg} from "../sorteringOgFiltreringsFunksjoner";
+import {filtreringValgt, getVariabelFraUrl} from "../sorteringOgFiltreringsFunksjoner";
 
 interface Props {
     overSiktOverAntallAktiveOgInaktive: number[];
@@ -10,9 +10,9 @@ interface Props {
 }
 
 const Filtervalg: FunctionComponent<Props> = props => {
-    const filtrerPaAktiveAvsluttedeVariabel = getSorteringsOgFiltreringsValg('filter');
+    const filtrerPaAktiveAvsluttedeVariabel = getVariabelFraUrl('filter');
     const filtreringsValg = filtrerPaAktiveAvsluttedeVariabel ? filtrerPaAktiveAvsluttedeVariabel : 'Alle';
-    const skalFiltrerePåVarselVariabel = getSorteringsOgFiltreringsValg('varsler');
+    const skalFiltrerePåVarselVariabel = getVariabelFraUrl('varsler');
     const skalFiltrerePåVarsler = !!(skalFiltrerePåVarselVariabel && skalFiltrerePåVarselVariabel === 'true');
 
     const arrayMedToggleTekst = [
