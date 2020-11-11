@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef } from 'react';
 import { Element } from 'nav-frontend-typografi';
 import './PagineringsKnapp.less';
 import {getVariabelFraUrl} from "../../../sorteringOgFiltreringsFunksjoner";
@@ -9,17 +9,23 @@ interface Props {
     siderTilsammen: number;
     setParameterIUrl: (parameter: string, variabel: string) => void;
     erØversteSidebytter: boolean
+    elementIFokus: number;
 }
 
 const GraSirkelMedNr = (props: Props) => {
     let ariaLabel = 'Gå til side ' + props.sidetall.toString();
-    let className = 'valg';
     const erNavarendeSide = parseInt(getVariabelFraUrl('side')||'1')  === props.sidetall;
 
     if (erNavarendeSide) {
         ariaLabel = 'Nåværende side, ' + props.sidetall;
-        className = className + ' er-valgt';
     }
+
+    const knappElement = useRef<HTMLButtonElement>(null)
+    useEffect(() => {
+        if (props.elementIFokus === props.sidetall) {
+            knappElement.current?.focus();
+        }
+    },[props.elementIFokus, props.sidetall, knappElement])
 
     const onChange = (sidetall: number) => {
         props.setParameterIUrl('side', sidetall.toString())
@@ -27,9 +33,10 @@ const GraSirkelMedNr = (props: Props) => {
 
     return (
         <button
+            ref={knappElement}
             id={'pagineringsknapp-'+props.sidetall}
             key={props.sidetall}
-            role={"navigasjon"}
+            role={"navigation"}
             className={'valg'}
             onClick={() => onChange(props.sidetall)}
             aria-label={ariaLabel}

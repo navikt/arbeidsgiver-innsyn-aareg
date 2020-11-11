@@ -7,6 +7,7 @@ interface Props {
     setParameterIUrl: (parameter: string, variabel: string) => void;
     siderTilsammen: number;
     erØversteSidebytter: boolean
+    elementIFokus: number;
 }
 
 const ForsteDel: FunctionComponent<Props> = props => {
@@ -17,6 +18,7 @@ const ForsteDel: FunctionComponent<Props> = props => {
                 sidetall={1}
                 siderTilsammen={props.siderTilsammen}
                 setParameterIUrl={props.setParameterIUrl}
+                elementIFokus = {props.elementIFokus}
             />
 
             <PagineringsKnapp
@@ -24,6 +26,7 @@ const ForsteDel: FunctionComponent<Props> = props => {
                 sidetall={2}
                 siderTilsammen={props.siderTilsammen}
                 setParameterIUrl={props.setParameterIUrl}
+                elementIFokus = {props.elementIFokus}
             />
 
             {props.siderTilsammen > 2 && (
@@ -32,6 +35,7 @@ const ForsteDel: FunctionComponent<Props> = props => {
                     sidetall={3}
                     siderTilsammen={props.siderTilsammen}
                     setParameterIUrl={props.setParameterIUrl}
+                    elementIFokus = {props.elementIFokus}
                 />
             )}
 
@@ -43,6 +47,7 @@ const ForsteDel: FunctionComponent<Props> = props => {
                         sidetall={props.siderTilsammen}
                         siderTilsammen={props.siderTilsammen}
                         setParameterIUrl={props.setParameterIUrl}
+                        elementIFokus = {props.elementIFokus}
                     />
                 </>
             )}

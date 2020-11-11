@@ -7,6 +7,7 @@ interface Props {
     setParameterIUrl: (parameter: string, variabel: string) => void;
     siderTilsammen: number;
     erØversteSidebytter: boolean
+    elementIFokus: number;
 }
 
 const Midtdel: FunctionComponent<Props> = props => {
@@ -19,6 +20,7 @@ const Midtdel: FunctionComponent<Props> = props => {
                 sidetall={1}
                 setParameterIUrl={props.setParameterIUrl}
                 erØversteSidebytter={props.erØversteSidebytter}
+                elementIFokus = {props.elementIFokus}
             />
             ...
             <PagineringsKnapp
@@ -26,18 +28,21 @@ const Midtdel: FunctionComponent<Props> = props => {
                 sidetall={nåVærendeSidetall - 1}
                 setParameterIUrl={props.setParameterIUrl}
                 erØversteSidebytter={props.erØversteSidebytter}
+                elementIFokus = {props.elementIFokus}
             />
             <PagineringsKnapp
                 siderTilsammen={props.siderTilsammen}
                 sidetall={nåVærendeSidetall}
                 setParameterIUrl={props.setParameterIUrl}
                 erØversteSidebytter={props.erØversteSidebytter}
+                elementIFokus = {props.elementIFokus}
             />
             <PagineringsKnapp
                 siderTilsammen={props.siderTilsammen}
                 sidetall={nåVærendeSidetall + 1}
                 setParameterIUrl={props.setParameterIUrl}
                 erØversteSidebytter={props.erØversteSidebytter}
+                elementIFokus = {props.elementIFokus}
             />
             {nåVærendeSidetall < props.siderTilsammen - 1 && (
                 <>
@@ -47,6 +52,7 @@ const Midtdel: FunctionComponent<Props> = props => {
                         sidetall={props.siderTilsammen}
                         setParameterIUrl={props.setParameterIUrl}
                         erØversteSidebytter={props.erØversteSidebytter}
+                        elementIFokus = {props.elementIFokus}
                     />
                 </>
             )}
