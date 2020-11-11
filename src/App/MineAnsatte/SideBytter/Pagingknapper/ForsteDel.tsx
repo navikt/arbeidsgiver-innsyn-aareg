@@ -6,7 +6,6 @@ interface Props {
     className?: string;
     setParameterIUrl: (parameter: string, variabel: string) => void;
     siderTilsammen: number;
-    nåVærendeSidetall: number;
     erØversteSidebytter: boolean
 }
 
@@ -17,7 +16,6 @@ const ForsteDel: FunctionComponent<Props> = props => {
                 erØversteSidebytter={props.erØversteSidebytter}
                 sidetall={1}
                 siderTilsammen={props.siderTilsammen}
-                nåVærendeSidetall={props.nåVærendeSidetall}
                 setParameterIUrl={props.setParameterIUrl}
             />
 
@@ -25,7 +23,6 @@ const ForsteDel: FunctionComponent<Props> = props => {
                 erØversteSidebytter={props.erØversteSidebytter}
                 sidetall={2}
                 siderTilsammen={props.siderTilsammen}
-                nåVærendeSidetall={props.nåVærendeSidetall}
                 setParameterIUrl={props.setParameterIUrl}
             />
 
@@ -34,7 +31,6 @@ const ForsteDel: FunctionComponent<Props> = props => {
                     erØversteSidebytter={props.erØversteSidebytter}
                     sidetall={3}
                     siderTilsammen={props.siderTilsammen}
-                    nåVærendeSidetall={props.nåVærendeSidetall}
                     setParameterIUrl={props.setParameterIUrl}
                 />
             )}
@@ -46,7 +42,6 @@ const ForsteDel: FunctionComponent<Props> = props => {
                         erØversteSidebytter={props.erØversteSidebytter}
                         sidetall={props.siderTilsammen}
                         siderTilsammen={props.siderTilsammen}
-                        nåVærendeSidetall={props.nåVærendeSidetall}
                         setParameterIUrl={props.setParameterIUrl}
                     />
                 </>

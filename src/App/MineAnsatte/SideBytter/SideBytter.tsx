@@ -4,7 +4,7 @@ import TreForste from './Pagingknapper/ForsteDel';
 import TreSiste from './Pagingknapper/SisteDel';
 import Midtdel from './Pagingknapper/Midtdel';
 import './SideBytter.less';
-import {loggTrykketPåTidligereArbeidsforholdSide} from "../../amplitudefunksjonerForLogging";
+import {getVariabelFraUrl} from "../sorteringOgFiltreringsFunksjoner";
 
 interface Props {
     className: string;
@@ -18,11 +18,6 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
     const chevronNederst = document.getElementById('sidebytter-chevron-hoyre-nederst');
     const erØversteSidebytter = className === 'ovre-sidebytter'
 
-    const nåVærendeUrl = new URL (window.location.href)
-    const nåVærendeSidetallString = nåVærendeUrl.searchParams.get('side')  ? nåVærendeUrl.searchParams.get('side') : '1';
-    const nåVærendeSidetall = parseInt(nåVærendeSidetallString!!);
-    const [sidetall, setSidetall] = useState(nåVærendeSidetall);
-
     const node = useRef<HTMLElement>(null)
 
     const handleOutsidePress: { (event: KeyboardEvent): void } = (e: KeyboardEvent) => {
@@ -34,32 +29,38 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
 
     useEffect(() => {
         document.addEventListener('keydown', handleOutsidePress, false);
-
     }, []);
 
     const onKeyPress = (key: string) => {
-        console.log('onkeypress kallt');
         const chevronknappHoyre = document.getElementById('sidebytter-chevron-hoyre-overst')
         const chevronknappVenstre = document.getElementById('sidebytter-chevron-venstre-overst')
+        const nåværendeSidetall = getVariabelFraUrl('side') || 1
         if (key === 'ArrowRight' || key === 'Right') {
-            if (sidetall === antallSider) {
+            if (nåværendeSidetall === (antallSider).toString()) {
                 chevronknappVenstre?.focus()
+                chevronknappVenstre?.click()
+                setParameterIUrl('side',nåværendeSidetall.toString())
             }
             else {
                 chevronknappHoyre?.click();
-                setSidetall(sidetall+1)
+                chevronknappHoyre?.focus();
             }
         }
         if (key === 'ArrowLeft' || key === 'Left') {
-            if (sidetall === 1) {
+            if (nåværendeSidetall === '1') {
+                setParameterIUrl('side','1')
                 chevronknappHoyre?.focus();
+                chevronknappVenstre?.click()
             }
             else {
                 chevronknappVenstre?.click();
-                setSidetall(sidetall-1)
+                chevronknappVenstre?.focus()
             }
         }
     }
+
+    const nåVærendeSidetallParameter = getVariabelFraUrl('side') || '1'
+    const nåVærendeSidetall = parseInt(nåVærendeSidetallParameter);
 
     if (chevronOverst && chevronNederst) {
         if (nåVærendeSidetall !== antallSider) {
@@ -73,7 +74,13 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
     }
 
     return (
-        <nav role="navigation" aria-label="Sidebytter" className={className} ref={node}>
+        <nav role="navigation" aria-label="Sidebytter"
+             className={className} ref={node} onFocus={()=> {
+             const side = getVariabelFraUrl('side');
+             const nåværendeKnapp = document.getElementById('pagineringsknapp-'+side);
+             nåværendeKnapp?.focus();
+        }}
+            >
             <div className="sidebytter">
                 {nåVærendeSidetall !==1 && <button
                     className="sidebytter__chevron"
@@ -87,18 +94,18 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
                 </button>}
 
                 {(nåVærendeSidetall < 3 || antallSider < 4) && (
-                    <TreForste erØversteSidebytter={erØversteSidebytter} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} nåVærendeSidetall={nåVærendeSidetall} />
+                    <TreForste erØversteSidebytter={erØversteSidebytter} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider}  />
                 )}
                 {antallSider > 3 && nåVærendeSidetall > 2 && nåVærendeSidetall < antallSider - 1 && (
-                    <Midtdel erØversteSidebytter={erØversteSidebytter} nåVærendeSidetall={nåVærendeSidetall} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
+                    <Midtdel erØversteSidebytter={erØversteSidebytter} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
                 )}
                 {antallSider > 3 && nåVærendeSidetall >= antallSider - 1 && (
-                    <TreSiste erØversteSidebytter={erØversteSidebytter} nåVærendeSidetall={nåVærendeSidetall} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
+                    <TreSiste erØversteSidebytter={erØversteSidebytter}  setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
                 )}
                 <button
                     className={"sidebytter__chevron"}
-                    onClick={() => setParameterIUrl('side',(nåVærendeSidetall + 1).toString())}
-                    aria-label={'Gå til side ' + (nåVærendeSidetall - 1).toString()}
+                    onClick={() => setParameterIUrl('side',(nåVærendeSidetall+1).toString())}
+                    aria-label={'Gå til side ' + (nåVærendeSidetall + 1).toString()}
                     id={'sidebytter-chevron-hoyre-' + plassering}
                 >
                     <HoyreChevron />

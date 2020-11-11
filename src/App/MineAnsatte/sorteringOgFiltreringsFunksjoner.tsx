@@ -5,16 +5,16 @@ import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
 
 export const lagListeBasertPaUrl = (alleArbeidsforhold: Arbeidsforhold[]) => {
-    const sortertPå = getSorteringsOgFiltreringsValg('sorter') || '0'
-    const reversSortering = getSorteringsOgFiltreringsValg('revers') ? getSorteringsOgFiltreringsValg('revers') === 'true' : true;
+    const sortertPå = getVariabelFraUrl('sorter') || '0'
+    const reversSortering = getVariabelFraUrl('revers') ? getVariabelFraUrl('revers') === 'true' : true;
     const valgtKolonne: KolonneState = {
         erValgt: true,
         sorteringsAttributt: parseInt(sortertPå),
         reversSortering: reversSortering
     };
-    const filtreringsvalg = getSorteringsOgFiltreringsValg('filter') || 'Alle';
-    const sokefeltTekst = getSorteringsOgFiltreringsValg('sok') || '';
-    const filtrertPaVarsler = getSorteringsOgFiltreringsValg('varsler') === 'true';
+    const filtreringsvalg = getVariabelFraUrl('filter') || 'Alle';
+    const sokefeltTekst = getVariabelFraUrl('sok') || '';
+    const filtrertPaVarsler = getVariabelFraUrl('varsler') === 'true';
 
 
 
@@ -216,7 +216,7 @@ export const filtrerPaVarsler = (listeMedArbeidsforhold: Arbeidsforhold[], filtr
     return filtrertPaVarsler;
 };
 
-export const getSorteringsOgFiltreringsValg = (variabel: string) => {
+export const getVariabelFraUrl = (variabel: string) => {
     const url = new URL(window.location.href);
     return url.searchParams.get(variabel);
 }
