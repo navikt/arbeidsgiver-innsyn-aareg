@@ -22,6 +22,7 @@ const Sokefelt: FunctionComponent<Props> = (props: Props) => {
             <Input
                 className="sokefelt__felt"
                 type="search"
+                aira-live="polite"
                 label=""
                 value={søkeTekst}
                 onChange={(e: any) => onSoketekstChange(e.target.value)}
