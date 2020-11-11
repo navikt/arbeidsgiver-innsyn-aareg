@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import { HoyreChevron, VenstreChevron } from 'nav-frontend-chevron';
 import TreForste from './Pagingknapper/ForsteDel';
 import TreSiste from './Pagingknapper/SisteDel';
@@ -18,49 +18,34 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
     const chevronNederst = document.getElementById('sidebytter-chevron-hoyre-nederst');
     const erØversteSidebytter = className === 'ovre-sidebytter'
 
-    const node = useRef<HTMLElement>(null)
-
-    const handleOutsidePress: { (event: KeyboardEvent): void } = (e: KeyboardEvent) => {
-        const sidebytternode = node.current;
-        if (sidebytternode?.contains(document.activeElement)){
-            onKeyPress(e.key)
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener('keydown', handleOutsidePress, false);
-    }, []);
+    const [elementIFokus, setElementIFokus] = useState(0);
 
     const onKeyPress = (key: string) => {
-        const chevronknappHoyre = document.getElementById('sidebytter-chevron-hoyre-overst')
-        const chevronknappVenstre = document.getElementById('sidebytter-chevron-venstre-overst')
-        const nåværendeSidetall = getVariabelFraUrl('side') || 1
+        const nåværendeSidetall = getVariabelFraUrl('side') || '1'
         if (key === 'ArrowRight' || key === 'Right') {
             if (nåværendeSidetall === (antallSider).toString()) {
-                chevronknappVenstre?.focus()
-                chevronknappVenstre?.click()
-                setParameterIUrl('side',nåværendeSidetall.toString())
             }
             else {
-                chevronknappHoyre?.click();
-                chevronknappHoyre?.focus();
+                setParameterIUrl('side', (parseInt(nåværendeSidetall) +1).toString())
+                setElementIFokus(parseInt(nåværendeSidetall) +1);
             }
         }
         if (key === 'ArrowLeft' || key === 'Left') {
             if (nåværendeSidetall === '1') {
                 setParameterIUrl('side','1')
-                chevronknappHoyre?.focus();
-                chevronknappVenstre?.click()
+                setElementIFokus(1);
             }
             else {
-                chevronknappVenstre?.click();
-                chevronknappVenstre?.focus()
+                setParameterIUrl('side', (parseInt(nåværendeSidetall) -1).toString())
+                setElementIFokus(parseInt(nåværendeSidetall) -1);
             }
         }
     }
 
     const nåVærendeSidetallParameter = getVariabelFraUrl('side') || '1'
     const nåVærendeSidetall = parseInt(nåVærendeSidetallParameter);
+
+
 
     if (chevronOverst && chevronNederst) {
         if (nåVærendeSidetall !== antallSider) {
@@ -75,10 +60,8 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
 
     return (
         <nav role="navigation" aria-label="Sidebytter"
-             className={className} ref={node} onFocus={()=> {
-             const side = getVariabelFraUrl('side');
-             const nåværendeKnapp = document.getElementById('pagineringsknapp-'+side);
-             nåværendeKnapp?.focus();
+             className={className} onKeyDown={(e)=> {
+             onKeyPress(e.key)
         }}
             >
             <div className="sidebytter">
@@ -94,13 +77,13 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
                 </button>}
 
                 {(nåVærendeSidetall < 3 || antallSider < 4) && (
-                    <TreForste erØversteSidebytter={erØversteSidebytter} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider}  />
+                    <TreForste elementIFokus = {elementIFokus} erØversteSidebytter={erØversteSidebytter} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider}  />
                 )}
                 {antallSider > 3 && nåVærendeSidetall > 2 && nåVærendeSidetall < antallSider - 1 && (
-                    <Midtdel erØversteSidebytter={erØversteSidebytter} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
+                    <Midtdel elementIFokus = {elementIFokus} erØversteSidebytter={erØversteSidebytter} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
                 )}
                 {antallSider > 3 && nåVærendeSidetall >= antallSider - 1 && (
-                    <TreSiste erØversteSidebytter={erØversteSidebytter}  setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
+                    <TreSiste elementIFokus = {elementIFokus} erØversteSidebytter={erØversteSidebytter}  setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
                 )}
                 <button
                     className={"sidebytter__chevron"}
