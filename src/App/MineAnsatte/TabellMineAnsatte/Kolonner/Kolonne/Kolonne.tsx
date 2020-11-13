@@ -1,6 +1,5 @@
 import React from 'react';
 import { KolonneState, SorteringsAttributt } from '../../../MineAnsatte';
-import './Kolonne.less';
 import Lenke from "nav-frontend-lenker";
 import {getVariabelFraUrl} from "../../../sorteringOgFiltreringsFunksjoner";
 

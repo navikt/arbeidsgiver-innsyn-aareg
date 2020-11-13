@@ -42,7 +42,7 @@ const TabellMineAnsatte: FunctionComponent<Props> = (props) => {
     });
 
     return (
-            <table className="tabell tabell--stripet tabell-container" tabIndex={1}>
+            <table className="tabell tabell--stripet tabell-container">
                 <KolonnerFullSkjerm
                     setParameterIUrl={props.setParameterIUrl}
                 />
