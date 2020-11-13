@@ -10,7 +10,7 @@ type PopoverProps = {
 const YrkesbeskrivelsePopover = (props: PopoverProps) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
     const [skalVisePopover, setSkalVisePopover] = useState(true);
-    const maxBreddeAvKolonne = 112;
+    const maxBreddeAvKolonne = 90;
 
     useEffect(() => {
         if (anker) {
@@ -25,7 +25,7 @@ const YrkesbeskrivelsePopover = (props: PopoverProps) => {
     return (
         <div className="pop-over-container">
             <Normaltekst
-                className="pop-over"
+                className="pop-over__yrke"
                 onMouseEnter={(e: any) => {
                     setAnker(e.currentTarget);
                 }}
