@@ -1,9 +1,8 @@
 import React from 'react';
-import pilOpp from './pil-opp.svg';
-import pilNed from './pil-ned.svg';
-import sorteringsikon from './sorteringsikon.svg';
 import { KolonneState, SorteringsAttributt } from '../../../MineAnsatte';
 import './Kolonne.less';
+import Lenke from "nav-frontend-lenker";
+import {getVariabelFraUrl} from "../../../sorteringOgFiltreringsFunksjoner";
 
 interface Props {
     label: string;
@@ -12,11 +11,8 @@ interface Props {
 }
 
 const Kolonne = (props: Props) => {
-    const naVærendeUrl = new URL(window.location.href);
-
-    const nåVærendeSorteringsParameter = parseInt(naVærendeUrl.searchParams.get('sorter')!!);
-    const erReversSortert = naVærendeUrl.searchParams.get('revers') === 'true'
-    const erValgt = nåVærendeSorteringsParameter === props.attributt;
+    const erReversSortert = getVariabelFraUrl('revers') === 'true'
+    const erValgt = getVariabelFraUrl("sorter") === props.attributt.toString();
 
     let kolonneState: KolonneState = {
         erValgt: erValgt,
@@ -24,17 +20,7 @@ const Kolonne = (props: Props) => {
         reversSortering: erReversSortert
     };
 
-    let bildeSrc = sorteringsikon;
-    if (erValgt) {
-        if (erReversSortert) {
-            bildeSrc = pilOpp;
-        }
-        if (!erReversSortert) {
-            bildeSrc = pilNed;
-        }
-    }
-
-    const setKolonneTilAktiv = () => {
+const setKolonneTilAktiv = () => {
         props.setParameterIUrl("sorter", kolonneState.sorteringsAttributt.toString())
         if (kolonneState.erValgt) {
             kolonneState.reversSortering = !kolonneState.reversSortering;
@@ -42,10 +28,16 @@ const Kolonne = (props: Props) => {
         }
     };
 
+    let klasseNavnPostfiks = '';
+    let AriaSort: "none" | "ascending" | "descending" | "other" = "none"
+    if (erValgt) {
+        AriaSort = erReversSortert? "descending" : "ascending"
+        klasseNavnPostfiks = erReversSortert? "desc" : "asc"
+    }
+
     return (
-        <th className="kolonne__th" onClick={() => setKolonneTilAktiv()}>
-            <button className="kolonne__sorteringsbutton">{props.label}</button>
-            <img src={bildeSrc} className="kolonne__sorteringspil" alt="pil-opp" />
+        <th className={`tabell__th--sortert-${klasseNavnPostfiks}`}  role = "columnheader" aria-label={`sorter på ${props.label}`} aria-sort={AriaSort}>
+           <Lenke href={"#"} onClick={() => setKolonneTilAktiv()}>{props.label}</Lenke>
         </th>
     );
 };
