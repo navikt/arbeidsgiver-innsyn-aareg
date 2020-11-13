@@ -18,7 +18,7 @@ const NavnPopover: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
     const naVærendeUrl = new URL(window.location.href);
     const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
 
-    const maxBreddeAvKolonne = 110;
+    const maxBreddeAvKolonne = 140;
 
     const oppdaterValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
         const { search } = naVærendeUrl;
@@ -47,7 +47,7 @@ const NavnPopover: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
                 className="lenke"
             >
                 <Normaltekst
-                    className="pop-over"
+                    className="pop-over__navn"
                     onMouseEnter={(e: any) => {
                         setAnker(e.currentTarget);
                     }}
