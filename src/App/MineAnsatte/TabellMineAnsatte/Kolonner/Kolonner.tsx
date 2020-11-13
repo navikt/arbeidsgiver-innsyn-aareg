@@ -33,7 +33,7 @@ const KolonnerFullSkjerm = (props: Props) => {
                 />
                 <Kolonne
                     setParameterIUrl={props.setParameterIUrl}
-                    label="Stilling %"
+                    label="Stillingsprosent"
                     attributt={SorteringsAttributt.STILLINGSPROSENT}
                 />
                 <Kolonne
