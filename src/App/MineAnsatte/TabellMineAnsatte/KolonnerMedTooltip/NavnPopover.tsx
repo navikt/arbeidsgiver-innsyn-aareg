@@ -18,7 +18,7 @@ const NavnPopover: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
     const naVærendeUrl = new URL(window.location.href);
     const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
 
-    const maxBreddeAvKolonne = 158;
+    const maxBreddeAvKolonne = 110;
 
     const oppdaterValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
         const { search } = naVærendeUrl;
