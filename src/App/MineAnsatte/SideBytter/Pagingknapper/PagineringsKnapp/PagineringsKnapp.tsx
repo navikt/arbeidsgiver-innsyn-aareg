@@ -9,6 +9,7 @@ interface Props {
     siderTilsammen: number;
     setParameterIUrl: (parameter: string, variabel: string) => void;
     erØversteSidebytter: boolean
+    onSideendring: (key: string) => void
     elementIFokus: number;
 }
 
@@ -37,10 +38,10 @@ const GraSirkelMedNr = (props: Props) => {
 
     return (
         <button
+            onKeyDown={(e) => props.onSideendring(e.key)}
             ref={knappElement}
             id={'pagineringsknapp-'+props.sidetall}
             key={props.sidetall}
-            role={"navigation"}
             className={className}
             onClick={() => onChange(props.sidetall)}
             aria-label={ariaLabel}
