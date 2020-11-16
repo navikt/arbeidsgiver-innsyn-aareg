@@ -42,6 +42,7 @@ const NavnPopover: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
     return (
         <div className="pop-over-container">
             <Link
+                aria-label={`Gå til detaljevisning over arbeidsforhold til ${arbeidsforhold.arbeidstaker.navn}`}
                 to={`enkeltarbeidsforhold/${spørringdelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
                 onClick={() => oppdaterValgtArbeidsforhold(arbeidsforhold)}
                 className="lenke"

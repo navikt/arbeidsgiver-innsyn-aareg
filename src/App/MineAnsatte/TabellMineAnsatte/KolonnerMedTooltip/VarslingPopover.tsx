@@ -13,7 +13,7 @@ const VarslingPopover = (props: PopoverProps) => {
         <>
             <img
                 src={varselikon}
-                alt="Varsel om maskinell sluttdato"
+                alt="Varsel"
                 onMouseEnter={(e: any) => setAnker(e.currentTarget)}
                 onMouseLeave={(e: any) => setAnker(undefined)}
             />
