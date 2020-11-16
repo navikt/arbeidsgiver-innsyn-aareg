@@ -15,6 +15,7 @@ interface Props {
 const GraSirkelMedNr = (props: Props) => {
     let ariaLabel = 'Gå til side ' + props.sidetall.toString();
     const erNavarendeSide = parseInt(getVariabelFraUrl('side')||'1')  === props.sidetall;
+    const className = erNavarendeSide? 'sidebytter__valg er-valgt' : 'sidebytter__valg'
 
     if (erNavarendeSide) {
         ariaLabel = `side ${props.sidetall} valgt,`;
@@ -40,7 +41,7 @@ const GraSirkelMedNr = (props: Props) => {
             id={'pagineringsknapp-'+props.sidetall}
             key={props.sidetall}
             role={"navigation"}
-            className={'valg'}
+            className={className}
             onClick={() => onChange(props.sidetall)}
             aria-label={ariaLabel}
             aria-current={erNavarendeSide}
