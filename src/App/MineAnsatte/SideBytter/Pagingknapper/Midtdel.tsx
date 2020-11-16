@@ -8,6 +8,7 @@ interface Props {
     siderTilsammen: number;
     erØversteSidebytter: boolean
     elementIFokus: number;
+    onSideendring: (key: string) => void
 }
 
 const Midtdel: FunctionComponent<Props> = props => {
@@ -16,6 +17,7 @@ const Midtdel: FunctionComponent<Props> = props => {
     return (
         <>
             <PagineringsKnapp
+                onSideendring={props.onSideendring}
                 siderTilsammen={props.siderTilsammen}
                 sidetall={1}
                 setParameterIUrl={props.setParameterIUrl}
@@ -24,6 +26,7 @@ const Midtdel: FunctionComponent<Props> = props => {
             />
             ...
             <PagineringsKnapp
+                onSideendring={props.onSideendring}
                 siderTilsammen={props.siderTilsammen}
                 sidetall={nåVærendeSidetall - 1}
                 setParameterIUrl={props.setParameterIUrl}
@@ -31,6 +34,7 @@ const Midtdel: FunctionComponent<Props> = props => {
                 elementIFokus = {props.elementIFokus}
             />
             <PagineringsKnapp
+                onSideendring={props.onSideendring}
                 siderTilsammen={props.siderTilsammen}
                 sidetall={nåVærendeSidetall}
                 setParameterIUrl={props.setParameterIUrl}
@@ -38,6 +42,7 @@ const Midtdel: FunctionComponent<Props> = props => {
                 elementIFokus = {props.elementIFokus}
             />
             <PagineringsKnapp
+                onSideendring={props.onSideendring}
                 siderTilsammen={props.siderTilsammen}
                 sidetall={nåVærendeSidetall + 1}
                 setParameterIUrl={props.setParameterIUrl}
@@ -48,6 +53,7 @@ const Midtdel: FunctionComponent<Props> = props => {
                 <>
                     ...
                     <PagineringsKnapp
+                        onSideendring={props.onSideendring}
                         siderTilsammen={props.siderTilsammen}
                         sidetall={props.siderTilsammen}
                         setParameterIUrl={props.setParameterIUrl}
