@@ -25,8 +25,8 @@ const Ansatt: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
     const spørringdelAvUrl = naVærendeUrl.search;
 
     return (
-        <li className="arbeidsforhold">
-            <ul className="arbeidsforhold__liste" aria-label="Ansatt detaljer">
+        <li className="arbeidsforhold" aria-label={'liste med informasjon om enkelt arbeidsforhold'}>
+            <ul className="arbeidsforhold__liste" aria-label={`Arbeidsfohold til ${arbeidsforhold.arbeidstaker.navn}`}>
                 <li className="attributt">
                     <div className="attributt__navn">Navn</div>
                     <div className="attributt__verdi">
