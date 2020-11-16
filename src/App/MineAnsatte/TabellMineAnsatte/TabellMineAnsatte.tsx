@@ -32,9 +32,7 @@ const TabellMineAnsatte: FunctionComponent<Props> = (props) => {
                 </td>
                 <td className="td">
                     {arbeidsforhold.varsler && (
-                        <div>
                             <VarslingPopover varsler={arbeidsforhold.varsler} />
-                        </div>
                     )}
                 </td>
             </tr>
