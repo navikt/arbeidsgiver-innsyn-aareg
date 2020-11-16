@@ -20,7 +20,7 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
 
     const [elementIFokus, setElementIFokus] = useState(0);
 
-    const onKeyPress = (key: string) => {
+    const onSideendring = (key: string) => {
         const nåværendeSidetall = getVariabelFraUrl('side') || '1'
         if (key === 'ArrowRight' || key === 'Right') {
             if (nåværendeSidetall === (antallSider).toString()) {
@@ -60,13 +60,12 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
 
     return (
         <nav role="navigation" aria-label={`Sidebytter, Nåværende side er ${nåVærendeSidetall}, bruk piltastene til å navigere`}
-             className={className} onKeyDown={(e)=> {
-             onKeyPress(e.key)
-        }}
-             tabIndex={0}
+             className={className}
+
             >
             <div className="sidebytter">
                 {nåVærendeSidetall !==1 && <button
+                    onKeyDown={(e) => onSideendring(e.key)}
                     className="sidebytter__chevron"
                     id={'sidebytter-chevron-venstre-' + plassering}
                     onClick={() => {
@@ -78,15 +77,16 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
                 </button>}
 
                 {(nåVærendeSidetall < 3 || antallSider < 4) && (
-                    <TreForste elementIFokus = {elementIFokus} erØversteSidebytter={erØversteSidebytter} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider}  />
+                    <TreForste onSideendring={onSideendring} elementIFokus = {elementIFokus} erØversteSidebytter={erØversteSidebytter} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider}  />
                 )}
                 {antallSider > 3 && nåVærendeSidetall > 2 && nåVærendeSidetall < antallSider - 1 && (
-                    <Midtdel elementIFokus = {elementIFokus} erØversteSidebytter={erØversteSidebytter} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
+                    <Midtdel onSideendring={onSideendring} elementIFokus = {elementIFokus} erØversteSidebytter={erØversteSidebytter} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
                 )}
                 {antallSider > 3 && nåVærendeSidetall >= antallSider - 1 && (
-                    <TreSiste elementIFokus = {elementIFokus} erØversteSidebytter={erØversteSidebytter}  setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
+                    <TreSiste onSideendring={onSideendring}elementIFokus = {elementIFokus} erØversteSidebytter={erØversteSidebytter}  setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
                 )}
                 <button
+                    onKeyDown={(e) => onSideendring(e.key)}
                     className={"sidebytter__chevron"}
                     onClick={() => setParameterIUrl('side',(nåVærendeSidetall+1).toString())}
                     aria-label={'Gå til neste side'}
