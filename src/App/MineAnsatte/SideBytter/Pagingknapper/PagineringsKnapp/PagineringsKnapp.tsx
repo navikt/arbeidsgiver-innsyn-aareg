@@ -19,9 +19,9 @@ const GraSirkelMedNr = (props: Props) => {
     const className = erNavarendeSide? 'sidebytter__valg er-valgt' : 'sidebytter__valg'
 
     if (erNavarendeSide) {
-        ariaLabel = `side ${props.sidetall} valgt,`;
+        ariaLabel = `side ${props.sidetall} valgt`;
         if (props.sidetall === props.siderTilsammen) {
-            ariaLabel += 'dette er siste side'
+            ariaLabel += ' ,dette er siste side'
         }
     }
 
