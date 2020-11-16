@@ -59,10 +59,11 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
     }
 
     return (
-        <nav role="navigation" aria-label="Sidebytter"
+        <nav role="navigation" aria-label={`Sidebytter, Nåværende side er ${nåVærendeSidetall}, bruk piltastene til å navigere`}
              className={className} onKeyDown={(e)=> {
              onKeyPress(e.key)
         }}
+             tabIndex={0}
             >
             <div className="sidebytter">
                 {nåVærendeSidetall !==1 && <button
@@ -71,7 +72,7 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
                     onClick={() => {
                         setParameterIUrl('side',(nåVærendeSidetall - 1).toString());
                     }}
-                    aria-label={'Gå til side ' + (nåVærendeSidetall - 1).toString()}
+                    aria-label={'Gå til forrige side'}
                 >
                     <VenstreChevron type={'venstre'} />
                 </button>}
@@ -88,7 +89,7 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
                 <button
                     className={"sidebytter__chevron"}
                     onClick={() => setParameterIUrl('side',(nåVærendeSidetall+1).toString())}
-                    aria-label={'Gå til side ' + (nåVærendeSidetall + 1).toString()}
+                    aria-label={'Gå til neste side'}
                     id={'sidebytter-chevron-hoyre-' + plassering}
                 >
                     <HoyreChevron />
