@@ -17,7 +17,10 @@ const GraSirkelMedNr = (props: Props) => {
     const erNavarendeSide = parseInt(getVariabelFraUrl('side')||'1')  === props.sidetall;
 
     if (erNavarendeSide) {
-        ariaLabel = 'Nåværende side, ' + props.sidetall;
+        ariaLabel = `side ${props.sidetall} valgt,`;
+        if (props.sidetall === props.siderTilsammen) {
+            ariaLabel += 'dette er siste side'
+        }
     }
 
     const knappElement = useRef<HTMLButtonElement>(null)
