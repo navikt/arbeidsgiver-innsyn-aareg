@@ -84,7 +84,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
                         <Sokefelt setParameterIUrl={setParameterIUrl} />
                     </div>
                     <div className="mine-ansatte__topp">
-                        <Normaltekst className="mine-ansatte__antall-forhold" tabIndex={0} aria-live="assertive">
+                        <Normaltekst className="mine-ansatte__antall-forhold" aria-live="assertive">
                             {`Viser ${filtrertOgSortertListe.length} av ${alleArbeidsforhold.length} arbeidsforhold`}
                         </Normaltekst>
                         {antallSider > 1 && (
