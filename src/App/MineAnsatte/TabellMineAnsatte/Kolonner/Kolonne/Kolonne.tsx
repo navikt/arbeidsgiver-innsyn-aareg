@@ -35,7 +35,7 @@ const setKolonneTilAktiv = () => {
     }
 
     return (
-        <th className={`tabell__th--sortert-${klasseNavnPostfiks}`}  role = "columnheader" aria-label={`sorter på ${props.label}`} aria-sort={AriaSort}>
+        <th className={`tabell__th--sortert-${klasseNavnPostfiks}`}  role = "columnheader" aria-sort={AriaSort}>
            <Lenke href={"#"} onClick={() => setKolonneTilAktiv()}>{props.label}</Lenke>
         </th>
     );

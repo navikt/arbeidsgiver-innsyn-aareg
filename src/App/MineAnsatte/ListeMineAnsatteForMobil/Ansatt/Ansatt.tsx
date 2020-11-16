@@ -15,7 +15,7 @@ const Ansatt: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
 
     const oppdaterValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
         const { search } = naVærendeUrl;
-        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold' : '/enkeltArbeidsforhold'
+        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold/enkeltarbeidsforhold' : '/enkeltarbeidsforhold'
         history.replace({ pathname: redirectPath, search: search });
         if (arbeidsforhold.varsler?.length) {
             loggBrukerTrykketPaVarsel();
@@ -34,7 +34,7 @@ const Ansatt: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
                             to={`enkeltarbeidsforhold/${spørringdelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
                             onClick={() => oppdaterValgtArbeidsforhold(arbeidsforhold)}
                             className="lenke"
-                            aria-label={'Navn: ' + arbeidsforhold.arbeidstaker.navn}
+                            aria-label={`Gå til detaljevisning over arbeidsforhold til ${arbeidsforhold.arbeidstaker.navn}`}
                         >
                             {arbeidsforhold.arbeidstaker.navn}
                         </Link>
