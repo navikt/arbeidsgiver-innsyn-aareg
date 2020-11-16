@@ -7,6 +7,7 @@ import 'unorm/lib/unorm';
 import 'whatwg-fetch';
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import App from './App/App';
+import environment from "./utils/environment";
 
 Sentry({
     dsn: 'https://037b93dd39294cddb53ee3d9fad4727c@sentry.gc.nav.no/12',
@@ -20,6 +21,14 @@ if (process.env.REACT_APP_MOCK) {
     console.log('=== DETTE SKAL DU IKKE SE I PRODUKSJON ===');
     console.log('==========================================');
 
+    require('./mocking/AaregMock');
+    require('./mocking/altinnMock');
+    require('./mocking/enkeltArbeidsforholdMock');
+    require('./mocking/BeregnetTidForArbeidsforholdMock');
+    require('./mocking/UnleashMock')
+}
+
+if ( environment.MILJO === 'labs-gcp'){
     require('./mocking/AaregMock');
     require('./mocking/altinnMock');
     require('./mocking/enkeltArbeidsforholdMock');
