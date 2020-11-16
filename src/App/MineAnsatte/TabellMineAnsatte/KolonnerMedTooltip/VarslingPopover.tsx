@@ -9,11 +9,15 @@ type PopoverProps = {
 
 const VarslingPopover = (props: PopoverProps) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
+
+    let varselTekst = 'Varsler, ';
+    props.varsler.forEach( varsel => varselTekst += (` ${varsel.varslingskodeForklaring},`));
+
     return (
-        <>
+        <div aria-label={varselTekst}>
             <img
                 src={varselikon}
-                alt="Varsel"
+                alt=""
                 onMouseEnter={(e: any) => setAnker(e.currentTarget)}
                 onMouseLeave={(e: any) => setAnker(undefined)}
             />
@@ -26,7 +30,7 @@ const VarslingPopover = (props: PopoverProps) => {
                     ))}
                 </div>
             </Popover>
-        </>
+        </div>
     );
 };
 

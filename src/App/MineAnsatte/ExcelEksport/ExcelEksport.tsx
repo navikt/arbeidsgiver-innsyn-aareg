@@ -36,6 +36,7 @@ const ExcelEksport = (props: ExcelEksportProps) => {
     return (
         <div className={props.className}>
             <Hovedknapp
+                aria-label={"Last ned arbeidsforhold som excelfil"}
                 className="excel-eksport-knapp"
                 onClick={() => {
                     loggBrukerTrykketPaExcel();
