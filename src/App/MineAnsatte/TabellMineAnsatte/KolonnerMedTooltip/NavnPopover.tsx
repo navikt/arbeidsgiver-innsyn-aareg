@@ -29,6 +29,17 @@ const NavnPopover: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
         }
     };
 
+    let lowerCaseNavn = arbeidsforhold.arbeidstaker.navn[0]
+
+    for (let i = 1; i < arbeidsforhold.arbeidstaker.navn.length ; i++) {
+        if (lowerCaseNavn[i-1] === ' ') {
+            lowerCaseNavn += arbeidsforhold.arbeidstaker.navn[i]
+        }
+        else {
+            lowerCaseNavn += arbeidsforhold.arbeidstaker.navn[i].toLowerCase()
+        }
+    }
+
     useEffect(() => {
         if (anker) {
             if (anker.offsetWidth < maxBreddeAvKolonne) {
@@ -42,7 +53,7 @@ const NavnPopover: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
     return (
         <div className="pop-over-container">
             <Link
-                aria-label={`Gå til detaljevisning over arbeidsforhold til ${arbeidsforhold.arbeidstaker.navn}`}
+                aria-label={`Gå til detaljevisning over arbeidsforhold til ${lowerCaseNavn}`}
                 to={`enkeltarbeidsforhold/${spørringdelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
                 onClick={() => oppdaterValgtArbeidsforhold(arbeidsforhold)}
                 className="lenke"
@@ -54,11 +65,11 @@ const NavnPopover: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
                     }}
                     onMouseLeave={(e: any) => setAnker(undefined)}
                 >
-                    {arbeidsforhold.arbeidstaker.navn}
+                    {lowerCaseNavn}
                 </Normaltekst>
                 {skalVisePopover && (
                     <Popover ankerEl={anker} orientering={PopoverOrientering.Over}>
-                        <p style={{ padding: '1rem' }}>{arbeidsforhold.arbeidstaker.navn}</p>
+                        <p style={{ padding: '1rem' }}>{lowerCaseNavn}</p>
                     </Popover>
                 )}
             </Link>
