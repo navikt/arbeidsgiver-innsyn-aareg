@@ -15,7 +15,7 @@ Sentry({
     environment: window.location.hostname
 });
 
-if (process.env.REACT_APP_MOCK) {
+if (process.env.REACT_APP_MOCK||environment.MILJO === 'labs-gcp') {
     console.log('==========================================');
     console.log('=============== MED MOCK =================');
     console.log('=== DETTE SKAL DU IKKE SE I PRODUKSJON ===');
@@ -28,12 +28,5 @@ if (process.env.REACT_APP_MOCK) {
     require('./mocking/UnleashMock')
 }
 
-if ( environment.MILJO === 'labs-gcp'){
-    require('./mocking/AaregMock');
-    require('./mocking/altinnMock');
-    require('./mocking/enkeltArbeidsforholdMock');
-    require('./mocking/BeregnetTidForArbeidsforholdMock');
-    require('./mocking/UnleashMock')
-}
 
 ReactDOM.render(<App />, document.getElementById('root'));
