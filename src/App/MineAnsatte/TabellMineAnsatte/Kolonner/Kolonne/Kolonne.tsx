@@ -2,6 +2,7 @@ import React from 'react';
 import { KolonneState, SorteringsAttributt } from '../../../MineAnsatte';
 import Lenke from "nav-frontend-lenker";
 import {getVariabelFraUrl} from "../../../sorteringOgFiltreringsFunksjoner";
+import './Kolonne.less';
 
 interface Props {
     label: string;
@@ -35,7 +36,7 @@ const setKolonneTilAktiv = () => {
     }
 
     return (
-        <th className={`tabell__th--sortert-${klasseNavnPostfiks}`} role = "columnheader" aria-sort={AriaSort}>
+        <th className={`tabell__th--sortert-${klasseNavnPostfiks} tabell__lenke`} role = "columnheader" aria-sort={AriaSort}>
            <Lenke href={"#"} onClick={() => setKolonneTilAktiv()}>{props.label}</Lenke>
         </th>
     );
