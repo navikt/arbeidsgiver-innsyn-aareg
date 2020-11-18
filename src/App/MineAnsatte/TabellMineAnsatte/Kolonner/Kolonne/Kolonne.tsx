@@ -1,5 +1,5 @@
 import React from 'react';
-import { KolonneState, SorteringsAttributt } from '../../../MineAnsatte';
+import {  SorteringsAttributt } from '../../../MineAnsatte';
 import Lenke from "nav-frontend-lenker";
 import {getVariabelFraUrl} from "../../../sorteringOgFiltreringsFunksjoner";
 import './Kolonne.less';
@@ -11,20 +11,14 @@ interface Props {
 }
 
 const Kolonne = (props: Props) => {
-    const erReversSortert = getVariabelFraUrl('revers') === 'true'
+    let erReversSortert = getVariabelFraUrl('revers') === 'true'
     const erValgt = getVariabelFraUrl("sorter") === props.attributt.toString();
 
-    let kolonneState: KolonneState = {
-        erValgt: erValgt,
-        sorteringsAttributt: props.attributt,
-        reversSortering: erReversSortert
-    };
-
-const setKolonneTilAktiv = () => {
-        props.setParameterIUrl("sorter", kolonneState.sorteringsAttributt.toString())
-        if (kolonneState.erValgt) {
-            kolonneState.reversSortering = !kolonneState.reversSortering;
-            props.setParameterIUrl("revers", kolonneState.reversSortering.toString())
+    const setKolonneTilAktiv = () => {
+        props.setParameterIUrl("sorter", props.attributt.toString())
+        if (erValgt) {
+            erReversSortert = !erReversSortert;
+            props.setParameterIUrl("revers", erReversSortert.toString())
         }
     };
 
@@ -37,7 +31,7 @@ const setKolonneTilAktiv = () => {
 
     return (
         <th className={`tabell__th--sortert-${klasseNavnPostfiks} tabell__lenke`} role = "columnheader" aria-sort={AriaSort}>
-           <Lenke href={""} onClick={(e) => {
+           <Lenke role="button" href={""} onClick={(e) => {
                setKolonneTilAktiv();
                e.preventDefault()
            }

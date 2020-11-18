@@ -6,7 +6,6 @@ interface Props {
     className?: string;
     setParameterIUrl: (parameter: string, variabel: string) => void;
     siderTilsammen: number;
-    erØversteSidebytter: boolean
     elementIFokus: number;
     onSideendring: (key: string) => void
 }
@@ -21,7 +20,6 @@ const Midtdel: FunctionComponent<Props> = props => {
                 siderTilsammen={props.siderTilsammen}
                 sidetall={1}
                 setParameterIUrl={props.setParameterIUrl}
-                erØversteSidebytter={props.erØversteSidebytter}
                 elementIFokus = {props.elementIFokus}
             />
             ...
@@ -30,7 +28,6 @@ const Midtdel: FunctionComponent<Props> = props => {
                 siderTilsammen={props.siderTilsammen}
                 sidetall={nåVærendeSidetall - 1}
                 setParameterIUrl={props.setParameterIUrl}
-                erØversteSidebytter={props.erØversteSidebytter}
                 elementIFokus = {props.elementIFokus}
             />
             <PagineringsKnapp
@@ -38,7 +35,6 @@ const Midtdel: FunctionComponent<Props> = props => {
                 siderTilsammen={props.siderTilsammen}
                 sidetall={nåVærendeSidetall}
                 setParameterIUrl={props.setParameterIUrl}
-                erØversteSidebytter={props.erØversteSidebytter}
                 elementIFokus = {props.elementIFokus}
             />
             <PagineringsKnapp
@@ -46,7 +42,6 @@ const Midtdel: FunctionComponent<Props> = props => {
                 siderTilsammen={props.siderTilsammen}
                 sidetall={nåVærendeSidetall + 1}
                 setParameterIUrl={props.setParameterIUrl}
-                erØversteSidebytter={props.erØversteSidebytter}
                 elementIFokus = {props.elementIFokus}
             />
             {nåVærendeSidetall < props.siderTilsammen - 1 && (
@@ -57,7 +52,6 @@ const Midtdel: FunctionComponent<Props> = props => {
                         siderTilsammen={props.siderTilsammen}
                         sidetall={props.siderTilsammen}
                         setParameterIUrl={props.setParameterIUrl}
-                        erØversteSidebytter={props.erØversteSidebytter}
                         elementIFokus = {props.elementIFokus}
                     />
                 </>
