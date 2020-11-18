@@ -50,12 +50,6 @@ export enum SorteringsAttributt {
     STILLINGSPROSENT
 }
 
-export interface KolonneState {
-    erValgt: boolean;
-    sorteringsAttributt: SorteringsAttributt;
-    reversSortering: boolean;
-}
-
 const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) => {
     return (
         <>
