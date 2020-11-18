@@ -1,17 +1,12 @@
 import { SyntheticEvent } from 'react';
 import { ToggleKnappPureProps } from 'nav-frontend-toggle';
-import {KolonneState, SorteringsAttributt} from './MineAnsatte';
+import {SorteringsAttributt} from './MineAnsatte';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
 
 export const lagListeBasertPaUrl = (alleArbeidsforhold: Arbeidsforhold[]) => {
     const sortertPå = getVariabelFraUrl('sorter') || '0'
     const reversSortering = getVariabelFraUrl('revers') ? getVariabelFraUrl('revers') === 'true' : true;
-    const valgtKolonne: KolonneState = {
-        erValgt: true,
-        sorteringsAttributt: parseInt(sortertPå),
-        reversSortering: reversSortering
-    };
     const filtreringsvalg = getVariabelFraUrl('filter') || 'Alle';
     const sokefeltTekst = getVariabelFraUrl('sok') || '';
     const filtrertPaVarsler = getVariabelFraUrl('varsler') === 'true';
@@ -24,7 +19,7 @@ export const lagListeBasertPaUrl = (alleArbeidsforhold: Arbeidsforhold[]) => {
         filtrertPaVarsler,
         sokefeltTekst
     );
-    const filtrertOgSortertListe: Arbeidsforhold[] = valgtKolonne.reversSortering ?  sorterArbeidsforhold(filtrertListe, valgtKolonne.sorteringsAttributt).reverse() : sorterArbeidsforhold(filtrertListe, valgtKolonne.sorteringsAttributt);
+    const filtrertOgSortertListe: Arbeidsforhold[] = reversSortering ?  sorterArbeidsforhold(filtrertListe, parseInt(sortertPå)).reverse() : sorterArbeidsforhold(filtrertListe, parseInt(sortertPå));
     return filtrertOgSortertListe
 }
 
