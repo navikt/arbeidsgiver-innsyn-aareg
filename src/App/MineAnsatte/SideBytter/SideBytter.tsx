@@ -16,7 +16,6 @@ interface Props {
 const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Props) => {
     const chevronOverst = document.getElementById('sidebytter-chevron-hoyre-overst');
     const chevronNederst = document.getElementById('sidebytter-chevron-hoyre-nederst');
-    const erØversteSidebytter = className === 'ovre-sidebytter'
 
     const [elementIFokus, setElementIFokus] = useState(0);
 
@@ -77,13 +76,13 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
                 </button>}
 
                 {(nåVærendeSidetall < 3 || antallSider < 4) && (
-                    <TreForste onSideendring={onSideendring} elementIFokus = {elementIFokus} erØversteSidebytter={erØversteSidebytter} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider}  />
+                    <TreForste onSideendring={onSideendring} elementIFokus = {elementIFokus} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider}  />
                 )}
                 {antallSider > 3 && nåVærendeSidetall > 2 && nåVærendeSidetall < antallSider - 1 && (
-                    <Midtdel onSideendring={onSideendring} elementIFokus = {elementIFokus} erØversteSidebytter={erØversteSidebytter} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
+                    <Midtdel onSideendring={onSideendring} elementIFokus = {elementIFokus} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
                 )}
                 {antallSider > 3 && nåVærendeSidetall >= antallSider - 1 && (
-                    <TreSiste onSideendring={onSideendring}elementIFokus = {elementIFokus} erØversteSidebytter={erØversteSidebytter}  setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
+                    <TreSiste onSideendring={onSideendring}elementIFokus = {elementIFokus} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
                 )}
                 <button
                     onKeyDown={(e) => onSideendring(e.key)}

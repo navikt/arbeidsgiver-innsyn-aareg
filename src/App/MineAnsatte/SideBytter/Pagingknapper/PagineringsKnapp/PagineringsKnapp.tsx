@@ -8,7 +8,6 @@ interface Props {
     sidetall: number;
     siderTilsammen: number;
     setParameterIUrl: (parameter: string, variabel: string) => void;
-    erØversteSidebytter: boolean
     onSideendring: (key: string) => void
     elementIFokus: number;
 }
