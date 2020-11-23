@@ -20,7 +20,6 @@ export const FeatureToggleProvider = (props: any) => {
 
     const hentToggles = () => {
         hentFeatureToggles().then(toggles=> setFeatureToggles(toggles)).catch( e => {
-            console.log(e);
             setFeatureToggles(Object.assign({}, ...alleFeatures.map((feature) => ({[feature]: false}))))
     })};
 

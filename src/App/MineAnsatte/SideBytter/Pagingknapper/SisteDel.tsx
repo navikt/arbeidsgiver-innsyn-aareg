@@ -5,36 +5,41 @@ interface Props {
     className?: string;
     setParameterIUrl: (parameter: string, variabel: string) => void;
     siderTilsammen: number;
-    nåVærendeSidetall: number;
+    elementIFokus: number;
+    onSideendring: (key: string) => void;
 }
 
 const SisteDel: FunctionComponent<Props> = props => {
     return (
         <>
             <PagineringsKnapp
+                onSideendring={props.onSideendring}
                 sidetall={1}
                 siderTilsammen={props.siderTilsammen}
-                nåVærendeSidetall={props.nåVærendeSidetall}
                 setParameterIUrl={props.setParameterIUrl}
+                elementIFokus = {props.elementIFokus}
             />
             ...
             <PagineringsKnapp
+                onSideendring={props.onSideendring}
                 setParameterIUrl={props.setParameterIUrl}
-                nåVærendeSidetall={props.nåVærendeSidetall}
                 sidetall={props.siderTilsammen - 2}
                 siderTilsammen={props.siderTilsammen}
+                elementIFokus = {props.elementIFokus}
             />
             <PagineringsKnapp
+                onSideendring={props.onSideendring}
                 setParameterIUrl={props.setParameterIUrl}
                 sidetall={props.siderTilsammen - 1}
                 siderTilsammen={props.siderTilsammen}
-                nåVærendeSidetall={props.nåVærendeSidetall}
+                elementIFokus = {props.elementIFokus}
             />
             <PagineringsKnapp
+                onSideendring={props.onSideendring}
                 setParameterIUrl={props.setParameterIUrl}
                 sidetall={props.siderTilsammen}
                 siderTilsammen={props.siderTilsammen}
-                nåVærendeSidetall={props.nåVærendeSidetall}
+                elementIFokus = {props.elementIFokus}
             />
         </>
     );
