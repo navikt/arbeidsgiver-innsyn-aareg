@@ -26,15 +26,13 @@ const TabellMineAnsatte: FunctionComponent<Props> = (props) => {
                 <td className="td">{arbeidsforhold.arbeidstaker.offentligIdent}</td>
                 <td className="td">{arbeidsforhold.ansattFom}</td>
                 <td className="td">{arbeidsforhold.ansattTom}</td>
-                <td className="td">{arbeidsforhold.stillingsprosent}</td>
+                <td className="td">{arbeidsforhold.stillingsprosent+' %'}</td>
                 <td className="td">
                     <YrkesbeskrivelsePopover tekst={arbeidsforhold.yrkesbeskrivelse} />
                 </td>
                 <td className="td">
                     {arbeidsforhold.varsler && (
-                        <div>
                             <VarslingPopover varsler={arbeidsforhold.varsler} />
-                        </div>
                     )}
                 </td>
             </tr>
@@ -42,14 +40,12 @@ const TabellMineAnsatte: FunctionComponent<Props> = (props) => {
     });
 
     return (
-        <div className="tabell-container">
-            <table className="tabell tabell--stripet">
+            <table className="tabell tabell--stripet tabell-container">
                 <KolonnerFullSkjerm
                     setParameterIUrl={props.setParameterIUrl}
                 />
                 <tbody>{rader}</tbody>
             </table>
-        </div>
     );
 };
 
