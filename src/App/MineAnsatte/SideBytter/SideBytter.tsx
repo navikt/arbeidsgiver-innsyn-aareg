@@ -58,11 +58,11 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
     }
 
     return (
-        <nav role={"toolbar"} aria-label={`Sidebytter, Nåværende side er ${nåVærendeSidetall}, bruk piltastene til å navigere`}
+        <nav role={"navigation"} aria-label={`Sidebytter, Nåværende side er ${nåVærendeSidetall}, bruk piltastene til å navigere`}
              className={className}
 
             >
-            <div className="sidebytter">
+            <div className="sidebytter" role={"toolbar"}>
                 {nåVærendeSidetall !==1 && <button
                     onKeyDown={(e) => onSideendring(e.key)}
                     className="sidebytter__chevron"

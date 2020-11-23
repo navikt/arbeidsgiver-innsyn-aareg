@@ -190,7 +190,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     </div>
                 )}
                 <div className="mine-ansatte">
-                    <Systemtittel className="mine-ansatte__systemtittel" tabIndex={0}>
+                    <Systemtittel className="mine-ansatte__systemtittel">
                         {overskriftMedOrganisasjonsdel}
                     </Systemtittel>
                     {ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && (
