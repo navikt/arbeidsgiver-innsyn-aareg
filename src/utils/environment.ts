@@ -1,6 +1,6 @@
 const environment = () => {
     return {
-        MILJO: (window as any).appSettings.MILJO
+        MILJO: (window as any).appSettings.MILJO ?? 'local'
     };
 };
 
