@@ -60,7 +60,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
                     <div className="mine-ansatte__header">
                         <AlertStripeInfo className="informasjon">
                             <Normaltekst>
-                                {"Oversikten viser alle arbeidsforhold rapportert etter 01.01.2015 for valgt virksomhet." + tekstFornedlagtVirksomhet + " Hvis du finner feil i oversikten, skal du som arbeidsgiver endre dette gjennoma-meldingen."}
+                                {"Oversikten viser alle arbeidsforhold rapportert etter 01.01.2015 for valgt virksomhet." + tekstFornedlagtVirksomhet + " Hvis du finner feil i oversikten, skal du som arbeidsgiver endre dette gjennom a-meldingen."}
                             </Normaltekst>
                             <Normaltekst>
                                 {'Se '}

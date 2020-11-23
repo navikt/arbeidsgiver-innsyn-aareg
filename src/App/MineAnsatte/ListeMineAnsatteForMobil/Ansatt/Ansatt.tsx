@@ -34,7 +34,7 @@ const Ansatt: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
                             to={`enkeltarbeidsforhold/${spørringdelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
                             onClick={() => oppdaterValgtArbeidsforhold(arbeidsforhold)}
                             className="lenke"
-                            aria-label={`Gå til detaljevisning over arbeidsforhold til ${arbeidsforhold.arbeidstaker.navn}`}
+                            aria-label={`Gå til detaljvisning over arbeidsforhold til ${arbeidsforhold.arbeidstaker.navn}`}
                         >
                             {arbeidsforhold.arbeidstaker.navn}
                         </Link>

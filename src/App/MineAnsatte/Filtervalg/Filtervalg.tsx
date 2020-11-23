@@ -1,7 +1,7 @@
 import React, { FunctionComponent, SyntheticEvent } from 'react';
 import { ToggleGruppe, ToggleKnappPure, ToggleKnappPureProps } from 'nav-frontend-toggle';
 import './Filtervalg.less';
-import {filtreringValgt, getVariabelFraUrl} from "../sorteringOgFiltreringsFunksjoner";
+import {filtreringValgt, getVariabelFraUrl} from '../sorteringOgFiltreringsFunksjoner';
 
 interface Props {
     overSiktOverAntallAktiveOgInaktive: number[];

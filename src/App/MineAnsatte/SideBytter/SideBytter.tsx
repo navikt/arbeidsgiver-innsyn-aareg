@@ -58,7 +58,7 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
     }
 
     return (
-        <nav role="navigation" aria-label={`Sidebytter, Nåværende side er ${nåVærendeSidetall}, bruk piltastene til å navigere`}
+        <nav role={"toolbar"} aria-label={`Sidebytter, Nåværende side er ${nåVærendeSidetall}, bruk piltastene til å navigere`}
              className={className}
 
             >
