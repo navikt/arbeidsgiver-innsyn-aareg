@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-import React, { FunctionComponent } from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
@@ -10,7 +10,7 @@ import ExcelEksport from '../ExcelEksport/ExcelEksport';
 import Sokefelt from '../Sokefelt/Sokefelt';
 import Filtervalg from '../Filtervalg/Filtervalg';
 import SideBytter from '../SideBytter/SideBytter';
-import { tellAntallAktiveOgInaktiveArbeidsforhold } from '../sorteringOgFiltreringsFunksjoner';
+import {getVariabelFraUrl, tellAntallAktiveOgInaktiveArbeidsforhold} from '../sorteringOgFiltreringsFunksjoner';
 import NyFaneIkon from './NyFaneIkon';
 import './MineAnsatteTopp.less';
 
@@ -32,6 +32,19 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
     antallSider,
 
 }) => {
+    const [antallArbeidsforholdPaSideTekst, setAntallArbeidsforholdPaSideTekst] = useState(`Viser ${filtrertOgSortertListe.length} av ${alleArbeidsforhold.length} arbeidsforhold`)
+
+    useEffect(() => {
+        const soketekst = getVariabelFraUrl("sok") || ''
+        if (soketekst.length === 0) {
+            setAntallArbeidsforholdPaSideTekst(`Viser ${filtrertOgSortertListe.length} av ${alleArbeidsforhold.length} arbeidsforhold`)
+        }
+        else {
+            setAntallArbeidsforholdPaSideTekst(`${filtrertOgSortertListe.length} treff for "${soketekst}"`)
+        }
+
+    }, [filtrertOgSortertListe, alleArbeidsforhold]);
+
     const viserTidligereVirksomhet = window.location.href.includes('tidligere-arbeidsforhold');
     const tekstFornedlagtVirksomhet = viserTidligereVirksomhet? ' Merk at dette er en nedlagt eller overdratt virksomhet, så ingen av disse arbeidsforholdene skal være aktive.' : '';
 
@@ -47,7 +60,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
                     <div className="mine-ansatte__header">
                         <AlertStripeInfo className="informasjon">
                             <Normaltekst>
-                                {"Oversikten viser alle arbeidsforhold rapportert etter 01.01.2015 for valgt virksomhet." + tekstFornedlagtVirksomhet + " Hvis du finner feil i oversikten, skal du som arbeidsgiver endre dette gjennoma-meldingen."}
+                                {"Oversikten viser alle arbeidsforhold rapportert etter 01.01.2015 for valgt virksomhet." + tekstFornedlagtVirksomhet + " Hvis du finner feil i oversikten, skal du som arbeidsgiver endre dette gjennom a-meldingen."}
                             </Normaltekst>
                             <Normaltekst>
                                 {'Se '}
@@ -84,8 +97,8 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({
                         <Sokefelt setParameterIUrl={setParameterIUrl} />
                     </div>
                     <div className="mine-ansatte__topp">
-                        <Normaltekst className="mine-ansatte__antall-forhold" tabIndex={0}>
-                            Viser {filtrertOgSortertListe.length} av {alleArbeidsforhold.length} arbeidsforhold
+                        <Normaltekst className="mine-ansatte__antall-forhold" aria-live="assertive">
+                            {antallArbeidsforholdPaSideTekst}
                         </Normaltekst>
                         {antallSider > 1 && (
                             <SideBytter
