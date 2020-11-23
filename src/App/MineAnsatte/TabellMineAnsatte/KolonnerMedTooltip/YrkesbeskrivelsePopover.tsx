@@ -10,7 +10,7 @@ type PopoverProps = {
 const YrkesbeskrivelsePopover = (props: PopoverProps) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
     const [skalVisePopover, setSkalVisePopover] = useState(true);
-    const maxBreddeAvKolonne = 160;
+    const maxBreddeAvKolonne = 90;
 
     useEffect(() => {
         if (anker) {
@@ -20,16 +20,18 @@ const YrkesbeskrivelsePopover = (props: PopoverProps) => {
         }
     }, [anker]);
 
+    const yrkesnavnLowerCase = props.tekst[0] + props.tekst.substr(1,props.tekst.length).toLocaleLowerCase();
+
     return (
         <div className="pop-over-container">
             <Normaltekst
-                className="pop-over"
+                className="pop-over__yrke"
                 onMouseEnter={(e: any) => {
                     setAnker(e.currentTarget);
                 }}
-                onMouseLeave={(e: any) => setAnker(undefined)}
+                onMouseLeave={(e) => setAnker(undefined)}
             >
-                {props.tekst}
+                {yrkesnavnLowerCase}
             </Normaltekst>
             {skalVisePopover && (
                 <Popover ankerEl={anker} orientering={PopoverOrientering.Over}>

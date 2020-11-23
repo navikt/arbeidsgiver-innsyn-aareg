@@ -1,8 +1,7 @@
 import React from 'react';
-import pilOpp from './pil-opp.svg';
-import pilNed from './pil-ned.svg';
-import sorteringsikon from './sorteringsikon.svg';
-import { KolonneState, SorteringsAttributt } from '../../../MineAnsatte';
+import {  SorteringsAttributt } from '../../../MineAnsatte';
+import Lenke from "nav-frontend-lenker";
+import {getVariabelFraUrl} from "../../../sorteringOgFiltreringsFunksjoner";
 import './Kolonne.less';
 
 interface Props {
@@ -12,40 +11,32 @@ interface Props {
 }
 
 const Kolonne = (props: Props) => {
-    const naVærendeUrl = new URL(window.location.href);
-
-    const nåVærendeSorteringsParameter = parseInt(naVærendeUrl.searchParams.get('sorter')!!);
-    const erReversSortert = naVærendeUrl.searchParams.get('revers') === 'true'
-    const erValgt = nåVærendeSorteringsParameter === props.attributt;
-
-    let kolonneState: KolonneState = {
-        erValgt: erValgt,
-        sorteringsAttributt: props.attributt,
-        reversSortering: erReversSortert
-    };
-
-    let bildeSrc = sorteringsikon;
-    if (erValgt) {
-        if (erReversSortert) {
-            bildeSrc = pilOpp;
-        }
-        if (!erReversSortert) {
-            bildeSrc = pilNed;
-        }
-    }
+    let erReversSortert = getVariabelFraUrl('revers') === 'true'
+    const erValgt = getVariabelFraUrl("sorter") === props.attributt.toString();
 
     const setKolonneTilAktiv = () => {
-        props.setParameterIUrl("sorter", kolonneState.sorteringsAttributt.toString())
-        if (kolonneState.erValgt) {
-            kolonneState.reversSortering = !kolonneState.reversSortering;
-            props.setParameterIUrl("revers", kolonneState.reversSortering.toString())
+        props.setParameterIUrl("sorter", props.attributt.toString())
+        if (erValgt) {
+            erReversSortert = !erReversSortert;
+            props.setParameterIUrl("revers", erReversSortert.toString())
         }
     };
 
+    let klasseNavnPostfiks = '';
+    let AriaSort: "none" | "ascending" | "descending" | "other" = "none"
+    if (erValgt) {
+        AriaSort = erReversSortert? "descending" : "ascending"
+        klasseNavnPostfiks = erReversSortert? "desc" : "asc"
+    }
+
     return (
-        <th className="kolonne__th" onClick={() => setKolonneTilAktiv()}>
-            <button className="kolonne__sorteringsbutton">{props.label}</button>
-            <img src={bildeSrc} className="kolonne__sorteringspil" alt="pil-opp" />
+        <th className={`tabell__th--sortert-${klasseNavnPostfiks} tabell__lenke`} role = "columnheader" aria-sort={AriaSort}>
+           <Lenke role="button" href={""} onClick={(e) => {
+               setKolonneTilAktiv();
+               e.preventDefault()
+           }
+           }>
+               {props.label}</Lenke>
         </th>
     );
 };

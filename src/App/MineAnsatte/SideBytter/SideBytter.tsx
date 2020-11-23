@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { HoyreChevron, VenstreChevron } from 'nav-frontend-chevron';
 import TreForste from './Pagingknapper/ForsteDel';
 import TreSiste from './Pagingknapper/SisteDel';
 import Midtdel from './Pagingknapper/Midtdel';
 import './SideBytter.less';
+import {getVariabelFraUrl} from "../sorteringOgFiltreringsFunksjoner";
 
 interface Props {
     className: string;
@@ -16,9 +17,35 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
     const chevronOverst = document.getElementById('sidebytter-chevron-hoyre-overst');
     const chevronNederst = document.getElementById('sidebytter-chevron-hoyre-nederst');
 
-    const nåVærendeUrl = new URL (window.location.href)
-    const nåVærendeSidetallString = nåVærendeUrl.searchParams.get('side')  ? nåVærendeUrl.searchParams.get('side') : '1';
-    const nåVærendeSidetall = parseInt(nåVærendeSidetallString!!);
+    const [elementIFokus, setElementIFokus] = useState(0);
+
+    const onSideendring = (key: string) => {
+        const nåværendeSidetall = getVariabelFraUrl('side') || '1'
+        if (key === 'ArrowRight' || key === 'Right') {
+            if (nåværendeSidetall === (antallSider).toString()) {
+            }
+            else {
+                setParameterIUrl('side', (parseInt(nåværendeSidetall) +1).toString())
+                setElementIFokus(parseInt(nåværendeSidetall) +1);
+            }
+        }
+        if (key === 'ArrowLeft' || key === 'Left') {
+            if (nåværendeSidetall === '1') {
+                setParameterIUrl('side','1')
+                setElementIFokus(1);
+            }
+            else {
+                setParameterIUrl('side', (parseInt(nåværendeSidetall) -1).toString())
+                setElementIFokus(parseInt(nåværendeSidetall) -1);
+            }
+        }
+    }
+
+    const nåVærendeSidetallParameter = getVariabelFraUrl('side') || '1'
+    const nåVærendeSidetall = parseInt(nåVærendeSidetallParameter);
+
+
+
     if (chevronOverst && chevronNederst) {
         if (nåVærendeSidetall !== antallSider) {
             chevronOverst.style.visibility = 'initial';
@@ -31,32 +58,37 @@ const SideBytter = ({ className, antallSider, setParameterIUrl, plassering }: Pr
     }
 
     return (
-        <nav role="navigation" aria-label="Pagination Navigation" className={className}>
-            <div className="sidebytter">
+        <nav role={"navigation"} aria-label={`Sidebytter, Nåværende side er ${nåVærendeSidetall}, bruk piltastene til å navigere`}
+             className={className}
+
+            >
+            <div className="sidebytter" role={"toolbar"}>
                 {nåVærendeSidetall !==1 && <button
+                    onKeyDown={(e) => onSideendring(e.key)}
                     className="sidebytter__chevron"
                     id={'sidebytter-chevron-venstre-' + plassering}
                     onClick={() => {
                         setParameterIUrl('side',(nåVærendeSidetall - 1).toString());
                     }}
-                    aria-label={'Goto Page ' + (nåVærendeSidetall - 1).toString()}
+                    aria-label={'Gå til forrige side'}
                 >
                     <VenstreChevron type={'venstre'} />
                 </button>}
 
                 {(nåVærendeSidetall < 3 || antallSider < 4) && (
-                    <TreForste setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} nåVærendeSidetall={nåVærendeSidetall} />
+                    <TreForste onSideendring={onSideendring} elementIFokus = {elementIFokus} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider}  />
                 )}
                 {antallSider > 3 && nåVærendeSidetall > 2 && nåVærendeSidetall < antallSider - 1 && (
-                    <Midtdel nåVærendeSidetall={nåVærendeSidetall} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
+                    <Midtdel onSideendring={onSideendring} elementIFokus = {elementIFokus} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
                 )}
                 {antallSider > 3 && nåVærendeSidetall >= antallSider - 1 && (
-                    <TreSiste nåVærendeSidetall={nåVærendeSidetall} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
+                    <TreSiste onSideendring={onSideendring}elementIFokus = {elementIFokus} setParameterIUrl={setParameterIUrl} siderTilsammen={antallSider} />
                 )}
                 <button
+                    onKeyDown={(e) => onSideendring(e.key)}
                     className={"sidebytter__chevron"}
-                    onClick={() => setParameterIUrl('side',(nåVærendeSidetall + 1).toString())}
-                    aria-label={'Goto Page ' + (nåVærendeSidetall - 1).toString()}
+                    onClick={() => setParameterIUrl('side',(nåVærendeSidetall+1).toString())}
+                    aria-label={'Gå til neste side'}
                     id={'sidebytter-chevron-hoyre-' + plassering}
                 >
                     <HoyreChevron />
