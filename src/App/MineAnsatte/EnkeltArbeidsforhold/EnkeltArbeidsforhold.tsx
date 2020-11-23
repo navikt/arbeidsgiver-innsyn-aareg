@@ -6,7 +6,7 @@ import Chevron from 'nav-frontend-chevron';
 import environment from '../../../utils/environment';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import {
-    getSorteringsOgFiltreringsValg,
+    getVariabelFraUrl,
     lagListeBasertPaUrl,
 } from '../sorteringOgFiltreringsFunksjoner';
 import './EnkeltArbeidsforhold.less';
@@ -60,7 +60,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
     };
 
     const locale = 'nb' as 'nb' | 'en';
-    const arbeidsforholdIdFraUrl = getSorteringsOgFiltreringsValg('arbeidsforhold');
+    const arbeidsforholdIdFraUrl = getVariabelFraUrl('arbeidsforhold');
     window.scrollTo(0, 0);
 
     if (arbeidsforholdIdFraUrl === null) {

@@ -15,10 +15,10 @@ const beregnTid = (antallForhold: number, ukjent: boolean) => {
         return 10000;
     }
     if (antallForhold < 700 && antallForhold > 0) {
-        const tidForAhenteNavn = antallForhold * 12;
+        const tidForAhenteNavn = antallForhold * 4;
         return tidForAhenteNavn + 2000;
     } else if (antallForhold > 700) {
-        const tidForAhenteNavn = antallForhold * 12;
+        const tidForAhenteNavn = antallForhold * 4;
         return 5000 + tidForAhenteNavn;
     }
     return 0;
@@ -82,7 +82,7 @@ const Progressbar = ({ startTid, erFerdigLastet, setSkalvises, antall, antallArb
 
     return (
         <div className={'progressbar__container'}>
-            <Ingress className={'progressbar__henter-antall'}>{'Henter ' + overtekst + ' arbeidsforhold'}</Ingress>
+            <Ingress aria-live="assertive" className={'progressbar__henter-antall'}>{'Henter ' + overtekst + ' arbeidsforhold'}</Ingress>
             <div className={'progressbar__prosent'}>{tekst}</div>
             <div className="progressbar">
                 <div className={'progressbar__fyll'} id={'progressbar__fyll'} />

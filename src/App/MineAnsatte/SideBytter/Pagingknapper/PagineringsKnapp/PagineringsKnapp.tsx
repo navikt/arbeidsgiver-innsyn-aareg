@@ -1,37 +1,51 @@
-import React from 'react';
+import React, {useEffect, useRef } from 'react';
 import { Element } from 'nav-frontend-typografi';
 import './PagineringsKnapp.less';
+import {getVariabelFraUrl} from "../../../sorteringOgFiltreringsFunksjoner";
 const CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
 
 interface Props {
     sidetall: number;
     siderTilsammen: number;
-    nåVærendeSidetall: number;
     setParameterIUrl: (parameter: string, variabel: string) => void;
+    onSideendring: (key: string) => void
+    elementIFokus: number;
 }
 
 const GraSirkelMedNr = (props: Props) => {
-    let ariaLabel = 'Goto Page ' + props.sidetall.toString();
-    let className = 'valg';
-    const erNavarendeSide = props.nåVærendeSidetall === props.sidetall;
+    let ariaLabel = 'Gå til side ' + props.sidetall.toString();
+    const erNavarendeSide = parseInt(getVariabelFraUrl('side')||'1')  === props.sidetall;
+    const className = erNavarendeSide? 'sidebytter__valg er-valgt' : 'sidebytter__valg'
 
     if (erNavarendeSide) {
-        ariaLabel = 'Current Page, ' + props.nåVærendeSidetall.toString();
-        className = className + ' er-valgt';
+        ariaLabel = `side ${props.sidetall} valgt`;
+        if (props.sidetall === props.siderTilsammen) {
+            ariaLabel += ' ,dette er siste side'
+        }
     }
 
-    const onChange = () => {
-        props.setParameterIUrl('side', props.sidetall.toString())
+    const knappElement = useRef<HTMLButtonElement>(null)
+    useEffect(() => {
+        if (props.elementIFokus === props.sidetall) {
+            knappElement.current?.focus();
+        }
+    },[props.elementIFokus, props.sidetall, knappElement])
+
+    const onChange = (sidetall: number) => {
+        props.setParameterIUrl('side', sidetall.toString())
     }
 
     return (
         <button
+            onKeyDown={(e) => props.onSideendring(e.key)}
+            ref={knappElement}
+            id={'pagineringsknapp-'+props.sidetall}
             key={props.sidetall}
             className={className}
-            onClick={() => onChange()}
-            id={props.sidetall.toString()}
+            onClick={() => onChange(props.sidetall)}
             aria-label={ariaLabel}
-            aria-current={props.nåVærendeSidetall === props.sidetall}
+            aria-current={erNavarendeSide}
+
         >
             <CSSTransitionGroup
                 transitionName="valg"

@@ -9,8 +9,7 @@ interface Props {
 
 const AttributtVisning: FunctionComponent<Props> = props => {
     return (
-        /* eslint-disable-next-line */
-        <li className="attributt" tabIndex={0}>
+        <li className="attributt"  aria-label={`${props.attributt}, ${props.attributtVerdi}`}>
             <div className="attributt__navn"> {props.attributt}</div>
             <div className="attributt__verdi"> {props.attributtVerdi}</div>
         </li>

@@ -1,49 +1,58 @@
 import React, { FunctionComponent } from 'react';
 import PagineringsKnapp from './PagineringsKnapp/PagineringsKnapp';
+import {getVariabelFraUrl} from "../../sorteringOgFiltreringsFunksjoner";
 
 interface Props {
     className?: string;
     setParameterIUrl: (parameter: string, variabel: string) => void;
-    nåVærendeSidetall: number;
     siderTilsammen: number;
+    elementIFokus: number;
+    onSideendring: (key: string) => void
 }
 
 const Midtdel: FunctionComponent<Props> = props => {
+    const nåVærendeSidetall = parseInt(getVariabelFraUrl('side') || '1')
+
     return (
         <>
             <PagineringsKnapp
-                nåVærendeSidetall={props.nåVærendeSidetall}
+                onSideendring={props.onSideendring}
                 siderTilsammen={props.siderTilsammen}
                 sidetall={1}
                 setParameterIUrl={props.setParameterIUrl}
+                elementIFokus = {props.elementIFokus}
             />
             ...
             <PagineringsKnapp
-                nåVærendeSidetall={props.nåVærendeSidetall}
+                onSideendring={props.onSideendring}
                 siderTilsammen={props.siderTilsammen}
-                sidetall={props.nåVærendeSidetall - 1}
+                sidetall={nåVærendeSidetall - 1}
                 setParameterIUrl={props.setParameterIUrl}
+                elementIFokus = {props.elementIFokus}
             />
             <PagineringsKnapp
-                nåVærendeSidetall={props.nåVærendeSidetall}
+                onSideendring={props.onSideendring}
                 siderTilsammen={props.siderTilsammen}
-                sidetall={props.nåVærendeSidetall}
+                sidetall={nåVærendeSidetall}
                 setParameterIUrl={props.setParameterIUrl}
+                elementIFokus = {props.elementIFokus}
             />
             <PagineringsKnapp
+                onSideendring={props.onSideendring}
                 siderTilsammen={props.siderTilsammen}
-                sidetall={props.nåVærendeSidetall + 1}
-                nåVærendeSidetall={props.nåVærendeSidetall}
+                sidetall={nåVærendeSidetall + 1}
                 setParameterIUrl={props.setParameterIUrl}
+                elementIFokus = {props.elementIFokus}
             />
-            {props.nåVærendeSidetall < props.siderTilsammen - 1 && (
+            {nåVærendeSidetall < props.siderTilsammen - 1 && (
                 <>
                     ...
                     <PagineringsKnapp
-                        nåVærendeSidetall={props.nåVærendeSidetall}
+                        onSideendring={props.onSideendring}
                         siderTilsammen={props.siderTilsammen}
                         sidetall={props.siderTilsammen}
                         setParameterIUrl={props.setParameterIUrl}
+                        elementIFokus = {props.elementIFokus}
                     />
                 </>
             )}

@@ -6,7 +6,8 @@ interface Props {
     className?: string;
     setParameterIUrl: (parameter: string, variabel: string) => void;
     siderTilsammen: number;
-    nåVærendeSidetall: number;
+    elementIFokus: number;
+    onSideendring: (key: string) => void
 }
 
 const ForsteDel: FunctionComponent<Props> = props => {
@@ -15,23 +16,26 @@ const ForsteDel: FunctionComponent<Props> = props => {
             <PagineringsKnapp
                 sidetall={1}
                 siderTilsammen={props.siderTilsammen}
-                nåVærendeSidetall={props.nåVærendeSidetall}
                 setParameterIUrl={props.setParameterIUrl}
+                elementIFokus = {props.elementIFokus}
+                onSideendring={props.onSideendring}
             />
 
             <PagineringsKnapp
                 sidetall={2}
                 siderTilsammen={props.siderTilsammen}
-                nåVærendeSidetall={props.nåVærendeSidetall}
                 setParameterIUrl={props.setParameterIUrl}
+                elementIFokus = {props.elementIFokus}
+                onSideendring={props.onSideendring}
             />
 
             {props.siderTilsammen > 2 && (
                 <PagineringsKnapp
                     sidetall={3}
                     siderTilsammen={props.siderTilsammen}
-                    nåVærendeSidetall={props.nåVærendeSidetall}
                     setParameterIUrl={props.setParameterIUrl}
+                    elementIFokus = {props.elementIFokus}
+                    onSideendring={props.onSideendring}
                 />
             )}
 
@@ -41,8 +45,9 @@ const ForsteDel: FunctionComponent<Props> = props => {
                     <PagineringsKnapp
                         sidetall={props.siderTilsammen}
                         siderTilsammen={props.siderTilsammen}
-                        nåVærendeSidetall={props.nåVærendeSidetall}
                         setParameterIUrl={props.setParameterIUrl}
+                        elementIFokus = {props.elementIFokus}
+                        onSideendring={props.onSideendring}
                     />
                 </>
             )}
