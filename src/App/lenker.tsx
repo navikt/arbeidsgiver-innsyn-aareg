@@ -50,9 +50,11 @@ export const linkTilMinSideArbeidsgiver = (orgnr: string) => {
     const orgNrDel = orgnr.length>0 ? '?bedrift=' + orgnr : '';
     if (environment.MILJO === 'prod-sbs') {
         return 'https://arbeidsgiver.nav.no/min-side-arbeidsgiver/' + orgNrDel;
-    } else {
+    }
+    else if (environment.MILJO === 'dev-sbs'){
         return 'https://arbeidsgiver-q.nav.no/min-side-arbeidsgiver/' + orgNrDel;
     }
+    return 'https://arbeidsgiver.labs.nais.io/min-side-arbeidsgiver/' + orgNrDel;
 };
 
 export const beOmTilgangIAltinnLink = (
