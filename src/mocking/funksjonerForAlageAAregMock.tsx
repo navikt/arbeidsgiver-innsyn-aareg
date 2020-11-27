@@ -3,9 +3,7 @@ import { ObjektFraAAregisteret, tomResponsFraAareg } from '../App/Objekter/Objek
 import { Varsel } from '../App/Objekter/Varsel';
 
 export const listeMedFornavn: string[] = [
-    'Ingrid Alexandra',
     'Håkon',
-    'Mette Marit',
     'Harald',
     'Sonja',
     'Olav',
@@ -24,7 +22,6 @@ export const listeMedFornavn: string[] = [
     'Henriette',
     'Trude',
     'Gudrun',
-    'Elina',
     'Kaia',
     'Knut',
     'Jenny',
@@ -40,26 +37,19 @@ export const listeMedFornavn: string[] = [
 ];
 
 export const listeMedEtterNavn: string[] = [
-    'Murphy',
-    'Behn',
-    'Lengali',
-    'Pedersen',
-    'Blåklokke',
-    'Rivehjern',
-    'Olavsson',
-    'Hammerseng',
-    'Northug',
-    'Rishovd',
-    'Knutsen',
-    'Ludvigsen',
-    'Solberg',
-    'Stoltenberg',
-    'Støre',
-    'Ibsen',
-    'Munch',
-    'Vang',
-    'Nesbø',
-    'Morgenstierne'
+    'Hagerup',
+    'Vesaas',
+    'Calmar',
+    'Krog',
+    'Bielenberg',
+    'Ullmann',
+    'Brockstedt',
+    'Sitter',
+    'Collett',
+    'Skram',
+    'Undset',
+    'Båhl',
+    'Einarsen'
 ];
 
 export const yrker: string[] = [
