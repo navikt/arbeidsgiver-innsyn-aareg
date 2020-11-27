@@ -49,7 +49,8 @@ export const listeMedEtterNavn: string[] = [
     'Skram',
     'Undset',
     'Båhl',
-    'Einarsen'
+    'Einarsen',
+    'Holth'
 ];
 
 export const yrker: string[] = [
@@ -60,7 +61,6 @@ export const yrker: string[] = [
     'Togfører',
     'Billettkontrollør',
     'Kokk',
-    'Au pair',
     'Tannlege',
     'Kirurg',
     'Psykolog',
