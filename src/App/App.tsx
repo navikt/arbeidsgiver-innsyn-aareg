@@ -14,10 +14,7 @@ import {
     loggInfoOmFeilFraAltinn,
     loggInfoOmFeilTidligereOrganisasjoner
 } from './amplitudefunksjonerForLogging';
-import {
-    hentOrganisasjonerFraAltinn,
-    hentOrganisasjonerMedTilgangTilAltinntjeneste
-} from '../api/altinnApi';
+import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
 import {
     hentAntallArbeidsforholdFraAareg,
     hentArbeidsforholdFraAAreg,
@@ -29,8 +26,8 @@ import EnkeltArbeidsforhold from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbei
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
+import { FeatureToggleProvider } from './FeatureToggleProvider';
 import './App.less';
-import {FeatureToggleProvider} from "./FeatureToggleProvider";
 
 enum TILGANGSSTATE {
     LASTER,
@@ -46,7 +43,8 @@ export const erGyldigOrganisasjon = (organisasjon: Organisasjon) => {
     return (
         organisasjon.Type === 'Enterprise' ||
         organisasjon.OrganizationForm === 'FLI' ||
-        organisasjon.OrganizationForm === 'BEDR' || organisasjon.OrganizationForm === 'AAFY'
+        organisasjon.OrganizationForm === 'BEDR' ||
+        organisasjon.OrganizationForm === 'AAFY'
     );
 };
 
@@ -54,9 +52,13 @@ const App = () => {
     const [tilgangArbeidsforholdState, setTilgangArbeidsforholdState] = useState(TILGANGSSTATE.LASTER);
     const [tilgangTilTidligereArbeidsforhold, setTilgangTilTidligereArbeidsforhold] = useState(false);
 
-    const [organisasjonerFraAltinnLasteState, setOrganisasjonerFraAltinnLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
+    const [organisasjonerFraAltinnLasteState, setOrganisasjonerFraAltinnLasteState] = useState<APISTATUS>(
+        APISTATUS.LASTER
+    );
     const [organisasjonerFraAltinn, setorganisasjoneFraAltinn] = useState(Array<Organisasjon>());
-    const [organisasjonerFraAltinnMedTilgang, setOrganisasjonerFraAltinnMedTilgang] = useState<Array<Organisasjon> | null>(null);
+    const [organisasjonerFraAltinnMedTilgang, setOrganisasjonerFraAltinnMedTilgang] = useState<Array<
+        Organisasjon
+    > | null>(null);
 
     const [valgtAktivOrganisasjon, setValgtAktivOrganisasjon] = useState(tomaAltinnOrganisasjon);
 
@@ -80,19 +82,19 @@ const App = () => {
 
     const [nåværendeUrlString, setNåværendeUrlString] = useState(window.location.href);
 
-    const ERPATIDLIGEREARBEIDSFORHOLD = window.location.href.includes('tidligere-arbeidsforhold')
-    const enkeltArbeidsforholdPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold' : '/enkeltArbeidsforhold';
+    const ERPATIDLIGEREARBEIDSFORHOLD = window.location.href.includes('tidligere-arbeidsforhold');
+    const enkeltArbeidsforholdPath = ERPATIDLIGEREARBEIDSFORHOLD
+        ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold'
+        : '/enkeltArbeidsforhold';
     const arbeidsforholdPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold' : '/';
-
-    useEffect(() => {
-        if (ERPATIDLIGEREARBEIDSFORHOLD && valgtAktivOrganisasjon === tomaAltinnOrganisasjon) {
-            window.location.href = basename;
-        }
-    }, [valgtAktivOrganisasjon, ERPATIDLIGEREARBEIDSFORHOLD]);
 
     useEffect(() => {
         const abortController = new AbortController();
         const signal = abortController.signal;
+
+        if (environment.MILJO) {
+            amplitude.logEvent('#arbeidsforhold bruker er innlogget');
+        }
 
         hentOrganisasjonerFraAltinn(signal)
             .then(organisasjonsliste => {
@@ -103,7 +105,9 @@ const App = () => {
                     signal
                 )
                     .then(organisasjonerMedTilgangFraAltinn => {
-                        setOrganisasjonerFraAltinnMedTilgang(organisasjonerMedTilgangFraAltinn.filter(organisasjon => erGyldigOrganisasjon(organisasjon)))
+                        setOrganisasjonerFraAltinnMedTilgang(
+                            organisasjonerMedTilgangFraAltinn.filter(organisasjon => erGyldigOrganisasjon(organisasjon))
+                        );
                         setOrganisasjonerFraAltinnLasteState(APISTATUS.OK);
                     })
                     .catch((e: Error) => {
@@ -112,9 +116,9 @@ const App = () => {
                     });
             })
             .catch((e: Error) => {
+                loggInfoOmFeilFraAltinn(e.message);
                 if (e.message === 'Forbidden') {
                     loggForbiddenFraAltinn();
-                    loggInfoOmFeilFraAltinn(e.message);
                     setOrganisasjonerFraAltinnMedTilgang([]);
                     setOrganisasjonerFraAltinnLasteState(APISTATUS.OK);
                 } else {
@@ -127,33 +131,51 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        if (valgtAktivOrganisasjon.ParentOrganizationNumber.length  && tilgangTilTidligereArbeidsforhold) {
+        setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
+        if (organisasjonerFraAltinnMedTilgang && valgtAktivOrganisasjon !== tomaAltinnOrganisasjon) {
+            if (
+                organisasjonerFraAltinnMedTilgang.filter(organisasjonMedTilgang => {
+                    return organisasjonMedTilgang.OrganizationNumber === valgtAktivOrganisasjon.OrganizationNumber;
+                }).length >= 1
+            ) {
+                setTilgangArbeidsforholdState(TILGANGSSTATE.TILGANG);
+            } else {
+                setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
+            }
+        } else if (organisasjonerFraAltinnMedTilgang && valgtAktivOrganisasjon === tomaAltinnOrganisasjon && environment.MILJO === 'dev-sbs') {
+                setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
+        } else setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
+
+        // setTimeout(() => {}, 3000);
+
+    }, [valgtAktivOrganisasjon, organisasjonerFraAltinnMedTilgang]);
+
+    useEffect(() => {
+        if (ERPATIDLIGEREARBEIDSFORHOLD && valgtAktivOrganisasjon === tomaAltinnOrganisasjon) {
+            window.location.href = basename;
+        }
+    }, [valgtAktivOrganisasjon, ERPATIDLIGEREARBEIDSFORHOLD]);
+
+    useEffect(() => {
+        if (valgtAktivOrganisasjon.ParentOrganizationNumber && tilgangTilTidligereArbeidsforhold) {
             const abortController = new AbortController();
             const signal = abortController.signal;
             hentTidligereVirksomheter(valgtAktivOrganisasjon.ParentOrganizationNumber, signal)
                 .then(virksomheter => {
-                    setTidligereVirksomheter(virksomheter)
-        })
-                .catch(e =>
-                loggInfoOmFeilTidligereOrganisasjoner(e,valgtAktivOrganisasjon.ParentOrganizationNumber ))
+                    setTidligereVirksomheter(virksomheter);
+                })
+                .catch(e => loggInfoOmFeilTidligereOrganisasjoner(e, valgtAktivOrganisasjon.ParentOrganizationNumber));
         }
-
     }, [valgtAktivOrganisasjon.ParentOrganizationNumber, tilgangTilTidligereArbeidsforhold]);
-
-    const abortTidligereRequests = () => {
-        if (abortControllerAntallArbeidsforhold && abortControllerArbeidsforhold) {
-            abortControllerAntallArbeidsforhold.abort();
-            abortControllerArbeidsforhold.abort();
-        }
-    };
 
     const hentOgSetAntallOgArbeidsforhold = (organisasjon: Organisasjon, erTidligereVirksomhet: boolean) => {
         setAaregLasteState(APISTATUS.LASTER);
         setAntallArbeidsforholdUkjent(true);
+        setAntallArbeidsforhold(0);
+
         const abortControllerAntallKall = new AbortController();
         const signal = abortControllerAntallKall.signal;
         setAbortControllerAntallArbeidsforhold(abortControllerAntallKall);
-        setAntallArbeidsforhold(0);
 
         hentAntallArbeidsforholdFraAareg(
             organisasjon.OrganizationNumber,
@@ -179,7 +201,8 @@ const App = () => {
                 hentArbeidsforholdFraAAreg(
                     organisasjon.OrganizationNumber,
                     organisasjon.ParentOrganizationNumber,
-                    signal, erTidligereVirksomhet
+                    signal,
+                    erTidligereVirksomhet
                 )
                     .then(respons => {
                         setListeMedArbeidsforholdFraAareg(respons.arbeidsforholdoversikter);
@@ -192,8 +215,8 @@ const App = () => {
                         }
                     })
                     .catch(error => {
-                        const feilmelding = error.response.status ? error.response.status : 'Ukjent feil'
-                        loggInfoOmFeil(feilmelding, organisasjon.OrganizationNumber, erTidligereVirksomhet );
+                        const feilmelding = error.response.status ? error.response.status : 'Ukjent feil';
+                        loggInfoOmFeil(feilmelding, organisasjon.OrganizationNumber, erTidligereVirksomhet);
                         if (error.response.status === 401) {
                             redirectTilLogin();
                         }
@@ -204,132 +227,109 @@ const App = () => {
         });
     };
 
-    const harTilgang = (orgnr: string) => {
-        return organisasjonerFraAltinnMedTilgang?.filter(org => org.OrganizationNumber === orgnr).length;
+    const abortTidligereRequests = () => {
+        if (abortControllerAntallArbeidsforhold && abortControllerArbeidsforhold) {
+            abortControllerAntallArbeidsforhold.abort();
+            abortControllerArbeidsforhold.abort();
+        }
+    };
+
+    const harTilgang = (orgnr: string): boolean => {
+        return !!organisasjonerFraAltinnMedTilgang?.filter(org => org.OrganizationNumber === orgnr).length;
     };
 
     const setValgtOrg = (organisasjon: Organisasjon) => {
         setValgtAktivOrganisasjon(organisasjon);
         if (harTilgang(organisasjon.ParentOrganizationNumber)) {
             setTilgangTilTidligereArbeidsforhold(true);
-        }
-        else {
+        } else {
             setTilgangTilTidligereArbeidsforhold(false);
         }
         abortTidligereRequests();
-        if (organisasjon.OrganizationNumber.length && harTilgang(organisasjon.OrganizationNumber)) {
+        if (organisasjon.OrganizationNumber && harTilgang(organisasjon.OrganizationNumber)) {
             hentOgSetAntallOgArbeidsforhold(organisasjon, false);
         }
     };
-
-    useEffect(() => {
-        setTilgangArbeidsforholdState(TILGANGSSTATE.LASTER);
-        if (organisasjonerFraAltinnMedTilgang && valgtAktivOrganisasjon !== tomaAltinnOrganisasjon) {
-            if (
-                organisasjonerFraAltinnMedTilgang.filter(organisasjonMedTilgang => {
-                    return organisasjonMedTilgang.OrganizationNumber === valgtAktivOrganisasjon.OrganizationNumber;
-                }).length >= 1
-            ) {
-                setTilgangArbeidsforholdState(TILGANGSSTATE.TILGANG);
-            } else {
-                setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
-            }
-        }
-        if (organisasjonerFraAltinnMedTilgang && organisasjonerFraAltinnMedTilgang.length === 0) {
-            setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
-        }
-    }, [valgtAktivOrganisasjon, organisasjonerFraAltinnMedTilgang]);
-
-    useEffect(() => {
-        if (
-            organisasjonerFraAltinnMedTilgang &&
-            organisasjonerFraAltinnMedTilgang.length > 0 &&
-            valgtAktivOrganisasjon === tomaAltinnOrganisasjon &&
-            environment.MILJO === 'dev-sbs'
-        ) {
-            setTilgangArbeidsforholdState(TILGANGSSTATE.IKKE_TILGANG);
-        }
-        setTimeout(() => {}, 3000);
-    }, [valgtAktivOrganisasjon, organisasjonerFraAltinnMedTilgang]);
-
-    useEffect(() => {
-        if (environment.MILJO) {
-            amplitude.logEvent('#arbeidsforhold bruker er innlogget');
-        }
-    }, []);
 
     return (
         <div className="app">
             <LoginBoundary>
                 <Router basename={basename}>
                     <FeatureToggleProvider>
-                    {organisasjonerFraAltinnLasteState !== APISTATUS.LASTER &&
                         <HovedBanner
                             setEndringIUrlAlert={setNåværendeUrlString}
                             valgtAktivOrganisasjon={valgtAktivOrganisasjon}
                             byttOrganisasjon={setValgtOrg}
-                            organisasjoner={organisasjonerFraAltinnLasteState === APISTATUS.OK ? organisasjonerFraAltinn : []}
+                            organisasjoner={
+                                organisasjonerFraAltinnLasteState === APISTATUS.OK ? organisasjonerFraAltinn : []
+                            }
                         />
-                    }
-                    {organisasjonerFraAltinnLasteState === APISTATUS.OK ? (
-                        <>
-                            {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
-                                <>
-                                    <Route exact path={enkeltArbeidsforholdPath}>
-                                        <EnkeltArbeidsforhold
-                                            setValgtArbeidsforhold={setValgtArbeidsforhold}
-                                            valgtArbeidsforhold={valgtArbeidsforhold}
-                                            alleArbeidsforhold={listeMedArbeidsforholdFraAareg}
-                                            setVisProgressbar={setVisProgressbar}
-                                            valgtOrganisasjon={valgtAktivOrganisasjon}
-                                        />
-                                    </Route>
-                                    <Route exact path={arbeidsforholdPath}>
-                                        {tilgangArbeidsforholdState === TILGANGSSTATE.IKKE_TILGANG && (
-                                            <IngenTilgangInfo
-                                                valgtOrganisasjon={valgtAktivOrganisasjon}
-                                                bedrifterMedTilgang={
-                                                    organisasjonerFraAltinnMedTilgang &&
-                                                    organisasjonerFraAltinnMedTilgang.filter(organisasjonMedTilgang => {
-                                                        return organisasjonMedTilgang.OrganizationForm === 'BEDR';
-                                                    })
-                                                }
-                                            />
-                                        )}
-                                        {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
-                                            <MineAnsatte
-                                                valgtAktivOrganisasjon={valgtAktivOrganisasjon}
-                                                valgtTidligereVirksomhet= {tidligereVirksomhet}
-                                                listeMedArbeidsforholdFraAareg={listeMedArbeidsforholdFraAareg}
-                                                antallArbeidsforhold={antallArbeidsforhold}
-                                                antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
-                                                hentOgSetAntallOgArbeidsforhold = {hentOgSetAntallOgArbeidsforhold}
-                                                tilgangTilTidligereArbeidsforhold = {tilgangTilTidligereArbeidsforhold}
-                                                tidligereVirksomheter={tidligereVirksomheter}
-                                                organisasjonerFraAltinn={organisasjonerFraAltinn}
-                                                setTidligereVirksomhet = {setTidligereVirksomhet }
-                                                setNåværendeUrlString={setNåværendeUrlString}
+
+                        {organisasjonerFraAltinnLasteState === APISTATUS.OK ? (
+                            <>
+                                {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
+                                    <>
+                                        <Route exact path={enkeltArbeidsforholdPath}>
+                                            <EnkeltArbeidsforhold
+                                                setValgtArbeidsforhold={setValgtArbeidsforhold}
+                                                valgtArbeidsforhold={valgtArbeidsforhold}
+                                                alleArbeidsforhold={listeMedArbeidsforholdFraAareg}
                                                 setVisProgressbar={setVisProgressbar}
-                                                visProgressbar={visProgressbar}
-                                                aaregLasteState={aaregLasteState}
-                                                feilkodeFraAareg={feilkodeFraAareg}
-                                                nåværendeUrlString={nåværendeUrlString}
+                                                valgtOrganisasjon={valgtAktivOrganisasjon}
                                             />
-                                        )}
-                                    </Route>
-                                </>
-                            )}
-                        </>
-                    ) : organisasjonerFraAltinnLasteState === APISTATUS.LASTER ? (
-                        <NavFrontendSpinner type="S" />
-                    ) : (
-                        <div className="feilmelding-altinn">
-                            <AlertStripeFeil>
-                                Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn kan du prøve
-                                å laste siden på nytt.
-                            </AlertStripeFeil>
-                        </div>
-                    )}
+                                        </Route>
+                                        <Route exact path={arbeidsforholdPath}>
+                                            {tilgangArbeidsforholdState === TILGANGSSTATE.IKKE_TILGANG && (
+                                                <IngenTilgangInfo
+                                                    valgtOrganisasjon={valgtAktivOrganisasjon}
+                                                    bedrifterMedTilgang={
+                                                        organisasjonerFraAltinnMedTilgang &&
+                                                        organisasjonerFraAltinnMedTilgang.filter(
+                                                            organisasjonMedTilgang => {
+                                                                return (
+                                                                    organisasjonMedTilgang.OrganizationForm === 'BEDR'
+                                                                );
+                                                            }
+                                                        )
+                                                    }
+                                                />
+                                            )}
+                                            {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
+                                                <MineAnsatte
+                                                    valgtAktivOrganisasjon={valgtAktivOrganisasjon}
+                                                    valgtTidligereVirksomhet={tidligereVirksomhet}
+                                                    listeMedArbeidsforholdFraAareg={listeMedArbeidsforholdFraAareg}
+                                                    antallArbeidsforhold={antallArbeidsforhold}
+                                                    antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
+                                                    hentOgSetAntallOgArbeidsforhold={hentOgSetAntallOgArbeidsforhold}
+                                                    tilgangTilTidligereArbeidsforhold={
+                                                        tilgangTilTidligereArbeidsforhold
+                                                    }
+                                                    tidligereVirksomheter={tidligereVirksomheter}
+                                                    organisasjonerFraAltinn={organisasjonerFraAltinn}
+                                                    setTidligereVirksomhet={setTidligereVirksomhet}
+                                                    setNåværendeUrlString={setNåværendeUrlString}
+                                                    setVisProgressbar={setVisProgressbar}
+                                                    visProgressbar={visProgressbar}
+                                                    aaregLasteState={aaregLasteState}
+                                                    feilkodeFraAareg={feilkodeFraAareg}
+                                                    nåværendeUrlString={nåværendeUrlString}
+                                                />
+                                            )}
+                                        </Route>
+                                    </>
+                                )}
+                            </>
+                        ) : organisasjonerFraAltinnLasteState === APISTATUS.LASTER ? (
+                            <NavFrontendSpinner type="S" />
+                        ) : (
+                            <div className="feilmelding-altinn">
+                                <AlertStripeFeil>
+                                    Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn kan du
+                                    prøve å laste siden på nytt.
+                                </AlertStripeFeil>
+                            </div>
+                        )}
                     </FeatureToggleProvider>
                 </Router>
             </LoginBoundary>
