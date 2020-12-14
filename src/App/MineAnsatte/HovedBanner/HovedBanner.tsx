@@ -1,10 +1,9 @@
-import React, {FunctionComponent} from 'react';
+import React, { FunctionComponent } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Organisasjon, tomaAltinnOrganisasjon } from '../../Objekter/OrganisasjonFraAltinn';
 import Bedriftsmeny from '@navikt/bedriftsmeny';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
-import './HovedBanner.less';
-import {nullStillSorteringIUrlParametere} from "../urlFunksjoner";
+import { Organisasjon, tomaAltinnOrganisasjon } from '../../Objekter/OrganisasjonFraAltinn';
+import { nullStillSorteringIUrlParametere } from '../urlFunksjoner';
 
 interface Props extends RouteComponentProps {
     byttOrganisasjon: (org: Organisasjon) => void;
@@ -15,9 +14,9 @@ interface Props extends RouteComponentProps {
 
 const Banner: FunctionComponent<Props> = props => {
     const { history } = props;
-    const naVærendeUrl = new URL (window.location.href);
-    const erPåEnkeltArbeidsforhold = naVærendeUrl.href.includes('/enkeltarbeidsforhold')
-    const erPåTidligereArbeidsforhold = naVærendeUrl.href.includes('/tidligere-arbeidsforhold')
+    const naVærendeUrl = new URL(window.location.href);
+    const erPåEnkeltArbeidsforhold = naVærendeUrl.href.includes('/enkeltarbeidsforhold');
+    const erPåTidligereArbeidsforhold = naVærendeUrl.href.includes('/tidligere-arbeidsforhold');
 
     const redirectTilListeVisning = () => {
         naVærendeUrl.searchParams.delete('arbeidsforhold');
@@ -34,24 +33,24 @@ const Banner: FunctionComponent<Props> = props => {
             props.byttOrganisasjon(organisasjon);
             if (sjekkAtManBytterBedriftIkkeVedRefresh()) {
                 history.replace(nullStillSorteringIUrlParametere());
-                erPåEnkeltArbeidsforhold && redirectTilListeVisning()
+                erPåEnkeltArbeidsforhold && redirectTilListeVisning();
                 erPåTidligereArbeidsforhold && redirectTilListeVisning();
                 props.setEndringIUrlAlert(window.location.href);
             }
         }
     };
 
-    const sidetittel = erPåTidligereArbeidsforhold? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
-    const organisasjonerIBedriftsmenyen = erPåTidligereArbeidsforhold? [] : props.organisasjoner;
+    const sidetittel = erPåTidligereArbeidsforhold ? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
+    const organisasjonerIBedriftsmenyen = erPåTidligereArbeidsforhold ? [] : props.organisasjoner;
 
     return (
         <div className="hovebanner">
-             <Bedriftsmeny
-                    sidetittel={sidetittel}
-                    organisasjoner={organisasjonerIBedriftsmenyen}
-                    onOrganisasjonChange={onOrganisasjonChange}
-                    history={history}
-                />
+            <Bedriftsmeny
+                sidetittel={sidetittel}
+                organisasjoner={organisasjonerIBedriftsmenyen}
+                onOrganisasjonChange={onOrganisasjonChange}
+                history={history}
+            />
         </div>
     );
 };
