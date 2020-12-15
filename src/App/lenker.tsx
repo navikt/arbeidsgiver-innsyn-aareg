@@ -57,6 +57,17 @@ export const linkTilMinSideArbeidsgiver = (orgnr: string) => {
     return 'https://arbeidsgiver.labs.nais.io/min-side-arbeidsgiver/' + orgNrDel;
 };
 
+export const linkTilArbeidsforhold = (orgnr: string) => {
+    const orgNrDel = orgnr.length>0 ? '?bedrift=' + orgnr : '';
+    if (environment.MILJO === 'prod-sbs') {
+        return 'https://arbeidsgiver.nav.no/arbeidsforhold/' + orgNrDel;
+    }
+    else if (environment.MILJO === 'dev-sbs'){
+        return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/' + orgNrDel;
+    }
+    return 'https://arbeidsgiver.labs.nais.io/arbeidsforhold/' + orgNrDel;
+};
+
 export const beOmTilgangIAltinnLink = (
     orgnr: string,
     serviceKode: string,
