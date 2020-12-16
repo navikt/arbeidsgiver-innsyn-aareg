@@ -121,11 +121,11 @@ export const loggTrykketPåTidligereArbeidsforholdSide = (arbeidsforhold?: Arbei
     );
 };
 
-export const loggInfoOmFeil = ( typeFeil: string,bedriftsnummer: string, erTidligereArbeidsfohold: boolean) => {
+export const loggInfoOmFeil = ( typeFeil: string, erTidligereArbeidsfohold: boolean) => {
     amplitude.logEvent('#arbeidsforhold FEILER ', {typeFeil, erTidligereArbeidsforhold: erTidligereArbeidsfohold});
 };
 
-export const loggInfoOmFeilTidligereOrganisasjoner = (typeFeil: string,  bedriftsnummer: string) => {
+export const loggInfoOmFeilTidligereOrganisasjoner = (typeFeil: string) => {
     amplitude.logEvent('#arbeidsforhold TIDLIGERE ORGANISASJONER FEILER ', {typeFeil});
 };
 
