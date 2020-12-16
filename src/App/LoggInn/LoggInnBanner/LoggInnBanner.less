@@ -1,49 +1,29 @@
 @import '~nav-frontend-core/less/_variabler';
 
-.logg-inn-banner {
-    display: flex;
-    flex-direction: row;
+.banner {
     background-color: @navBlaLighten80;
-    border-bottom: 4px solid @navBlaLighten60;
-    height: 12rem;
-    margin-bottom: 1rem;
-    justify-content: space-around;
+    padding: 2rem 0;
+    border-bottom: 0.25rem solid @navDypBlaLighten60;
 
-    &__container {
+    &__tekst {
+        margin: 0;
+        min-height: 4rem;
         display: flex;
-        flex-direction: row;
         align-items: center;
         justify-content: center;
-        width: 60rem;
     }
 
-    &__tittel-og-tekst {
-        margin: 2rem 0 0 0;
-    }
-
-    &__bilder {
-        display: none;
-    }
-}
-
-@media (min-width: @screen-sm) {
-    .logg-inn-banner {
-        &__tittel-og-tekst {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin-top: 1.5rem;
-            height: 5rem;
-            justify-content: space-between;
+    @media (min-width: @screen-sm) {
+        padding: 2rem 2rem;
+        &__tekst {
+            justify-content: left;
         }
+    }
 
-        &__bilder {
-            display: initial;
-            align-self: flex-end;
-        }
-
-        &__container {
-            justify-content: space-around;
+    @media (min-width: @screen-md) {
+        padding: 2rem 0;
+        &__tekst {
+            margin: 0 auto;
             width: 60rem;
         }
     }
