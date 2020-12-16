@@ -122,11 +122,11 @@ export const loggTrykketPåTidligereArbeidsforholdSide = (arbeidsforhold?: Arbei
 };
 
 export const loggInfoOmFeil = ( typeFeil: string,bedriftsnummer: string, erTidligereArbeidsfohold: boolean) => {
-    amplitude.logEvent('#arbeidsforhold FEILER ', {bedriftsnummer: bedriftsnummer , typeFeil, erTidligereArbeidsforhold: erTidligereArbeidsfohold});
+    amplitude.logEvent('#arbeidsforhold FEILER ', {typeFeil, erTidligereArbeidsforhold: erTidligereArbeidsfohold});
 };
 
 export const loggInfoOmFeilTidligereOrganisasjoner = (typeFeil: string,  bedriftsnummer: string) => {
-    amplitude.logEvent('#arbeidsforhold TIDLIGERE ORGANISASJONER FEILER ', {bedriftsnummer: bedriftsnummer , typeFeil});
+    amplitude.logEvent('#arbeidsforhold TIDLIGERE ORGANISASJONER FEILER ', {typeFeil});
 };
 
 export const loggInfoOmFeilFraAltinn = (typeFeil: string) => {
