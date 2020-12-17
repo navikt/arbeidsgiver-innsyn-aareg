@@ -28,5 +28,4 @@ if (process.env.REACT_APP_MOCK||environment.MILJO === 'labs-gcp') {
     require('./mocking/UnleashMock')
 }
 
-
 ReactDOM.render(<App />, document.getElementById('root'));
