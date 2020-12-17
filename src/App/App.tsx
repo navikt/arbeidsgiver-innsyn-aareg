@@ -29,8 +29,8 @@ import EnkeltArbeidsforhold from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbei
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
-import './App.less';
 import {FeatureToggleProvider} from "./FeatureToggleProvider";
+import './App.less';
 
 enum TILGANGSSTATE {
     LASTER,
@@ -133,7 +133,7 @@ const App = () => {
             hentTidligereVirksomheter(valgtAktivOrganisasjon.ParentOrganizationNumber, signal)
                 .then(virksomheter => {
                     setTidligereVirksomheter(virksomheter)
-        })
+                })
                 .catch(e =>
                 loggInfoOmFeilTidligereOrganisasjoner(e))
         }
@@ -263,73 +263,73 @@ const App = () => {
             <LoginBoundary>
                 <Router basename={basename}>
                     <FeatureToggleProvider>
-                    {organisasjonerFraAltinnLasteState !== APISTATUS.LASTER &&
                         <HovedBanner
                             setEndringIUrlAlert={setNåværendeUrlString}
                             valgtAktivOrganisasjon={valgtAktivOrganisasjon}
                             byttOrganisasjon={setValgtOrg}
                             organisasjoner={organisasjonerFraAltinnLasteState === APISTATUS.OK ? organisasjonerFraAltinn : []}
                         />
-                    }
-                    {organisasjonerFraAltinnLasteState === APISTATUS.OK ? (
-                        <>
-                            {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
-                                <>
-                                    <Route exact path={enkeltArbeidsforholdPath}>
-                                        <EnkeltArbeidsforhold
-                                            setValgtArbeidsforhold={setValgtArbeidsforhold}
-                                            valgtArbeidsforhold={valgtArbeidsforhold}
-                                            alleArbeidsforhold={listeMedArbeidsforholdFraAareg}
-                                            setVisProgressbar={setVisProgressbar}
-                                            valgtOrganisasjon={valgtAktivOrganisasjon}
-                                        />
-                                    </Route>
-                                    <Route exact path={arbeidsforholdPath}>
-                                        {tilgangArbeidsforholdState === TILGANGSSTATE.IKKE_TILGANG && (
-                                            <IngenTilgangInfo
-                                                valgtOrganisasjon={valgtAktivOrganisasjon}
-                                                bedrifterMedTilgang={
-                                                    organisasjonerFraAltinnMedTilgang &&
-                                                    organisasjonerFraAltinnMedTilgang.filter(organisasjonMedTilgang => {
-                                                        return organisasjonMedTilgang.OrganizationForm === 'BEDR';
-                                                    })
-                                                }
-                                            />
-                                        )}
-                                        {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
-                                            <MineAnsatte
-                                                valgtAktivOrganisasjon={valgtAktivOrganisasjon}
-                                                valgtTidligereVirksomhet= {tidligereVirksomhet}
-                                                listeMedArbeidsforholdFraAareg={listeMedArbeidsforholdFraAareg}
-                                                antallArbeidsforhold={antallArbeidsforhold}
-                                                antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
-                                                hentOgSetAntallOgArbeidsforhold = {hentOgSetAntallOgArbeidsforhold}
-                                                tilgangTilTidligereArbeidsforhold = {tilgangTilTidligereArbeidsforhold}
-                                                tidligereVirksomheter={tidligereVirksomheter}
-                                                organisasjonerFraAltinn={organisasjonerFraAltinn}
-                                                setTidligereVirksomhet = {setTidligereVirksomhet }
-                                                setNåværendeUrlString={setNåværendeUrlString}
+                        {organisasjonerFraAltinnLasteState === APISTATUS.OK ? (
+                            <>
+                                {tilgangArbeidsforholdState !== TILGANGSSTATE.LASTER && (
+                                    <>
+                                        <Route exact path={enkeltArbeidsforholdPath}>
+                                            <EnkeltArbeidsforhold
+                                                setValgtArbeidsforhold={setValgtArbeidsforhold}
+                                                valgtArbeidsforhold={valgtArbeidsforhold}
+                                                alleArbeidsforhold={listeMedArbeidsforholdFraAareg}
                                                 setVisProgressbar={setVisProgressbar}
-                                                visProgressbar={visProgressbar}
-                                                aaregLasteState={aaregLasteState}
-                                                feilkodeFraAareg={feilkodeFraAareg}
-                                                nåværendeUrlString={nåværendeUrlString}
+                                                valgtOrganisasjon={valgtAktivOrganisasjon}
                                             />
-                                        )}
-                                    </Route>
-                                </>
-                            )}
-                        </>
-                    ) : organisasjonerFraAltinnLasteState === APISTATUS.LASTER ? (
-                        <NavFrontendSpinner type="S" />
-                    ) : (
-                        <div className="feilmelding-altinn">
-                            <AlertStripeFeil>
-                                Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn kan du prøve
-                                å laste siden på nytt.
-                            </AlertStripeFeil>
-                        </div>
-                    )}
+                                        </Route>
+                                        <Route exact path={arbeidsforholdPath}>
+                                            {tilgangArbeidsforholdState === TILGANGSSTATE.IKKE_TILGANG && (
+                                                <IngenTilgangInfo
+                                                    valgtOrganisasjon={valgtAktivOrganisasjon}
+                                                    bedrifterMedTilgang={
+                                                        organisasjonerFraAltinnMedTilgang &&
+                                                        organisasjonerFraAltinnMedTilgang.filter(organisasjonMedTilgang => {
+                                                            return organisasjonMedTilgang.OrganizationForm === 'BEDR';
+                                                        })
+                                                    }
+                                                />
+                                            )}
+                                            {tilgangArbeidsforholdState === TILGANGSSTATE.TILGANG && (
+                                                <MineAnsatte
+                                                    valgtAktivOrganisasjon={valgtAktivOrganisasjon}
+                                                    valgtTidligereVirksomhet= {tidligereVirksomhet}
+                                                    listeMedArbeidsforholdFraAareg={listeMedArbeidsforholdFraAareg}
+                                                    antallArbeidsforhold={antallArbeidsforhold}
+                                                    antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
+                                                    hentOgSetAntallOgArbeidsforhold = {hentOgSetAntallOgArbeidsforhold}
+                                                    tilgangTilTidligereArbeidsforhold = {tilgangTilTidligereArbeidsforhold}
+                                                    tidligereVirksomheter={tidligereVirksomheter}
+                                                    organisasjonerFraAltinn={organisasjonerFraAltinn}
+                                                    setTidligereVirksomhet = {setTidligereVirksomhet }
+                                                    setNåværendeUrlString={setNåværendeUrlString}
+                                                    setVisProgressbar={setVisProgressbar}
+                                                    visProgressbar={visProgressbar}
+                                                    aaregLasteState={aaregLasteState}
+                                                    feilkodeFraAareg={feilkodeFraAareg}
+                                                    nåværendeUrlString={nåværendeUrlString}
+                                                />
+                                            )}
+                                        </Route>
+                                    </>
+                                )}
+                            </>
+                        ) : organisasjonerFraAltinnLasteState === APISTATUS.LASTER ? (
+                            <div className="spinner">
+                                <NavFrontendSpinner type="L" />
+                            </div>
+                        ) : (
+                            <div className="feilmelding-altinn">
+                                <AlertStripeFeil>
+                                    Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn kan du prøve
+                                    å laste siden på nytt.
+                                </AlertStripeFeil>
+                            </div>
+                        )}
                     </FeatureToggleProvider>
                 </Router>
             </LoginBoundary>
