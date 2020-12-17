@@ -135,7 +135,7 @@ const App = () => {
                     setTidligereVirksomheter(virksomheter)
                 })
                 .catch(e =>
-                    loggInfoOmFeilTidligereOrganisasjoner(e,valgtAktivOrganisasjon.ParentOrganizationNumber ))
+                loggInfoOmFeilTidligereOrganisasjoner(e))
         }
 
     }, [valgtAktivOrganisasjon.ParentOrganizationNumber, tilgangTilTidligereArbeidsforhold]);
@@ -193,7 +193,7 @@ const App = () => {
                     })
                     .catch(error => {
                         const feilmelding = error.response.status ? error.response.status : 'Ukjent feil'
-                        loggInfoOmFeil(feilmelding, organisasjon.OrganizationNumber, erTidligereVirksomhet );
+                        loggInfoOmFeil(feilmelding, erTidligereVirksomhet );
                         if (error.response.status === 401) {
                             redirectTilLogin();
                         }
