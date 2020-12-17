@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
-import { linkTilMinSideArbeidsgiver } from '../lenker';
+import { linkTilArbeidsforhold, linkTilMinSideArbeidsgiver } from '../lenker';
 
 interface Brodsmule {
     url: string;
@@ -26,7 +26,7 @@ const Brodsmulesti = ({ valgtOrg }: BrodsmuleProps) => {
             title: 'Min side – arbeidsgiver',
             handleInApp: false
         },
-        { url: '/', title: 'Arbeidsforhold', handleInApp: true }
+        { url: linkTilArbeidsforhold(valgtOrg || ''), title: 'Arbeidsforhold', handleInApp: true }
     ];
 
     setBreadcrumbs(brodsmuler);
