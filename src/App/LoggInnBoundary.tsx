@@ -2,7 +2,9 @@ import React from 'react';
 import { FunctionComponent, useEffect, useState } from 'react';
 import environment from '../utils/environment';
 import LoggInn from './LoggInn/LoggInn';
-import {sjekkInnlogget} from "../api/altinnApi";
+import { sjekkInnlogget } from '../api/altinnApi';
+import NavFrontendSpinner from 'nav-frontend-spinner';
+import LoggInnBanner from './LoggInn/LoggInnBanner/LoggInnBanner';
 
 export enum Tilgang {
     LASTER,
@@ -26,7 +28,11 @@ const LoginBoundary: FunctionComponent = props => {
         const getLoginStatus = async () => {
             const abortController = new AbortController();
             const signal = abortController.signal;
-            if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs' || environment.MILJO === 'labs-gcp') {
+            if (
+                environment.MILJO === 'prod-sbs' ||
+                environment.MILJO === 'dev-sbs' ||
+                environment.MILJO === 'labs-gcp'
+            ) {
                 let innloggingsstatus = await sjekkInnlogget(signal);
                 if (innloggingsstatus) {
                     setInnlogget(Tilgang.TILGANG);
@@ -40,14 +46,22 @@ const LoginBoundary: FunctionComponent = props => {
         getLoginStatus();
     }, []);
 
-    if (innlogget === Tilgang.TILGANG) {
-        return <> {props.children} </>;
-    }
-    if (innlogget === Tilgang.IKKE_TILGANG) {
-        return <LoggInn />;
-    } else {
-        return null;
-    }
+    return (
+        <>
+            {innlogget === Tilgang.TILGANG ? (
+                props.children
+            ) : innlogget === Tilgang.IKKE_TILGANG ? (
+                <LoggInn />
+            ) : (
+                <>
+                    <LoggInnBanner />
+                    <div className="spinner">
+                        <NavFrontendSpinner type="L" />
+                    </div>
+                </>
+            )}
+        </>
+    );
 };
 
 export default LoginBoundary;
