@@ -50,14 +50,6 @@ export const testRespons: OrganisasjonlowerCase[] = [
         status: 'Active'
     },
     {
-        name: 'ENEBAKK OG SANDSHAMN REVISJON',
-        type: 'Business',
-        parentOrganizationNumber: null,
-        organizationNumber: '911000474',
-        organizationForm: 'BEDR',
-        status: 'Active'
-    },
-    {
         name: 'STØ OG BERGER',
         type: 'Enterprise',
         parentOrganizationNumber: null,
