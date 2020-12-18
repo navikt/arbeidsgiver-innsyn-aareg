@@ -1565,10 +1565,10 @@
   dependencies:
     fetch-mock "^9.11.0"
 
-"@navikt/bedriftsmeny@2.2.3":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@navikt/bedriftsmeny/-/bedriftsmeny-2.2.3.tgz#29bd8545e428cb2851a6c7c6dd5daf80a827a817"
-  integrity sha512-qkDbhaMnXWOPTVaIKvdT6ilhvbN/aFKvR4OtClpK7DBGHvMg1zffdDPF1FUK/eXQNHUOcVqHhQOVNUMw499iCw==
+"@navikt/bedriftsmeny@2.2.4":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/@navikt/bedriftsmeny/-/bedriftsmeny-2.2.4.tgz#08eb14d2abc9c52bfabbde7831dbdc8dafbc2085"
+  integrity sha512-mpObNPUJaDWfwkHL7offG86YQuwE2I4s+yXemZIRtCkBm8JNGO1Ct8PjeikMK7WGsj1rpGFNIjMU+1/XIR2a+Q==
   dependencies:
     classnames "^2.2.6"
     fuzzysort "^1.1.4"
