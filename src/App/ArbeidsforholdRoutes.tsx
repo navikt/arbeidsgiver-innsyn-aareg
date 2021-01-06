@@ -75,11 +75,12 @@ const ArbeidsforholdRoutes = () => {
                 setVisProgressbar(false);
                 setAntallArbeidsforhold(antall);
                 setAaregLasteState(APISTATUS.OK);
-            } else if (antall <= MAKS_ANTALL_ARBEIDSFORHOLD) {
+            } else {
                 setAntallArbeidsforholdUkjent(false);
                 setAntallArbeidsforhold(antall);
                 setVisProgressbar(true);
-
+            }
+            if (antall <= MAKS_ANTALL_ARBEIDSFORHOLD) {
                 const abortControllerArbeidsforhold = new AbortController();
                 setAbortControllerArbeidsforhold(abortControllerArbeidsforhold);
                 const signal = abortControllerArbeidsforhold.signal;
@@ -115,14 +116,14 @@ const ArbeidsforholdRoutes = () => {
         })
         .catch(error => {
             const feilmelding = 'Hent antall arbeidsforhold feilet: ' + error.response.status
-                ? error.response.status
+                ? error.response.status.toString()
                 : 'Ukjent feil';
             loggInfoOmFeil(feilmelding, erTidligereVirksomhet);
             if (error.response.status === 401) {
                 redirectTilLogin();
             }
             setAaregLasteState(APISTATUS.FEILET);
-            setFeilkodeFraAareg(error.response.status.toString());
+            setFeilkodeFraAareg(error.response?.status.toString());
         });
     };
 
