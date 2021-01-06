@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useContext, useEffect } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Systemtittel, Element } from 'nav-frontend-typografi';
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -6,6 +6,7 @@ import Chevron from 'nav-frontend-chevron';
 import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { Organisasjon, tomaAltinnOrganisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import { OrganisasjonerOgTilgangerContext } from '../OrganisasjonerOgTilgangerProvider';
 import { lagListeBasertPaUrl } from './sorteringOgFiltreringsFunksjoner';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
 import Progressbar from './Progressbar/Progressbar';
@@ -15,29 +16,10 @@ import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatte
 import SideBytter from './SideBytter/SideBytter';
 import VelgTidligereVirksomhet from './VelgTidligereVirksomhet/VelgTidligereVirksomhet';
 import { nullStillSorteringIUrlParametere } from './urlFunksjoner';
-import { MAKS_ANTALL_ARBEIDSFORHOLD } from '../App';
 import { loggTrykketPåTidligereArbeidsforholdSide } from '../amplitudefunksjonerForLogging';
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
+import { MAKS_ANTALL_ARBEIDSFORHOLD } from '../ArbeidsforholdRoutes';
 import './MineAnsatte.less';
-
-interface Props extends RouteComponentProps {
-    valgtAktivOrganisasjon: Organisasjon;
-    valgtTidligereVirksomhet: Organisasjon;
-    organisasjonerFraAltinn: Organisasjon[];
-    hentOgSetAntallOgArbeidsforhold: (organisasjon: Organisasjon, erTidligereArbeidsforhold: boolean) => void;
-    listeMedArbeidsforholdFraAareg: Arbeidsforhold[];
-    antallArbeidsforhold: number;
-    visProgressbar: boolean;
-    setVisProgressbar: (skalVises: boolean) => void;
-    aaregLasteState: APISTATUS;
-    feilkodeFraAareg: string;
-    antallArbeidsforholdUkjent: boolean;
-    setNåværendeUrlString: (endret: string) => void;
-    nåværendeUrlString: string;
-    tilgangTilTidligereArbeidsforhold: boolean;
-    setTidligereVirksomhet: (tidligereVirksomhet: Organisasjon) => void;
-    tidligereVirksomheter?: Organisasjon[];
-}
 
 export enum SorteringsAttributt {
     NAVN,
@@ -65,25 +47,45 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
     );
 };
 
+interface Props extends RouteComponentProps {
+    valgtTidligereVirksomhet: Organisasjon;
+    hentOgSetAntallOgArbeidsforhold: (organisasjon: Organisasjon, erTidligereArbeidsforhold: boolean) => void;
+    listeMedArbeidsforholdFraAareg: Arbeidsforhold[];
+    antallArbeidsforhold: number;
+    visProgressbar: boolean;
+    setVisProgressbar: (skalVises: boolean) => void;
+    aaregLasteState: APISTATUS;
+    feilkodeFraAareg: string;
+    antallArbeidsforholdUkjent: boolean;
+    nåværendeUrlString: string;
+    setNåværendeUrlString: (endret: string) => void;
+    setTidligereVirksomhet: (tidligereVirksomhet: Organisasjon) => void;
+}
+
 const MineAnsatte: FunctionComponent<Props> = ({
     history,
-    valgtAktivOrganisasjon,
     listeMedArbeidsforholdFraAareg,
     antallArbeidsforhold,
     antallArbeidsforholdUkjent,
-    setVisProgressbar,
     visProgressbar,
+    setVisProgressbar,
     aaregLasteState,
     feilkodeFraAareg,
+    nåværendeUrlString,
     setNåværendeUrlString,
-    setTidligereVirksomhet,
     hentOgSetAntallOgArbeidsforhold,
-    tidligereVirksomheter,
     valgtTidligereVirksomhet,
-    organisasjonerFraAltinn,
-    tilgangTilTidligereArbeidsforhold
+    setTidligereVirksomhet,
 }) => {
-    const naVærendeUrl = new URL(window.location.href);
+    const {
+        valgtAktivOrganisasjon,
+        organisasjonerFraAltinn,
+        tilgangTilTidligereArbeidsforhold,
+        tidligereVirksomheter
+    } = useContext(OrganisasjonerOgTilgangerContext);
+
+    // const naVærendeUrl = new URL(window.location.href);
+    const naVærendeUrl = new URL(nåværendeUrlString);
     const sidetall = naVærendeUrl.searchParams.get('side') || '1';
 
     const ARBEIDSFORHOLDPERSIDE = 25;
