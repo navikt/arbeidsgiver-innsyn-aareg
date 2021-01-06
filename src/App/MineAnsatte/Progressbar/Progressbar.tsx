@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Ingress } from 'nav-frontend-typografi';
 import './Progressbar.less';
 
@@ -38,44 +38,48 @@ const Progressbar = ({ startTid, erFerdigLastet, setSkalvises, antall, antallArb
     const beregnetTid = beregnTid(antall, antallArbeidsforholdUkjent);
     const element = document.getElementById('progressbar__fyll');
 
-    if (bredde >= 94 && erFerdigLastet) {
-        setSkalvises(false);
-    } else {
-        if (!erFerdigLastet) {
-            if (tid / beregnetTid < 0.98) {
+    useEffect(() => {
+        if (bredde >= 94 && erFerdigLastet) {
+            setSkalvises(false);
+        } else {
+            if (!erFerdigLastet) {
+                if (tid / beregnetTid < 0.98) {
+                    setTimeout(() => {
+                        const element = document.getElementById('progressbar__fyll');
+                        if (element) {
+                            const naVarendeTid = new Date().getTime();
+                            const beregnetBredde = (tid / beregnetTid) * 100;
+                            if (bredde >= 80 && bredde < 96) {
+                                setForsinkelsesparameter(forsinkelsesparameter * 1.05);
+                                setBredde(beregnBreddeMedForsinkelse(forsinkelsesparameter, bredde, beregnetBredde));
+                            }
+                            if (bredde < 80) {
+                                setBredde(beregnetBredde);
+                            }
+                            element.style.width = bredde.toString() + '%';
+                            const tidGatt = naVarendeTid - startTid;
+                            setTid(tidGatt);
+                        }
+                    }, (beregnetTid / 500)*forsinkelsesparameter);
+                }
+            }
+
+            if (erFerdigLastet && element && bredde + 4 < 100) {
                 setTimeout(() => {
-                    const element = document.getElementById('progressbar__fyll');
-                    if (element) {
-                        const naVarendeTid = new Date().getTime();
-                        const beregnetBredde = (tid / beregnetTid) * 100;
-                        if (bredde >= 80 && bredde < 96) {
-                            setForsinkelsesparameter(forsinkelsesparameter * 1.05);
-                            setBredde(beregnBreddeMedForsinkelse(forsinkelsesparameter, bredde, beregnetBredde));
-                        }
-                        if (bredde < 80) {
-                            setBredde(beregnetBredde);
-                        }
-                        element.style.width = bredde.toString() + '%';
-                        const tidGatt = naVarendeTid - startTid;
-                        setTid(tidGatt);
-                    }
-                }, (beregnetTid / 500)*forsinkelsesparameter);
+                    element.style.width = (bredde + 4).toString() + '%';
+                    setBredde(bredde + 4);
+                }, 100);
             }
         }
 
-        if (erFerdigLastet && element && bredde + 4 < 100) {
-            setTimeout(() => {
-                element.style.width = (bredde + 4).toString() + '%';
-                setBredde(bredde + 4);
-            }, 100);
+        if (erFerdigLastet) {
+            const naVarendeTid = new Date().getTime();
+            const tidGatt = naVarendeTid - startTid;
+            tidGatt>beregnetTid && setSkalvises(false);
         }
-    }
+    }, );
 
-    if (erFerdigLastet) {
-        const naVarendeTid = new Date().getTime();
-        const tidGatt = naVarendeTid - startTid;
-        tidGatt>beregnetTid && setSkalvises(false);
-    }
+
 
     const tekst = Math.floor(bredde).toString() + '%';
     const overtekst = antallArbeidsforholdUkjent ? '' : antall;
