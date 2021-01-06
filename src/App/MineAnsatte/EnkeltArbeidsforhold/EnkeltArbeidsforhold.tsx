@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
@@ -9,19 +9,10 @@ import {
     getVariabelFraUrl,
     lagListeBasertPaUrl,
 } from '../sorteringOgFiltreringsFunksjoner';
-import './EnkeltArbeidsforhold.less';
 import EnkeltArbeidsforholdVarselVisning from "./EnkeltArbeidsforholdVarselVisning/EnkeltArbeidsforholdVarselVisning";
 import Brodsmulesti from '../../Brodsmulesti/Brodsmulesti';
-import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
-
-interface Props extends RouteComponentProps {
-    valgtArbeidsforhold: Arbeidsforhold | null;
-    nesteArbeidsforhold?: Arbeidsforhold;
-    alleArbeidsforhold: Arbeidsforhold[];
-    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
-    setVisProgressbar: (vis: boolean) => void;
-    valgtOrganisasjon: Organisasjon;
-}
+import { OrganisasjonerOgTilgangerContext } from '../../OrganisasjonerOgTilgangerProvider';
+import './EnkeltArbeidsforhold.less';
 
 const miljo = () => {
     if (environment.MILJO === 'prod-sbs') {
@@ -40,14 +31,21 @@ const apiURL = () => {
     return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
 };
 
+interface Props extends RouteComponentProps {
+    alleArbeidsforhold: Arbeidsforhold[];
+    setVisProgressbar: (vis: boolean) => void;
+    valgtArbeidsforhold: Arbeidsforhold | null;
+    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
+}
+
 const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
     history,
-    valgtArbeidsforhold,
     alleArbeidsforhold,
-    setValgtArbeidsforhold,
     setVisProgressbar,
-    valgtOrganisasjon
+    valgtArbeidsforhold,
+    setValgtArbeidsforhold
 }) => {
+    const { valgtAktivOrganisasjon } = useContext(OrganisasjonerOgTilgangerContext);
 
     const redirectTilbake = () => {
         const naVærendeUrl = new URL(window.location.href);
@@ -92,7 +90,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
         <>
             {arbeidsforholdIdFraUrl && valgtArbeidsforhold && (
                 <div className="enkelt-arbeidsforhold-container">
-                    <Brodsmulesti valgtOrg={valgtOrganisasjon.OrganizationNumber} />
+                    <Brodsmulesti valgtOrg={valgtAktivOrganisasjon.OrganizationNumber} />
                     <div className="enkelt-arbeidsforhold-innhold">
                         <div className="enkelt-arbeidsforhold-innhold__topp">
                             <button className="brodsmule" onClick={redirectTilbake}>
