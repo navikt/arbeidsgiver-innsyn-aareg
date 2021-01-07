@@ -142,7 +142,7 @@ const ArbeidsforholdRoutes = () => {
                             />
                         </Route>
                         <Route exact path={arbeidsforholdPath}>
-                            {tilgangArbeidsforhold === TILGANGSSTATE.IKKE_TILGANG && aaregLasteState !== APISTATUS.LASTER && (
+                            {tilgangArbeidsforhold === TILGANGSSTATE.IKKE_TILGANG && (
                                 <IngenTilgangInfo/>
                             )}
                             {tilgangArbeidsforhold === TILGANGSSTATE.TILGANG && (
