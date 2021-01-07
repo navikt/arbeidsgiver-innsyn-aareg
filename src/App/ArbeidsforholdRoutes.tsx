@@ -114,13 +114,6 @@ const ArbeidsforholdRoutes = () => {
                     });
             }
         })
-        .catch(error => {
-            const feilmelding = 'Hent antall arbeidsforhold feilet';
-            loggInfoOmFeil(feilmelding, erTidligereVirksomhet);
-            if (error?.response.status === 401) {
-                redirectTilLogin();
-            }
-        });
     };
 
     const abortTidligereRequests = () => {
