@@ -84,7 +84,6 @@ const MineAnsatte: FunctionComponent<Props> = ({
         tidligereVirksomheter
     } = useContext(OrganisasjonerOgTilgangerContext);
 
-    // const naVærendeUrl = new URL(window.location.href);
     const naVærendeUrl = new URL(nåværendeUrlString);
     const sidetall = naVærendeUrl.searchParams.get('side') || '1';
 
