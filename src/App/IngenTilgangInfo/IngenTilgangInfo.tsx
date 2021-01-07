@@ -1,30 +1,38 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Normaltekst, Innholdstittel, Undertittel } from 'nav-frontend-typografi';
 import Lenkepanel from 'nav-frontend-lenkepanel';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Lenke from 'nav-frontend-lenker';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import {
+    erGyldigOrganisasjon,
+    SERVICEKODEINNSYNAAREGISTERET,
+    SERVICEEDITIONINNSYNAAREGISTERET,
+    OrganisasjonerOgTilgangerContext
+} from '../OrganisasjonerOgTilgangerProvider';
 import alertikon from '../LoggInn/TilgangsStyringInfoTekst/infomation-circle-2.svg';
 import nyfane from './nyfane.svg';
 import altinlogo from './altinn-logo.svg';
 import { beOmTilgangIAltinnLink } from '../lenker';
-import { erGyldigOrganisasjon, SERVICEEDITIONINNSYNAAREGISTERET, SERVICEKODEINNSYNAAREGISTERET } from '../App';
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import './IngenTilgangInfo.less';
 
-type TilgangsInfoProps = {
-    bedrifterMedTilgang: Array<Organisasjon> | null;
-    valgtOrganisasjon: Organisasjon;
-};
+const IngenTilgangInfo = () => {
+    const { valgtAktivOrganisasjon, organisasjonerFraAltinnMedTilgang } = useContext(OrganisasjonerOgTilgangerContext);
 
-const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsInfoProps) => {
+    const bedrifterMedTilgang: Organisasjon[] | null =
+        organisasjonerFraAltinnMedTilgang &&
+        organisasjonerFraAltinnMedTilgang.filter(organisasjonMedTilgang => {
+            return organisasjonMedTilgang.OrganizationForm === 'BEDR';
+        });
+
     const filtrerteUnderEnheter: Array<Organisasjon> | null | undefined = bedrifterMedTilgang?.filter(organisasjon =>
         erGyldigOrganisasjon(organisasjon)
     );
 
     return (
         <div className="ingen-tilgang-info-container">
-            <Brodsmulesti valgtOrg={valgtOrganisasjon.OrganizationNumber} />
+            <Brodsmulesti valgtOrg={valgtAktivOrganisasjon.OrganizationNumber} />
             <div className="ingen-tilgang">
                 <div className="ingen-tilgang-header">
                     <div className="ingen-tilgang-header__innhold">
@@ -48,7 +56,7 @@ const IngenTilgangInfo = ({ bedrifterMedTilgang, valgtOrganisasjon }: TilgangsIn
                         tittelProps={'normaltekst'}
                         border
                         href={beOmTilgangIAltinnLink(
-                            valgtOrganisasjon.OrganizationNumber,
+                            valgtAktivOrganisasjon.OrganizationNumber,
                             SERVICEKODEINNSYNAAREGISTERET,
                             SERVICEEDITIONINNSYNAAREGISTERET
                         )}
