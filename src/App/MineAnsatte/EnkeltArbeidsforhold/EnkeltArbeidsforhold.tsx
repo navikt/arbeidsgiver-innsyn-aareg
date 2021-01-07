@@ -11,7 +11,7 @@ import {
 } from '../sorteringOgFiltreringsFunksjoner';
 import EnkeltArbeidsforholdVarselVisning from "./EnkeltArbeidsforholdVarselVisning/EnkeltArbeidsforholdVarselVisning";
 import Brodsmulesti from '../../Brodsmulesti/Brodsmulesti';
-import { OrganisasjonerOgTilgangerContext } from '../../OrganisasjonerOgTilgangerProvider';
+import { OrganisasjonsdetaljerContext } from '../../OrganisasjonsdetaljerProvider';
 import './EnkeltArbeidsforhold.less';
 
 const miljo = () => {
@@ -45,7 +45,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
     valgtArbeidsforhold,
     setValgtArbeidsforhold
 }) => {
-    const { valgtAktivOrganisasjon } = useContext(OrganisasjonerOgTilgangerContext);
+    const { valgtAktivOrganisasjon } = useContext(OrganisasjonsdetaljerContext);
 
     const redirectTilbake = () => {
         const naVærendeUrl = new URL(window.location.href);
