@@ -138,11 +138,8 @@ const ArbeidsforholdRoutes = () => {
                 />
             </Route>
             <Route exact path={arbeidsforholdPath}>
-                {!tilgangArbeidsforhold && aaregLasteState !== APISTATUS.LASTER && (
-                    <IngenTilgangInfo/>
-                )}
-                {tilgangArbeidsforhold && (
-                    <MineAnsatte
+                {tilgangArbeidsforhold
+                    ? (<MineAnsatte
                         hentOgSetAntallOgArbeidsforhold={hentOgSetAntallOgArbeidsforhold}
                         aaregLasteState={aaregLasteState}
                         feilkodeFraAareg={feilkodeFraAareg}
@@ -155,8 +152,9 @@ const ArbeidsforholdRoutes = () => {
                         setNåværendeUrlString={setNåværendeUrlString}
                         visProgressbar={visProgressbar}
                         setVisProgressbar={setVisProgressbar}
-                    />
-                )}
+                    />)
+                    : (<IngenTilgangInfo/>)
+                }
             </Route>
         </Router>
     );
