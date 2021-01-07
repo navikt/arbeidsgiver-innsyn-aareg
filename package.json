@@ -98,7 +98,7 @@
     "react-scripts": "3.2.0",
     "react-transition-group": "1.x",
     "regenerator-runtime": "^0.13.5",
-    "serialize-javascript": "^2.1.1",
+    "serialize-javascript": "^3.1.0",
     "typescript": "3.8.3",
     "underscore.string": "^3.3.5",
     "unorm": "^1.6.0",
