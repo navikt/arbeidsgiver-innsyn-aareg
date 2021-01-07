@@ -115,15 +115,11 @@ const ArbeidsforholdRoutes = () => {
             }
         })
         .catch(error => {
-            const feilmelding = 'Hent antall arbeidsforhold feilet: ' + error.response.status
-                ? error.response.status.toString()
-                : 'Ukjent feil';
+            const feilmelding = 'Hent antall arbeidsforhold feilet';
             loggInfoOmFeil(feilmelding, erTidligereVirksomhet);
-            if (error.response.status === 401) {
+            if (error?.response.status === 401) {
                 redirectTilLogin();
             }
-            setAaregLasteState(APISTATUS.FEILET);
-            setFeilkodeFraAareg(error.response?.status.toString());
         });
     };
 
