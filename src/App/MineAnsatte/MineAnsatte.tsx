@@ -6,7 +6,7 @@ import Chevron from 'nav-frontend-chevron';
 import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { Organisasjon, tomaAltinnOrganisasjon } from '../Objekter/OrganisasjonFraAltinn';
-import { OrganisasjonerOgTilgangerContext } from '../OrganisasjonerOgTilgangerProvider';
+import { OrganisasjonsdetaljerContext } from '../OrganisasjonsdetaljerProvider';
 import { lagListeBasertPaUrl } from './sorteringOgFiltreringsFunksjoner';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
 import Progressbar from './Progressbar/Progressbar';
@@ -20,6 +20,7 @@ import { loggTrykketPåTidligereArbeidsforholdSide } from '../amplitudefunksjone
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import { MAKS_ANTALL_ARBEIDSFORHOLD } from '../ArbeidsforholdRoutes';
 import './MineAnsatte.less';
+import { AltinnorganisasjonerContext } from '../AltinnorganisasjonerProvider';
 
 export enum SorteringsAttributt {
     NAVN,
@@ -37,8 +38,8 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
         <>
             <Element>For mange arbeidsforhold</Element>
             {'Vi har ikke kapasitet til å hente flere enn ' +
-                MAKS_ANTALL_ARBEIDSFORHOLD +
-                ' avsluttede eller aktive arbeidsforhold om gangen. '}
+            MAKS_ANTALL_ARBEIDSFORHOLD +
+            ' avsluttede eller aktive arbeidsforhold om gangen. '}
             {'Vi jobber med å forbedre systemet slik at flere arbeidsforhold kan vises.'}
             <br />
             <br />
@@ -77,12 +78,12 @@ const MineAnsatte: FunctionComponent<Props> = ({
     valgtTidligereVirksomhet,
     setTidligereVirksomhet,
 }) => {
+    const altinnorganisasjoner = useContext(AltinnorganisasjonerContext)
     const {
         valgtAktivOrganisasjon,
-        organisasjonerFraAltinn,
         tilgangTilTidligereArbeidsforhold,
         tidligereVirksomheter
-    } = useContext(OrganisasjonerOgTilgangerContext);
+    } = useContext(OrganisasjonsdetaljerContext);
 
     const naVærendeUrl = new URL(nåværendeUrlString);
     const sidetall = naVærendeUrl.searchParams.get('side') || '1';
@@ -93,14 +94,15 @@ const MineAnsatte: FunctionComponent<Props> = ({
         tilgangTilTidligereArbeidsforhold && tidligereVirksomheter && tidligereVirksomheter.length > 0;
     const forMangeArbeidsforhold = antallArbeidsforhold >= MAKS_ANTALL_ARBEIDSFORHOLD;
 
-    const valgtJuridiskEnhet = organisasjonerFraAltinn.filter(
-        organisasjon => organisasjon.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber
-    )[0];
+    const valgtJuridiskEnhet = altinnorganisasjoner.find(
+        org => org.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber
+    )!!;
 
-    const delOverskrift = 'Opplysninger for ';
-    const overskriftMedOrganisasjonsdel = ERPATIDLIGEREARBEIDSFORHOLD
-        ? delOverskrift + valgtJuridiskEnhet.Name + ' org.nr ' + valgtJuridiskEnhet.OrganizationNumber
-        : delOverskrift + valgtAktivOrganisasjon.Name;
+    const overskriftMedOrganisasjonsdel =
+        'Opplysninger for ' +
+        (ERPATIDLIGEREARBEIDSFORHOLD
+            ? valgtJuridiskEnhet.Name + ' org.nr ' + valgtJuridiskEnhet.OrganizationNumber
+            : valgtAktivOrganisasjon.Name);
 
     const setSideTallIUrlOgGenererListe = (indeks: number) => {
         setParameterIUrl('side', indeks.toString());

@@ -5,30 +5,23 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Lenke from 'nav-frontend-lenker';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import {
-    erGyldigOrganisasjon,
     SERVICEKODEINNSYNAAREGISTERET,
     SERVICEEDITIONINNSYNAAREGISTERET,
-    OrganisasjonerOgTilgangerContext
-} from '../OrganisasjonerOgTilgangerProvider';
+    OrganisasjonsdetaljerContext
+} from '../OrganisasjonsdetaljerProvider';
 import alertikon from '../LoggInn/TilgangsStyringInfoTekst/infomation-circle-2.svg';
 import nyfane from './nyfane.svg';
 import altinlogo from './altinn-logo.svg';
 import { beOmTilgangIAltinnLink } from '../lenker';
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import './IngenTilgangInfo.less';
+import { AltinnorganisasjonerContext } from '../AltinnorganisasjonerProvider';
 
 const IngenTilgangInfo = () => {
-    const { valgtAktivOrganisasjon, organisasjonerFraAltinnMedTilgang } = useContext(OrganisasjonerOgTilgangerContext);
+    const altinnorganisasjoner = useContext(AltinnorganisasjonerContext)
+    const { valgtAktivOrganisasjon} = useContext(OrganisasjonsdetaljerContext);
 
-    const bedrifterMedTilgang: Organisasjon[] | null =
-        organisasjonerFraAltinnMedTilgang &&
-        organisasjonerFraAltinnMedTilgang.filter(organisasjonMedTilgang => {
-            return organisasjonMedTilgang.OrganizationForm === 'BEDR';
-        });
-
-    const filtrerteUnderEnheter: Array<Organisasjon> | null | undefined = bedrifterMedTilgang?.filter(organisasjon =>
-        erGyldigOrganisasjon(organisasjon)
-    );
+    const bedrifterMedTilgang: Organisasjon[] = altinnorganisasjoner.filter(org => org.tilgang && org.OrganizationForm === 'BEDR')
 
     return (
         <div className="ingen-tilgang-info-container">
@@ -69,14 +62,14 @@ const IngenTilgangInfo = () => {
                             </div>
                         </div>
                     </Lenkepanel>
-                    {filtrerteUnderEnheter && filtrerteUnderEnheter.length > 0 && (
+                    {bedrifterMedTilgang.length > 0 && (
                         <Ekspanderbartpanel
                             className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel"
                             tittel="Disse virksomhetene har tilgang"
                             border
                         >
                             <ul className="ingen-tilgang-innhold__panelinnhold">
-                                {filtrerteUnderEnheter.map(bedrift => (
+                                {bedrifterMedTilgang.map(bedrift => (
                                     <li key={bedrift.OrganizationNumber}>
                                         {bedrift.Name + '(' + bedrift.OrganizationNumber + ')'}
                                     </li>
@@ -85,7 +78,7 @@ const IngenTilgangInfo = () => {
                         </Ekspanderbartpanel>
                     )}
 
-                    {(!filtrerteUnderEnheter || filtrerteUnderEnheter.length === 0) && (
+                    {bedrifterMedTilgang.length === 0 && (
                         <div className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel">
                             <Normaltekst>
                                 Det finnes ingen virksomheter der du har rettigheter til å se arbeidsforhold.
