@@ -6,17 +6,6 @@ import {
 } from './amplitudefunksjonerForLogging';
 import { AltinnorganisasjonerContext } from './AltinnorganisasjonerProvider';
 
-export const SERVICEKODEINNSYNAAREGISTERET = '5441';
-export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
-
-export const erGyldigOrganisasjon = (organisasjon: Organisasjon) => {
-    return (
-        organisasjon.Type === 'Enterprise' ||
-        organisasjon.OrganizationForm === 'FLI' ||
-        organisasjon.OrganizationForm === 'BEDR' || organisasjon.OrganizationForm === 'AAFY'
-    );
-};
-
 type Context = {
     valgtAktivOrganisasjon: Organisasjon;
     setValgtAktivOrganisasjon: (org: Organisasjon) => void;
