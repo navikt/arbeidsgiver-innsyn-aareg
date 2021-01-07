@@ -41,8 +41,8 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
                     settOrganisasjoner([]);
                 } else {
                     settFeil(true)
-                    abortController.abort()
                 }
+                abortController.abort()
             });
 
         hentOrganisasjonerMedTilgangTilAltinntjeneste(
@@ -60,7 +60,11 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
             })
             .catch((e: Error) => {
                 loggInfoOmFeilFraAltinn(e.message);
-                settFeil(true)
+                if (e.message === 'Forbidden') {
+                    settOrganisasjonerMedTilgang(new Set())
+                } else {
+                    settFeil(true)
+                }
                 abortController.abort()
             });
         return function cleanup() {
