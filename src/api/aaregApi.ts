@@ -51,7 +51,6 @@ export async function hentAntallArbeidsforholdFraAareg(
         }
         return jsonRespons.second;
     } else {
-        console.log('Hent antall arbeidsforhold feilet: ', respons);
         return -1;
     }
 }
