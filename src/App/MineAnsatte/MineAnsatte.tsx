@@ -6,7 +6,7 @@ import Chevron from 'nav-frontend-chevron';
 import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { Organisasjon, tomaAltinnOrganisasjon } from '../Objekter/OrganisasjonFraAltinn';
-import { OrganisasjonsdetaljerContext } from '../OrganisasjonsdetaljerProvider';
+import { MAKS_ANTALL_ARBEIDSFORHOLD, OrganisasjonsdetaljerContext } from '../OrganisasjonsdetaljerProvider';
 import { lagListeBasertPaUrl } from './sorteringOgFiltreringsFunksjoner';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
 import Progressbar from './Progressbar/Progressbar';
@@ -18,7 +18,6 @@ import VelgTidligereVirksomhet from './VelgTidligereVirksomhet/VelgTidligereVirk
 import { nullStillSorteringIUrlParametere } from './urlFunksjoner';
 import { loggTrykketPåTidligereArbeidsforholdSide } from '../amplitudefunksjonerForLogging';
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
-import { MAKS_ANTALL_ARBEIDSFORHOLD } from '../ArbeidsforholdRoutes';
 import './MineAnsatte.less';
 import { AltinnorganisasjonerContext } from '../AltinnorganisasjonerProvider';
 
@@ -48,40 +47,25 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
     );
 };
 
-interface Props extends RouteComponentProps {
-    valgtTidligereVirksomhet: Organisasjon;
-    hentOgSetAntallOgArbeidsforhold: (organisasjon: Organisasjon, erTidligereArbeidsforhold: boolean) => void;
-    listeMedArbeidsforholdFraAareg: Arbeidsforhold[];
-    antallArbeidsforhold: number;
-    visProgressbar: boolean;
-    setVisProgressbar: (skalVises: boolean) => void;
-    aaregLasteState: APISTATUS;
-    feilkodeFraAareg: string;
-    antallArbeidsforholdUkjent: boolean;
-    nåværendeUrlString: string;
-    setNåværendeUrlString: (endret: string) => void;
-    setTidligereVirksomhet: (tidligereVirksomhet: Organisasjon) => void;
-}
-
-const MineAnsatte: FunctionComponent<Props> = ({
-    history,
-    listeMedArbeidsforholdFraAareg,
-    antallArbeidsforhold,
-    antallArbeidsforholdUkjent,
-    visProgressbar,
-    setVisProgressbar,
-    aaregLasteState,
-    feilkodeFraAareg,
-    nåværendeUrlString,
-    setNåværendeUrlString,
-    hentOgSetAntallOgArbeidsforhold,
-    valgtTidligereVirksomhet,
-    setTidligereVirksomhet
-}) => {
+const MineAnsatte: FunctionComponent<RouteComponentProps> = ({ history }) => {
     const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
-    const { valgtAktivOrganisasjon, tilgangTilTidligereArbeidsforhold, tidligereVirksomheter } = useContext(
-        OrganisasjonsdetaljerContext
-    );
+    const {
+        valgtAktivOrganisasjon,
+        tilgangTilTidligereArbeidsforhold,
+        tidligereVirksomheter,
+        listeMedArbeidsforholdFraAareg,
+        antallArbeidsforhold,
+        antallArbeidsforholdUkjent,
+        visProgressbar,
+        setVisProgressbar,
+        aaregLasteState,
+        feilkodeFraAareg,
+        nåværendeUrlString,
+        setNåværendeUrlString,
+        hentOgSetAntallOgArbeidsforhold,
+        valgtTidligereVirksomhet,
+        setValgtTidligereVirksomhet
+    } = useContext(OrganisasjonsdetaljerContext);
 
     const naVærendeUrl = new URL(nåværendeUrlString);
     const sidetall = naVærendeUrl.searchParams.get('side') || '1';
@@ -115,7 +99,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     };
 
     const setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere = (organisasjon: Organisasjon) => {
-        setTidligereVirksomhet(organisasjon);
+        setValgtTidligereVirksomhet(organisasjon);
         hentOgSetAntallOgArbeidsforhold(organisasjon, true);
         const search = nullStillSorteringIUrlParametere();
         history.replace({ search: search });

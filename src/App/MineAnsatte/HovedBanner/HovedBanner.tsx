@@ -7,15 +7,16 @@ import { nullStillSorteringIUrlParametere } from '../urlFunksjoner';
 import { OrganisasjonsdetaljerContext } from '../../OrganisasjonsdetaljerProvider';
 import { AltinnorganisasjonerContext } from '../../AltinnorganisasjonerProvider';
 
-interface Props extends RouteComponentProps {
-    hentOgSetAntallOgArbeidsforhold: (organisasjon: Organisasjon, erTidligereArbeidsforhold: boolean) => void;
-    abortTidligereRequests: () => void;
-    setEndringIUrlAlert: (endret: string) => void;
-}
-
-const Banner: FunctionComponent<Props> = props => {
+const Banner: FunctionComponent<RouteComponentProps> = props => {
     const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
-    const { valgtAktivOrganisasjon, setValgtAktivOrganisasjon, setTilgangTilTidligereArbeidsforhold } = useContext(
+    const {
+        valgtAktivOrganisasjon,
+        setValgtAktivOrganisasjon,
+        setTilgangTilTidligereArbeidsforhold,
+        hentOgSetAntallOgArbeidsforhold,
+        abortTidligereRequests,
+        setNåværendeUrlString
+    } = useContext(
         OrganisasjonsdetaljerContext
     );
 
@@ -37,17 +38,17 @@ const Banner: FunctionComponent<Props> = props => {
         if (organisasjon) {
             setValgtAktivOrganisasjon(organisasjon);
             setTilgangTilTidligereArbeidsforhold(harTilgang(organisasjon.ParentOrganizationNumber));
-            props.abortTidligereRequests();
+            abortTidligereRequests();
 
             if (organisasjon.OrganizationNumber && harTilgang(organisasjon.OrganizationNumber)) {
-                props.hentOgSetAntallOgArbeidsforhold(organisasjon, false);
+                hentOgSetAntallOgArbeidsforhold(organisasjon, false);
             }
 
             if (valgtAktivOrganisasjon !== tomaAltinnOrganisasjon) {
                 history.replace(nullStillSorteringIUrlParametere());
                 erPåEnkeltArbeidsforhold && redirectTilListeVisning();
                 erPåTidligereArbeidsforhold && redirectTilListeVisning();
-                props.setEndringIUrlAlert(window.location.href);
+                setNåværendeUrlString(window.location.href);
             }
         }
     };
