@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import { basename } from './paths';
 import environment from '../utils/environment';
 import { APISTATUS } from '../api/api-utils';
@@ -10,7 +9,7 @@ import amplitude from '../utils/amplitude';
 import { loggInfoOmFeil } from './amplitudefunksjonerForLogging';
 import { hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg } from '../api/aaregApi';
 import { redirectTilLogin } from './LoggInn/LoggInn';
-import { OrganisasjonerOgTilgangerContext, TILGANGSSTATE } from './OrganisasjonerOgTilgangerProvider';
+import { OrganisasjonsdetaljerContext } from './OrganisasjonsdetaljerProvider';
 import HovedBanner from './MineAnsatte/HovedBanner/HovedBanner';
 import EnkeltArbeidsforhold from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
 import MineAnsatte from './MineAnsatte/MineAnsatte';
@@ -20,7 +19,7 @@ import './App.less';
 export const MAKS_ANTALL_ARBEIDSFORHOLD = 25000;
 
 const ArbeidsforholdRoutes = () => {
-    const { valgtAktivOrganisasjon, tilgangArbeidsforhold } = useContext(OrganisasjonerOgTilgangerContext);
+    const { valgtAktivOrganisasjon, tilgangArbeidsforhold } = useContext(OrganisasjonsdetaljerContext);
 
     const [valgtTidligereVirksomhet, setValgtTidligereVirksomhet] = useState(tomaAltinnOrganisasjon);
     const [visProgressbar, setVisProgressbar] = useState(false);
@@ -32,7 +31,10 @@ const ArbeidsforholdRoutes = () => {
     const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
     const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
 
-    const [abortControllerAntallArbeidsforhold, setAbortControllerAntallArbeidsforhold] = useState<AbortController | null>(null);
+    const [
+        abortControllerAntallArbeidsforhold,
+        setAbortControllerAntallArbeidsforhold
+    ] = useState<AbortController | null>(null);
     const [abortControllerArbeidsforhold, setAbortControllerArbeidsforhold] = useState<AbortController | null>(null);
 
     const [nåværendeUrlString, setNåværendeUrlString] = useState<string>(window.location.href);
@@ -102,9 +104,10 @@ const ArbeidsforholdRoutes = () => {
                         }
                     })
                     .catch(error => {
-                        const feilmelding = 'Hent arbeidsforhold fra AAreg feilet: ' + error.response.status
-                            ? error.response.status
-                            : 'Ukjent feil';
+                        const feilmelding =
+                            'Hent arbeidsforhold fra AAreg feilet: ' + error.response.status
+                                ? error.response.status
+                                : 'Ukjent feil';
                         loggInfoOmFeil(feilmelding, erTidligereVirksomhet);
                         if (error.response.status === 401) {
                             redirectTilLogin();
@@ -113,7 +116,7 @@ const ArbeidsforholdRoutes = () => {
                         setFeilkodeFraAareg(error.response.status.toString());
                     });
             }
-        })
+        });
     };
 
     const abortTidligereRequests = () => {
@@ -130,45 +133,34 @@ const ArbeidsforholdRoutes = () => {
                 abortTidligereRequests={abortTidligereRequests}
                 setEndringIUrlAlert={setNåværendeUrlString}
             />
-            <>
-                {tilgangArbeidsforhold !== TILGANGSSTATE.LASTER ? (
-                    <>
-                        <Route exact path={enkeltArbeidsforholdPath}>
-                            <EnkeltArbeidsforhold
-                                alleArbeidsforhold={listeMedArbeidsforholdFraAareg}
-                                setVisProgressbar={setVisProgressbar}
-                                valgtArbeidsforhold={valgtArbeidsforhold}
-                                setValgtArbeidsforhold={setValgtArbeidsforhold}
-                            />
-                        </Route>
-                        <Route exact path={arbeidsforholdPath}>
-                            {tilgangArbeidsforhold === TILGANGSSTATE.IKKE_TILGANG && (
-                                <IngenTilgangInfo/>
-                            )}
-                            {tilgangArbeidsforhold === TILGANGSSTATE.TILGANG && (
-                                <MineAnsatte
-                                    hentOgSetAntallOgArbeidsforhold={hentOgSetAntallOgArbeidsforhold}
-                                    aaregLasteState={aaregLasteState}
-                                    feilkodeFraAareg={feilkodeFraAareg}
-                                    valgtTidligereVirksomhet={valgtTidligereVirksomhet}
-                                    setTidligereVirksomhet ={setValgtTidligereVirksomhet }
-                                    listeMedArbeidsforholdFraAareg={listeMedArbeidsforholdFraAareg}
-                                    antallArbeidsforhold={antallArbeidsforhold}
-                                    antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
-                                    nåværendeUrlString={nåværendeUrlString}
-                                    setNåværendeUrlString={setNåværendeUrlString}
-                                    visProgressbar={visProgressbar}
-                                    setVisProgressbar={setVisProgressbar}
-                                />
-                            )}
-                        </Route>
-                    </>
+            <Route exact path={enkeltArbeidsforholdPath}>
+                <EnkeltArbeidsforhold
+                    alleArbeidsforhold={listeMedArbeidsforholdFraAareg}
+                    setVisProgressbar={setVisProgressbar}
+                    valgtArbeidsforhold={valgtArbeidsforhold}
+                    setValgtArbeidsforhold={setValgtArbeidsforhold}
+                />
+            </Route>
+            <Route exact path={arbeidsforholdPath}>
+                {tilgangArbeidsforhold ? (
+                    <MineAnsatte
+                        hentOgSetAntallOgArbeidsforhold={hentOgSetAntallOgArbeidsforhold}
+                        aaregLasteState={aaregLasteState}
+                        feilkodeFraAareg={feilkodeFraAareg}
+                        valgtTidligereVirksomhet={valgtTidligereVirksomhet}
+                        setTidligereVirksomhet={setValgtTidligereVirksomhet}
+                        listeMedArbeidsforholdFraAareg={listeMedArbeidsforholdFraAareg}
+                        antallArbeidsforhold={antallArbeidsforhold}
+                        antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
+                        nåværendeUrlString={nåværendeUrlString}
+                        setNåværendeUrlString={setNåværendeUrlString}
+                        visProgressbar={visProgressbar}
+                        setVisProgressbar={setVisProgressbar}
+                    />
                 ) : (
-                    <div className="spinner">
-                        <NavFrontendSpinner type="L" />
-                    </div>
+                    <IngenTilgangInfo />
                 )}
-            </>
+            </Route>
         </Router>
     );
 };
