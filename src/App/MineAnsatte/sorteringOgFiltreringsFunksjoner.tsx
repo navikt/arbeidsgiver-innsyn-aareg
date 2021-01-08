@@ -1,17 +1,15 @@
 import { SyntheticEvent } from 'react';
 import { ToggleKnappPureProps } from 'nav-frontend-toggle';
-import {SorteringsAttributt} from './MineAnsatte';
+import { SorteringsAttributt } from './MineAnsatte';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
 
 export const lagListeBasertPaUrl = (alleArbeidsforhold: Arbeidsforhold[]) => {
-    const sortertPå = getVariabelFraUrl('sorter') || '0'
+    const sortertPå = getVariabelFraUrl('sorter') || '0';
     const reversSortering = getVariabelFraUrl('revers') ? getVariabelFraUrl('revers') === 'true' : true;
     const filtreringsvalg = getVariabelFraUrl('filter') || 'Alle';
     const sokefeltTekst = getVariabelFraUrl('sok') || '';
     const filtrertPaVarsler = getVariabelFraUrl('varsler') === 'true';
-
-
 
     const filtrertListe = byggListeBasertPaPArametere(
         alleArbeidsforhold,
@@ -19,9 +17,10 @@ export const lagListeBasertPaUrl = (alleArbeidsforhold: Arbeidsforhold[]) => {
         filtrertPaVarsler,
         sokefeltTekst
     );
-    const filtrertOgSortertListe: Arbeidsforhold[] = reversSortering ?  sorterArbeidsforhold(filtrertListe, parseInt(sortertPå)).reverse() : sorterArbeidsforhold(filtrertListe, parseInt(sortertPå));
-    return filtrertOgSortertListe
-}
+    return reversSortering
+        ? sorterArbeidsforhold(filtrertListe, parseInt(sortertPå)).reverse()
+        : sorterArbeidsforhold(filtrertListe, parseInt(sortertPå));
+};
 
 export const byggListeBasertPaPArametere = (
     originalListe: Arbeidsforhold[],
@@ -197,7 +196,7 @@ export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold:
 };
 
 export const filtrerPaVarsler = (listeMedArbeidsforhold: Arbeidsforhold[], filtrerPaVarsler: boolean) => {
-    const filtrertPaVarsler = listeMedArbeidsforhold.filter(forhold => {
+    return listeMedArbeidsforhold.filter(forhold => {
         if (forhold.varsler && filtrerPaVarsler) {
             if (forhold.varsler.length) {
                 return forhold;
@@ -208,13 +207,12 @@ export const filtrerPaVarsler = (listeMedArbeidsforhold: Arbeidsforhold[], filtr
         }
         return null;
     });
-    return filtrertPaVarsler;
 };
 
 export const getVariabelFraUrl = (variabel: string) => {
     const url = new URL(window.location.href);
     return url.searchParams.get(variabel);
-}
+};
 
 export const filtreringValgt = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]): string => {
     let valg = 'Alle';
