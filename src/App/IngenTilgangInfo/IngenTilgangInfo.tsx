@@ -4,30 +4,27 @@ import Lenkepanel from 'nav-frontend-lenkepanel';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Lenke from 'nav-frontend-lenker';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
-import {
-    erGyldigOrganisasjon,
-    SERVICEKODEINNSYNAAREGISTERET,
-    SERVICEEDITIONINNSYNAAREGISTERET,
-    OrganisasjonerOgTilgangerContext
-} from '../OrganisasjonerOgTilgangerProvider';
+import { OrganisasjonsdetaljerContext } from '../OrganisasjonsdetaljerProvider';
 import alertikon from '../LoggInn/TilgangsStyringInfoTekst/infomation-circle-2.svg';
 import nyfane from './nyfane.svg';
 import altinlogo from './altinn-logo.svg';
 import { beOmTilgangIAltinnLink } from '../lenker';
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import './IngenTilgangInfo.less';
+import {
+    SERVICEKODEINNSYNAAREGISTERET,
+    SERVICEEDITIONINNSYNAAREGISTERET,
+    AltinnorganisasjonerContext
+} from '../AltinnorganisasjonerProvider';
+
+const run = <T extends any>(f: () => T) => f();
 
 const IngenTilgangInfo = () => {
-    const { valgtAktivOrganisasjon, organisasjonerFraAltinnMedTilgang } = useContext(OrganisasjonerOgTilgangerContext);
+    const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
+    const { valgtAktivOrganisasjon } = useContext(OrganisasjonsdetaljerContext);
 
-    const bedrifterMedTilgang: Organisasjon[] | null =
-        organisasjonerFraAltinnMedTilgang &&
-        organisasjonerFraAltinnMedTilgang.filter(organisasjonMedTilgang => {
-            return organisasjonMedTilgang.OrganizationForm === 'BEDR';
-        });
-
-    const filtrerteUnderEnheter: Array<Organisasjon> | null | undefined = bedrifterMedTilgang?.filter(organisasjon =>
-        erGyldigOrganisasjon(organisasjon)
+    const bedrifterMedTilgang: Organisasjon[] = altinnorganisasjoner.filter(
+        org => org.tilgang && org.OrganizationForm === 'BEDR'
     );
 
     return (
@@ -48,50 +45,62 @@ const IngenTilgangInfo = () => {
                 </div>
 
                 <div className="ingen-tilgang-innhold">
-                    <Normaltekst className="ingen-tilgang-innhold__ingress">
-                        Du har valgt en virksomhet der du mangler rettigheter for å se arbeidsforhold. Velg en
-                        virksomhet der du har tilgang.
-                    </Normaltekst>
-                    <Lenkepanel
-                        tittelProps={'normaltekst'}
-                        border
-                        href={beOmTilgangIAltinnLink(
-                            valgtAktivOrganisasjon.OrganizationNumber,
-                            SERVICEKODEINNSYNAAREGISTERET,
-                            SERVICEEDITIONINNSYNAAREGISTERET
-                        )}
-                    >
-                        <div className={'ingen-tilgang-innhold__be-om-tilgang-boks'}>
-                            <img src={altinlogo} alt={'altinnlogo'} />
-                            <div className={'ingen-tilgang-innhold__be-om-tilgang-tekst'}>
-                                <Undertittel>Be om tilgang</Undertittel>
-                                Gå til Altinn for å be om tilgang til denne tjenesten.
-                            </div>
-                        </div>
-                    </Lenkepanel>
-                    {filtrerteUnderEnheter && filtrerteUnderEnheter.length > 0 && (
-                        <Ekspanderbartpanel
-                            className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel"
-                            tittel="Disse virksomhetene har tilgang"
-                            border
-                        >
-                            <ul className="ingen-tilgang-innhold__panelinnhold">
-                                {filtrerteUnderEnheter.map(bedrift => (
-                                    <li key={bedrift.OrganizationNumber}>
-                                        {bedrift.Name + '(' + bedrift.OrganizationNumber + ')'}
-                                    </li>
-                                ))}
-                            </ul>
-                        </Ekspanderbartpanel>
-                    )}
-
-                    {(!filtrerteUnderEnheter || filtrerteUnderEnheter.length === 0) && (
-                        <div className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel">
-                            <Normaltekst>
-                                Det finnes ingen virksomheter der du har rettigheter til å se arbeidsforhold.
-                            </Normaltekst>
-                        </div>
-                    )}
+                    {run(() => {
+                        if (altinnorganisasjoner.length === 0) {
+                            return (
+                                <div className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel">
+                                    <Normaltekst>Du har ikke tilgang til noen virksomheter i Altinn.</Normaltekst>
+                                </div>
+                            );
+                        } else if (bedrifterMedTilgang.length === 0) {
+                            return (
+                                <div className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel">
+                                    <Normaltekst>
+                                        Det finnes ingen virksomheter der du har rettigheter til å se arbeidsforhold.
+                                    </Normaltekst>
+                                </div>
+                            );
+                        } else {
+                            return (
+                                <>
+                                    <Normaltekst className="ingen-tilgang-innhold__ingress">
+                                        Du har valgt en virksomhet der du mangler rettigheter for å se arbeidsforhold.
+                                        Velg en virksomhet der du har tilgang.
+                                    </Normaltekst>
+                                    <Lenkepanel
+                                        tittelProps={'normaltekst'}
+                                        border
+                                        href={beOmTilgangIAltinnLink(
+                                            valgtAktivOrganisasjon.OrganizationNumber,
+                                            SERVICEKODEINNSYNAAREGISTERET,
+                                            SERVICEEDITIONINNSYNAAREGISTERET
+                                        )}
+                                    >
+                                        <div className={'ingen-tilgang-innhold__be-om-tilgang-boks'}>
+                                            <img src={altinlogo} alt={'altinnlogo'} />
+                                            <div className={'ingen-tilgang-innhold__be-om-tilgang-tekst'}>
+                                                <Undertittel>Be om tilgang</Undertittel>
+                                                Gå til Altinn for å be om tilgang til denne tjenesten.
+                                            </div>
+                                        </div>
+                                    </Lenkepanel>
+                                    <Ekspanderbartpanel
+                                        className="ingen-tilgang-innhold__bedrifter-med-tilgang-panel"
+                                        tittel="Disse virksomhetene har tilgang"
+                                        border
+                                    >
+                                        <ul className="ingen-tilgang-innhold__panelinnhold">
+                                            {bedrifterMedTilgang.map(bedrift => (
+                                                <li key={bedrift.OrganizationNumber}>
+                                                    {bedrift.Name + ' (' + bedrift.OrganizationNumber + ')'}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Ekspanderbartpanel>
+                                </>
+                            );
+                        }
+                    })}
 
                     <Undertittel id="ingen-tilgang-innhold__panelinnhold-overskrift">
                         Denne enkelttjenesten i Altinn gir deg tilgang
