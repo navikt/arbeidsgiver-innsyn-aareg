@@ -6,7 +6,7 @@ import Chevron from 'nav-frontend-chevron';
 import { APISTATUS } from '../../api/api-utils';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { Organisasjon, tomaAltinnOrganisasjon } from '../Objekter/OrganisasjonFraAltinn';
-import { OrganisasjonerOgTilgangerContext } from '../OrganisasjonerOgTilgangerProvider';
+import { OrganisasjonsdetaljerContext } from '../OrganisasjonsdetaljerProvider';
 import { lagListeBasertPaUrl } from './sorteringOgFiltreringsFunksjoner';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
 import Progressbar from './Progressbar/Progressbar';
@@ -20,6 +20,7 @@ import { loggTrykketPåTidligereArbeidsforholdSide } from '../amplitudefunksjone
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import { MAKS_ANTALL_ARBEIDSFORHOLD } from '../ArbeidsforholdRoutes';
 import './MineAnsatte.less';
+import { AltinnorganisasjonerContext } from '../AltinnorganisasjonerProvider';
 
 export enum SorteringsAttributt {
     NAVN,
@@ -75,14 +76,12 @@ const MineAnsatte: FunctionComponent<Props> = ({
     setNåværendeUrlString,
     hentOgSetAntallOgArbeidsforhold,
     valgtTidligereVirksomhet,
-    setTidligereVirksomhet,
+    setTidligereVirksomhet
 }) => {
-    const {
-        valgtAktivOrganisasjon,
-        organisasjonerFraAltinn,
-        tilgangTilTidligereArbeidsforhold,
-        tidligereVirksomheter
-    } = useContext(OrganisasjonerOgTilgangerContext);
+    const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
+    const { valgtAktivOrganisasjon, tilgangTilTidligereArbeidsforhold, tidligereVirksomheter } = useContext(
+        OrganisasjonsdetaljerContext
+    );
 
     const naVærendeUrl = new URL(nåværendeUrlString);
     const sidetall = naVærendeUrl.searchParams.get('side') || '1';
@@ -93,14 +92,15 @@ const MineAnsatte: FunctionComponent<Props> = ({
         tilgangTilTidligereArbeidsforhold && tidligereVirksomheter && tidligereVirksomheter.length > 0;
     const forMangeArbeidsforhold = antallArbeidsforhold >= MAKS_ANTALL_ARBEIDSFORHOLD;
 
-    const valgtJuridiskEnhet = organisasjonerFraAltinn.filter(
-        organisasjon => organisasjon.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber
-    )[0];
+    const valgtJuridiskEnhet = altinnorganisasjoner.find(
+        org => org.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber
+    )!!;
 
-    const delOverskrift = 'Opplysninger for ';
-    const overskriftMedOrganisasjonsdel = ERPATIDLIGEREARBEIDSFORHOLD
-        ? delOverskrift + valgtJuridiskEnhet.Name + ' org.nr ' + valgtJuridiskEnhet.OrganizationNumber
-        : delOverskrift + valgtAktivOrganisasjon.Name;
+    const overskriftMedOrganisasjonsdel =
+        'Opplysninger for ' +
+        (ERPATIDLIGEREARBEIDSFORHOLD
+            ? valgtJuridiskEnhet.Name + ' org.nr ' + valgtJuridiskEnhet.OrganizationNumber
+            : valgtAktivOrganisasjon.Name);
 
     const setSideTallIUrlOgGenererListe = (indeks: number) => {
         setParameterIUrl('side', indeks.toString());
@@ -168,7 +168,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     return (
         <div className="bakgrunnsside">
             <div className="innhold-container">
-                <Brodsmulesti valgtOrg={valgtAktivOrganisasjon.OrganizationNumber}/>
+                <Brodsmulesti valgtOrg={valgtAktivOrganisasjon.OrganizationNumber} />
                 {ERPATIDLIGEREARBEIDSFORHOLD && (
                     <div className="brodsmule venstre">
                         <button className="brodsmule__direct-tidligere-arbeidsforhold" onClick={redirectTilbake}>
@@ -191,9 +191,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     </div>
                 )}
                 <div className="mine-ansatte">
-                    <Systemtittel className="mine-ansatte__systemtittel">
-                        {overskriftMedOrganisasjonsdel}
-                    </Systemtittel>
+                    <Systemtittel className="mine-ansatte__systemtittel">{overskriftMedOrganisasjonsdel}</Systemtittel>
                     {ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && (
                         <VelgTidligereVirksomhet
                             redirectTilbake={redirectTilbake}
