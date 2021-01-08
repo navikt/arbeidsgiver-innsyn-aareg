@@ -14,14 +14,15 @@ interface Props extends RouteComponentProps {
 }
 
 const Banner: FunctionComponent<Props> = props => {
-    const altinnorganisasjoner = useContext(AltinnorganisasjonerContext)
-    const { valgtAktivOrganisasjon, setValgtAktivOrganisasjon, setTilgangTilTidligereArbeidsforhold } = useContext(OrganisasjonsdetaljerContext);
+    const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
+    const { valgtAktivOrganisasjon, setValgtAktivOrganisasjon, setTilgangTilTidligereArbeidsforhold } = useContext(
+        OrganisasjonsdetaljerContext
+    );
 
     const { history } = props;
     const naVærendeUrl = new URL(window.location.href);
     const erPåEnkeltArbeidsforhold = naVærendeUrl.href.includes('/enkeltarbeidsforhold');
     const erPåTidligereArbeidsforhold = naVærendeUrl.href.includes('/tidligere-arbeidsforhold');
-
 
     const onOrganisasjonChange = (organisasjon?: Organisasjon) => {
         const redirectTilListeVisning = () => {

@@ -31,7 +31,10 @@ const ArbeidsforholdRoutes = () => {
     const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
     const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
 
-    const [abortControllerAntallArbeidsforhold, setAbortControllerAntallArbeidsforhold] = useState<AbortController | null>(null);
+    const [
+        abortControllerAntallArbeidsforhold,
+        setAbortControllerAntallArbeidsforhold
+    ] = useState<AbortController | null>(null);
     const [abortControllerArbeidsforhold, setAbortControllerArbeidsforhold] = useState<AbortController | null>(null);
 
     const [nåværendeUrlString, setNåværendeUrlString] = useState<string>(window.location.href);
@@ -101,9 +104,10 @@ const ArbeidsforholdRoutes = () => {
                         }
                     })
                     .catch(error => {
-                        const feilmelding = 'Hent arbeidsforhold fra AAreg feilet: ' + error.response.status
-                            ? error.response.status
-                            : 'Ukjent feil';
+                        const feilmelding =
+                            'Hent arbeidsforhold fra AAreg feilet: ' + error.response.status
+                                ? error.response.status
+                                : 'Ukjent feil';
                         loggInfoOmFeil(feilmelding, erTidligereVirksomhet);
                         if (error.response.status === 401) {
                             redirectTilLogin();
@@ -112,7 +116,7 @@ const ArbeidsforholdRoutes = () => {
                         setFeilkodeFraAareg(error.response.status.toString());
                     });
             }
-        })
+        });
     };
 
     const abortTidligereRequests = () => {
@@ -138,13 +142,13 @@ const ArbeidsforholdRoutes = () => {
                 />
             </Route>
             <Route exact path={arbeidsforholdPath}>
-                {tilgangArbeidsforhold
-                    ? (<MineAnsatte
+                {tilgangArbeidsforhold ? (
+                    <MineAnsatte
                         hentOgSetAntallOgArbeidsforhold={hentOgSetAntallOgArbeidsforhold}
                         aaregLasteState={aaregLasteState}
                         feilkodeFraAareg={feilkodeFraAareg}
                         valgtTidligereVirksomhet={valgtTidligereVirksomhet}
-                        setTidligereVirksomhet ={setValgtTidligereVirksomhet }
+                        setTidligereVirksomhet={setValgtTidligereVirksomhet}
                         listeMedArbeidsforholdFraAareg={listeMedArbeidsforholdFraAareg}
                         antallArbeidsforhold={antallArbeidsforhold}
                         antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
@@ -152,9 +156,10 @@ const ArbeidsforholdRoutes = () => {
                         setNåværendeUrlString={setNåværendeUrlString}
                         visProgressbar={visProgressbar}
                         setVisProgressbar={setVisProgressbar}
-                    />)
-                    : (<IngenTilgangInfo/>)
-                }
+                    />
+                ) : (
+                    <IngenTilgangInfo />
+                )}
             </Route>
         </Router>
     );
