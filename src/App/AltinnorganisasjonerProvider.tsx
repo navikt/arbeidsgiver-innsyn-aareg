@@ -3,10 +3,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Organisasjon } from './Objekter/OrganisasjonFraAltinn';
 import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
-import {
-    loggForbiddenFraAltinn,
-    loggInfoOmFeilFraAltinn,
-} from './amplitudefunksjonerForLogging';
+import { loggForbiddenFraAltinn, loggInfoOmFeilFraAltinn } from './amplitudefunksjonerForLogging';
 
 export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
@@ -20,14 +17,14 @@ const erGyldigOrganisasjon = (organisasjon: Organisasjon) => {
     );
 };
 
-type Context = Array<Organisasjon & {tilgang: boolean}>;
+type Context = Array<Organisasjon & { tilgang: boolean }>;
 
 export const AltinnorganisasjonerContext = createContext<Context>([]);
 
 export const AltinnorganisasjonerProvider: FunctionComponent = props => {
-    const [organisasjoner, settOrganisasjoner] = useState<null | Array<Organisasjon>>(null)
-    const [organisasjonerMedTilgang, settOrganisasjonerMedTilgang] = useState<null | Set<string>>(null)
-    const [feil, settFeil] = useState(false)
+    const [organisasjoner, settOrganisasjoner] = useState<null | Array<Organisasjon>>(null);
+    const [organisasjonerMedTilgang, settOrganisasjonerMedTilgang] = useState<null | Set<string>>(null);
+    const [feil, settFeil] = useState(false);
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -40,9 +37,9 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
                     loggForbiddenFraAltinn();
                     settOrganisasjoner([]);
                 } else {
-                    settFeil(true)
+                    settFeil(true);
                 }
-                abortController.abort()
+                abortController.abort();
             });
 
         hentOrganisasjonerMedTilgangTilAltinntjeneste(
@@ -51,21 +48,22 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
             abortController.signal
         )
             .then(organisasjonerMedTilgangFraAltinn => {
-                settOrganisasjonerMedTilgang(new Set(
-                    organisasjonerMedTilgangFraAltinn
-                        .filter(erGyldigOrganisasjon)
-                        .map(org => org.OrganizationNumber)
+                settOrganisasjonerMedTilgang(
+                    new Set(
+                        organisasjonerMedTilgangFraAltinn
+                            .filter(erGyldigOrganisasjon)
+                            .map(org => org.OrganizationNumber)
                     )
-                )
+                );
             })
             .catch((e: Error) => {
                 loggInfoOmFeilFraAltinn(e.message);
                 if (e.message === 'Forbidden') {
-                    settOrganisasjonerMedTilgang(new Set())
+                    settOrganisasjonerMedTilgang(new Set());
                 } else {
-                    settFeil(true)
+                    settFeil(true);
                 }
-                abortController.abort()
+                abortController.abort();
             });
         return function cleanup() {
             abortController.abort();
@@ -74,9 +72,9 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
 
     if (organisasjoner !== null && organisasjonerMedTilgang !== null) {
         const context = organisasjoner.map(org => ({
-                ...org,
-                tilgang: organisasjonerMedTilgang.has(org.OrganizationNumber)
-            }));
+            ...org,
+            tilgang: organisasjonerMedTilgang.has(org.OrganizationNumber)
+        }));
 
         return (
             <AltinnorganisasjonerContext.Provider value={context}>
@@ -87,12 +85,12 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
         return (
             <div className="feilmelding-altinn">
                 <AlertStripeFeil>
-                    Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i
-                    Altinn kan du prøve å laste siden på nytt.
+                    Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn kan du prøve å laste
+                    siden på nytt.
                 </AlertStripeFeil>
             </div>
         );
-    } else  {
+    } else {
         return (
             <div className="spinner">
                 <NavFrontendSpinner type="L" />
