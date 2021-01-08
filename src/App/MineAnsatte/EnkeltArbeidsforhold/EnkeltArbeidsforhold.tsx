@@ -28,21 +28,14 @@ const apiURL = () => {
     return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
 };
 
-interface Props extends RouteComponentProps {
-    alleArbeidsforhold: Arbeidsforhold[];
-    setVisProgressbar: (vis: boolean) => void;
-    valgtArbeidsforhold: Arbeidsforhold | null;
-    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
-}
-
-const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
-    history,
-    alleArbeidsforhold,
-    setVisProgressbar,
-    valgtArbeidsforhold,
-    setValgtArbeidsforhold
-}) => {
-    const { valgtAktivOrganisasjon } = useContext(OrganisasjonsdetaljerContext);
+const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history, }) => {
+    const {
+        valgtAktivOrganisasjon,
+        setVisProgressbar,
+        valgtArbeidsforhold,
+        setValgtArbeidsforhold,
+        listeMedArbeidsforholdFraAareg
+    } = useContext(OrganisasjonsdetaljerContext);
 
     const redirectTilbake = () => {
         const naVærendeUrl = new URL(window.location.href);
@@ -62,7 +55,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
         redirectTilbake();
     }
 
-    const filtrertOgSortertListe: Arbeidsforhold[] = lagListeBasertPaUrl(alleArbeidsforhold);
+    const filtrertOgSortertListe: Arbeidsforhold[] = lagListeBasertPaUrl(listeMedArbeidsforholdFraAareg);
     const indeksValgtArbeidsforhold = filtrertOgSortertListe.findIndex(arbeidsforhold => {
         return arbeidsforhold.navArbeidsforholdId === arbeidsforholdIdFraUrl;
     });
