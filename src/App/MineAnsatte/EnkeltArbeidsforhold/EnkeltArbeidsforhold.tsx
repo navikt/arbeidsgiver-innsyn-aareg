@@ -5,11 +5,8 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Chevron from 'nav-frontend-chevron';
 import environment from '../../../utils/environment';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
-import {
-    getVariabelFraUrl,
-    lagListeBasertPaUrl,
-} from '../sorteringOgFiltreringsFunksjoner';
-import EnkeltArbeidsforholdVarselVisning from "./EnkeltArbeidsforholdVarselVisning/EnkeltArbeidsforholdVarselVisning";
+import { getVariabelFraUrl, lagListeBasertPaUrl } from '../sorteringOgFiltreringsFunksjoner';
+import EnkeltArbeidsforholdVarselVisning from './EnkeltArbeidsforholdVarselVisning/EnkeltArbeidsforholdVarselVisning';
 import Brodsmulesti from '../../Brodsmulesti/Brodsmulesti';
 import { OrganisasjonsdetaljerContext } from '../../OrganisasjonsdetaljerProvider';
 import './EnkeltArbeidsforhold.less';
