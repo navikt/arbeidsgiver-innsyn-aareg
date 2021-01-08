@@ -38,8 +38,8 @@ const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) =>
         <>
             <Element>For mange arbeidsforhold</Element>
             {'Vi har ikke kapasitet til å hente flere enn ' +
-            MAKS_ANTALL_ARBEIDSFORHOLD +
-            ' avsluttede eller aktive arbeidsforhold om gangen. '}
+                MAKS_ANTALL_ARBEIDSFORHOLD +
+                ' avsluttede eller aktive arbeidsforhold om gangen. '}
             {'Vi jobber med å forbedre systemet slik at flere arbeidsforhold kan vises.'}
             <br />
             <br />
@@ -76,14 +76,12 @@ const MineAnsatte: FunctionComponent<Props> = ({
     setNåværendeUrlString,
     hentOgSetAntallOgArbeidsforhold,
     valgtTidligereVirksomhet,
-    setTidligereVirksomhet,
+    setTidligereVirksomhet
 }) => {
-    const altinnorganisasjoner = useContext(AltinnorganisasjonerContext)
-    const {
-        valgtAktivOrganisasjon,
-        tilgangTilTidligereArbeidsforhold,
-        tidligereVirksomheter
-    } = useContext(OrganisasjonsdetaljerContext);
+    const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
+    const { valgtAktivOrganisasjon, tilgangTilTidligereArbeidsforhold, tidligereVirksomheter } = useContext(
+        OrganisasjonsdetaljerContext
+    );
 
     const naVærendeUrl = new URL(nåværendeUrlString);
     const sidetall = naVærendeUrl.searchParams.get('side') || '1';
@@ -170,7 +168,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
     return (
         <div className="bakgrunnsside">
             <div className="innhold-container">
-                <Brodsmulesti valgtOrg={valgtAktivOrganisasjon.OrganizationNumber}/>
+                <Brodsmulesti valgtOrg={valgtAktivOrganisasjon.OrganizationNumber} />
                 {ERPATIDLIGEREARBEIDSFORHOLD && (
                     <div className="brodsmule venstre">
                         <button className="brodsmule__direct-tidligere-arbeidsforhold" onClick={redirectTilbake}>
@@ -193,9 +191,7 @@ const MineAnsatte: FunctionComponent<Props> = ({
                     </div>
                 )}
                 <div className="mine-ansatte">
-                    <Systemtittel className="mine-ansatte__systemtittel">
-                        {overskriftMedOrganisasjonsdel}
-                    </Systemtittel>
+                    <Systemtittel className="mine-ansatte__systemtittel">{overskriftMedOrganisasjonsdel}</Systemtittel>
                     {ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && (
                         <VelgTidligereVirksomhet
                             redirectTilbake={redirectTilbake}
