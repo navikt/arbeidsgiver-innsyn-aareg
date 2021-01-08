@@ -11,11 +11,8 @@ const Banner: FunctionComponent<RouteComponentProps> = props => {
     const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
     const {
         valgtAktivOrganisasjon,
-        setValgtAktivOrganisasjon,
-        setTilgangTilTidligereArbeidsforhold,
-        hentOgSetAntallOgArbeidsforhold,
-        abortTidligereRequests,
-        setNåværendeUrlString
+        setNåværendeUrlString,
+        bedriftsvelgerBytterOrganisasjon
     } = useContext(
         OrganisasjonsdetaljerContext
     );
@@ -25,24 +22,18 @@ const Banner: FunctionComponent<RouteComponentProps> = props => {
     const erPåEnkeltArbeidsforhold = naVærendeUrl.href.includes('/enkeltarbeidsforhold');
     const erPåTidligereArbeidsforhold = naVærendeUrl.href.includes('/tidligere-arbeidsforhold');
 
+    const sidetittel = erPåTidligereArbeidsforhold ? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
+    const organisasjonerIBedriftsmenyen = erPåTidligereArbeidsforhold ? [] : altinnorganisasjoner;
+
+    const redirectTilListeVisning = () => {
+        naVærendeUrl.searchParams.delete('arbeidsforhold');
+        const { search } = naVærendeUrl;
+        history.replace({ search: search, pathname: '/' });
+    };
+
     const onOrganisasjonChange = (organisasjon?: Organisasjon) => {
-        const redirectTilListeVisning = () => {
-            naVærendeUrl.searchParams.delete('arbeidsforhold');
-            const { search } = naVærendeUrl;
-            history.replace({ search: search, pathname: '/' });
-        };
-
-        const harTilgang = (orgnr: string): boolean =>
-            altinnorganisasjoner.find(org => org.OrganizationNumber === orgnr)?.tilgang === true;
-
         if (organisasjon) {
-            setValgtAktivOrganisasjon(organisasjon);
-            setTilgangTilTidligereArbeidsforhold(harTilgang(organisasjon.ParentOrganizationNumber));
-            abortTidligereRequests();
-
-            if (organisasjon.OrganizationNumber && harTilgang(organisasjon.OrganizationNumber)) {
-                hentOgSetAntallOgArbeidsforhold(organisasjon, false);
-            }
+            bedriftsvelgerBytterOrganisasjon(organisasjon)
 
             if (valgtAktivOrganisasjon !== tomaAltinnOrganisasjon) {
                 history.replace(nullStillSorteringIUrlParametere());
@@ -51,10 +42,7 @@ const Banner: FunctionComponent<RouteComponentProps> = props => {
                 setNåværendeUrlString(window.location.href);
             }
         }
-    };
-
-    const sidetittel = erPåTidligereArbeidsforhold ? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
-    const organisasjonerIBedriftsmenyen = erPåTidligereArbeidsforhold ? [] : altinnorganisasjoner;
+    }
 
     return (
         <div className="hovebanner">

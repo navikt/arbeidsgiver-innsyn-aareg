@@ -15,28 +15,27 @@ import { redirectTilLogin } from './LoggInn/LoggInn';
 
 type Context = {
     valgtAktivOrganisasjon: Organisasjon;
-    setValgtAktivOrganisasjon: (org: Organisasjon) => void;
-    tilgangArbeidsforhold: boolean;
-    tilgangTilTidligereArbeidsforhold: boolean;
-    setTilgangTilTidligereArbeidsforhold: (bool: boolean) => void;
     tidligereVirksomheter: Organisasjon[] | undefined;
+    valgtTidligereVirksomhet: Organisasjon;
 
-    hentOgSetAntallOgArbeidsforhold: (organisasjon: Organisasjon, erTidligereArbeidsforhold: boolean) => void;
-    abortTidligereRequests: () => void;
-    setNåværendeUrlString: (url: string) => void;
-    setVisProgressbar: (vis: boolean) => void;
     valgtArbeidsforhold: Arbeidsforhold | null;
-    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
     listeMedArbeidsforholdFraAareg: Arbeidsforhold[];
 
-    valgtTidligereVirksomhet: Organisasjon;
+    tilgangArbeidsforhold: boolean;
+    tilgangTilTidligereArbeidsforhold: boolean;
     antallArbeidsforhold: number;
     visProgressbar: boolean;
+    antallArbeidsforholdUkjent: boolean;
     aaregLasteState: APISTATUS;
     feilkodeFraAareg: string;
-    antallArbeidsforholdUkjent: boolean;
     nåværendeUrlString: string;
+
+    setNåværendeUrlString: (url: string) => void;
+    setVisProgressbar: (vis: boolean) => void;
     setValgtTidligereVirksomhet: (tidligereVirksomhet: Organisasjon) => void;
+    bedriftsvelgerBytterOrganisasjon: (org: Organisasjon) => void;
+    hentOgSetAntallOgArbeidsforhold: (organisasjon: Organisasjon, erTidligereArbeidsforhold: boolean) => void;
+    setValgtArbeidsforhold: (arbeidsforhold: Arbeidsforhold) => void;
 };
 
 export const OrganisasjonsdetaljerContext = createContext<Context>({} as Context);
@@ -50,6 +49,26 @@ export const OrganisasjonsdetaljerProvider: FunctionComponent = props => {
     const [tilgangArbeidsforhold, setTilgangArbeidsforhold] = useState(false);
     const [tilgangTilTidligereArbeidsforhold, setTilgangTilTidligereArbeidsforhold] = useState<boolean>(false);
     const [tidligereVirksomheter, setTidligereVirksomheter] = useState<Array<Organisasjon> | undefined>(undefined);
+    const [valgtTidligereVirksomhet, setValgtTidligereVirksomhet] = useState(tomaAltinnOrganisasjon);
+    const [visProgressbar, setVisProgressbar] = useState(false);
+    const [aaregLasteState, setAaregLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
+    const [feilkodeFraAareg, setFeilkodeFraAareg] = useState<string>('');
+    const [listeMedArbeidsforholdFraAareg, setListeMedArbeidsforholdFraAareg] = useState(Array<Arbeidsforhold>());
+    const [antallArbeidsforhold, setAntallArbeidsforhold] = useState(0);
+    const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
+    const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
+    const [
+        abortControllerAntallArbeidsforhold,
+        setAbortControllerAntallArbeidsforhold
+    ] = useState<AbortController | null>(null);
+    const [abortControllerArbeidsforhold, setAbortControllerArbeidsforhold] = useState<AbortController | null>(null);
+    const [nåværendeUrlString, setNåværendeUrlString] = useState<string>(window.location.href);
+
+    useEffect(() => {
+        if (environment.MILJO) {
+            amplitude.logEvent('#arbeidsforhold bruker er innlogget');
+        }
+    }, []);
 
     useEffect(() => {
         setTilgangArbeidsforhold(
@@ -67,30 +86,6 @@ export const OrganisasjonsdetaljerProvider: FunctionComponent = props => {
                 .catch(loggInfoOmFeilTidligereOrganisasjoner);
         }
     }, [valgtAktivOrganisasjon.ParentOrganizationNumber, tilgangTilTidligereArbeidsforhold]);
-
-    const [valgtTidligereVirksomhet, setValgtTidligereVirksomhet] = useState(tomaAltinnOrganisasjon);
-    const [visProgressbar, setVisProgressbar] = useState(false);
-    const [aaregLasteState, setAaregLasteState] = useState<APISTATUS>(APISTATUS.LASTER);
-    const [feilkodeFraAareg, setFeilkodeFraAareg] = useState<string>('');
-
-    const [listeMedArbeidsforholdFraAareg, setListeMedArbeidsforholdFraAareg] = useState(Array<Arbeidsforhold>());
-    const [antallArbeidsforhold, setAntallArbeidsforhold] = useState(0);
-    const [antallArbeidsforholdUkjent, setAntallArbeidsforholdUkjent] = useState(false);
-    const [valgtArbeidsforhold, setValgtArbeidsforhold] = useState<Arbeidsforhold | null>(null);
-
-    const [
-        abortControllerAntallArbeidsforhold,
-        setAbortControllerAntallArbeidsforhold
-    ] = useState<AbortController | null>(null);
-    const [abortControllerArbeidsforhold, setAbortControllerArbeidsforhold] = useState<AbortController | null>(null);
-
-    const [nåværendeUrlString, setNåværendeUrlString] = useState<string>(window.location.href);
-
-    useEffect(() => {
-        if (environment.MILJO) {
-            amplitude.logEvent('#arbeidsforhold bruker er innlogget');
-        }
-    }, []);
 
     const hentOgSetAntallOgArbeidsforhold = (organisasjon: Organisasjon, erTidligereVirksomhet: boolean) => {
         const abortControllerAntallKall = new AbortController();
@@ -154,19 +149,24 @@ export const OrganisasjonsdetaljerProvider: FunctionComponent = props => {
         });
     };
 
-    const abortTidligereRequests = () => {
-        if (abortControllerAntallArbeidsforhold && abortControllerArbeidsforhold) {
-            abortControllerAntallArbeidsforhold.abort();
-            abortControllerArbeidsforhold.abort();
+    const bedriftsvelgerBytterOrganisasjon = (organisasjon: Organisasjon) => {
+        const harTilgang = (orgnr: string): boolean =>
+            altinnorganisasjoner.find(org => org.OrganizationNumber === orgnr)?.tilgang === true;
+
+        setValgtAktivOrganisasjon(organisasjon);
+        setTilgangTilTidligereArbeidsforhold(harTilgang(organisasjon.ParentOrganizationNumber));
+        abortControllerAntallArbeidsforhold?.abort();
+        abortControllerArbeidsforhold?.abort();
+
+        if (organisasjon.OrganizationNumber && harTilgang(organisasjon.OrganizationNumber)) {
+            hentOgSetAntallOgArbeidsforhold(organisasjon, false);
         }
     };
 
     const context: Context = {
         valgtAktivOrganisasjon,
-        setValgtAktivOrganisasjon,
         tilgangArbeidsforhold,
         tilgangTilTidligereArbeidsforhold,
-        setTilgangTilTidligereArbeidsforhold,
         tidligereVirksomheter,
         setNåværendeUrlString,
         setValgtArbeidsforhold,
@@ -174,7 +174,6 @@ export const OrganisasjonsdetaljerProvider: FunctionComponent = props => {
         setVisProgressbar,
         hentOgSetAntallOgArbeidsforhold,
         aaregLasteState,
-        abortTidligereRequests,
         antallArbeidsforhold,
         antallArbeidsforholdUkjent,
         feilkodeFraAareg,
@@ -182,7 +181,8 @@ export const OrganisasjonsdetaljerProvider: FunctionComponent = props => {
         valgtArbeidsforhold,
         valgtTidligereVirksomhet,
         visProgressbar,
-        nåværendeUrlString
+        nåværendeUrlString,
+        bedriftsvelgerBytterOrganisasjon
     };
 
     return (
