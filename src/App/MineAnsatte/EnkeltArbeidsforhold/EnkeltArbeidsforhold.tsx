@@ -5,13 +5,10 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Chevron from 'nav-frontend-chevron';
 import environment from '../../../utils/environment';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
-import {
-    getVariabelFraUrl,
-    lagListeBasertPaUrl,
-} from '../sorteringOgFiltreringsFunksjoner';
-import EnkeltArbeidsforholdVarselVisning from "./EnkeltArbeidsforholdVarselVisning/EnkeltArbeidsforholdVarselVisning";
+import { getVariabelFraUrl, lagListeBasertPaUrl } from '../sorteringOgFiltreringsFunksjoner';
+import EnkeltArbeidsforholdVarselVisning from './EnkeltArbeidsforholdVarselVisning/EnkeltArbeidsforholdVarselVisning';
 import Brodsmulesti from '../../Brodsmulesti/Brodsmulesti';
-import { OrganisasjonerOgTilgangerContext } from '../../OrganisasjonerOgTilgangerProvider';
+import { OrganisasjonsdetaljerContext } from '../../OrganisasjonsdetaljerProvider';
 import './EnkeltArbeidsforhold.less';
 
 const miljo = () => {
@@ -45,7 +42,7 @@ const EnkeltArbeidsforhold: FunctionComponent<Props> = ({
     valgtArbeidsforhold,
     setValgtArbeidsforhold
 }) => {
-    const { valgtAktivOrganisasjon } = useContext(OrganisasjonerOgTilgangerContext);
+    const { valgtAktivOrganisasjon } = useContext(OrganisasjonsdetaljerContext);
 
     const redirectTilbake = () => {
         const naVærendeUrl = new URL(window.location.href);
