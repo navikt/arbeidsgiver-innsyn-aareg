@@ -5,11 +5,12 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Chevron from 'nav-frontend-chevron';
 import environment from '../../../utils/environment';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
-import { getVariabelFraUrl, lagListeBasertPaUrl } from '../sorteringOgFiltreringsFunksjoner';
 import EnkeltArbeidsforholdVarselVisning from './EnkeltArbeidsforholdVarselVisning/EnkeltArbeidsforholdVarselVisning';
 import Brodsmulesti from '../../Brodsmulesti/Brodsmulesti';
-import { OrganisasjonsdetaljerContext } from '../../OrganisasjonsdetaljerProvider';
 import './EnkeltArbeidsforhold.less';
+import { BedriftsmenyContext } from '../../BedriftsmenyProvider';
+import { useSearchParameters } from '../../../utils/UrlManipulation';
+import { FiltrerteOgSorterteArbeidsforholdContext } from '../../FiltrerteOgSorterteArbeidsforholdProvider';
 
 const miljo = () => {
     if (environment.MILJO === 'prod-sbs') {
@@ -28,37 +29,33 @@ const apiURL = () => {
     return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
 };
 
-const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history, }) => {
-    const {
-        valgtAktivOrganisasjon,
-        setVisProgressbar,
-        valgtArbeidsforhold,
-        setValgtArbeidsforhold,
-        listeMedArbeidsforholdFraAareg
-    } = useContext(OrganisasjonsdetaljerContext);
+const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history, location }) => {
+    const { underenhet } = useContext(BedriftsmenyContext);
+    const aareg = useContext(FiltrerteOgSorterteArbeidsforholdContext);
+
+    const { getSearchParameter } = useSearchParameters();
 
     const redirectTilbake = () => {
-        const naVærendeUrl = new URL(window.location.href);
-        const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold');
+        const ERPATIDLIGEREARBEIDSFORHOLD = location.pathname.startsWith('/tidligere-arbeidsforhold');
         const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold' : '/';
-        naVærendeUrl.searchParams.delete('arbeidsforhold');
-        const { search } = naVærendeUrl;
-        setVisProgressbar(false);
-        history.replace({ search: search, pathname: redirectPath });
+        const params = new URLSearchParams(location.search);
+        params.delete('arbeidsforhold');
+        history.replace({ search: params.toString(), pathname: redirectPath });
     };
 
     const locale = 'nb' as 'nb' | 'en';
-    const arbeidsforholdIdFraUrl = getVariabelFraUrl('arbeidsforhold');
+    const arbeidsforholdIdFraUrl = getSearchParameter('arbeidsforhold');
     window.scrollTo(0, 0);
 
     if (arbeidsforholdIdFraUrl === null) {
         redirectTilbake();
     }
 
-    const filtrertOgSortertListe: Arbeidsforhold[] = lagListeBasertPaUrl(listeMedArbeidsforholdFraAareg);
-    const indeksValgtArbeidsforhold = filtrertOgSortertListe.findIndex(arbeidsforhold => {
-        return arbeidsforhold.navArbeidsforholdId === arbeidsforholdIdFraUrl;
-    });
+    const filtrertOgSortertListe: Arbeidsforhold[] =
+        aareg?.lastestatus?.status === 'ferdig' ? aareg.lastestatus.arbeidsforhold : [];
+    const indeksValgtArbeidsforhold = filtrertOgSortertListe.findIndex(
+        arbeidsforhold => arbeidsforhold.navArbeidsforholdId === arbeidsforholdIdFraUrl
+    );
 
     if (filtrertOgSortertListe.length && indeksValgtArbeidsforhold === -1) {
         redirectTilbake();
@@ -66,7 +63,7 @@ const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history,
 
     const nesteArbeidsforhold = filtrertOgSortertListe[indeksValgtArbeidsforhold + 1];
     const forrigeArbeidsforhold = filtrertOgSortertListe[indeksValgtArbeidsforhold - 1];
-    setValgtArbeidsforhold(filtrertOgSortertListe[indeksValgtArbeidsforhold]);
+    const valgtArbeidsforhold = filtrertOgSortertListe[indeksValgtArbeidsforhold];
 
     const redirectTilArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
         setTimeout(() => {}, 2500);
@@ -76,11 +73,11 @@ const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history,
         history.replace({ search: search });
     };
 
-    return (
-        <>
-            {arbeidsforholdIdFraUrl && valgtArbeidsforhold && (
+    if (arbeidsforholdIdFraUrl && valgtArbeidsforhold) {
+        return (
+            <>
                 <div className="enkelt-arbeidsforhold-container">
-                    <Brodsmulesti valgtOrg={valgtAktivOrganisasjon.OrganizationNumber} />
+                    <Brodsmulesti valgtOrg={underenhet.OrganizationNumber} />
                     <div className="enkelt-arbeidsforhold-innhold">
                         <div className="enkelt-arbeidsforhold-innhold__topp">
                             <button className="brodsmule" onClick={redirectTilbake}>
@@ -134,9 +131,11 @@ const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history,
                         </div>
                     </div>
                 </div>
-            )}
-        </>
-    );
+            </>
+        );
+    } else {
+        return null;
+    }
 };
 
 export default withRouter(EnkeltArbeidsforhold);

@@ -1,9 +1,9 @@
 import React, { createContext, FunctionComponent, useEffect, useState } from 'react';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Organisasjon } from './Objekter/OrganisasjonFraAltinn';
 import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
 import { loggForbiddenFraAltinn, loggInfoOmFeilFraAltinn } from './amplitudefunksjonerForLogging';
+import Lasteboks from "./Lasteboks";
 
 export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
@@ -17,7 +17,8 @@ const erGyldigOrganisasjon = (organisasjon: Organisasjon) => {
     );
 };
 
-type Context = Array<Organisasjon & { tilgang: boolean }>;
+export type AltinnOrganisasjon = Organisasjon & { tilgang: boolean };
+type Context = Array<AltinnOrganisasjon>;
 
 export const AltinnorganisasjonerContext = createContext<Context>([]);
 
@@ -91,10 +92,6 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
             </div>
         );
     } else {
-        return (
-            <div className="spinner">
-                <NavFrontendSpinner type="L" />
-            </div>
-        );
+        return (<Lasteboks/>);
     }
 };

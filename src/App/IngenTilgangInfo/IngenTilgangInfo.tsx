@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React, { FunctionComponent, useContext } from "react";
 import { Normaltekst, Innholdstittel, Undertittel } from 'nav-frontend-typografi';
 import Lenkepanel from 'nav-frontend-lenkepanel';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Lenke from 'nav-frontend-lenker';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
-import { OrganisasjonsdetaljerContext } from '../OrganisasjonsdetaljerProvider';
 import alertikon from '../LoggInn/TilgangsStyringInfoTekst/infomation-circle-2.svg';
 import nyfane from './nyfane.svg';
 import altinlogo from './altinn-logo.svg';
@@ -14,14 +13,17 @@ import './IngenTilgangInfo.less';
 import {
     SERVICEKODEINNSYNAAREGISTERET,
     SERVICEEDITIONINNSYNAAREGISTERET,
-    AltinnorganisasjonerContext
-} from '../AltinnorganisasjonerProvider';
+    AltinnorganisasjonerContext, AltinnOrganisasjon
+} from "../AltinnorganisasjonerProvider";
 
 const run = <T extends any>(f: () => T) => f();
 
-const IngenTilgangInfo = () => {
+interface Props {
+    underenhet?: AltinnOrganisasjon;
+}
+
+const IngenTilgangInfo: FunctionComponent<Props> = ({underenhet}) => {
     const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
-    const { valgtAktivOrganisasjon } = useContext(OrganisasjonsdetaljerContext);
 
     const bedrifterMedTilgang: Organisasjon[] = altinnorganisasjoner.filter(
         org => org.tilgang && org.OrganizationForm === 'BEDR'
@@ -29,7 +31,7 @@ const IngenTilgangInfo = () => {
 
     return (
         <div className="ingen-tilgang-info-container">
-            <Brodsmulesti valgtOrg={valgtAktivOrganisasjon.OrganizationNumber} />
+            <Brodsmulesti valgtOrg={underenhet?.OrganizationNumber} />
             <div className="ingen-tilgang">
                 <div className="ingen-tilgang-header">
                     <div className="ingen-tilgang-header__innhold">
@@ -71,7 +73,7 @@ const IngenTilgangInfo = () => {
                                         tittelProps={'normaltekst'}
                                         border
                                         href={beOmTilgangIAltinnLink(
-                                            valgtAktivOrganisasjon.OrganizationNumber,
+                                            underenhet?.OrganizationNumber ?? '',
                                             SERVICEKODEINNSYNAAREGISTERET,
                                             SERVICEEDITIONINNSYNAAREGISTERET
                                         )}
