@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import {hentFeatureToggles} from "../api/unleashApi";
-
+import { hentFeatureToggles } from '../api/unleashApi';
 
 export enum Feature {
     visHistorikk = 'innsynaareg.vishistorikk',
@@ -18,18 +17,13 @@ export const FeatureToggleContext = createContext<FeatureToggles>({});
 export const FeatureToggleProvider = (props: any) => {
     const [featureToggles, setFeatureToggles] = useState<FeatureToggles>({});
 
-    const hentToggles = () => {
-        hentFeatureToggles().then(toggles=> setFeatureToggles(toggles)).catch( e => {
-            setFeatureToggles(Object.assign({}, ...alleFeatures.map((feature) => ({[feature]: false}))))
-    })};
-
     useEffect(() => {
-        hentToggles();
+        hentFeatureToggles()
+            .then(toggles => setFeatureToggles(toggles))
+            .catch(() => {
+                setFeatureToggles(Object.assign({}, ...alleFeatures.map(feature => ({ [feature]: false }))));
+            });
     }, []);
 
-    return (
-        <FeatureToggleContext.Provider value={featureToggles}>
-            {props.children}
-        </FeatureToggleContext.Provider>
-    );
+    return <FeatureToggleContext.Provider value={featureToggles}>{props.children}</FeatureToggleContext.Provider>;
 };

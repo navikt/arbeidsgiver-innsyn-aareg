@@ -7,13 +7,8 @@ const fuzzysortConfig = {
     threshold: -1000
 };
 
-export function byggArbeidsforholdSokeresultat(
+export const byggArbeidsforholdSokeresultat = (
     ListeMedArbeidsforhold: Arbeidsforhold[] = [],
     inputTekst: string
-): Arbeidsforhold[] {
-    const sokeresultat = finnArbeidsforholdMedSok(ListeMedArbeidsforhold, inputTekst);
-    return sokeresultat;
-}
-
-const finnArbeidsforholdMedSok = (ListeMedArbeidsforhold: Arbeidsforhold[], inputTekst: string) =>
-    fuzzysort.go(inputTekst, ListeMedArbeidsforhold, fuzzysortConfig).map((arbeidsforhold: any) => arbeidsforhold.obj);
+): Arbeidsforhold[] =>
+    fuzzysort.go(inputTekst, ListeMedArbeidsforhold, fuzzysortConfig).map(arbeidsforhold => arbeidsforhold.obj);

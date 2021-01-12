@@ -1,21 +1,17 @@
-import React, {FunctionComponent} from 'react';
+import React, { FunctionComponent } from 'react';
 import { Input } from 'nav-frontend-skjema';
 import Forstorrelsesglass from './Forstørrelsesglass';
 import './Sokefelt.less';
-import {getVariabelFraUrl} from "../sorteringOgFiltreringsFunksjoner";
+import { useSearchParameters } from "../../../utils/UrlManipulation";
 
-interface Props {
-    setParameterIUrl: (parameter: string, variabel: string) => void;
-}
+const Sokefelt: FunctionComponent = () => {
+    const {getSearchParameter, setSearchParameter} = useSearchParameters();
 
-const Sokefelt: FunctionComponent<Props> = (props: Props) => {
-    const søketekstvariabel = getVariabelFraUrl('sok');
+    const søketekstvariabel = getSearchParameter('sok');
     const søkeTekst = søketekstvariabel ? søketekstvariabel : '';
 
-    const onSoketekstChange = (soketekst: string) => {
-        props.setParameterIUrl('sok', soketekst);
-        props.setParameterIUrl('side', '1');
-    };
+    const onSoketekstChange = (soketekst: string) =>
+        setSearchParameter({sok: soketekst, side: '1'});
 
     return (
         <div className="sokefelt">
@@ -28,11 +24,9 @@ const Sokefelt: FunctionComponent<Props> = (props: Props) => {
                 onChange={(e: any) => onSoketekstChange(e.target.value)}
                 placeholder="Søk på navn eller fødselsnummer"
             />
-            <div className="sokefelt__ikon">{søkeTekst.length === 0 && <Forstorrelsesglass/>}</div>
+            <div className="sokefelt__ikon">{søkeTekst.length === 0 && <Forstorrelsesglass />}</div>
         </div>
-        )
-
-
+    );
 };
 
 export default Sokefelt;

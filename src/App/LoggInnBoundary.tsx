@@ -3,8 +3,9 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import environment from '../utils/environment';
 import LoggInn from './LoggInn/LoggInn';
 import { sjekkInnlogget } from '../api/altinnApi';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import LoggInnBanner from './LoggInn/LoggInnBanner/LoggInnBanner';
+import amplitude from '../utils/amplitude';
+import Lasteboks from "./Lasteboks";
 
 export enum Tilgang {
     LASTER,
@@ -25,25 +26,27 @@ const LoginBoundary: FunctionComponent = props => {
 
     useEffect(() => {
         setInnlogget(Tilgang.LASTER);
-        const getLoginStatus = async () => {
-            const abortController = new AbortController();
-            const signal = abortController.signal;
-            if (
-                environment.MILJO === 'prod-sbs' ||
-                environment.MILJO === 'dev-sbs' ||
-                environment.MILJO === 'labs-gcp'
-            ) {
-                let innloggingsstatus = await sjekkInnlogget(signal);
+        const abortController = new AbortController();
+
+        if (
+            environment.MILJO === 'prod-sbs' ||
+            environment.MILJO === 'dev-sbs' ||
+            environment.MILJO === 'labs-gcp'
+        ) {
+            sjekkInnlogget(abortController.signal).then(innloggingsstatus => {
                 if (innloggingsstatus) {
                     setInnlogget(Tilgang.TILGANG);
+                    if (environment.MILJO) {
+                        amplitude.logEvent('#arbeidsforhold bruker er innlogget');
+                    }
                 } else {
                     setInnlogget(Tilgang.IKKE_TILGANG);
                 }
-            } else {
-                localLogin();
-            }
-        };
-        getLoginStatus();
+            });
+            return () => abortController.abort();
+        } else {
+            localLogin();
+        }
     }, []);
 
     return (
@@ -55,9 +58,7 @@ const LoginBoundary: FunctionComponent = props => {
             ) : (
                 <>
                     <LoggInnBanner />
-                    <div className="spinner">
-                        <NavFrontendSpinner type="L" />
-                    </div>
+                    <Lasteboks />
                 </>
             )}
         </>

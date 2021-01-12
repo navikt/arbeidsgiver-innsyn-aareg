@@ -1,95 +1,57 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 import { Ingress } from 'nav-frontend-typografi';
 import './Progressbar.less';
 
 interface Props {
-    startTid: number;
-    erFerdigLastet: boolean;
-    setSkalvises: (vises: boolean) => void;
-    antall: number;
-    antallArbeidsforholdUkjent: boolean;
+    estimertAntall?: number;
 }
 
-const beregnTid = (antallForhold: number, ukjent: boolean) => {
-    if (ukjent) {
+const beregnTid = (estimertAntall: number | undefined) => {
+    if (estimertAntall === undefined) {
         return 10000;
+    } else if (0 < estimertAntall && estimertAntall < 700) {
+        return 2000 + (estimertAntall * 4);
+    } else if (700 <= estimertAntall) {
+        return 5000 + (estimertAntall * 4);
+    } else {
+        return 0;
     }
-    if (antallForhold < 700 && antallForhold > 0) {
-        const tidForAhenteNavn = antallForhold * 4;
-        return tidForAhenteNavn + 2000;
-    } else if (antallForhold > 700) {
-        const tidForAhenteNavn = antallForhold * 4;
-        return 5000 + tidForAhenteNavn;
-    }
-    return 0;
 };
 
-const beregnBreddeMedForsinkelse = (forsinkelsesparameter: number, naVarendeBredde: number, beregnetBredde: number) => {
-    const okning = beregnetBredde - naVarendeBredde;
-    const breddeMEdForsinkelse = naVarendeBredde + okning / forsinkelsesparameter;
-    return breddeMEdForsinkelse;
-};
-
-const Progressbar = ({ startTid, erFerdigLastet, setSkalvises, antall, antallArbeidsforholdUkjent }: Props) => {
-    const [tid, setTid] = useState(0);
-    const [bredde, setBredde] = useState(0);
-    const [forsinkelsesparameter, setForsinkelsesparameter] = useState(1);
-
-    const beregnetTid = beregnTid(antall, antallArbeidsforholdUkjent);
-    const element = document.getElementById('progressbar__fyll');
+/* Returns percentage. */
+const useProgressAsPercentage = (estimatedDuration: number): number => {
+    const [initialTime, setInitialTime] = useState<number>(0);
+    const [currentTime, setCurrentTime] = useState<number>(0);
 
     useEffect(() => {
-        if (bredde >= 94 && erFerdigLastet) {
-            setSkalvises(false);
-        } else {
-            if (!erFerdigLastet) {
-                if (tid / beregnetTid < 0.98) {
-                    setTimeout(() => {
-                        const element = document.getElementById('progressbar__fyll');
-                        if (element) {
-                            const naVarendeTid = new Date().getTime();
-                            const beregnetBredde = (tid / beregnetTid) * 100;
-                            if (bredde >= 80 && bredde < 96) {
-                                setForsinkelsesparameter(forsinkelsesparameter * 1.05);
-                                setBredde(beregnBreddeMedForsinkelse(forsinkelsesparameter, bredde, beregnetBredde));
-                            }
-                            if (bredde < 80) {
-                                setBredde(beregnetBredde);
-                            }
-                            element.style.width = bredde.toString() + '%';
-                            const tidGatt = naVarendeTid - startTid;
-                            setTid(tidGatt);
-                        }
-                    }, (beregnetTid / 500)*forsinkelsesparameter);
-                }
-            }
+        const time = new Date().getTime();
+        setInitialTime(time);
+        setCurrentTime(time);
 
-            if (erFerdigLastet && element && bredde + 4 < 100) {
-                setTimeout(() => {
-                    element.style.width = (bredde + 4).toString() + '%';
-                    setBredde(bredde + 4);
-                }, 100);
-            }
-        }
+        const interval = setInterval(() => {
+            setCurrentTime(new Date().getTime());
+        }, 200);
 
-        if (erFerdigLastet) {
-            const naVarendeTid = new Date().getTime();
-            const tidGatt = naVarendeTid - startTid;
-            tidGatt>beregnetTid && setSkalvises(false);
-        }
-    }, );
+        return () => clearInterval(interval);
+    }, []);
 
+    const elapsedDuration = currentTime - initialTime;
+    const ratio = elapsedDuration / estimatedDuration;
 
+    return (1 - Math.exp(-2 * ratio)) * 100;
+};
 
-    const tekst = Math.floor(bredde).toString() + '%';
-    const overtekst = antallArbeidsforholdUkjent ? '' : antall;
+const Progressbar = ({ estimertAntall }: Props) => {
+    const percent = useProgressAsPercentage(beregnTid(estimertAntall));
+    const tekst = Math.floor(percent).toString() + '%';
+    const overtekst = estimertAntall ?? '';
 
     return (
         <div className={'progressbar__container'}>
             <Ingress aria-live="assertive" className={'progressbar__henter-antall'}>{'Henter ' + overtekst + ' arbeidsforhold'}</Ingress>
             <div className={'progressbar__prosent'}>{tekst}</div>
             <div className="progressbar">
-                <div className={'progressbar__fyll'} id={'progressbar__fyll'} />
+                <div style={{width: `${percent}%`}} className={'progressbar__fyll'} id={'progressbar__fyll'} />
             </div>
         </div>
     );
