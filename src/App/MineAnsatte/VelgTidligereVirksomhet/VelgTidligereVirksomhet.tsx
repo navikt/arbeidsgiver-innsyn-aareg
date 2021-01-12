@@ -1,55 +1,57 @@
-import React from 'react';
+import React, { FunctionComponent, useContext, useEffect } from "react";
 import './VelgTidligereVirksomhet.less';
-import {Organisasjon, tomaAltinnOrganisasjon} from "../../Objekter/OrganisasjonFraAltinn";
-import {Select} from "nav-frontend-skjema";
-import {RouteComponentProps, withRouter} from "react-router";
-import UnderenhetIkon from "./UnderenhetIkon";
+import { Select } from 'nav-frontend-skjema';
+import UnderenhetIkon from './UnderenhetIkon';
+import { BedriftsmenyContext } from '../../BedriftsmenyProvider';
+import { useSearchParameters } from '../../../utils/UrlManipulation';
+import { defaultFilterParams } from '../urlFunksjoner';
 
-interface Props extends RouteComponentProps {
-  tidligereVirksomheter?: Organisasjon[];
-  setTidligereVirksomhet: (virksomhet: Organisasjon) => void;
-  redirectTilbake: () => void;
-  valgtTidligereVirksomhet?: Organisasjon;
-}
+const VelgTidligereVirksomhet: FunctionComponent = () => {
+    const { tidligereUnderenheter } = useContext(BedriftsmenyContext);
+    const { getSearchParameter, setSearchParameter } = useSearchParameters();
 
-const VelgTidligereVirksomhet = ({ tidligereVirksomheter, setTidligereVirksomhet, valgtTidligereVirksomhet, redirectTilbake}: Props) => {
-  if (tidligereVirksomheter === undefined) {
-      redirectTilbake();
-  }
+    const setTidligereVirksomhet = (orgnr: string) => {
+        const params = defaultFilterParams();
+        setSearchParameter({...params, tidligereVirksomhet: orgnr});
+    };
 
-  if (valgtTidligereVirksomhet === tomaAltinnOrganisasjon) {
-      setTidligereVirksomhet(tidligereVirksomheter!![0]);
-    }
+    const underenheter = tidligereUnderenheter === 'laster' ? [] : tidligereUnderenheter;
+    const tidligereVirksomhet = getSearchParameter('tidligereVirksomhet');
 
-    const objekter = tidligereVirksomheter && tidligereVirksomheter.map((virksomhet) => {
-            const erValgt = virksomhet.OrganizationNumber === valgtTidligereVirksomhet?.OrganizationNumber;
-            return (
-                <option title={virksomhet.Name +", " +virksomhet.OrganizationNumber}
-                        className={"mine-ansatte__velg-tidligere-virksomhet-option"}
-                        selected={erValgt} id={'tidligere-virksomhet'}
+    useEffect(() => {
+        if ((tidligereVirksomhet === null || tidligereVirksomhet === '') && underenheter.length > 0) {
+            setSearchParameter({tidligereVirksomhet: underenheter[0].OrganizationNumber})
+        }
+    }, [setSearchParameter, tidligereVirksomhet, underenheter]);
+
+    return (
+        <div className={'mine-ansatte__velg-tidligere-virksomhet'}>
+            <Select
+                label={
+                    <div className={'mine-ansatte__velg-tidligere-virksomhet-label'}>
+                        {' '}
+                        <UnderenhetIkon /> Nedlagt/omstrukturert virksomhet
+                    </div>
+                }
+                defaultValue={tidligereVirksomhet ?? ''}
+                placeholder={'Velg tidligere virksomhet'}
+                onChange={event => setTidligereVirksomhet(event.target.value)}
+                id={'velg-tidligere-virksomhet'}
+            >
+                {underenheter.map(virksomhet => (
+                    <option
+                        title={virksomhet.Name + ', ' + virksomhet.OrganizationNumber}
+                        className={'mine-ansatte__velg-tidligere-virksomhet-option'}
+                        id={'tidligere-virksomhet'}
                         value={virksomhet.OrganizationNumber}
-                        key={virksomhet.OrganizationNumber}>
-                    {virksomhet.Name +", " +virksomhet.OrganizationNumber}
-                </option>
-        );
-  })
-
-  return (
-      <div className={'mine-ansatte__velg-tidligere-virksomhet'}>
-        <Select
-            label={<div className={'mine-ansatte__velg-tidligere-virksomhet-label'} > <UnderenhetIkon/> Nedlagt/omstrukturert virksomhet</div>}
-            placeholder={'Velg tidligere virksomhet'}
-            onChange={event => {
-                const fullVirksomhet = tidligereVirksomheter?.filter(virksomhet => {
-                return virksomhet.OrganizationNumber === event.target.value;
-                 })[0]
-                setTidligereVirksomhet(fullVirksomhet!!);
-            }}
-            id = {'velg-tidligere-virksomhet' }  >
-          {objekter}
-        </Select>
-      </div>
-  );
+                        key={virksomhet.OrganizationNumber}
+                    >
+                        {virksomhet.Name + ', ' + virksomhet.OrganizationNumber}
+                    </option>
+                ))}
+            </Select>
+        </div>
+    );
 };
 
-export default withRouter(VelgTidligereVirksomhet);
+export default VelgTidligereVirksomhet;

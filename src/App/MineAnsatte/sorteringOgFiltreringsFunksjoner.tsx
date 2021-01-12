@@ -3,13 +3,15 @@ import { ToggleKnappPureProps } from 'nav-frontend-toggle';
 import { SorteringsAttributt } from './MineAnsatte';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
+import { useSearchParameters } from "../../utils/UrlManipulation";
 
-export const lagListeBasertPaUrl = (alleArbeidsforhold: Arbeidsforhold[]) => {
-    const sortertPå = getVariabelFraUrl('sorter') || '0';
-    const reversSortering = getVariabelFraUrl('revers') ? getVariabelFraUrl('revers') === 'true' : true;
-    const filtreringsvalg = getVariabelFraUrl('filter') || 'Alle';
-    const sokefeltTekst = getVariabelFraUrl('sok') || '';
-    const filtrertPaVarsler = getVariabelFraUrl('varsler') === 'true';
+export const useSortertOgFiltrertArbeidsforholdliste = (alleArbeidsforhold: Arbeidsforhold[]) => {
+    const {getSearchParameter} = useSearchParameters();
+    const sortertPå = getSearchParameter('sorter') || '0';
+    const reversSortering = getSearchParameter('revers') ? getSearchParameter('revers') === 'true' : true;
+    const filtreringsvalg = getSearchParameter('filter') || 'Alle';
+    const sokefeltTekst = getSearchParameter('sok') || '';
+    const filtrertPaVarsler = getSearchParameter('varsler') === 'true';
 
     const filtrertListe = byggListeBasertPaPArametere(
         alleArbeidsforhold,
@@ -22,7 +24,7 @@ export const lagListeBasertPaUrl = (alleArbeidsforhold: Arbeidsforhold[]) => {
         : sorterArbeidsforhold(filtrertListe, parseInt(sortertPå));
 };
 
-export const byggListeBasertPaPArametere = (
+const byggListeBasertPaPArametere = (
     originalListe: Arbeidsforhold[],
     filtrerPaAktiveAvsluttede: string,
     skalFiltrerePaVarsler: boolean,
@@ -38,7 +40,7 @@ export const byggListeBasertPaPArametere = (
     return nyListe;
 };
 
-export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => {
+const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => {
     const sortert: Arbeidsforhold[] = arbeidsforhold.sort((a, b) => {
         const datoA = new Date(a.ansattFom);
         const datoB = new Date(b.ansattFom);
@@ -50,7 +52,7 @@ export const sorterBasertPaDatoFom = (arbeidsforhold: Array<Arbeidsforhold>) => 
     return sortert;
 };
 
-export const sorterBasertPaDatoTom = (arbeidsforhold: Arbeidsforhold[]) => {
+const sorterBasertPaDatoTom = (arbeidsforhold: Arbeidsforhold[]) => {
     return arbeidsforhold.sort((a, b) => {
         if (!a.ansattTom) {
             return -1;
@@ -130,7 +132,7 @@ const sorterBasertPaYrke = (arbeidsforhold: Arbeidsforhold[]) => {
     });
 };
 
-export const sorterArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], atributt: SorteringsAttributt) => {
+const sorterArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], atributt: SorteringsAttributt) => {
     switch (atributt) {
         case SorteringsAttributt.NAVN:
             return sorterBasertPaNavn(arbeidsforhold);
@@ -195,7 +197,7 @@ export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold:
     return antallOversikt;
 };
 
-export const filtrerPaVarsler = (listeMedArbeidsforhold: Arbeidsforhold[], filtrerPaVarsler: boolean) => {
+const filtrerPaVarsler = (listeMedArbeidsforhold: Arbeidsforhold[], filtrerPaVarsler: boolean) => {
     return listeMedArbeidsforhold.filter(forhold => {
         if (forhold.varsler && filtrerPaVarsler) {
             if (forhold.varsler.length) {
@@ -207,11 +209,6 @@ export const filtrerPaVarsler = (listeMedArbeidsforhold: Arbeidsforhold[], filtr
         }
         return null;
     });
-};
-
-export const getVariabelFraUrl = (variabel: string) => {
-    const url = new URL(window.location.href);
-    return url.searchParams.get(variabel);
 };
 
 export const filtreringValgt = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]): string => {
