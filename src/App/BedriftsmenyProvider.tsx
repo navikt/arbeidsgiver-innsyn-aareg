@@ -8,6 +8,7 @@ import { hentTidligereVirksomheter } from '../api/aaregApi';
 import { loggInfoOmFeilTidligereOrganisasjoner } from './amplitudefunksjonerForLogging';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
+import Lasteboks from './Lasteboks';
 
 interface Enhet {
     hovedenhet: AltinnOrganisasjon;
@@ -82,18 +83,20 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
 
     return (
         <>
-            <div className="hovebanner">
-                <Bedriftsmeny
-                    sidetittel={sidetittel}
-                    organisasjoner={tidligereArbeidsforhold ? [] : altinnorganisasjoner}
-                    onOrganisasjonChange={() => {}}
-                    history={history}
-                />
-            </div>
+            <Bedriftsmeny
+                sidetittel={sidetittel}
+                organisasjoner={tidligereArbeidsforhold ? [] : altinnorganisasjoner}
+                onOrganisasjonChange={() => {}}
+                history={history}
+            />
             {altinnorganisasjoner.length === 0 ? (
                 <IngenTilgangInfo />
             ) : enhet === null ? (
-                oppstart ? null : <IngenTilgangInfo />
+                oppstart ? (
+                    <Lasteboks />
+                ) : (
+                    <IngenTilgangInfo />
+                )
             ) : (
                 <BedriftsmenyContext.Provider value={{ ...enhet, tidligereUnderenheter }}>
                     {children}
