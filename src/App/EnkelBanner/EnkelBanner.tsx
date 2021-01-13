@@ -1,8 +1,8 @@
 import React from 'react';
 import { Innholdstittel } from 'nav-frontend-typografi';
-import './LoggInnBanner.less';
+import './EnkelBanner.less';
 
-const LoggInnBanner = () => {
+const EnkelBanner = () => {
     return (
         <div className="banner">
             <div className="banner__tekst">
@@ -12,4 +12,4 @@ const LoggInnBanner = () => {
     );
 };
 
-export default LoggInnBanner;
+export default EnkelBanner;
