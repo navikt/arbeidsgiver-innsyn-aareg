@@ -15,10 +15,10 @@ import { loggTrykketPåTidligereArbeidsforholdSide } from '../amplitudefunksjone
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import './MineAnsatte.less';
 import { BedriftsmenyContext } from '../BedriftsmenyProvider';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { useSearchParameters } from '../../utils/UrlManipulation';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../FiltrerteOgSorterteArbeidsforholdProvider';
-import IngenTilgangInfo from "../IngenTilgangInfo/IngenTilgangInfo";
+import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
 
 export enum SorteringsAttributt {
     NAVN,
@@ -39,10 +39,11 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
         hovedenhet.tilgang && tidligereUnderenheter !== 'laster' && tidligereUnderenheter.length > 0;
     const overskriftMedOrganisasjonsdel = 'Opplysninger for ' + underenhet.Name;
 
-    const redirectTilTidligereArbeidsforhold = () => {
-        const search = new URLSearchParams(defaultFilterParams()).toString();
-        history.replace({ search: search, pathname: '/tidligere-arbeidsforhold' });
-    };
+    const tidligereArbeidsforholdSearch = new URLSearchParams(history.location.search);
+    Object.entries(defaultFilterParams()).forEach(entry => {
+        const [key, value] = entry;
+        tidligereArbeidsforholdSearch.set(key, value);
+    });
 
     return (
         <div className="bakgrunnsside">
@@ -51,15 +52,16 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
 
                 {tilgangTidligereArbeidsforhold && (
                     <div className="brodsmule hoyre">
-                        <button
-                            className="brodsmule__direct-tidligere-arbeidsforhold"
-                            onClick={() => {
-                                redirectTilTidligereArbeidsforhold();
+                        <Link
+                            to={{
+                                pathname: 'tidligere-arbeidsforhold',
+                                search: tidligereArbeidsforholdSearch.toString()
                             }}
+                            className="brodsmule__direct-tidligere-arbeidsforhold"
                         >
                             {'Arbeidsforhold i tidligere virksomheter for ' + hovedenhet.Name}
                             <Chevron type="høyre" />
-                        </button>
+                        </Link>
                     </div>
                 )}
 
@@ -78,10 +80,12 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
 
     const history = useHistory();
 
-    const redirectTilbake = () => {
-        const search = new URLSearchParams(defaultFilterParams()).toString();
-        history.replace({ search: search, pathname: '/' });
-    };
+    const nåværendeArbeidsforholdSearch = new URLSearchParams(history.location.search);
+    nåværendeArbeidsforholdSearch.delete('tidligereVirksomhet');
+    Object.entries(defaultFilterParams()).forEach(entry => {
+        const [key, value] = entry;
+        nåværendeArbeidsforholdSearch.set(key, value);
+    });
 
     const antallArbeidsforhold =
         aareg?.lastestatus?.status === 'ferdig' ? aareg.lastestatus.arbeidsforhold.length : null;
@@ -98,10 +102,16 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
                 <Brodsmulesti valgtOrg={underenhet.OrganizationNumber} />
 
                 <div className="brodsmule venstre">
-                    <button className="brodsmule__direct-tidligere-arbeidsforhold" onClick={redirectTilbake}>
+                    <Link
+                        className="brodsmule__direct-tidligere-arbeidsforhold"
+                        to={{
+                            pathname: '/',
+                            search: nåværendeArbeidsforholdSearch.toString()
+                        }}
+                    >
                         <Chevron type="venstre" />
                         Tilbake til arbeidsforhold
-                    </button>
+                    </Link>
                 </div>
 
                 <div className="mine-ansatte">
@@ -164,7 +174,7 @@ const MineArbeidsforhold: FunctionComponent = () => {
             </>
         );
     } else if (aareg.lastestatus.status === 'ikke-tilgang') {
-        return (<IngenTilgangInfo />);
+        return <IngenTilgangInfo />;
     } else {
         return (
             <div className="mine-ansatte__feilmelding-aareg">
