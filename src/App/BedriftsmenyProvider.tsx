@@ -81,6 +81,7 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
             {altinnorganisasjoner.length === 0 ? (
                 <IngenTilgangInfo />
             ) : enhet === null ? (
+                /* TODO: her er det mulighet for at ingen tilgang-siden flasher før en org er når appen starter opp. */
                 <IngenTilgangInfo />
             ) : (
                 <BedriftsmenyContext.Provider value={{ ...enhet, tidligereUnderenheter }}>

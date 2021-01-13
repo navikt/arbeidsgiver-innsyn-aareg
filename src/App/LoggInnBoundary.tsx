@@ -3,7 +3,7 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import environment from '../utils/environment';
 import LoggInn from './LoggInn/LoggInn';
 import { sjekkInnlogget } from '../api/altinnApi';
-import LoggInnBanner from './LoggInn/LoggInnBanner/LoggInnBanner';
+import EnkelBanner from './EnkelBanner/EnkelBanner';
 import amplitude from '../utils/amplitude';
 import Lasteboks from "./Lasteboks";
 
@@ -57,7 +57,7 @@ const LoginBoundary: FunctionComponent = props => {
                 <LoggInn />
             ) : (
                 <>
-                    <LoggInnBanner />
+                    <EnkelBanner />
                     <Lasteboks />
                 </>
             )}
