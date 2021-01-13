@@ -23,6 +23,7 @@ const feilmeldingtekst = (kode: string | null) => {
 };
 
 type Lastestatus =
+    | { status: 'ikke-tilgang' }
     | { status: 'laster'; estimertAntall?: number }
     | { status: 'ferdig'; arbeidsforhold: Arbeidsforhold[] }
     | { status: 'feil'; beskjed: string };
@@ -37,18 +38,26 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
     const erPåTidligereUnderenhet = loc.pathname.startsWith('/tidligere-arbeidsforhold');
 
     let arbeidsforholdFor: Organisasjon | null;
+    let tilgang: boolean;
     if (erPåTidligereUnderenhet) {
         const orgnr = new URLSearchParams(loc.search).get('tidligereVirksomhet');
         const underenheter = tidligereUnderenheter === 'laster' ? [] : tidligereUnderenheter;
         arbeidsforholdFor = underenheter.find(org => org.OrganizationNumber === orgnr) ?? null;
+        tilgang = hovedenhet.tilgang;
     } else {
         arbeidsforholdFor = underenhet;
+        tilgang = underenhet.tilgang;
     }
 
     useEffect(() => {
         const orgnr = arbeidsforholdFor?.OrganizationNumber ?? null;
         if (orgnr == null) {
             settLastestatus({ status: 'feil', beskjed: 'Feil med org.nr.' });
+            return;
+        }
+
+        if (!tilgang) {
+            settLastestatus({status: 'ikke-tilgang'});
             return;
         }
 
@@ -92,7 +101,7 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
             abortAntall.abort();
             abortForhold.abort();
         };
-    }, [arbeidsforholdFor, erPåTidligereUnderenhet, hovedenhet.OrganizationNumber]);
+    }, [tilgang, arbeidsforholdFor, erPåTidligereUnderenhet, hovedenhet.OrganizationNumber]);
 
     const context = arbeidsforholdFor === null || lastestatus === null ? null : { arbeidsforholdFor, lastestatus };
 

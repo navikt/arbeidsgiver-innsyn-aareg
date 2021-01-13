@@ -78,7 +78,9 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
                     history={history}
                 />
             </div>
-            {enhet === null ? (
+            {altinnorganisasjoner.length === 0 ? (
+                <IngenTilgangInfo />
+            ) : enhet === null ? (
                 <IngenTilgangInfo />
             ) : (
                 <BedriftsmenyContext.Provider value={{ ...enhet, tidligereUnderenheter }}>

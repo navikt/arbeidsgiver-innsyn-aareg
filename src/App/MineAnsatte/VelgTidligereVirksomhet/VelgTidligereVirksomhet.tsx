@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useEffect } from "react";
+import React, { FunctionComponent, useContext } from "react";
 import './VelgTidligereVirksomhet.less';
 import { Select } from 'nav-frontend-skjema';
 import UnderenhetIkon from './UnderenhetIkon';
@@ -18,12 +18,6 @@ const VelgTidligereVirksomhet: FunctionComponent = () => {
     const underenheter = tidligereUnderenheter === 'laster' ? [] : tidligereUnderenheter;
     const tidligereVirksomhet = getSearchParameter('tidligereVirksomhet');
 
-    useEffect(() => {
-        if ((tidligereVirksomhet === null || tidligereVirksomhet === '') && underenheter.length > 0) {
-            setSearchParameter({tidligereVirksomhet: underenheter[0].OrganizationNumber})
-        }
-    }, [setSearchParameter, tidligereVirksomhet, underenheter]);
-
     return (
         <div className={'mine-ansatte__velg-tidligere-virksomhet'}>
             <Select
@@ -38,6 +32,15 @@ const VelgTidligereVirksomhet: FunctionComponent = () => {
                 onChange={event => setTidligereVirksomhet(event.target.value)}
                 id={'velg-tidligere-virksomhet'}
             >
+                <option
+                    title="Velg virksomhet"
+                    className={'mine-ansatte__velg-tidligere-virksomhet-option'}
+                    id={'tidligere-virksomhet'}
+                    value=""
+                    key="ingen-valgt"
+                >
+                    Velg virksomhet
+                </option>
                 {underenheter.map(virksomhet => (
                     <option
                         title={virksomhet.Name + ', ' + virksomhet.OrganizationNumber}
