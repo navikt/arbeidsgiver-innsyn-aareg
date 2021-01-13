@@ -18,6 +18,7 @@ import { BedriftsmenyContext } from '../BedriftsmenyProvider';
 import { useHistory } from 'react-router-dom';
 import { useSearchParameters } from '../../utils/UrlManipulation';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../FiltrerteOgSorterteArbeidsforholdProvider';
+import IngenTilgangInfo from "../IngenTilgangInfo/IngenTilgangInfo";
 
 export enum SorteringsAttributt {
     NAVN,
@@ -162,6 +163,8 @@ const MineArbeidsforhold: FunctionComponent = () => {
                 )}
             </>
         );
+    } else if (aareg.lastestatus.status === 'ikke-tilgang') {
+        return (<IngenTilgangInfo />);
     } else {
         return (
             <div className="mine-ansatte__feilmelding-aareg">
