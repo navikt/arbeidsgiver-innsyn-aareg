@@ -48,7 +48,7 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
     useEffect(() => {
         const timeout = setTimeout(() => {
             settOppstart(false);
-        }, 5_000);
+        }, 20_000);
         return () => clearTimeout(timeout);
     }, []);
 
