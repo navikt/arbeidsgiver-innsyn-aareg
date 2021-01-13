@@ -3,7 +3,8 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Organisasjon } from './Objekter/OrganisasjonFraAltinn';
 import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
 import { loggForbiddenFraAltinn, loggInfoOmFeilFraAltinn } from './amplitudefunksjonerForLogging';
-import Lasteboks from "./Lasteboks";
+import Lasteboks from './Lasteboks';
+import EnkelBanner from './EnkelBanner/EnkelBanner';
 
 export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
@@ -84,14 +85,22 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
         );
     } else if (feil) {
         return (
-            <div className="feilmelding-altinn">
-                <AlertStripeFeil>
-                    Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn kan du prøve å laste
-                    siden på nytt.
-                </AlertStripeFeil>
-            </div>
+            <>
+                <EnkelBanner />
+                <div className="feilmelding-altinn">
+                    <AlertStripeFeil>
+                        Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn kan du prøve å laste
+                        siden på nytt.
+                    </AlertStripeFeil>
+                </div>
+            </>
         );
     } else {
-        return (<Lasteboks/>);
+        return (
+            <>
+                <EnkelBanner />
+                <Lasteboks />
+            </>
+        );
     }
 };
