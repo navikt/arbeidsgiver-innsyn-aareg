@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext } from "react";
+import React, { FunctionComponent, useContext } from 'react';
 import { Normaltekst, Innholdstittel, Undertittel } from 'nav-frontend-typografi';
 import Lenkepanel from 'nav-frontend-lenkepanel';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
@@ -13,8 +13,9 @@ import './IngenTilgangInfo.less';
 import {
     SERVICEKODEINNSYNAAREGISTERET,
     SERVICEEDITIONINNSYNAAREGISTERET,
-    AltinnorganisasjonerContext, AltinnOrganisasjon
-} from "../AltinnorganisasjonerProvider";
+    AltinnorganisasjonerContext,
+    AltinnOrganisasjon
+} from '../AltinnorganisasjonerProvider';
 
 const run = <T extends any>(f: () => T) => f();
 
@@ -22,7 +23,7 @@ interface Props {
     underenhet?: AltinnOrganisasjon;
 }
 
-const IngenTilgangInfo: FunctionComponent<Props> = ({underenhet}) => {
+const IngenTilgangInfo: FunctionComponent<Props> = ({ underenhet }) => {
     const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
 
     const bedrifterMedTilgang: Organisasjon[] = altinnorganisasjoner.filter(
