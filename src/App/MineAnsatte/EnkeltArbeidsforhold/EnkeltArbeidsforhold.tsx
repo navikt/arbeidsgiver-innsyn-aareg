@@ -29,18 +29,16 @@ const apiURL = () => {
     return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
 };
 
-const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history, location }) => {
+const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history}) => {
     const { underenhet } = useContext(BedriftsmenyContext);
     const aareg = useContext(FiltrerteOgSorterteArbeidsforholdContext);
 
-    const { getSearchParameter } = useSearchParameters();
+    const { setSearchParameter, getSearchParameter } = useSearchParameters();
 
     const redirectTilbake = () => {
-        const ERPATIDLIGEREARBEIDSFORHOLD = location.pathname.startsWith('/tidligere-arbeidsforhold');
-        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold' : '/';
-        const params = new URLSearchParams(location.search);
+        const params = new URLSearchParams(history.location.search);
         params.delete('arbeidsforhold');
-        history.replace({ search: params.toString(), pathname: redirectPath });
+        history.replace({ search: params.toString(), pathname: '..' });
     };
 
     const locale = 'nb' as 'nb' | 'en';
@@ -66,11 +64,7 @@ const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history,
     const valgtArbeidsforhold = filtrertOgSortertListe[indeksValgtArbeidsforhold];
 
     const redirectTilArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
-        setTimeout(() => {}, 2500);
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('arbeidsforhold', arbeidsforhold.navArbeidsforholdId);
-        const { search } = currentUrl;
-        history.replace({ search: search });
+        setSearchParameter({arbeidsforhold: arbeidsforhold.navArbeidsforholdId});
     };
 
     if (arbeidsforholdIdFraUrl && valgtArbeidsforhold) {
