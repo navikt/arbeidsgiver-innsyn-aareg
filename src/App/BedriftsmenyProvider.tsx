@@ -22,6 +22,7 @@ export const BedriftsmenyContext = createContext<Context>({} as Context);
 
 const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children, history }) => {
     const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
+    const [oppstart, settOppstart] = useState(true);
 
     const finnOrg = useCallback(
         (orgnr: string): AltinnOrganisasjon | null =>
@@ -39,6 +40,17 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
 
     const tidligereUnderenheterFor =
         enhet !== null && enhet.hovedenhet.tilgang ? enhet.hovedenhet.OrganizationNumber : null;
+
+    /* Det kan ta litt tid før bedriftsvelgeren setter default bedrift, så
+     * de første sekundene anser vi som en oppstarts-periode hvor vi ikke
+     * viser ingen-tilgang-siden.
+     */
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            settOppstart(false);
+        }, 5_000);
+        return () => clearTimeout(timeout);
+    }, []);
 
     useEffect(() => {
         if (orgnr === null) {
@@ -81,8 +93,7 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
             {altinnorganisasjoner.length === 0 ? (
                 <IngenTilgangInfo />
             ) : enhet === null ? (
-                /* TODO: her er det mulighet for at ingen tilgang-siden flasher før en org er når appen starter opp. */
-                <IngenTilgangInfo />
+                oppstart ? null : <IngenTilgangInfo />
             ) : (
                 <BedriftsmenyContext.Provider value={{ ...enhet, tidligereUnderenheter }}>
                     {children}

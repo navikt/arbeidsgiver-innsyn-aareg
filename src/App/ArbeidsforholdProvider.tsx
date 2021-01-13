@@ -52,7 +52,7 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
     useEffect(() => {
         const orgnr = arbeidsforholdFor?.OrganizationNumber ?? null;
         if (orgnr == null) {
-            settLastestatus({ status: 'feil', beskjed: 'Feil med org.nr.' });
+            settLastestatus(null);
             return;
         }
 
