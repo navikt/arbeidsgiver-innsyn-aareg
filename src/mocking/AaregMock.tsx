@@ -7,8 +7,8 @@ import { delayed, getOrgnr } from './util';
 fetchMock
     .get(hentArbeidsforholdLink(), (_, request) =>
         delayed(4000, () => AaregMockObjekt(Number.parseInt(getOrgnr(request) ?? '100') % 1000))
-    )
-    .spy();
+)
+.spy();
 
 fetchMock
     .get(

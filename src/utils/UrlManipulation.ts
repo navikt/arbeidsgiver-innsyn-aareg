@@ -8,24 +8,40 @@ export type Params = {
 type UseSearchParameters = {
     getSearchParameter: (key: string) => string | null;
     setSearchParameter: (params: Params) => void;
+    deleteSearchParameter: (key: string) => void;
 };
 
 export const useSearchParameters = (): UseSearchParameters => {
     const hist = useHistory();
-    const search = new URLSearchParams(hist.location.search);
 
     const setSearchParameter = useCallback(
         (params: Params) => {
+            const search = new URLSearchParams(hist.location.search);
             Object.entries(params).forEach(entry => {
                 const [key, value] = entry;
                 search.set(key, value);
             });
             hist.replace({ search: search.toString() });
         },
-        [hist, search]
+        [hist]
     );
 
-    const getSearchParameter = useCallback((key: string) => search.get(key) ?? null, [search]);
+    const getSearchParameter = useCallback(
+        (key: string) => {
+            const search = new URLSearchParams(hist.location.search);
+            return search.get(key) ?? null;
+        },
+        [hist]
+    );
 
-    return { getSearchParameter, setSearchParameter };
+    const deleteSearchParameter = useCallback(
+        (key: string) => {
+            const search = new URLSearchParams(hist.location.search);
+            search.delete(key);
+            hist.replace({ search: search.toString() });
+        },
+        [hist]
+    );
+
+    return { getSearchParameter, setSearchParameter, deleteSearchParameter };
 };
