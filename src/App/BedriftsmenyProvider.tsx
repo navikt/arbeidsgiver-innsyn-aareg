@@ -1,7 +1,7 @@
 import Bedriftsmeny from '@navikt/bedriftsmeny';
 import React, { createContext, FunctionComponent, useCallback, useContext, useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { RouteComponentProps, useLocation } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { AltinnOrganisasjon, AltinnorganisasjonerContext } from './AltinnorganisasjonerProvider';
 import { Organisasjon } from './Objekter/OrganisasjonFraAltinn';
 import { hentTidligereVirksomheter } from '../api/aaregApi';
@@ -9,6 +9,7 @@ import { loggInfoOmFeilTidligereOrganisasjoner } from './amplitudefunksjonerForL
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import Lasteboks from './Lasteboks';
+import { useSearchParameters } from "../utils/UrlManipulation";
 
 interface Enhet {
     hovedenhet: AltinnOrganisasjon;
@@ -24,6 +25,7 @@ export const BedriftsmenyContext = createContext<Context>({} as Context);
 const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children, history }) => {
     const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
     const [oppstart, settOppstart] = useState(true);
+    const {getSearchParameter} = useSearchParameters()
 
     const finnOrg = useCallback(
         (orgnr: string): AltinnOrganisasjon | null =>
@@ -31,7 +33,7 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
         [altinnorganisasjoner]
     );
 
-    const orgnr = new URLSearchParams(useLocation().search).get('bedrift');
+    const orgnr = getSearchParameter('bedrift');
 
     const [enhet, settEnhet] = useState<Enhet | null>(null);
     const [tidligereUnderenheter, settTidligereUnderenheter] = useState<Organisasjon[] | 'laster'>([]);
