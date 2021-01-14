@@ -61,6 +61,7 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
             return;
         }
 
+
         const abortAntall = new AbortController();
         const abortForhold = new AbortController();
         settLastestatus({ status: 'laster' });
