@@ -9,10 +9,10 @@ import { loggInfoOmFeilTidligereOrganisasjoner } from './amplitudefunksjonerForL
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import Lasteboks from './Lasteboks';
-import { useSearchParameters } from "../utils/UrlManipulation";
+import { useSearchParameters } from '../utils/UrlManipulation';
 
 interface Enhet {
-    hovedenhet: AltinnOrganisasjon;
+    hovedenhet: AltinnOrganisasjon | null;
     underenhet: AltinnOrganisasjon;
 }
 
@@ -25,7 +25,7 @@ export const BedriftsmenyContext = createContext<Context>({} as Context);
 const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children, history }) => {
     const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
     const [oppstart, settOppstart] = useState(true);
-    const {getSearchParameter} = useSearchParameters()
+    const { getSearchParameter, deleteSearchParameter } = useSearchParameters();
 
     const finnOrg = useCallback(
         (orgnr: string): AltinnOrganisasjon | null =>
@@ -42,7 +42,7 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
     const sidetittel = tidligereArbeidsforhold ? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
 
     const tidligereUnderenheterFor =
-        enhet !== null && enhet.hovedenhet.tilgang ? enhet.hovedenhet.OrganizationNumber : null;
+        enhet !== null && enhet.hovedenhet !== null && enhet.hovedenhet.tilgang ? enhet.hovedenhet.OrganizationNumber : null;
 
     /* Det kan ta litt tid før bedriftsvelgeren setter default bedrift, så
      * de første sekundene anser vi som en oppstarts-periode hvor vi ikke
@@ -61,7 +61,7 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
         } else {
             const underenhet = finnOrg(orgnr);
             const hovedenhet = underenhet === null ? null : finnOrg(underenhet.ParentOrganizationNumber);
-            if (hovedenhet === null || underenhet === null) {
+            if (underenhet === null) {
                 console.error('Bedriftsmeny byttet til ukjent organisasjon');
                 settEnhet(null);
             } else {
@@ -78,7 +78,10 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
             const abortController = new AbortController();
             hentTidligereVirksomheter(tidligereUnderenheterFor, abortController.signal)
                 .then(settTidligereUnderenheter)
-                .catch(loggInfoOmFeilTidligereOrganisasjoner);
+                .catch(err => {
+                    settTidligereUnderenheter([]);
+                    loggInfoOmFeilTidligereOrganisasjoner(err);
+                });
             return () => abortController.abort();
         }
     }, [altinnorganisasjoner, tidligereUnderenheterFor]);
@@ -88,7 +91,7 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
             <Bedriftsmeny
                 sidetittel={sidetittel}
                 organisasjoner={tidligereArbeidsforhold ? [] : altinnorganisasjoner}
-                onOrganisasjonChange={() => {}}
+                onOrganisasjonChange={() => deleteSearchParameter('arbeidsforhold') }
                 history={history}
             />
             {altinnorganisasjoner.length === 0 ? (

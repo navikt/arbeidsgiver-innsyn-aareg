@@ -43,7 +43,7 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
         const orgnr = new URLSearchParams(loc.search).get('tidligereVirksomhet');
         const underenheter = tidligereUnderenheter === 'laster' ? [] : tidligereUnderenheter;
         arbeidsforholdFor = underenheter.find(org => org.OrganizationNumber === orgnr) ?? null;
-        tilgang = hovedenhet.tilgang;
+        tilgang = hovedenhet?.tilgang ?? false;
     } else {
         arbeidsforholdFor = underenhet;
         tilgang = underenhet.tilgang;
@@ -66,12 +66,12 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
         const abortForhold = new AbortController();
         settLastestatus({ status: 'laster' });
 
-        hentAntallArbeidsforholdFraAareg(orgnr, hovedenhet.OrganizationNumber, abortAntall.signal)
+        hentAntallArbeidsforholdFraAareg(orgnr, underenhet.ParentOrganizationNumber, abortAntall.signal)
             .then(antall => {
                 settLastestatus({ status: 'laster', estimertAntall: antall === -1 ? undefined : antall });
                 hentArbeidsforholdFraAAreg(
                     orgnr,
-                    hovedenhet.OrganizationNumber,
+                    underenhet.ParentOrganizationNumber,
                     abortForhold.signal,
                     erPåTidligereUnderenhet
                 )
@@ -102,7 +102,7 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
             abortAntall.abort();
             abortForhold.abort();
         };
-    }, [tilgang, arbeidsforholdFor, erPåTidligereUnderenhet, hovedenhet.OrganizationNumber]);
+    }, [tilgang, arbeidsforholdFor, erPåTidligereUnderenhet, underenhet.ParentOrganizationNumber]);
 
     const context = arbeidsforholdFor === null || lastestatus === null ? null : { arbeidsforholdFor, lastestatus };
 
