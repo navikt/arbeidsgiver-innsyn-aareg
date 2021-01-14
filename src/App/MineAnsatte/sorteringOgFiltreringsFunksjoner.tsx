@@ -1,27 +1,35 @@
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { ToggleKnappPureProps } from 'nav-frontend-toggle';
 import { SorteringsAttributt } from './MineAnsatte';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
-import { useSearchParameters } from "../../utils/UrlManipulation";
+import { useSearchParameters } from '../../utils/UrlManipulation';
 
 export const useSortertOgFiltrertArbeidsforholdliste = (alleArbeidsforhold: Arbeidsforhold[]) => {
-    const {getSearchParameter} = useSearchParameters();
+    const { getSearchParameter } = useSearchParameters();
     const sortertPå = getSearchParameter('sorter') || '0';
     const reversSortering = getSearchParameter('revers') ? getSearchParameter('revers') === 'true' : true;
     const filtreringsvalg = getSearchParameter('filter') || 'Alle';
     const sokefeltTekst = getSearchParameter('sok') || '';
     const filtrertPaVarsler = getSearchParameter('varsler') === 'true';
 
-    const filtrertListe = byggListeBasertPaPArametere(
-        alleArbeidsforhold,
-        filtreringsvalg,
-        filtrertPaVarsler,
-        sokefeltTekst
-    );
-    return reversSortering
-        ? sorterArbeidsforhold(filtrertListe, parseInt(sortertPå)).reverse()
-        : sorterArbeidsforhold(filtrertListe, parseInt(sortertPå));
+    const [arbeidsforhold, settArbeidsforhold] = useState<Arbeidsforhold[]>([]);
+
+    useEffect(() => {
+        const filtrertListe = byggListeBasertPaPArametere(
+            alleArbeidsforhold,
+            filtreringsvalg,
+            filtrertPaVarsler,
+            sokefeltTekst
+        );
+        settArbeidsforhold(
+            reversSortering
+                ? sorterArbeidsforhold(filtrertListe, parseInt(sortertPå)).reverse()
+                : sorterArbeidsforhold(filtrertListe, parseInt(sortertPå))
+        );
+    }, [alleArbeidsforhold, filtreringsvalg, filtrertPaVarsler, sokefeltTekst, sortertPå, reversSortering]);
+
+    return arbeidsforhold;
 };
 
 const byggListeBasertPaPArametere = (
