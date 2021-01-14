@@ -36,7 +36,7 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
 
     const history = useHistory();
     const tilgangTidligereArbeidsforhold =
-        hovedenhet.tilgang && tidligereUnderenheter !== 'laster' && tidligereUnderenheter.length > 0;
+        hovedenhet !== null && hovedenhet.tilgang && tidligereUnderenheter !== 'laster' && tidligereUnderenheter.length > 0;
     const overskriftMedOrganisasjonsdel = 'Opplysninger for ' + underenhet.Name;
 
     const tidligereArbeidsforholdSearch = new URLSearchParams(history.location.search);
@@ -59,7 +59,7 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
                             }}
                             className="brodsmule__direct-tidligere-arbeidsforhold"
                         >
-                            {'Arbeidsforhold i tidligere virksomheter for ' + hovedenhet.Name}
+                            {'Arbeidsforhold i tidligere virksomheter for ' + hovedenhet?.Name}
                             <Chevron type="høyre" />
                         </Link>
                     </div>
@@ -116,7 +116,7 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
 
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel">
-                        {`Opplysninger for ${hovedenhet.Name} org.nr ${hovedenhet.OrganizationNumber}`}
+                        {`Opplysninger for ${hovedenhet?.Name} org.nr ${hovedenhet?.OrganizationNumber}`}
                     </Systemtittel>
                     {tidligereUnderenheter !== 'laster' && <VelgTidligereVirksomhet />}
                     <MineArbeidsforhold />
