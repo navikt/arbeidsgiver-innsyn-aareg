@@ -1383,10 +1383,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@navikt/arbeidsforhold@^1.3.17":
-  version "1.3.19"
-  resolved "https://registry.yarnpkg.com/@navikt/arbeidsforhold/-/arbeidsforhold-1.3.19.tgz#eaf74f9e32a95a90412638e3fa5b6069bc7f1791"
-  integrity sha512-7DfwCzIpM6v8RhdLpzz0wPPetlanX6utPIG/+3c0x9LlAuElAtlfkAts3E6jpaCjVnpb2o9iZyp4OEEvLsT5Cw==
+"@navikt/arbeidsforhold@1.3.22":
+  version "1.3.22"
+  resolved "https://registry.yarnpkg.com/@navikt/arbeidsforhold/-/arbeidsforhold-1.3.22.tgz#80f405b6822fa96c3b241c2344372a1bb3208d21"
+  integrity sha512-hjmry2+OjQ0OTb+VjHqtNRrfgUjXBvlDSXKCIkYP40iVy/Fc/6pTaTUoXMJL8ZiiwWQzi+KwUi3wHrIdKw/8Dw==
   dependencies:
     fetch-mock "^9.11.0"
 
