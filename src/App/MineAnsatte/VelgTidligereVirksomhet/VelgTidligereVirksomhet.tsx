@@ -4,15 +4,15 @@ import { Select } from 'nav-frontend-skjema';
 import UnderenhetIkon from './UnderenhetIkon';
 import { BedriftsmenyContext } from '../../BedriftsmenyProvider';
 import { useSearchParameters } from '../../../utils/UrlManipulation';
-import { defaultFilterParams } from '../urlFunksjoner';
+import { useHistory } from "react-router-dom";
 
 const VelgTidligereVirksomhet: FunctionComponent = () => {
-    const { tidligereUnderenheter } = useContext(BedriftsmenyContext);
-    const { getSearchParameter, setSearchParameter } = useSearchParameters();
+    const { underenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
+    const { getSearchParameter } = useSearchParameters();
+    const history = useHistory();
 
     const setTidligereVirksomhet = (orgnr: string) => {
-        const params = defaultFilterParams();
-        setSearchParameter({...params, tidligereVirksomhet: orgnr});
+        history.replace({search: `bedrift=${underenhet.OrganizationNumber}&tidligereVirksomhet=${orgnr}`} );
     };
 
     const underenheter = tidligereUnderenheter === 'laster' ? [] : tidligereUnderenheter;
