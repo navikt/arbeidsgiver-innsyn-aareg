@@ -22,7 +22,7 @@ const enkelArbeidsforholdRespons = {
         type: 'Organisasjon',
         orgnavn: 'MALMEFJORDEN OG RIDABU REGNSKAP'
     },
-    ansettelsesperiode: { periode: { periodeFra: '2017-12-01', periodeTil: null }, varslingskode: null },
+    ansettelsesperiode: { periode: { periodeFra: '2017-12-01', periodeTil: null }, varslingskode: null, sluttaarsak: "Arbeidstaker har sagt opp selv"},
     utenlandsopphold:[{periode:{periodeFra:'2020-03-01',periodeTil:'2020-03-29'},
         rapporteringsperiode:'2020-01',land:'TYSKLAND'}],
     permisjonPermittering: [{periode:{periodeFra:'2020-02-01',periodeTil:'2020-02-29'},type:'Permisjon',prosent:'100 %'}],
@@ -36,5 +36,6 @@ const enkelArbeidsforholdRespons = {
     yrke: 'SYKEPLEIER (Yrkeskode: 3231109)',
     fartsomraade: null,
     skipsregister: null,
+    ansettelsesform: "fast",
     skipstype: null
 };
