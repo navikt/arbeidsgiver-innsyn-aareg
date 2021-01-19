@@ -10,12 +10,11 @@ import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import SideBytter from './SideBytter/SideBytter';
 import VelgTidligereVirksomhet from './VelgTidligereVirksomhet/VelgTidligereVirksomhet';
-import { defaultFilterParams } from './urlFunksjoner';
 import { loggTrykketPåTidligereArbeidsforholdSide } from '../amplitudefunksjonerForLogging';
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import './MineAnsatte.less';
 import { BedriftsmenyContext } from '../BedriftsmenyProvider';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSearchParameters } from '../../utils/UrlManipulation';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../FiltrerteOgSorterteArbeidsforholdProvider';
 import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
@@ -34,16 +33,9 @@ export enum SorteringsAttributt {
 export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
     const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
 
-    const history = useHistory();
     const tilgangTidligereArbeidsforhold =
         hovedenhet !== null && hovedenhet.tilgang && tidligereUnderenheter !== 'laster' && tidligereUnderenheter.length > 0;
     const overskriftMedOrganisasjonsdel = 'Opplysninger for ' + underenhet.Name;
-
-    const tidligereArbeidsforholdSearch = new URLSearchParams(history.location.search);
-    Object.entries(defaultFilterParams()).forEach(entry => {
-        const [key, value] = entry;
-        tidligereArbeidsforholdSearch.set(key, value);
-    });
 
     return (
         <div className="bakgrunnsside">
@@ -54,8 +46,8 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
                     <div className="brodsmule hoyre">
                         <Link
                             to={{
-                                pathname: 'tidligere-arbeidsforhold',
-                                search: tidligereArbeidsforholdSearch.toString()
+                                pathname: '/tidligere-arbeidsforhold',
+                                search: `bedrift=${underenhet.OrganizationNumber}`
                             }}
                             className="brodsmule__direct-tidligere-arbeidsforhold"
                         >
@@ -78,15 +70,6 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
     const aareg = useContext(ArbeidsforholdContext);
     const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
 
-    const history = useHistory();
-
-    const nåværendeArbeidsforholdSearch = new URLSearchParams(history.location.search);
-    nåværendeArbeidsforholdSearch.delete('tidligereVirksomhet');
-    Object.entries(defaultFilterParams()).forEach(entry => {
-        const [key, value] = entry;
-        nåværendeArbeidsforholdSearch.set(key, value);
-    });
-
     const antallArbeidsforhold =
         aareg?.lastestatus?.status === 'ferdig' ? aareg.lastestatus.arbeidsforhold.length : null;
 
@@ -105,8 +88,8 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
                     <Link
                         className="brodsmule__direct-tidligere-arbeidsforhold"
                         to={{
-                            pathname: '/',
-                            search: nåværendeArbeidsforholdSearch.toString()
+                            pathname: '.',
+                            search: `bedrift=${underenhet.OrganizationNumber}`
                         }}
                     >
                         <Chevron type="venstre" />
