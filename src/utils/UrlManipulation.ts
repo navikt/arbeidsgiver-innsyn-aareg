@@ -8,7 +8,6 @@ export type Params = {
 type UseSearchParameters = {
     getSearchParameter: (key: string) => string | null;
     setSearchParameter: (params: Params) => void;
-    deleteSearchParameter: (key: string) => void;
 };
 
 export const useSearchParameters = (): UseSearchParameters => {
@@ -34,14 +33,5 @@ export const useSearchParameters = (): UseSearchParameters => {
         [hist]
     );
 
-    const deleteSearchParameter = useCallback(
-        (key: string) => {
-            const search = new URLSearchParams(hist.location.search);
-            search.delete(key);
-            hist.replace({ search: search.toString() });
-        },
-        [hist]
-    );
-
-    return { getSearchParameter, setSearchParameter, deleteSearchParameter };
+    return { getSearchParameter, setSearchParameter };
 };

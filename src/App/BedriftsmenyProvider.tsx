@@ -25,7 +25,7 @@ export const BedriftsmenyContext = createContext<Context>({} as Context);
 const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children, history }) => {
     const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
     const [oppstart, settOppstart] = useState(true);
-    const { getSearchParameter, deleteSearchParameter } = useSearchParameters();
+    const { getSearchParameter } = useSearchParameters();
 
     const finnOrg = useCallback(
         (orgnr: string): AltinnOrganisasjon | null =>
@@ -42,7 +42,9 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
     const sidetittel = tidligereArbeidsforhold ? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
 
     const tidligereUnderenheterFor =
-        enhet !== null && enhet.hovedenhet !== null && enhet.hovedenhet.tilgang ? enhet.hovedenhet.OrganizationNumber : null;
+        enhet !== null && enhet.hovedenhet !== null && enhet.hovedenhet.tilgang
+            ? enhet.hovedenhet.OrganizationNumber
+            : null;
 
     /* Det kan ta litt tid før bedriftsvelgeren setter default bedrift, så
      * de første sekundene anser vi som en oppstarts-periode hvor vi ikke
@@ -91,7 +93,9 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
             <Bedriftsmeny
                 sidetittel={sidetittel}
                 organisasjoner={tidligereArbeidsforhold ? [] : altinnorganisasjoner}
-                onOrganisasjonChange={() => deleteSearchParameter('arbeidsforhold') }
+                onOrganisasjonChange={({OrganizationNumber}) =>
+                    history.replace({pathname: '.', search: `bedrift=${OrganizationNumber}`})
+                }
                 history={history}
             />
             {altinnorganisasjoner.length === 0 ? (
