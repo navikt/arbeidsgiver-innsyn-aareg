@@ -88,7 +88,7 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
                     <Link
                         className="brodsmule__direct-tidligere-arbeidsforhold"
                         to={{
-                            pathname: '.',
+                            pathname: '/',
                             search: `bedrift=${underenhet.OrganizationNumber}`
                         }}
                     >
