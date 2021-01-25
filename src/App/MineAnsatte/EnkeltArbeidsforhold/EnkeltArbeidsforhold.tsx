@@ -125,7 +125,6 @@ const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history 
                                 printName={valgtArbeidsforhold.arbeidstaker.navn}
                                 printSSN={valgtArbeidsforhold.arbeidstaker.offentligIdent}
                             />
-                            }
                         </div>
                     )}
                 </div>
