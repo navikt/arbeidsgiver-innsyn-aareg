@@ -7,7 +7,11 @@ import { redirectTilLogin } from './LoggInn/LoggInn';
 import { BedriftsmenyContext } from './BedriftsmenyProvider';
 import { useLocation } from 'react-router';
 
-export type Context = { arbeidsforholdFor: Organisasjon; lastestatus: Lastestatus } | null;
+export type Context = {
+    arbeidsforholdFor: Organisasjon;
+    tidligereVirksomhet: boolean;
+    lastestatus: Lastestatus;
+} | null;
 
 export const ArbeidsforholdContext = createContext<Context>(null);
 
@@ -32,6 +36,7 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
     const { hovedenhet, underenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
 
     const [lastestatus, settLastestatus] = useState<Lastestatus | null>(null);
+    const [context, settContext] = useState<Context>(null);
 
     const loc = useLocation();
 
@@ -57,10 +62,9 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
         }
 
         if (!tilgang) {
-            settLastestatus({status: 'ikke-tilgang'});
+            settLastestatus({ status: 'ikke-tilgang' });
             return;
         }
-
 
         const abortAntall = new AbortController();
         const abortForhold = new AbortController();
@@ -93,7 +97,7 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
                     });
             })
             .catch(error => {
-                if (error.name !== 'AbortError')  {
+                if (error.name !== 'AbortError') {
                     console.error(error);
                     settLastestatus({ status: 'feil', beskjed: feilmeldingtekst(null) });
                 }
@@ -104,7 +108,13 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
         };
     }, [tilgang, arbeidsforholdFor, erPåTidligereUnderenhet, underenhet.ParentOrganizationNumber]);
 
-    const context = arbeidsforholdFor === null || lastestatus === null ? null : { arbeidsforholdFor, lastestatus };
+    useEffect(() => {
+        if (arbeidsforholdFor !== null && lastestatus !== null) {
+            settContext({ arbeidsforholdFor, lastestatus, tidligereVirksomhet: erPåTidligereUnderenhet })
+        } else {
+            settContext(null);
+        }
+    }, [settContext, arbeidsforholdFor, lastestatus, erPåTidligereUnderenhet]);
 
     return <ArbeidsforholdContext.Provider value={context}>{props.children}</ArbeidsforholdContext.Provider>;
 };

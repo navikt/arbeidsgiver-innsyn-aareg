@@ -1,19 +1,19 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {Link, RouteComponentProps} from 'react-router-dom';
+import { Link, useHistory } from "react-router-dom";
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import { loggBrukerTrykketPaVarsel } from '../../../amplitudefunksjonerForLogging';
 import './PopOverStyling.less';
-import {withRouter} from "react-router";
 
-interface Props extends RouteComponentProps {
+interface Props {
     arbeidsforhold: Arbeidsforhold;
 }
 
-const NavnPopover: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
+const NavnPopover: FunctionComponent<Props> = ( {arbeidsforhold}) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
     const [skalVisePopover, setSkalVisePopover] = useState(true);
+    const history = useHistory();
 
     const naVærendeUrl = new URL(window.location.href);
     const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
@@ -66,4 +66,4 @@ const NavnPopover: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
     );
 };
 
-export default withRouter(NavnPopover)
+export default NavnPopover
