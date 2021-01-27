@@ -2,7 +2,6 @@ import React, { FunctionComponent, useContext, useEffect } from 'react';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import Chevron from 'nav-frontend-chevron';
-import { ArbeidsforholdContext } from '../ArbeidsforholdProvider';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
 import Progressbar from './Progressbar/Progressbar';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
@@ -10,7 +9,11 @@ import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import SideBytter from './SideBytter/SideBytter';
 import VelgTidligereVirksomhet from './VelgTidligereVirksomhet/VelgTidligereVirksomhet';
-import { loggTrykketPåTidligereArbeidsforholdSide } from '../amplitudefunksjonerForLogging';
+import {
+    loggSidevisningAvArbeidsforhold,
+    loggTrykketPåNåværendeArbeidsforhold,
+    loggTrykketPåTidligereArbeidsforhold
+} from "../amplitudefunksjonerForLogging";
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import './MineAnsatte.less';
 import { BedriftsmenyContext } from '../BedriftsmenyProvider';
@@ -34,7 +37,7 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
     const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
 
     const tilgangTidligereArbeidsforhold =
-        hovedenhet !== null && hovedenhet.tilgang && tidligereUnderenheter !== 'laster' && tidligereUnderenheter.length > 0;
+        hovedenhet?.tilgang === true && tidligereUnderenheter !== 'laster' && tidligereUnderenheter.length > 0;
     const overskriftMedOrganisasjonsdel = 'Opplysninger for ' + underenhet.Name;
 
     return (
@@ -50,6 +53,7 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
                                 search: `bedrift=${underenhet.OrganizationNumber}`
                             }}
                             className="brodsmule__direct-tidligere-arbeidsforhold"
+                            onClick={() => loggTrykketPåTidligereArbeidsforhold()}
                         >
                             {'Arbeidsforhold i tidligere virksomheter for ' + hovedenhet?.Name}
                             <Chevron type="høyre" />
@@ -67,17 +71,7 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
 };
 
 export const MineTidligereArbeidsforhold: FunctionComponent = () => {
-    const aareg = useContext(ArbeidsforholdContext);
     const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
-
-    const antallArbeidsforhold =
-        aareg?.lastestatus?.status === 'ferdig' ? aareg.lastestatus.arbeidsforhold.length : null;
-
-    useEffect(() => {
-        if (antallArbeidsforhold) {
-            loggTrykketPåTidligereArbeidsforholdSide(antallArbeidsforhold);
-        }
-    }, [antallArbeidsforhold]);
 
     return (
         <div className="bakgrunnsside">
@@ -91,6 +85,7 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
                             pathname: '/',
                             search: `bedrift=${underenhet.OrganizationNumber}`
                         }}
+                        onClick={() => loggTrykketPåNåværendeArbeidsforhold()}
                     >
                         <Chevron type="venstre" />
                         Tilbake til arbeidsforhold
@@ -109,6 +104,7 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
     );
 };
 
+
 const MineArbeidsforhold: FunctionComponent = () => {
     const { underenhet } = useContext(BedriftsmenyContext);
     const aareg = useContext(FiltrerteOgSorterteArbeidsforholdContext);
@@ -120,15 +116,21 @@ const MineArbeidsforhold: FunctionComponent = () => {
         setSearchParameter({ side: indeks.toString() });
     };
 
-    const filtrertOgSortertListe = aareg?.lastestatus?.status === 'ferdig' ? aareg.lastestatus.arbeidsforhold : [];
+    const filtrertOgSortertListe = aareg?.lastestatus?.status === 'ferdig' ? aareg.lastestatus.arbeidsforhold : null;
 
     const ARBEIDSFORHOLDPERSIDE = 25;
-    const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, filtrertOgSortertListe.length);
+    const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, filtrertOgSortertListe?.length ?? 0);
     const listeForNåværendeSidetall = regnUtArbeidsForholdSomSkalVisesPaEnSide(
         parseInt(sidetall),
         ARBEIDSFORHOLDPERSIDE,
-        filtrertOgSortertListe
+        filtrertOgSortertListe ?? []
     );
+
+    useEffect(() => {
+        if (aareg?.lastestatus?.status === 'ferdig') {
+            loggSidevisningAvArbeidsforhold(aareg.lastestatus.arbeidsforhold.length, aareg.tidligereVirksomhet);
+        }
+    }, [aareg]);
 
     if (aareg === null) {
         return null;
