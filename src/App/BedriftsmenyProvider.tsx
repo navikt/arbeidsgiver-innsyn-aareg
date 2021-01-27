@@ -93,9 +93,15 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
             <Bedriftsmeny
                 sidetittel={sidetittel}
                 organisasjoner={tidligereArbeidsforhold ? [] : altinnorganisasjoner}
-                onOrganisasjonChange={({OrganizationNumber}) =>
-                    history.replace({pathname: '.', search: `bedrift=${OrganizationNumber}`})
-                }
+                onOrganisasjonChange={({ OrganizationNumber }) => {
+                    /* Bedriftsmenyen vil ved oppstart kalle hit, selv om det ikke er en
+                     * endring i bedrift-parameteret. I så fall ønsker vi ikke å slette
+                     * filter/søk-parameterene.
+                     */
+                    if (orgnr !== OrganizationNumber) {
+                        history.replace({ pathname: '/', search: `bedrift=${OrganizationNumber}` });
+                    }
+                }}
                 history={history}
             />
             {altinnorganisasjoner.length === 0 ? (

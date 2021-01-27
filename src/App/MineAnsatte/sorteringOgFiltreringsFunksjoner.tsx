@@ -8,7 +8,7 @@ import { useSearchParameters } from '../../utils/UrlManipulation';
 export const useSortertOgFiltrertArbeidsforholdliste = (alleArbeidsforhold: Arbeidsforhold[]) => {
     const { getSearchParameter } = useSearchParameters();
     const sortertPå = getSearchParameter('sorter') || '0';
-    const reversSortering = getSearchParameter('revers') ? getSearchParameter('revers') === 'true' : true;
+    const reversSortering = getSearchParameter('revers') === 'true';
     const filtreringsvalg = getSearchParameter('filter') || 'Alle';
     const sokefeltTekst = getSearchParameter('sok') || '';
     const filtrertPaVarsler = getSearchParameter('varsler') === 'true';
@@ -16,6 +16,7 @@ export const useSortertOgFiltrertArbeidsforholdliste = (alleArbeidsforhold: Arbe
     const [arbeidsforhold, settArbeidsforhold] = useState<Arbeidsforhold[]>([]);
 
     useEffect(() => {
+        console.log("FILTRERER LISTE")
         const filtrertListe = byggListeBasertPaPArametere(
             alleArbeidsforhold,
             filtreringsvalg,
