@@ -98,7 +98,7 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
                      * endring i bedrift-parameteret. I så fall ønsker vi ikke å slette
                      * filter/søk-parameterene.
                      */
-                    if (orgnr !== OrganizationNumber) {
+                    if (enhet?.underenhet.OrganizationNumber !== OrganizationNumber) {
                         history.replace({ pathname: '/', search: `bedrift=${OrganizationNumber}` });
                     }
                 }}
