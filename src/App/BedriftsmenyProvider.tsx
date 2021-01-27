@@ -1,7 +1,6 @@
 import Bedriftsmeny from '@navikt/bedriftsmeny';
 import React, { createContext, FunctionComponent, useCallback, useContext, useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { RouteComponentProps } from 'react-router';
+import { useHistory } from "react-router-dom";
 import { AltinnOrganisasjon, AltinnorganisasjonerContext } from './AltinnorganisasjonerProvider';
 import { Organisasjon } from './Objekter/OrganisasjonFraAltinn';
 import { hentTidligereVirksomheter } from '../api/aaregApi';
@@ -10,6 +9,7 @@ import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import Lasteboks from './Lasteboks';
 import { useSearchParameters } from '../utils/UrlManipulation';
+import emptyList from "./Objekter/EmptyList";
 
 interface Enhet {
     hovedenhet: AltinnOrganisasjon | null;
@@ -22,10 +22,15 @@ interface Context extends Enhet {
 
 export const BedriftsmenyContext = createContext<Context>({} as Context);
 
-const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children, history }) => {
+const BedriftsmenyProvider: FunctionComponent = ({ children}) => {
+    const history = useHistory()
     const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
-    const [oppstart, settOppstart] = useState(true);
     const { getSearchParameter } = useSearchParameters();
+
+    const [oppstart, settOppstart] = useState(true);
+    const [context, settContext] = useState<Context | null>(null);
+    const [enhet, settEnhet] = useState<Enhet | null>(null);
+    const [tidligereUnderenheter, settTidligereUnderenheter] = useState<Organisasjon[] | 'laster'>('laster');
 
     const finnOrg = useCallback(
         (orgnr: string): AltinnOrganisasjon | null =>
@@ -34,9 +39,6 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
     );
 
     const orgnr = getSearchParameter('bedrift');
-
-    const [enhet, settEnhet] = useState<Enhet | null>(null);
-    const [tidligereUnderenheter, settTidligereUnderenheter] = useState<Organisasjon[] | 'laster'>([]);
 
     const tidligereArbeidsforhold = history.location.pathname.startsWith('/tidligere-arbeidsforhold');
     const sidetittel = tidligereArbeidsforhold ? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
@@ -74,19 +76,29 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
 
     useEffect(() => {
         if (tidligereUnderenheterFor === null) {
-            settTidligereUnderenheter([]);
+            settTidligereUnderenheter(emptyList);
         } else {
             settTidligereUnderenheter('laster');
             const abortController = new AbortController();
             hentTidligereVirksomheter(tidligereUnderenheterFor, abortController.signal)
-                .then(settTidligereUnderenheter)
+                .then(enheter => {
+                    settTidligereUnderenheter(enheter)
+                })
                 .catch(err => {
-                    settTidligereUnderenheter([]);
+                    settTidligereUnderenheter(emptyList);
                     loggInfoOmFeilTidligereOrganisasjoner(err);
                 });
             return () => abortController.abort();
         }
     }, [altinnorganisasjoner, tidligereUnderenheterFor]);
+
+    useEffect(() => {
+        if (enhet === null) {
+            settContext(null);
+        } else {
+            settContext({ ...enhet, tidligereUnderenheter })
+        }
+    }, [settContext, enhet, tidligereUnderenheter]);
 
     return (
         <>
@@ -106,14 +118,14 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
             />
             {altinnorganisasjoner.length === 0 ? (
                 <IngenTilgangInfo />
-            ) : enhet === null ? (
+            ) : context === null ? (
                 oppstart ? (
                     <Lasteboks />
                 ) : (
                     <IngenTilgangInfo />
                 )
             ) : (
-                <BedriftsmenyContext.Provider value={{ ...enhet, tidligereUnderenheter }}>
+                <BedriftsmenyContext.Provider value={context}>
                     {children}
                 </BedriftsmenyContext.Provider>
             )}
@@ -121,4 +133,4 @@ const BedriftsmenyProvider: FunctionComponent<RouteComponentProps> = ({ children
     );
 };
 
-export default withRouter(BedriftsmenyProvider);
+export default BedriftsmenyProvider;

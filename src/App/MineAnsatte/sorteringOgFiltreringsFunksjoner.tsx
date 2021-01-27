@@ -4,6 +4,7 @@ import { SorteringsAttributt } from './MineAnsatte';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
 import { useSearchParameters } from '../../utils/UrlManipulation';
+import emptyList from "../Objekter/EmptyList";
 
 export const useSortertOgFiltrertArbeidsforholdliste = (alleArbeidsforhold: Arbeidsforhold[]) => {
     const { getSearchParameter } = useSearchParameters();
@@ -13,7 +14,7 @@ export const useSortertOgFiltrertArbeidsforholdliste = (alleArbeidsforhold: Arbe
     const sokefeltTekst = getSearchParameter('sok') || '';
     const filtrertPaVarsler = getSearchParameter('varsler') === 'true';
 
-    const [arbeidsforhold, settArbeidsforhold] = useState<Arbeidsforhold[]>([]);
+    const [arbeidsforhold, settArbeidsforhold] = useState<Arbeidsforhold[]>(emptyList);
 
     useEffect(() => {
         const filtrertListe = byggListeBasertPaPArametere(
@@ -27,7 +28,7 @@ export const useSortertOgFiltrertArbeidsforholdliste = (alleArbeidsforhold: Arbe
                 ? sorterArbeidsforhold(filtrertListe, parseInt(sortertPå)).reverse()
                 : sorterArbeidsforhold(filtrertListe, parseInt(sortertPå))
         );
-    }, [alleArbeidsforhold, filtreringsvalg, filtrertPaVarsler, sokefeltTekst, sortertPå, reversSortering]);
+    }, [settArbeidsforhold, alleArbeidsforhold, filtreringsvalg, filtrertPaVarsler, sokefeltTekst, sortertPå, reversSortering]);
 
     return arbeidsforhold;
 };

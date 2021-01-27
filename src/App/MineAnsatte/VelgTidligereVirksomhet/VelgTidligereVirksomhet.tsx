@@ -5,6 +5,7 @@ import UnderenhetIkon from './UnderenhetIkon';
 import { BedriftsmenyContext } from '../../BedriftsmenyProvider';
 import { useSearchParameters } from '../../../utils/UrlManipulation';
 import { useHistory } from "react-router-dom";
+import emptyList from "../../Objekter/EmptyList";
 
 const VelgTidligereVirksomhet: FunctionComponent = () => {
     const { underenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
@@ -15,7 +16,7 @@ const VelgTidligereVirksomhet: FunctionComponent = () => {
         history.replace({search: `bedrift=${underenhet.OrganizationNumber}&tidligereVirksomhet=${orgnr}`} );
     };
 
-    const underenheter = tidligereUnderenheter === 'laster' ? [] : tidligereUnderenheter;
+    const underenheter = tidligereUnderenheter === 'laster' ? emptyList : tidligereUnderenheter;
     const tidligereVirksomhet = getSearchParameter('tidligereVirksomhet');
 
     return (
