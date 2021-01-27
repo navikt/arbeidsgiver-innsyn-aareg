@@ -1,13 +1,7 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { Systemtittel, Element } from 'nav-frontend-typografi';
-import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { Systemtittel } from 'nav-frontend-typografi';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import Chevron from 'nav-frontend-chevron';
-import { APISTATUS } from '../../api/api-utils';
-import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
-import { Organisasjon, tomaAltinnOrganisasjon } from '../Objekter/OrganisasjonFraAltinn';
-import { MAKS_ANTALL_ARBEIDSFORHOLD, OrganisasjonsdetaljerContext } from '../OrganisasjonsdetaljerProvider';
-import { lagListeBasertPaUrl } from './sorteringOgFiltreringsFunksjoner';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
 import Progressbar from './Progressbar/Progressbar';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
@@ -15,11 +9,18 @@ import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import SideBytter from './SideBytter/SideBytter';
 import VelgTidligereVirksomhet from './VelgTidligereVirksomhet/VelgTidligereVirksomhet';
-import { nullStillSorteringIUrlParametere } from './urlFunksjoner';
-import { loggTrykketPåTidligereArbeidsforholdSide } from '../amplitudefunksjonerForLogging';
+import {
+    loggSidevisningAvArbeidsforhold,
+    loggTrykketPåNåværendeArbeidsforhold,
+    loggTrykketPåTidligereArbeidsforhold
+} from "../amplitudefunksjonerForLogging";
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import './MineAnsatte.less';
-import { AltinnorganisasjonerContext } from '../AltinnorganisasjonerProvider';
+import { BedriftsmenyContext } from '../BedriftsmenyProvider';
+import { Link } from 'react-router-dom';
+import { useSearchParameters } from '../../utils/UrlManipulation';
+import { FiltrerteOgSorterteArbeidsforholdContext } from '../FiltrerteOgSorterteArbeidsforholdProvider';
+import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
 
 export enum SorteringsAttributt {
     NAVN,
@@ -32,222 +33,138 @@ export enum SorteringsAttributt {
     STILLINGSPROSENT
 }
 
-const forMangeArbeidsforholdTekst = (antall: number, valgtVirksomhet: String) => {
-    return (
-        <>
-            <Element>For mange arbeidsforhold</Element>
-            {'Vi har ikke kapasitet til å hente flere enn ' +
-                MAKS_ANTALL_ARBEIDSFORHOLD +
-                ' avsluttede eller aktive arbeidsforhold om gangen. '}
-            {'Vi jobber med å forbedre systemet slik at flere arbeidsforhold kan vises.'}
-            <br />
-            <br />
-            {'Du har ' + antall + ' aktive eller avsluttede arbeidsforhold registrert på ' + valgtVirksomhet + '.'}
-        </>
-    );
-};
+export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
+    const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
 
-const MineAnsatte: FunctionComponent<RouteComponentProps> = ({ history }) => {
-    const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
-    const {
-        valgtAktivOrganisasjon,
-        tilgangTilTidligereArbeidsforhold,
-        tidligereVirksomheter,
-        listeMedArbeidsforholdFraAareg,
-        antallArbeidsforhold,
-        antallArbeidsforholdUkjent,
-        visProgressbar,
-        setVisProgressbar,
-        aaregLasteState,
-        feilkodeFraAareg,
-        nåværendeUrlString,
-        setNåværendeUrlString,
-        hentOgSetAntallOgArbeidsforhold,
-        valgtTidligereVirksomhet,
-        setValgtTidligereVirksomhet
-    } = useContext(OrganisasjonsdetaljerContext);
-
-    const naVærendeUrl = new URL(nåværendeUrlString);
-    const sidetall = naVærendeUrl.searchParams.get('side') || '1';
-
-    const ARBEIDSFORHOLDPERSIDE = 25;
-    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold');
-    const TILGANGTILTIDLIGEREARBEIDSFORHOLD =
-        tilgangTilTidligereArbeidsforhold && tidligereVirksomheter && tidligereVirksomheter.length > 0;
-    const forMangeArbeidsforhold = antallArbeidsforhold >= MAKS_ANTALL_ARBEIDSFORHOLD;
-
-    const valgtJuridiskEnhet = altinnorganisasjoner.find(
-        org => org.OrganizationNumber === valgtAktivOrganisasjon.ParentOrganizationNumber
-    )!!;
-
-    const overskriftMedOrganisasjonsdel =
-        'Opplysninger for ' +
-        (ERPATIDLIGEREARBEIDSFORHOLD
-            ? valgtJuridiskEnhet.Name + ' org.nr ' + valgtJuridiskEnhet.OrganizationNumber
-            : valgtAktivOrganisasjon.Name);
-
-    const setSideTallIUrlOgGenererListe = (indeks: number) => {
-        setParameterIUrl('side', indeks.toString());
-    };
-
-    const setParameterIUrl = (parameter: string, variabel: string) => {
-        const url = new URL(window.location.href);
-        url.searchParams.set(parameter, variabel);
-        const { search } = url;
-        history.replace({ search: search });
-        setNåværendeUrlString(url.toString());
-    };
-
-    const setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere = (organisasjon: Organisasjon) => {
-        setValgtTidligereVirksomhet(organisasjon);
-        hentOgSetAntallOgArbeidsforhold(organisasjon, true);
-        const search = nullStillSorteringIUrlParametere();
-        history.replace({ search: search });
-        setParameterIUrl('tidligereVirksomhet', organisasjon.OrganizationNumber);
-    };
-
-    useEffect(() => {
-        if (ERPATIDLIGEREARBEIDSFORHOLD) {
-            loggTrykketPåTidligereArbeidsforholdSide(listeMedArbeidsforholdFraAareg);
-        }
-    }, [ERPATIDLIGEREARBEIDSFORHOLD, listeMedArbeidsforholdFraAareg]);
-
-    const filtrertOgSortertListe: Arbeidsforhold[] = lagListeBasertPaUrl(listeMedArbeidsforholdFraAareg);
-    const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, filtrertOgSortertListe.length);
-    const listeForNåværendeSidetall = regnUtArbeidsForholdSomSkalVisesPaEnSide(
-        parseInt(sidetall),
-        ARBEIDSFORHOLDPERSIDE,
-        filtrertOgSortertListe
-    );
-
-    const redirectTilTidligereArbeidsforhold = () => {
-        const search = nullStillSorteringIUrlParametere();
-        history.replace({ search: search, pathname: 'tidligere-arbeidsforhold' });
-        valgtTidligereVirksomhet !== tomaAltinnOrganisasjon &&
-            hentOgSetAntallOgArbeidsforhold(valgtTidligereVirksomhet, true);
-        setNåværendeUrlString(window.location.href);
-    };
-
-    const redirectTilbake = () => {
-        hentOgSetAntallOgArbeidsforhold(valgtAktivOrganisasjon, false);
-        const search = nullStillSorteringIUrlParametere();
-        history.replace({ search: search, pathname: '/' });
-    };
-
-    const antallVarsler = listeMedArbeidsforholdFraAareg.filter(forhold => {
-        return forhold.varsler;
-    }).length;
-
-    const feilmeldingtekst = () => {
-        switch (feilkodeFraAareg) {
-            case '408':
-                return 'Det oppstod en feil da vi prøvde å hente dine arbeidsforhold. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
-            case '403':
-                return 'ikke tilgang til forespurt entitet i Aa-reg, Vi opplever problemer med å hente opplysninger, kontakt brukerstøtte dersom du mener du har tilgang';
-            default:
-                return 'Vi opplever ustabilitet med Aa-registret. Prøv å laste siden på nytt eller kontakte brukerstøtte hvis problemet vedvarer.';
-        }
-    };
+    const tilgangTidligereArbeidsforhold =
+        hovedenhet?.tilgang === true && tidligereUnderenheter !== 'laster' && tidligereUnderenheter.length > 0;
+    const overskriftMedOrganisasjonsdel = 'Opplysninger for ' + underenhet.Name;
 
     return (
         <div className="bakgrunnsside">
             <div className="innhold-container">
-                <Brodsmulesti valgtOrg={valgtAktivOrganisasjon.OrganizationNumber} />
-                {ERPATIDLIGEREARBEIDSFORHOLD && (
-                    <div className="brodsmule venstre">
-                        <button className="brodsmule__direct-tidligere-arbeidsforhold" onClick={redirectTilbake}>
-                            <Chevron type="venstre" />
-                            Tilbake til arbeidsforhold
-                        </button>
-                    </div>
-                )}
-                {!ERPATIDLIGEREARBEIDSFORHOLD && TILGANGTILTIDLIGEREARBEIDSFORHOLD && (
+                <Brodsmulesti valgtOrg={underenhet.OrganizationNumber} />
+
+                {tilgangTidligereArbeidsforhold && (
                     <div className="brodsmule hoyre">
-                        <button
-                            className="brodsmule__direct-tidligere-arbeidsforhold"
-                            onClick={() => {
-                                redirectTilTidligereArbeidsforhold();
+                        <Link
+                            to={{
+                                pathname: '/tidligere-arbeidsforhold',
+                                search: `bedrift=${underenhet.OrganizationNumber}`
                             }}
+                            className="brodsmule__direct-tidligere-arbeidsforhold"
+                            onClick={() => loggTrykketPåTidligereArbeidsforhold()}
                         >
-                            {'Arbeidsforhold i tidligere virksomheter for ' + valgtJuridiskEnhet.Name}
+                            {'Arbeidsforhold i tidligere virksomheter for ' + hovedenhet?.Name}
                             <Chevron type="høyre" />
-                        </button>
+                        </Link>
                     </div>
                 )}
+
                 <div className="mine-ansatte">
                     <Systemtittel className="mine-ansatte__systemtittel">{overskriftMedOrganisasjonsdel}</Systemtittel>
-                    {ERPATIDLIGEREARBEIDSFORHOLD && !visProgressbar && (
-                        <VelgTidligereVirksomhet
-                            redirectTilbake={redirectTilbake}
-                            valgtTidligereVirksomhet={valgtTidligereVirksomhet}
-                            tidligereVirksomheter={tidligereVirksomheter}
-                            setTidligereVirksomhet={setTidligereVirksomhetHentArbeidsforholdOgNullstillUrlParametere}
-                        />
-                    )}
-                    {(antallArbeidsforhold > 0 || antallArbeidsforholdUkjent) &&
-                        visProgressbar &&
-                        aaregLasteState !== APISTATUS.FEILET &&
-                        !forMangeArbeidsforhold && (
-                            <Progressbar
-                                antallArbeidsforholdUkjent={antallArbeidsforholdUkjent}
-                                antall={antallArbeidsforhold}
-                                setSkalvises={setVisProgressbar}
-                                erFerdigLastet={aaregLasteState === APISTATUS.OK}
-                                startTid={new Date().getTime()}
-                            />
-                        )}
-                    {aaregLasteState === APISTATUS.OK && !visProgressbar && !forMangeArbeidsforhold && (
-                        <MineAnsatteTopp
-                            setParameterIUrl={setParameterIUrl}
-                            valgtOrganisasjon={valgtAktivOrganisasjon}
-                            antallSider={antallSider}
-                            antallVarsler={antallVarsler}
-                            filtrertOgSortertListe={filtrertOgSortertListe}
-                            alleArbeidsforhold={listeMedArbeidsforholdFraAareg}
-                        />
-                    )}
-
-                    {aaregLasteState === APISTATUS.OK &&
-                        listeForNåværendeSidetall.length > 0 &&
-                        !visProgressbar &&
-                        !forMangeArbeidsforhold && (
-                            <>
-                                <TabellMineAnsatte
-                                    setParameterIUrl={setParameterIUrl}
-                                    listeMedArbeidsForhold={listeForNåværendeSidetall}
-                                    byttSide={setSideTallIUrlOgGenererListe}
-                                />
-                                <ListeMedAnsatteForMobil
-                                    className="mine-ansatte__liste"
-                                    listeMedArbeidsForhold={listeForNåværendeSidetall}
-                                />
-                                {antallSider > 1 && (
-                                    <SideBytter
-                                        plassering="nederst"
-                                        className="nedre-sidebytter"
-                                        setParameterIUrl={setParameterIUrl}
-                                        antallSider={antallSider}
-                                    />
-                                )}
-                            </>
-                        )}
-                    {aaregLasteState === APISTATUS.FEILET && (
-                        <div className="mine-ansatte__feilmelding-aareg">
-                            <AlertStripeFeil>{feilmeldingtekst()}</AlertStripeFeil>
-                        </div>
-                    )}
-                    {forMangeArbeidsforhold && (
-                        <div className="mine-ansatte__feilmelding-aareg">
-                            <AlertStripeAdvarsel>
-                                {' '}
-                                {forMangeArbeidsforholdTekst(antallArbeidsforhold, valgtAktivOrganisasjon.Name)}
-                            </AlertStripeAdvarsel>
-                        </div>
-                    )}
+                    <MineArbeidsforhold />
                 </div>
             </div>
         </div>
     );
 };
 
-export default withRouter(MineAnsatte);
+export const MineTidligereArbeidsforhold: FunctionComponent = () => {
+    const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
+
+    return (
+        <div className="bakgrunnsside">
+            <div className="innhold-container">
+                <Brodsmulesti valgtOrg={underenhet.OrganizationNumber} />
+
+                <div className="brodsmule venstre">
+                    <Link
+                        className="brodsmule__direct-tidligere-arbeidsforhold"
+                        to={{
+                            pathname: '/',
+                            search: `bedrift=${underenhet.OrganizationNumber}`
+                        }}
+                        onClick={() => loggTrykketPåNåværendeArbeidsforhold()}
+                    >
+                        <Chevron type="venstre" />
+                        Tilbake til arbeidsforhold
+                    </Link>
+                </div>
+
+                <div className="mine-ansatte">
+                    <Systemtittel className="mine-ansatte__systemtittel">
+                        {`Opplysninger for ${hovedenhet?.Name} org.nr ${hovedenhet?.OrganizationNumber}`}
+                    </Systemtittel>
+                    {tidligereUnderenheter !== 'laster' && <VelgTidligereVirksomhet />}
+                    <MineArbeidsforhold />
+                </div>
+            </div>
+        </div>
+    );
+};
+
+
+const MineArbeidsforhold: FunctionComponent = () => {
+    const { underenhet } = useContext(BedriftsmenyContext);
+    const aareg = useContext(FiltrerteOgSorterteArbeidsforholdContext);
+    const { getSearchParameter, setSearchParameter } = useSearchParameters();
+
+    const sidetall = getSearchParameter('side') || '1';
+
+    const setSideTallIUrlOgGenererListe = (indeks: number) => {
+        setSearchParameter({ side: indeks.toString() });
+    };
+
+    const filtrertOgSortertListe = aareg?.lastestatus?.status === 'ferdig' ? aareg.lastestatus.arbeidsforhold : null;
+
+    const ARBEIDSFORHOLDPERSIDE = 25;
+    const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, filtrertOgSortertListe?.length ?? 0);
+    const listeForNåværendeSidetall = regnUtArbeidsForholdSomSkalVisesPaEnSide(
+        parseInt(sidetall),
+        ARBEIDSFORHOLDPERSIDE,
+        filtrertOgSortertListe ?? []
+    );
+
+    useEffect(() => {
+        if (aareg?.lastestatus?.status === 'ferdig') {
+            loggSidevisningAvArbeidsforhold(aareg.lastestatus.arbeidsforhold.length, aareg.tidligereVirksomhet);
+        }
+    }, [aareg]);
+
+    if (aareg === null) {
+        return null;
+    } else if (aareg.lastestatus.status === 'laster') {
+        return <Progressbar estimertAntall={aareg.lastestatus.estimertAntall} />;
+    } else if (aareg.lastestatus.status === 'ferdig') {
+        return (
+            <>
+                <MineAnsatteTopp valgtOrganisasjon={underenhet} antallSider={antallSider} />
+
+                {listeForNåværendeSidetall.length > 0 && (
+                    <>
+                        <TabellMineAnsatte
+                            listeMedArbeidsForhold={listeForNåværendeSidetall}
+                            byttSide={setSideTallIUrlOgGenererListe}
+                        />
+                        <ListeMedAnsatteForMobil
+                            className="mine-ansatte__liste"
+                            listeMedArbeidsForhold={listeForNåværendeSidetall}
+                        />
+                        {antallSider > 1 && (
+                            <SideBytter plassering="nederst" className="nedre-sidebytter" antallSider={antallSider} />
+                        )}
+                    </>
+                )}
+            </>
+        );
+    } else if (aareg.lastestatus.status === 'ikke-tilgang') {
+        return <IngenTilgangInfo />;
+    } else {
+        return (
+            <div className="mine-ansatte__feilmelding-aareg">
+                <AlertStripeFeil>{aareg.lastestatus.beskjed}</AlertStripeFeil>
+            </div>
+        );
+    }
+};
