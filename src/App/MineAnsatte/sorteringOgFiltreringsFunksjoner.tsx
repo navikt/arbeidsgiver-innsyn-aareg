@@ -16,7 +16,6 @@ export const useSortertOgFiltrertArbeidsforholdliste = (alleArbeidsforhold: Arbe
     const [arbeidsforhold, settArbeidsforhold] = useState<Arbeidsforhold[]>([]);
 
     useEffect(() => {
-        console.log("FILTRERER LISTE")
         const filtrertListe = byggListeBasertPaPArametere(
             alleArbeidsforhold,
             filtreringsvalg,
