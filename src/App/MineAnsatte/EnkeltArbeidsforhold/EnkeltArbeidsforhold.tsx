@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
 import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Chevron from 'nav-frontend-chevron';
@@ -13,6 +12,7 @@ import { useSearchParameters } from '../../../utils/UrlManipulation';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../../FiltrerteOgSorterteArbeidsforholdProvider';
 import IngenTilgangInfo from '../../IngenTilgangInfo/IngenTilgangInfo';
 import { AlertStripeAdvarsel } from "nav-frontend-alertstriper";
+import { useHistory } from "react-router-dom";
 
 const miljo = () => {
     if (environment.MILJO === 'prod-sbs') {
@@ -31,7 +31,8 @@ const apiURL = () => {
     return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
 };
 
-const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history }) => {
+const EnkeltArbeidsforhold: FunctionComponent = () => {
+    const history = useHistory()
     const { underenhet } = useContext(BedriftsmenyContext);
     const aareg = useContext(FiltrerteOgSorterteArbeidsforholdContext);
     const { setSearchParameter, getSearchParameter } = useSearchParameters();
@@ -133,4 +134,4 @@ const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history 
     );
 };
 
-export default withRouter(EnkeltArbeidsforhold);
+export default EnkeltArbeidsforhold;
