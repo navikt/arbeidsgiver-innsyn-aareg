@@ -1,20 +1,22 @@
 import React, {useEffect, useRef } from 'react';
 import { Element } from 'nav-frontend-typografi';
 import './PagineringsKnapp.less';
-import {getVariabelFraUrl} from "../../../sorteringOgFiltreringsFunksjoner";
+import { useSearchParameters } from "../../../../../utils/UrlManipulation";
 const CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
 
 interface Props {
     sidetall: number;
     siderTilsammen: number;
-    setParameterIUrl: (parameter: string, variabel: string) => void;
     onSideendring: (key: string) => void
     elementIFokus: number;
 }
 
 const GraSirkelMedNr = (props: Props) => {
+    const {getSearchParameter, setSearchParameter} = useSearchParameters();
+
+
     let ariaLabel = 'Gå til side ' + props.sidetall.toString();
-    const erNavarendeSide = parseInt(getVariabelFraUrl('side')||'1')  === props.sidetall;
+    const erNavarendeSide = parseInt(getSearchParameter('side') || '1')  === props.sidetall;
     const className = erNavarendeSide? 'sidebytter__valg er-valgt' : 'sidebytter__valg'
 
     if (erNavarendeSide) {
@@ -31,9 +33,9 @@ const GraSirkelMedNr = (props: Props) => {
         }
     },[props.elementIFokus, props.sidetall, knappElement])
 
-    const onChange = (sidetall: number) => {
-        props.setParameterIUrl('side', sidetall.toString())
-    }
+    const onChange = (sidetall: number) =>
+        setSearchParameter({side: sidetall.toString()});
+
 
     return (
         <button

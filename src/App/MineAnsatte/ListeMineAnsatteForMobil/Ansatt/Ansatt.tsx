@@ -1,15 +1,16 @@
 import React, { FunctionComponent } from 'react';
-import {Link, RouteComponentProps, withRouter} from 'react-router-dom';
+import { Link, useHistory } from "react-router-dom";
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import AttributtVisning from './AttributtVisning/AttributtVisning';
 import { loggBrukerTrykketPaVarsel } from '../../../amplitudefunksjonerForLogging';
 import './Ansatt.less';
 
-interface Props extends RouteComponentProps{
+interface Props {
     arbeidsforhold: Arbeidsforhold;
 }
 
-const Ansatt: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
+const Ansatt: FunctionComponent<Props> = ( { arbeidsforhold}) => {
+    const history = useHistory()
     const naVærendeUrl = new URL(window.location.href);
     const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
 
@@ -62,4 +63,4 @@ const Ansatt: FunctionComponent<Props> = ( {history, arbeidsforhold}) => {
     );
 };
 
-export default withRouter(Ansatt);
+export default Ansatt;
