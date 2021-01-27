@@ -1,15 +1,18 @@
-import React, { FunctionComponent, useContext } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
+import React, { FunctionComponent, useContext, useEffect } from 'react';
 import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Chevron from 'nav-frontend-chevron';
 import environment from '../../../utils/environment';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
-import { getVariabelFraUrl, lagListeBasertPaUrl } from '../sorteringOgFiltreringsFunksjoner';
 import EnkeltArbeidsforholdVarselVisning from './EnkeltArbeidsforholdVarselVisning/EnkeltArbeidsforholdVarselVisning';
 import Brodsmulesti from '../../Brodsmulesti/Brodsmulesti';
-import { OrganisasjonsdetaljerContext } from '../../OrganisasjonsdetaljerProvider';
 import './EnkeltArbeidsforhold.less';
+import { BedriftsmenyContext } from '../../BedriftsmenyProvider';
+import { useSearchParameters } from '../../../utils/UrlManipulation';
+import { FiltrerteOgSorterteArbeidsforholdContext } from '../../FiltrerteOgSorterteArbeidsforholdProvider';
+import IngenTilgangInfo from '../../IngenTilgangInfo/IngenTilgangInfo';
+import { AlertStripeAdvarsel } from "nav-frontend-alertstriper";
+import { useHistory } from "react-router-dom";
 
 const miljo = () => {
     if (environment.MILJO === 'prod-sbs') {
@@ -28,86 +31,78 @@ const apiURL = () => {
     return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
 };
 
-const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history, }) => {
-    const {
-        valgtAktivOrganisasjon,
-        setVisProgressbar,
-        valgtArbeidsforhold,
-        setValgtArbeidsforhold,
-        listeMedArbeidsforholdFraAareg
-    } = useContext(OrganisasjonsdetaljerContext);
+const EnkeltArbeidsforhold: FunctionComponent = () => {
+    const history = useHistory()
+    const { underenhet } = useContext(BedriftsmenyContext);
+    const aareg = useContext(FiltrerteOgSorterteArbeidsforholdContext);
+    const { setSearchParameter, getSearchParameter } = useSearchParameters();
 
     const redirectTilbake = () => {
-        const naVærendeUrl = new URL(window.location.href);
-        const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold');
-        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold' : '/';
-        naVærendeUrl.searchParams.delete('arbeidsforhold');
-        const { search } = naVærendeUrl;
-        setVisProgressbar(false);
-        history.replace({ search: search, pathname: redirectPath });
+        const params = new URLSearchParams(history.location.search);
+        params.delete('arbeidsforhold');
+        history.replace({ search: params.toString(), pathname: '..' });
     };
-
-    const locale = 'nb' as 'nb' | 'en';
-    const arbeidsforholdIdFraUrl = getVariabelFraUrl('arbeidsforhold');
-    window.scrollTo(0, 0);
-
-    if (arbeidsforholdIdFraUrl === null) {
-        redirectTilbake();
-    }
-
-    const filtrertOgSortertListe: Arbeidsforhold[] = lagListeBasertPaUrl(listeMedArbeidsforholdFraAareg);
-    const indeksValgtArbeidsforhold = filtrertOgSortertListe.findIndex(arbeidsforhold => {
-        return arbeidsforhold.navArbeidsforholdId === arbeidsforholdIdFraUrl;
-    });
-
-    if (filtrertOgSortertListe.length && indeksValgtArbeidsforhold === -1) {
-        redirectTilbake();
-    }
-
-    const nesteArbeidsforhold = filtrertOgSortertListe[indeksValgtArbeidsforhold + 1];
-    const forrigeArbeidsforhold = filtrertOgSortertListe[indeksValgtArbeidsforhold - 1];
-    setValgtArbeidsforhold(filtrertOgSortertListe[indeksValgtArbeidsforhold]);
 
     const redirectTilArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
-        setTimeout(() => {}, 2500);
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('arbeidsforhold', arbeidsforhold.navArbeidsforholdId);
-        const { search } = currentUrl;
-        history.replace({ search: search });
+        setSearchParameter({ arbeidsforhold: arbeidsforhold.navArbeidsforholdId });
     };
+
+    const arbeidsforholdIdFraUrl = getSearchParameter('arbeidsforhold');
+    window.scrollTo(0, 0);
+
+    useEffect(() => {
+        if (arbeidsforholdIdFraUrl === null) {
+            redirectTilbake();
+        }
+    });
+
+    const filtrertOgSortertListe: Arbeidsforhold[] =
+        aareg?.lastestatus?.status === 'ferdig' ? aareg.lastestatus.arbeidsforhold : [];
+    const indeksValgtArbeidsforhold = filtrertOgSortertListe.findIndex(
+        arbeidsforhold => arbeidsforhold.navArbeidsforholdId === arbeidsforholdIdFraUrl
+    );
+
+    const nesteArbeidsforhold: Arbeidsforhold | undefined = filtrertOgSortertListe[indeksValgtArbeidsforhold + 1];
+    const forrigeArbeidsforhold: Arbeidsforhold | undefined = filtrertOgSortertListe[indeksValgtArbeidsforhold - 1];
+    const valgtArbeidsforhold: Arbeidsforhold | undefined = filtrertOgSortertListe[indeksValgtArbeidsforhold];
 
     return (
         <>
-            {arbeidsforholdIdFraUrl && valgtArbeidsforhold && (
-                <div className="enkelt-arbeidsforhold-container">
-                    <Brodsmulesti valgtOrg={valgtAktivOrganisasjon.OrganizationNumber} />
-                    <div className="enkelt-arbeidsforhold-innhold">
-                        <div className="enkelt-arbeidsforhold-innhold__topp">
-                            <button className="brodsmule" onClick={redirectTilbake}>
-                                <Chevron type="venstre" />
-                                <Normaltekst>Tilbake til liste</Normaltekst>
-                            </button>
-                            <div className="enkelt-arbeidsforhold-innhold__fram-tilbake-knapp">
-                                {forrigeArbeidsforhold && (
-                                    <button
-                                        className="brodsmule"
-                                        onClick={() => redirectTilArbeidsforhold(forrigeArbeidsforhold)}
-                                    >
-                                        <Chevron type="venstre" />
-                                        <Normaltekst>Forrige</Normaltekst>
-                                    </button>
-                                )}
-                                {nesteArbeidsforhold && (
-                                    <button
-                                        className="brodsmule"
-                                        onClick={() => redirectTilArbeidsforhold(nesteArbeidsforhold)}
-                                    >
-                                        <Normaltekst>Neste</Normaltekst>
-                                        <Chevron type={'høyre'} />
-                                    </button>
-                                )}
-                            </div>
+            <div className="enkelt-arbeidsforhold-container">
+                <Brodsmulesti valgtOrg={underenhet.OrganizationNumber} />
+                <div className="enkelt-arbeidsforhold-innhold">
+                    <div className="enkelt-arbeidsforhold-innhold__topp">
+                        <button className="brodsmule" onClick={redirectTilbake}>
+                            <Chevron type="venstre" />
+                            <Normaltekst>Tilbake til liste</Normaltekst>
+                        </button>
+                        <div className="enkelt-arbeidsforhold-innhold__fram-tilbake-knapp">
+                            {forrigeArbeidsforhold && (
+                                <button
+                                    className="brodsmule"
+                                    onClick={() => redirectTilArbeidsforhold(forrigeArbeidsforhold)}
+                                >
+                                    <Chevron type="venstre" />
+                                    <Normaltekst>Forrige</Normaltekst>
+                                </button>
+                            )}
+                            {nesteArbeidsforhold && (
+                                <button
+                                    className="brodsmule"
+                                    onClick={() => redirectTilArbeidsforhold(nesteArbeidsforhold)}
+                                >
+                                    <Normaltekst>Neste</Normaltekst>
+                                    <Chevron type={'høyre'} />
+                                </button>
+                            )}
                         </div>
+                    </div>
+
+                    {aareg === null || aareg?.lastestatus?.status === 'ikke-tilgang' ? (
+                        <IngenTilgangInfo underenhet={underenhet} />
+                    ) : valgtArbeidsforhold === undefined ? (
+                        <AlertStripeAdvarsel>Arbeidsforhold ikke funnet</AlertStripeAdvarsel>
+                    ) : (
                         <div className="enkelt-arbeidsforhold">
                             <EnkeltArbeidsforholdVarselVisning valgtArbeidsforhold={valgtArbeidsforhold} />
                             <div className="af-detaljert__header">
@@ -121,9 +116,9 @@ const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history,
                                 </span>
                             </div>
                             <DetaljertArbeidsforhold
-                                locale={locale}
+                                locale="nb"
                                 miljo={miljo()}
-                                navArbeidsforholdId={parseInt(arbeidsforholdIdFraUrl)}
+                                navArbeidsforholdId={parseInt(valgtArbeidsforhold.navArbeidsforholdId)}
                                 rolle="ARBEIDSGIVER"
                                 fnrArbeidstaker={valgtArbeidsforhold.arbeidstaker.offentligIdent}
                                 customApiUrl={apiURL()}
@@ -132,11 +127,11 @@ const EnkeltArbeidsforhold: FunctionComponent<RouteComponentProps> = ({ history,
                                 printSSN={valgtArbeidsforhold.arbeidstaker.offentligIdent}
                             />
                         </div>
-                    </div>
+                    )}
                 </div>
-            )}
+            </div>
         </>
     );
 };
 
-export default withRouter(EnkeltArbeidsforhold);
+export default EnkeltArbeidsforhold;

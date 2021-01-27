@@ -1,18 +1,20 @@
 import React, { FunctionComponent, SyntheticEvent } from 'react';
 import { ToggleGruppe, ToggleKnappPure, ToggleKnappPureProps } from 'nav-frontend-toggle';
 import './Filtervalg.less';
-import {filtreringValgt, getVariabelFraUrl} from '../sorteringOgFiltreringsFunksjoner';
+import { filtreringValgt } from '../sorteringOgFiltreringsFunksjoner';
+import { useSearchParameters } from '../../../utils/UrlManipulation';
 
 interface Props {
     overSiktOverAntallAktiveOgInaktive: number[];
     anallVarsler: number;
-    setParameterIUrl: (parameter: string, variabel: string) => void;
 }
 
 const Filtervalg: FunctionComponent<Props> = props => {
-    const filtrerPaAktiveAvsluttedeVariabel = getVariabelFraUrl('filter');
+    const { getSearchParameter, setSearchParameter } = useSearchParameters();
+
+    const filtrerPaAktiveAvsluttedeVariabel = getSearchParameter('filter');
     const filtreringsValg = filtrerPaAktiveAvsluttedeVariabel ? filtrerPaAktiveAvsluttedeVariabel : 'Alle';
-    const skalFiltrerePåVarselVariabel = getVariabelFraUrl('varsler');
+    const skalFiltrerePåVarselVariabel = getSearchParameter('varsler');
     const skalFiltrerePåVarsler = !!(skalFiltrerePåVarselVariabel && skalFiltrerePåVarselVariabel === 'true');
 
     const arrayMedToggleTekst = [
@@ -23,8 +25,7 @@ const Filtervalg: FunctionComponent<Props> = props => {
 
     const velgFiltrering = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]) => {
         const filtrering = filtreringValgt(event, toggles);
-        props.setParameterIUrl('filter', filtrering);
-        props.setParameterIUrl('side', '1');
+        setSearchParameter({ filter: filtrering, side: '1' });
     };
 
     return (
@@ -32,9 +33,9 @@ const Filtervalg: FunctionComponent<Props> = props => {
             <ToggleGruppe
                 onChange={velgFiltrering}
                 defaultToggles={[
-                    { children: arrayMedToggleTekst[0], pressed: filtreringsValg==="Alle" },
-                    { children: arrayMedToggleTekst[1], pressed: filtreringsValg==="Aktive" },
-                    { children: arrayMedToggleTekst[2], pressed: filtreringsValg==="Avsluttede"  }
+                    { children: arrayMedToggleTekst[0], pressed: filtreringsValg === 'Alle' },
+                    { children: arrayMedToggleTekst[1], pressed: filtreringsValg === 'Aktive' },
+                    { children: arrayMedToggleTekst[2], pressed: filtreringsValg === 'Avsluttede' }
                 ]}
                 minstEn
                 kompakt
@@ -42,10 +43,12 @@ const Filtervalg: FunctionComponent<Props> = props => {
             <div className={'varselKnapp'}>
                 <ToggleKnappPure
                     children={'varslinger (' + props.anallVarsler.toString() + ')'}
-                    onClick={ () => {
-                        props.setParameterIUrl('side', '1');
-                        props.setParameterIUrl('varsler', (!skalFiltrerePåVarsler).toString())
-                    }}
+                    onClick={() =>
+                        setSearchParameter({
+                            side: '1',
+                            varsler: (!skalFiltrerePåVarsler).toString()
+                        })
+                    }
                     pressed={skalFiltrerePåVarsler}
                 />
             </div>
