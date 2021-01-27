@@ -259,19 +259,21 @@ const lagAvluttetAnsattForhold = (): Arbeidsforhold => {
 
 const genererMockingAvArbeidsForhold = (antall: number, kunAvsluttede: boolean): Arbeidsforhold[] => {
     const listeMedArbeidsForhold: Arbeidsforhold[] = [];
+
     for (let i: number = 0; i < antall; i++) {
         const lagAnsattFunksjon = kunAvsluttede ? lagAvluttetAnsattForhold() : lagAnsattForhold()
         listeMedArbeidsForhold.push(lagAnsattFunksjon);
     }
+
     return listeMedArbeidsForhold.map(forhold => {
         return { ...forhold, navArbeidsforholdId: listeMedArbeidsForhold.indexOf(forhold).toString() };
     });
 };
 
-export const AaregMockObjekt: ObjektFraAAregisteret = {
+export const AaregMockObjekt = (antall: number):  ObjektFraAAregisteret => ({
     ...tomResponsFraAareg,
-    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(300, false)
-};
+    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(antall, false)
+});
 
 export const AaregMockObjektForNedlagtVirksomhet: ObjektFraAAregisteret = {
     ...tomResponsFraAareg,

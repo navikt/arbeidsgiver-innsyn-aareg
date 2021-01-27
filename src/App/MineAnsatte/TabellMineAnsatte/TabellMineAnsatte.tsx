@@ -10,7 +10,6 @@ import './TabellMineAnsatte.less';
 interface Props {
     listeMedArbeidsForhold: Arbeidsforhold[];
     byttSide: (indeks: number) => void;
-    setParameterIUrl: (parameter: string, variabel: string) => void;
 }
 
 const TabellMineAnsatte: FunctionComponent<Props> = (props) => {
@@ -41,9 +40,7 @@ const TabellMineAnsatte: FunctionComponent<Props> = (props) => {
 
     return (
             <table className="tabell tabell--stripet tabell-container">
-                <KolonnerFullSkjerm
-                    setParameterIUrl={props.setParameterIUrl}
-                />
+                <KolonnerFullSkjerm />
                 <tbody>{rader}</tbody>
             </table>
     );

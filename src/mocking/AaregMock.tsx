@@ -1,31 +1,21 @@
 import fetchMock from 'fetch-mock';
-import {
-    hentArbeidsforholdLink,
-    hentTidligereArbeidsforholdLink,
-    hentTidligereVirksomheterLink
-} from '../App/lenker';
-import {AaregMockObjekt, AaregMockObjektForNedlagtVirksomhet} from './funksjonerForAlageAAregMock';
-import {tidligerVirksomheter} from "./mockresponsFraAltinn";
-const delay = new Promise(res => setTimeout(res, 4000));
+import { hentArbeidsforholdLink, hentTidligereArbeidsforholdLink, hentTidligereVirksomheterLink } from '../App/lenker';
+import { AaregMockObjekt, AaregMockObjektForNedlagtVirksomhet } from './funksjonerForAlageAAregMock';
+import { tidligerVirksomheter } from './mockresponsFraAltinn';
+import { delayed, getOrgnr } from './util';
+
 fetchMock
-    .get(
-        hentArbeidsforholdLink(),
-        delay.then(() => {
-          return AaregMockObjekt;
-        })
-    )
-    .spy();
+    .get(hentArbeidsforholdLink(), (_, request) =>
+        delayed(4000, () => AaregMockObjekt(Number.parseInt(getOrgnr(request) ?? '100') % 1000))
+)
+.spy();
 
 fetchMock
     .get(
         hentTidligereArbeidsforholdLink(),
-        delay.then(() => {
-            return AaregMockObjektForNedlagtVirksomhet;
-        })
+        delayed(2000, () => AaregMockObjektForNedlagtVirksomhet)
     )
     .spy();
-
-
 
 //let headere = {"orgnr": "954168395", "jurenhet": "810825472"};
 
@@ -54,8 +44,6 @@ fetchMock
 fetchMock
     .get(
         hentTidligereVirksomheterLink,
-        delay.then(() => {
-            return tidligerVirksomheter;
-        })
+        delayed(1000, () => tidligerVirksomheter)
     )
     .spy();

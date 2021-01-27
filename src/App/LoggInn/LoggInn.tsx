@@ -7,7 +7,7 @@ import handshake from './handshake.svg';
 import { TilgangsStyringInfoTekst } from './TilgangsStyringInfoTekst/TilgangsStyringInfoTekst';
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import './Logginn.less';
-import LoggInnBanner from './LoggInnBanner/LoggInnBanner';
+import EnkelBanner from '../EnkelBanner/EnkelBanner';
 
 export const redirectTilLogin = () => {
     if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs' || environment.MILJO === 'labs-gcp') {
@@ -22,7 +22,7 @@ const LoggInn = () => {
     return (
         <div className="innloggingsside">
             <Brodsmulesti />
-            <LoggInnBanner />
+            <EnkelBanner />
             <div className="innloggingsside__innhold">
                 <div className="innloggingsside__circle">
                     <img src={handshake} className="handtrykkbilde" alt="bilde av håndtrykk" />
