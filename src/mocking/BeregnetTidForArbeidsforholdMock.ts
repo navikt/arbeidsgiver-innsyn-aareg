@@ -1,11 +1,14 @@
 import fetchMock from 'fetch-mock';
 import { hentAntallArbeidsforholdLink} from '../App/lenker';
-const delay = new Promise(res => setTimeout(res, 500));
+import { delayed, getOrgnr, randomInt } from "./util";
+
 fetchMock
     .get(
         hentAntallArbeidsforholdLink(),
-        delay.then(() => {
-            return {first: '910825518', second: 300};
-        })
+         (url, request) => {
+             const antall = Number.parseInt(getOrgnr(request) ?? '100') % 1000;
+             const missing = randomInt(10) === 0;
+             return delayed(1000, () => ({first: '910825518', second: missing ? -1 : antall}));
+         }
     )
     .spy();
