@@ -24,16 +24,16 @@ const SideBytter = ({ className, antallSider, plassering }: Props) => {
         if (key === 'ArrowRight' || key === 'Right') {
             if (nåværendeSidetall === antallSider.toString()) {
             } else {
-                setSearchParameter({side: (parseInt(nåværendeSidetall) + 1).toString()});
+                setSearchParameter({ side: (parseInt(nåværendeSidetall) + 1).toString() });
                 setElementIFokus(parseInt(nåværendeSidetall) + 1);
             }
         }
         if (key === 'ArrowLeft' || key === 'Left') {
             if (nåværendeSidetall === '1') {
-                setSearchParameter({side: '1'});
+                setSearchParameter({ side: '1' });
                 setElementIFokus(1);
             } else {
-                setSearchParameter({side: (parseInt(nåværendeSidetall) - 1).toString()});
+                setSearchParameter({ side: (parseInt(nåværendeSidetall) - 1).toString() });
                 setElementIFokus(parseInt(nåværendeSidetall) - 1);
             }
         }
@@ -61,12 +61,10 @@ const SideBytter = ({ className, antallSider, plassering }: Props) => {
             <div className="sidebytter" role={'toolbar'}>
                 {nåVærendeSidetall !== 1 && (
                     <button
-                        onKeyDown={e => onSideendring(e.key)}
+                        onKeyDown={(e) => onSideendring(e.key)}
                         className="sidebytter__chevron"
                         id={'sidebytter-chevron-venstre-' + plassering}
-                        onClick={() =>
-                            setSearchParameter({side: (nåVærendeSidetall - 1).toString()})
-                        }
+                        onClick={() => setSearchParameter({ side: (nåVærendeSidetall - 1).toString() })}
                         aria-label={'Gå til forrige side'}
                     >
                         <VenstreChevron type={'venstre'} />
@@ -91,9 +89,9 @@ const SideBytter = ({ className, antallSider, plassering }: Props) => {
                     />
                 )}
                 <button
-                    onKeyDown={e => onSideendring(e.key)}
+                    onKeyDown={(e) => onSideendring(e.key)}
                     className={'sidebytter__chevron'}
-                    onClick={() => setSearchParameter({side: (nåVærendeSidetall + 1).toString()})}
+                    onClick={() => setSearchParameter({ side: (nåVærendeSidetall + 1).toString() })}
                     aria-label={'Gå til neste side'}
                     id={'sidebytter-chevron-hoyre-' + plassering}
                 >
