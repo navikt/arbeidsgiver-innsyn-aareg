@@ -1,11 +1,11 @@
 import React, { createContext, FunctionComponent, useContext, useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import { Organisasjon } from './Objekter/OrganisasjonFraAltinn';
 import { hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg } from '../api/aaregApi';
 import { loggInfoOmFeil } from './amplitudefunksjonerForLogging';
 import { Arbeidsforhold } from './Objekter/ArbeidsForhold';
 import { redirectTilLogin } from './LoggInn/LoggInn';
 import { BedriftsmenyContext } from './BedriftsmenyProvider';
-import { useLocation } from 'react-router';
 
 export type Context = {
     arbeidsforholdFor: Organisasjon;
@@ -32,7 +32,7 @@ type Lastestatus =
     | { status: 'ferdig'; arbeidsforhold: Arbeidsforhold[] }
     | { status: 'feil'; beskjed: string };
 
-export const ArbeidsforholdProvider: FunctionComponent = props => {
+export const ArbeidsforholdProvider: FunctionComponent = (props) => {
     const { hovedenhet, underenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
 
     const [lastestatus, settLastestatus] = useState<Lastestatus | null>(null);
@@ -47,7 +47,7 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
     if (erPåTidligereUnderenhet) {
         const orgnr = new URLSearchParams(loc.search).get('tidligereVirksomhet');
         const underenheter = tidligereUnderenheter === 'laster' ? [] : tidligereUnderenheter;
-        arbeidsforholdFor = underenheter.find(org => org.OrganizationNumber === orgnr) ?? null;
+        arbeidsforholdFor = underenheter.find((org) => org.OrganizationNumber === orgnr) ?? null;
         tilgang = hovedenhet?.tilgang ?? false;
     } else {
         arbeidsforholdFor = underenhet;
@@ -71,7 +71,7 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
         settLastestatus({ status: 'laster' });
 
         hentAntallArbeidsforholdFraAareg(orgnr, underenhet.ParentOrganizationNumber, abortAntall.signal)
-            .then(antall => {
+            .then((antall) => {
                 settLastestatus({ status: 'laster', estimertAntall: antall === -1 ? undefined : antall });
                 hentArbeidsforholdFraAAreg(
                     orgnr,
@@ -79,10 +79,10 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
                     abortForhold.signal,
                     erPåTidligereUnderenhet
                 )
-                    .then(respons => {
+                    .then((respons) => {
                         settLastestatus({ status: 'ferdig', arbeidsforhold: respons.arbeidsforholdoversikter });
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         if (error.name !== 'AbortError') {
                             console.error(error);
                             const status = error?.response?.status;
@@ -96,7 +96,7 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
                         }
                     });
             })
-            .catch(error => {
+            .catch((error) => {
                 if (error.name !== 'AbortError') {
                     console.error(error);
                     settLastestatus({ status: 'feil', beskjed: feilmeldingtekst(null) });
@@ -110,7 +110,7 @@ export const ArbeidsforholdProvider: FunctionComponent = props => {
 
     useEffect(() => {
         if (arbeidsforholdFor !== null && lastestatus !== null) {
-            settContext({ arbeidsforholdFor, lastestatus, tidligereVirksomhet: erPåTidligereUnderenhet })
+            settContext({ arbeidsforholdFor, lastestatus, tidligereVirksomhet: erPåTidligereUnderenhet });
         } else {
             settContext(null);
         }
