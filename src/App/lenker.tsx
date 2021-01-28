@@ -1,5 +1,5 @@
 import environment from '../utils/environment';
-import {alleFeatures} from "./FeatureToggleProvider";
+import { alleFeatures } from './FeatureToggleProvider';
 
 const landingsURL = '/arbeidsforhold/';
 
@@ -25,7 +25,6 @@ export const hentRettigheterTilAltinnTjenesteLink = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/rettigheter-til-tjeneste/';
 };
 
-
 export const sjekkInnloggetLenke = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/innlogget';
 };
@@ -38,31 +37,27 @@ export const hentOverordnetEnhetApiLink = (orgnr: string) => {
     return `https://data.brreg.no/enhetsregisteret/api/enheter/${orgnr}`;
 };
 
-export const hentFeatureTogglesLenke = ():string => {
+export const hentFeatureTogglesLenke = (): string => {
     const featureBaseUrl = landingsURL + 'arbeidsgiver-arbeidsforhold/api/feature';
-    const query = alleFeatures.map(feature => `feature=${feature}`).join('&');
+    const query = alleFeatures.map((feature) => `feature=${feature}`).join('&');
     return `${featureBaseUrl}?${query}`;
 };
 
-
-
 export const linkTilMinSideArbeidsgiver = (orgnr: string) => {
-    const orgNrDel = orgnr.length>0 ? '?bedrift=' + orgnr : '';
+    const orgNrDel = orgnr.length > 0 ? '?bedrift=' + orgnr : '';
     if (environment.MILJO === 'prod-sbs') {
         return 'https://arbeidsgiver.nav.no/min-side-arbeidsgiver/' + orgNrDel;
-    }
-    else if (environment.MILJO === 'dev-sbs'){
+    } else if (environment.MILJO === 'dev-sbs') {
         return 'https://arbeidsgiver-q.nav.no/min-side-arbeidsgiver/' + orgNrDel;
     }
     return 'https://arbeidsgiver.labs.nais.io/min-side-arbeidsgiver/' + orgNrDel;
 };
 
 export const linkTilArbeidsforhold = (orgnr: string) => {
-    const orgNrDel = orgnr.length>0 ? '?bedrift=' + orgnr : '';
+    const orgNrDel = orgnr.length > 0 ? '?bedrift=' + orgnr : '';
     if (environment.MILJO === 'prod-sbs') {
         return 'https://arbeidsgiver.nav.no/arbeidsforhold/' + orgNrDel;
-    }
-    else if (environment.MILJO === 'dev-sbs'){
+    } else if (environment.MILJO === 'dev-sbs') {
         return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/' + orgNrDel;
     }
     return 'https://arbeidsgiver.labs.nais.io/arbeidsforhold/' + orgNrDel;
@@ -92,11 +87,9 @@ export const beOmTilgangIAltinnLink = (
             'https://tt02.altinn.no/ui/DelegationRequest?offeredBy=' +
             orgnr +
             '&resources=' +
-            serviceKode+
+            serviceKode +
             '_' +
             testServiceEditionKode
         );
     }
 };
-
-
