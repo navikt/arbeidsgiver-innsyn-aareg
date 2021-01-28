@@ -3,7 +3,7 @@ import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 export const convertToDataset = (arbeidsforhold: Arbeidsforhold[]) => {
     const arbeidsforholdDataset: string[][] = [];
 
-    arbeidsforhold.forEach(a => {
+    arbeidsforhold.forEach((a) => {
         const detteArbeidsforholdet: Array<string> = [];
         detteArbeidsforholdet.push(a.arbeidstaker.navn);
         detteArbeidsforholdet.push(a.arbeidstaker.offentligIdent);
@@ -26,14 +26,14 @@ export const kolonner = [
     { title: 'Sluttdato', width: { wch: 13 } },
     { title: 'Yrke', width: { wch: 35 } },
     { title: 'Stilling %', width: { wch: 20 } },
-    { title: 'Varsel', width: { wch: 20 } }
+    { title: 'Varsel', width: { wch: 20 } },
 ];
 
 export const datasett = (arbeidsforholdDataset: string[][]) => [
     {
         columns: kolonner,
-        data: arbeidsforholdDataset
-    }
+        data: arbeidsforholdDataset,
+    },
 ];
 
 export const infosideData = [
@@ -44,9 +44,9 @@ export const infosideData = [
                 {
                     value:
                         'Oversikten viser alle aktive og avsluttede arbeidsforhold rapportert etter 01.01.2015 for valgt underenhet. Hvis det er feil i et arbeidsforhold, skal du som arbeidsgiver endre dette gjennom a-meldingen',
-                    style: { font: { sz: '14', bold: true }, alignment: { wrapText: true, vertical: 'top' } }
-                }
-            ]
-        ]
-    }
+                    style: { font: { sz: '14', bold: true }, alignment: { wrapText: true, vertical: 'top' } },
+                },
+            ],
+        ],
+    },
 ];

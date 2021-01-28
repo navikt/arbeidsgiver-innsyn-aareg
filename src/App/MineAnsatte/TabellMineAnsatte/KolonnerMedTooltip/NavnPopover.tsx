@@ -1,5 +1,5 @@
-import React, {FunctionComponent, useEffect, useState} from 'react';
-import { Link, useHistory } from "react-router-dom";
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
@@ -10,19 +10,21 @@ interface Props {
     arbeidsforhold: Arbeidsforhold;
 }
 
-const NavnPopover: FunctionComponent<Props> = ( {arbeidsforhold}) => {
+const NavnPopover: FunctionComponent<Props> = ({ arbeidsforhold }) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
     const [skalVisePopover, setSkalVisePopover] = useState(true);
     const history = useHistory();
 
     const naVærendeUrl = new URL(window.location.href);
-    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold')
+    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold');
 
     const maxBreddeAvKolonne = 140;
 
     const oppdaterValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
         const { search } = naVærendeUrl;
-        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold' : '/enkeltArbeidsforhold'
+        const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD
+            ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold'
+            : '/enkeltArbeidsforhold';
         history.replace({ pathname: redirectPath, search: search });
         if (arbeidsforhold.varsler?.length) {
             loggBrukerTrykketPaVarsel();
@@ -66,4 +68,4 @@ const NavnPopover: FunctionComponent<Props> = ( {arbeidsforhold}) => {
     );
 };
 
-export default NavnPopover
+export default NavnPopover;

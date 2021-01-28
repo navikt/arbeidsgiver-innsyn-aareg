@@ -9,7 +9,7 @@ interface Props {
     anallVarsler: number;
 }
 
-const Filtervalg: FunctionComponent<Props> = props => {
+const Filtervalg: FunctionComponent<Props> = (props) => {
     const { getSearchParameter, setSearchParameter } = useSearchParameters();
 
     const filtrerPaAktiveAvsluttedeVariabel = getSearchParameter('filter');
@@ -20,7 +20,7 @@ const Filtervalg: FunctionComponent<Props> = props => {
     const arrayMedToggleTekst = [
         'Alle (' + props.overSiktOverAntallAktiveOgInaktive[0] + ')',
         'Aktive (' + props.overSiktOverAntallAktiveOgInaktive[1].toString() + ')',
-        'Avsluttede (' + props.overSiktOverAntallAktiveOgInaktive[2].toString() + ')'
+        'Avsluttede (' + props.overSiktOverAntallAktiveOgInaktive[2].toString() + ')',
     ];
 
     const velgFiltrering = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]) => {
@@ -35,7 +35,7 @@ const Filtervalg: FunctionComponent<Props> = props => {
                 defaultToggles={[
                     { children: arrayMedToggleTekst[0], pressed: filtreringsValg === 'Alle' },
                     { children: arrayMedToggleTekst[1], pressed: filtreringsValg === 'Aktive' },
-                    { children: arrayMedToggleTekst[2], pressed: filtreringsValg === 'Avsluttede' }
+                    { children: arrayMedToggleTekst[2], pressed: filtreringsValg === 'Avsluttede' },
                 ]}
                 minstEn
                 kompakt
@@ -46,7 +46,7 @@ const Filtervalg: FunctionComponent<Props> = props => {
                     onClick={() =>
                         setSearchParameter({
                             side: '1',
-                            varsler: (!skalFiltrerePåVarsler).toString()
+                            varsler: (!skalFiltrerePåVarsler).toString(),
                         })
                     }
                     pressed={skalFiltrerePåVarsler}

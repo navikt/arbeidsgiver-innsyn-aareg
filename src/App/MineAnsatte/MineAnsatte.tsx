@@ -1,26 +1,26 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import Chevron from 'nav-frontend-chevron';
+import {
+    loggSidevisningAvArbeidsforhold,
+    loggTrykketPåNåværendeArbeidsforhold,
+    loggTrykketPåTidligereArbeidsforhold,
+} from '../amplitudefunksjonerForLogging';
+import { BedriftsmenyContext } from '../BedriftsmenyProvider';
+import { FiltrerteOgSorterteArbeidsforholdContext } from '../FiltrerteOgSorterteArbeidsforholdProvider';
+import { useSearchParameters } from '../../utils/UrlManipulation';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
+import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import Progressbar from './Progressbar/Progressbar';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
 import TabellMineAnsatte from './TabellMineAnsatte/TabellMineAnsatte';
 import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatteForMobil';
 import SideBytter from './SideBytter/SideBytter';
 import VelgTidligereVirksomhet from './VelgTidligereVirksomhet/VelgTidligereVirksomhet';
-import {
-    loggSidevisningAvArbeidsforhold,
-    loggTrykketPåNåværendeArbeidsforhold,
-    loggTrykketPåTidligereArbeidsforhold
-} from "../amplitudefunksjonerForLogging";
-import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
-import './MineAnsatte.less';
-import { BedriftsmenyContext } from '../BedriftsmenyProvider';
-import { Link } from 'react-router-dom';
-import { useSearchParameters } from '../../utils/UrlManipulation';
-import { FiltrerteOgSorterteArbeidsforholdContext } from '../FiltrerteOgSorterteArbeidsforholdProvider';
 import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
+import './MineAnsatte.less';
 
 export enum SorteringsAttributt {
     NAVN,
@@ -30,7 +30,7 @@ export enum SorteringsAttributt {
     SLUTTDATO,
     VARSEL,
     PERMITTERINGSPROSENT,
-    STILLINGSPROSENT
+    STILLINGSPROSENT,
 }
 
 export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
@@ -50,7 +50,7 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
                         <Link
                             to={{
                                 pathname: '/tidligere-arbeidsforhold',
-                                search: `bedrift=${underenhet.OrganizationNumber}`
+                                search: `bedrift=${underenhet.OrganizationNumber}`,
                             }}
                             className="brodsmule__direct-tidligere-arbeidsforhold"
                             onClick={() => loggTrykketPåTidligereArbeidsforhold()}
@@ -83,7 +83,7 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
                         className="brodsmule__direct-tidligere-arbeidsforhold"
                         to={{
                             pathname: '/',
-                            search: `bedrift=${underenhet.OrganizationNumber}`
+                            search: `bedrift=${underenhet.OrganizationNumber}`,
                         }}
                         onClick={() => loggTrykketPåNåværendeArbeidsforhold()}
                     >
@@ -103,7 +103,6 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
         </div>
     );
 };
-
 
 const MineArbeidsforhold: FunctionComponent = () => {
     const { underenhet } = useContext(BedriftsmenyContext);

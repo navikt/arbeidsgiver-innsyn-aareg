@@ -1,11 +1,11 @@
-import React, { FunctionComponent, useContext } from "react";
-import './VelgTidligereVirksomhet.less';
+import React, { FunctionComponent, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Select } from 'nav-frontend-skjema';
 import UnderenhetIkon from './UnderenhetIkon';
 import { BedriftsmenyContext } from '../../BedriftsmenyProvider';
 import { useSearchParameters } from '../../../utils/UrlManipulation';
-import { useHistory } from "react-router-dom";
-import emptyList from "../../Objekter/EmptyList";
+import emptyList from '../../Objekter/EmptyList';
+import './VelgTidligereVirksomhet.less';
 
 const VelgTidligereVirksomhet: FunctionComponent = () => {
     const { underenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
@@ -13,7 +13,7 @@ const VelgTidligereVirksomhet: FunctionComponent = () => {
     const history = useHistory();
 
     const setTidligereVirksomhet = (orgnr: string) => {
-        history.replace({search: `bedrift=${underenhet.OrganizationNumber}&tidligereVirksomhet=${orgnr}`} );
+        history.replace({ search: `bedrift=${underenhet.OrganizationNumber}&tidligereVirksomhet=${orgnr}` });
     };
 
     const underenheter = tidligereUnderenheter === 'laster' ? emptyList : tidligereUnderenheter;
@@ -30,7 +30,7 @@ const VelgTidligereVirksomhet: FunctionComponent = () => {
                 }
                 defaultValue={tidligereVirksomhet ?? ''}
                 placeholder={'Velg tidligere virksomhet'}
-                onChange={event => setTidligereVirksomhet(event.target.value)}
+                onChange={(event) => setTidligereVirksomhet(event.target.value)}
                 id={'velg-tidligere-virksomhet'}
             >
                 <option
@@ -42,7 +42,7 @@ const VelgTidligereVirksomhet: FunctionComponent = () => {
                 >
                     Velg virksomhet
                 </option>
-                {underenheter.map(virksomhet => (
+                {underenheter.map((virksomhet) => (
                     <option
                         title={virksomhet.Name + ', ' + virksomhet.OrganizationNumber}
                         className={'mine-ansatte__velg-tidligere-virksomhet-option'}

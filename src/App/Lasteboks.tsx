@@ -1,7 +1,7 @@
+import React from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import React, { FunctionComponent } from 'react';
 
-const Lasteboks: FunctionComponent = () => (
+const Lasteboks = () => (
     <div className="spinner">
         <NavFrontendSpinner type="L" />
     </div>

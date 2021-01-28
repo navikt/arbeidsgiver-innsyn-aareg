@@ -2,16 +2,15 @@ import React, { FunctionComponent } from 'react';
 import { Input } from 'nav-frontend-skjema';
 import Forstorrelsesglass from './Forstørrelsesglass';
 import './Sokefelt.less';
-import { useSearchParameters } from "../../../utils/UrlManipulation";
+import { useSearchParameters } from '../../../utils/UrlManipulation';
 
 const Sokefelt: FunctionComponent = () => {
-    const {getSearchParameter, setSearchParameter} = useSearchParameters();
+    const { getSearchParameter, setSearchParameter } = useSearchParameters();
 
     const søketekstvariabel = getSearchParameter('sok');
     const søkeTekst = søketekstvariabel ? søketekstvariabel : '';
 
-    const onSoketekstChange = (soketekst: string) =>
-        setSearchParameter({sok: soketekst, side: '1'});
+    const onSoketekstChange = (soketekst: string) => setSearchParameter({ sok: soketekst, side: '1' });
 
     return (
         <div className="sokefelt">

@@ -4,7 +4,7 @@ import { SorteringsAttributt } from './MineAnsatte';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
 import { byggArbeidsforholdSokeresultat } from './Sokefelt/byggArbeidsforholdSokeresultat';
 import { useSearchParameters } from '../../utils/UrlManipulation';
-import emptyList from "../Objekter/EmptyList";
+import emptyList from '../Objekter/EmptyList';
 
 export const useSortertOgFiltrertArbeidsforholdliste = (alleArbeidsforhold: Arbeidsforhold[]) => {
     const { getSearchParameter } = useSearchParameters();
@@ -28,7 +28,15 @@ export const useSortertOgFiltrertArbeidsforholdliste = (alleArbeidsforhold: Arbe
                 ? sorterArbeidsforhold(filtrertListe, parseInt(sortertPå)).reverse()
                 : sorterArbeidsforhold(filtrertListe, parseInt(sortertPå))
         );
-    }, [settArbeidsforhold, alleArbeidsforhold, filtreringsvalg, filtrertPaVarsler, sokefeltTekst, sortertPå, reversSortering]);
+    }, [
+        settArbeidsforhold,
+        alleArbeidsforhold,
+        filtreringsvalg,
+        filtrertPaVarsler,
+        sokefeltTekst,
+        sortertPå,
+        reversSortering,
+    ]);
 
     return arbeidsforhold;
 };
@@ -167,7 +175,7 @@ const sorterArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], atributt: Sorter
 export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], filtrerPa: string) => {
     const navarendeDato = new Date();
     if (filtrerPa === 'Aktive') {
-        return arbeidsforhold.filter(forhold => {
+        return arbeidsforhold.filter((forhold) => {
             if (forhold.ansattTom) {
                 const avslutningsdato = new Date(forhold.ansattTom);
                 return avslutningsdato >= navarendeDato;
@@ -177,7 +185,7 @@ export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], filt
         });
     }
     if (filtrerPa === 'Avsluttede')
-        return arbeidsforhold.filter(forhold => {
+        return arbeidsforhold.filter((forhold) => {
             if (forhold.ansattTom) {
                 const avslutningsdato = new Date(forhold.ansattTom);
                 return avslutningsdato < navarendeDato;
@@ -191,7 +199,7 @@ export const filtrerAktiveOgAvsluttede = (arbeidsforhold: Arbeidsforhold[], filt
 export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold: Arbeidsforhold[]): number[] => {
     const antallOversikt: number[] = [listeMedArbeidsforhold.length, 0, 0];
     const navarendeDato = new Date();
-    listeMedArbeidsforhold.forEach(forhold => {
+    listeMedArbeidsforhold.forEach((forhold) => {
         if (forhold.ansattTom) {
             const avslutningsdato = new Date(forhold.ansattTom);
             if (avslutningsdato < navarendeDato) {
@@ -207,7 +215,7 @@ export const tellAntallAktiveOgInaktiveArbeidsforhold = (listeMedArbeidsforhold:
 };
 
 const filtrerPaVarsler = (listeMedArbeidsforhold: Arbeidsforhold[], filtrerPaVarsler: boolean) => {
-    return listeMedArbeidsforhold.filter(forhold => {
+    return listeMedArbeidsforhold.filter((forhold) => {
         if (forhold.varsler && filtrerPaVarsler) {
             if (forhold.varsler.length) {
                 return forhold;
@@ -222,7 +230,7 @@ const filtrerPaVarsler = (listeMedArbeidsforhold: Arbeidsforhold[], filtrerPaVar
 
 export const filtreringValgt = (event: SyntheticEvent<EventTarget>, toggles: ToggleKnappPureProps[]): string => {
     let valg = 'Alle';
-    toggles.forEach(toggle => {
+    toggles.forEach((toggle) => {
         if (toggle.pressed === true && toggle.children) {
             const includesString: boolean = true;
             switch (includesString) {
