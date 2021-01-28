@@ -11,11 +11,11 @@ import Filtervalg from '../Filtervalg/Filtervalg';
 import SideBytter from '../SideBytter/SideBytter';
 import { tellAntallAktiveOgInaktiveArbeidsforhold } from '../sorteringOgFiltreringsFunksjoner';
 import NyFaneIkon from './NyFaneIkon';
-import './MineAnsatteTopp.less';
 import { ArbeidsforholdContext } from '../../ArbeidsforholdProvider';
 import { useSearchParameters } from '../../../utils/UrlManipulation';
 import { BedriftsmenyContext } from '../../BedriftsmenyProvider';
-import { FiltrerteOgSorterteArbeidsforholdContext } from "../../FiltrerteOgSorterteArbeidsforholdProvider";
+import { FiltrerteOgSorterteArbeidsforholdContext } from '../../FiltrerteOgSorterteArbeidsforholdProvider';
+import './MineAnsatteTopp.less';
 
 interface Props {
     valgtOrganisasjon: Organisasjon;
@@ -30,11 +30,10 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({ antallSider }) => {
 
     const soketekst = getSearchParameter('sok') || '';
 
-    const alleArbeidsforhold = alleAareg?.lastestatus?.status === 'ferdig' ?
-        alleAareg.lastestatus.arbeidsforhold : [];
+    const alleArbeidsforhold = alleAareg?.lastestatus?.status === 'ferdig' ? alleAareg.lastestatus.arbeidsforhold : [];
 
-    const filtrertOgSortertListe = filtrertAareg?.lastestatus?.status === 'ferdig' ?
-        filtrertAareg.lastestatus.arbeidsforhold : [];
+    const filtrertOgSortertListe =
+        filtrertAareg?.lastestatus?.status === 'ferdig' ? filtrertAareg.lastestatus.arbeidsforhold : [];
 
     const [antallArbeidsforholdPaSideTekst, setAntallArbeidsforholdPaSideTekst] = useState(
         `Viser ${filtrertOgSortertListe.length} av ${alleArbeidsforhold.length} arbeidsforhold`
@@ -52,7 +51,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({ antallSider }) => {
 
     const antallVarsler =
         alleAareg?.lastestatus?.status === 'ferdig'
-            ? alleAareg.lastestatus.arbeidsforhold.filter(forhold => forhold.varsler).length
+            ? alleAareg.lastestatus.arbeidsforhold.filter((forhold) => forhold.varsler).length
             : 0;
 
     const viserTidligereVirksomhet = window.location.href.includes('tidligere-arbeidsforhold');

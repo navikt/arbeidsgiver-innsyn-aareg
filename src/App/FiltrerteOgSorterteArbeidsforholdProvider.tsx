@@ -1,12 +1,12 @@
-import React, { createContext, FunctionComponent, useContext, useEffect, useState } from "react";
-import { ArbeidsforholdContext, Context } from "./ArbeidsforholdProvider";
+import React, { createContext, FunctionComponent, useContext, useEffect, useState } from 'react';
+import { ArbeidsforholdContext, Context } from './ArbeidsforholdProvider';
 import { useSortertOgFiltrertArbeidsforholdliste } from './MineAnsatte/sorteringOgFiltreringsFunksjoner';
-import emptyList from "./Objekter/EmptyList";
+import emptyList from './Objekter/EmptyList';
 
 export const FiltrerteOgSorterteArbeidsforholdContext = createContext<Context>(null);
 
 const FiltrerteOgSorterteArbeidsforholdProvider: FunctionComponent = ({ children }) => {
-    const aareg = useContext(ArbeidsforholdContext);
+    const aareg: Context = useContext(ArbeidsforholdContext);
     const [context, settContext] = useState<Context>(null);
 
     const alleArbeidsforhold = aareg?.lastestatus?.status === 'ferdig' ? aareg.lastestatus.arbeidsforhold : emptyList;
@@ -18,7 +18,7 @@ const FiltrerteOgSorterteArbeidsforholdProvider: FunctionComponent = ({ children
             aareg?.lastestatus?.status === 'ferdig'
                 ? { ...aareg, lastestatus: { ...aareg.lastestatus, arbeidsforhold } }
                 : aareg
-        )
+        );
     }, [settContext, aareg, arbeidsforhold]);
 
     return (

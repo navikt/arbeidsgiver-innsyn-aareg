@@ -1,15 +1,15 @@
 import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { basename } from './paths';
 import LoginBoundary from './LoggInnBoundary';
 import { FeatureToggleProvider } from './FeatureToggleProvider';
 import { ArbeidsforholdProvider } from './ArbeidsforholdProvider';
-import './App.less';
 import { AltinnorganisasjonerProvider } from './AltinnorganisasjonerProvider';
 import BedriftsmenyProvider from './BedriftsmenyProvider';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { basename } from './paths';
+import FiltrerteOgSorterteArbeidsforholdProvider from './FiltrerteOgSorterteArbeidsforholdProvider';
 import EnkeltArbeidsforhold from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
 import { MineNåværendeArbeidsforhold, MineTidligereArbeidsforhold } from './MineAnsatte/MineAnsatte';
-import FiltrerteOgSorterteArbeidsforholdProvider from './FiltrerteOgSorterteArbeidsforholdProvider';
+import './App.less';
 
 const App = () => {
     return (

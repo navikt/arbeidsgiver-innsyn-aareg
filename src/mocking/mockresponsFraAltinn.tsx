@@ -1,4 +1,4 @@
-import {OrganisasjonlowerCase} from "../App/Objekter/OrganisasjonFraAltinn";
+import { OrganisasjonlowerCase } from '../App/Objekter/OrganisasjonFraAltinn';
 
 export const testRespons: OrganisasjonlowerCase[] = [
     {
@@ -7,7 +7,7 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '910825550',
         organizationNumber: '910825569',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'ULNES OG SÆBØ',
@@ -15,7 +15,7 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '910712217',
         organizationNumber: '910712241',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'TRANØY OG SANDE I VESTFOLD REGNSKAP',
@@ -23,7 +23,7 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: null,
         organizationNumber: '910825550',
         organizationForm: 'AS',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'BYGSTAD OG VINTERBRO REGNSKAP',
@@ -31,7 +31,7 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '910825321',
         organizationNumber: '910825348',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'LINESØYA OG LANGANGEN REGNSKAP',
@@ -39,7 +39,7 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '910825550',
         organizationNumber: '910825585',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'SLEMMESTAD OG STAVERN REGNSKAP',
@@ -47,7 +47,7 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '810825472',
         organizationNumber: '910825496',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'STØ OG BERGER',
@@ -55,7 +55,7 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: null,
         organizationNumber: '910712217',
         organizationForm: 'AS',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'UTVIK OG ETNE',
@@ -63,7 +63,7 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '910712217',
         organizationNumber: '910712233',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'LALM OG NARVIK REVISJON',
@@ -71,7 +71,7 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: null,
         organizationNumber: '911003155',
         organizationForm: 'AS',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'MALMEFJORDEN OG RIDABU REGNSKAP',
@@ -79,7 +79,7 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: null,
         organizationNumber: '810825472',
         organizationForm: 'AS',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'ENEBAKK OG ØYER',
@@ -87,7 +87,7 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '910712217',
         organizationNumber: '910712268',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'BIRTAVARRE OG VÆRLANDET REGNSKAP',
@@ -95,7 +95,7 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '910825550',
         organizationNumber: '910825607',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'MAURA OG KOLBU REGNSKAP',
@@ -103,7 +103,7 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '810825472',
         organizationNumber: '910825518',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'GAMLE FREDRIKSTAD OG RAMNES REGNSKAP',
@@ -111,8 +111,8 @@ export const testRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '810825472',
         organizationNumber: '910825526',
         organizationForm: 'BEDR',
-        status: 'Active'
-    }
+        status: 'Active',
+    },
 ];
 export const tilgangTilAtinntjenesteRespons: OrganisasjonlowerCase[] = [
     {
@@ -121,7 +121,7 @@ export const tilgangTilAtinntjenesteRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '910712217',
         organizationNumber: '910712233',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'MALMEFJORDEN OG RIDABU REGNSKAP',
@@ -129,7 +129,7 @@ export const tilgangTilAtinntjenesteRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: null,
         organizationNumber: '810825472',
         organizationForm: 'AS',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'MAURA OG KOLBU REGNSKAP',
@@ -137,7 +137,7 @@ export const tilgangTilAtinntjenesteRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '810825472',
         organizationNumber: '910825518',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'GAMLE FREDRIKSTAD OG RAMNES REGNSKAP',
@@ -145,7 +145,7 @@ export const tilgangTilAtinntjenesteRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '810825472',
         organizationNumber: '910825526',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'BIRTAVARRE OG VÆRLANDET REGNSKAP',
@@ -153,7 +153,7 @@ export const tilgangTilAtinntjenesteRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '910825550',
         organizationNumber: '910825607',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'STORFOSNA OG FREDRIKSTAD REGNSKAP',
@@ -161,7 +161,7 @@ export const tilgangTilAtinntjenesteRespons: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '910825550',
         organizationNumber: '910825569',
         organizationForm: 'BEDR',
-        status: 'Active'
+        status: 'Active',
     },
 ];
 
@@ -172,7 +172,7 @@ export const tidligerVirksomheter: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '810825472',
         organizationNumber: '954168395',
         organizationForm: 'AS',
-        status: 'Active'
+        status: 'Active',
     },
     {
         name: 'HASLUM OG HAUGNES REGNSKAP',
@@ -180,7 +180,6 @@ export const tidligerVirksomheter: OrganisasjonlowerCase[] = [
         parentOrganizationNumber: '810825472',
         organizationNumber: '954168399',
         organizationForm: 'AS',
-        status: 'Active'
-    }
-
+        status: 'Active',
+    },
 ];
