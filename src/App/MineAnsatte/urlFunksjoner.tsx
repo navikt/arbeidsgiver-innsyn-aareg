@@ -1,4 +1,4 @@
-import { Params } from "../../utils/UrlManipulation";
+import { Params } from '../../utils/UrlManipulation';
 
 export const defaultFilterParams = (): Params => ({
     side: '1',
@@ -6,5 +6,5 @@ export const defaultFilterParams = (): Params => ({
     varsler: 'false',
     sok: '',
     sorter: '0',
-    revers: 'false'
+    revers: 'false',
 });

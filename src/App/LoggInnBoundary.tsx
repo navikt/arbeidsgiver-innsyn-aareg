@@ -1,19 +1,18 @@
-import React from 'react';
-import { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import environment from '../utils/environment';
-import LoggInn from './LoggInn/LoggInn';
-import { sjekkInnlogget } from '../api/altinnApi';
-import EnkelBanner from './EnkelBanner/EnkelBanner';
 import amplitude from '../utils/amplitude';
-import Lasteboks from "./Lasteboks";
+import { sjekkInnlogget } from '../api/altinnApi';
+import LoggInn from './LoggInn/LoggInn';
+import EnkelBanner from './EnkelBanner/EnkelBanner';
+import Lasteboks from './Lasteboks';
 
 export enum Tilgang {
     LASTER,
     IKKE_TILGANG,
-    TILGANG
+    TILGANG,
 }
 
-const LoginBoundary: FunctionComponent = props => {
+const LoginBoundary: FunctionComponent = (props) => {
     const [innlogget, setInnlogget] = useState(Tilgang.LASTER);
 
     function localLogin() {
@@ -28,12 +27,8 @@ const LoginBoundary: FunctionComponent = props => {
         setInnlogget(Tilgang.LASTER);
         const abortController = new AbortController();
 
-        if (
-            environment.MILJO === 'prod-sbs' ||
-            environment.MILJO === 'dev-sbs' ||
-            environment.MILJO === 'labs-gcp'
-        ) {
-            sjekkInnlogget(abortController.signal).then(innloggingsstatus => {
+        if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs' || environment.MILJO === 'labs-gcp') {
+            sjekkInnlogget(abortController.signal).then((innloggingsstatus) => {
                 if (innloggingsstatus) {
                     setInnlogget(Tilgang.TILGANG);
                     if (environment.MILJO) {

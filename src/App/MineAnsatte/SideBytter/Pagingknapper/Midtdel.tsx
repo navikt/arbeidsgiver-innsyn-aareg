@@ -1,17 +1,17 @@
 import React, { FunctionComponent } from 'react';
 import PagineringsKnapp from './PagineringsKnapp/PagineringsKnapp';
-import { useSearchParameters } from "../../../../utils/UrlManipulation";
+import { useSearchParameters } from '../../../../utils/UrlManipulation';
 
 interface Props {
     className?: string;
     siderTilsammen: number;
     elementIFokus: number;
-    onSideendring: (key: string) => void
+    onSideendring: (key: string) => void;
 }
 
-const Midtdel: FunctionComponent<Props> = props => {
-    const {getSearchParameter} = useSearchParameters();
-    const nåVærendeSidetall = parseInt(getSearchParameter('side') || '1')
+const Midtdel: FunctionComponent<Props> = (props) => {
+    const { getSearchParameter } = useSearchParameters();
+    const nåVærendeSidetall = parseInt(getSearchParameter('side') || '1');
 
     return (
         <>
@@ -19,26 +19,26 @@ const Midtdel: FunctionComponent<Props> = props => {
                 onSideendring={props.onSideendring}
                 siderTilsammen={props.siderTilsammen}
                 sidetall={1}
-                elementIFokus = {props.elementIFokus}
+                elementIFokus={props.elementIFokus}
             />
             ...
             <PagineringsKnapp
                 onSideendring={props.onSideendring}
                 siderTilsammen={props.siderTilsammen}
                 sidetall={nåVærendeSidetall - 1}
-                elementIFokus = {props.elementIFokus}
+                elementIFokus={props.elementIFokus}
             />
             <PagineringsKnapp
                 onSideendring={props.onSideendring}
                 siderTilsammen={props.siderTilsammen}
                 sidetall={nåVærendeSidetall}
-                elementIFokus = {props.elementIFokus}
+                elementIFokus={props.elementIFokus}
             />
             <PagineringsKnapp
                 onSideendring={props.onSideendring}
                 siderTilsammen={props.siderTilsammen}
                 sidetall={nåVærendeSidetall + 1}
-                elementIFokus = {props.elementIFokus}
+                elementIFokus={props.elementIFokus}
             />
             {nåVærendeSidetall < props.siderTilsammen - 1 && (
                 <>
@@ -47,7 +47,7 @@ const Midtdel: FunctionComponent<Props> = props => {
                         onSideendring={props.onSideendring}
                         siderTilsammen={props.siderTilsammen}
                         sidetall={props.siderTilsammen}
-                        elementIFokus = {props.elementIFokus}
+                        elementIFokus={props.elementIFokus}
                     />
                 </>
             )}

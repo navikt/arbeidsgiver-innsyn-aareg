@@ -1,15 +1,15 @@
-import Bedriftsmeny from '@navikt/bedriftsmeny';
 import React, { createContext, FunctionComponent, useCallback, useContext, useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
+import Bedriftsmeny from '@navikt/bedriftsmeny';
+import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import { AltinnOrganisasjon, AltinnorganisasjonerContext } from './AltinnorganisasjonerProvider';
 import { Organisasjon } from './Objekter/OrganisasjonFraAltinn';
 import { hentTidligereVirksomheter } from '../api/aaregApi';
 import { loggInfoOmFeilTidligereOrganisasjoner } from './amplitudefunksjonerForLogging';
 import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
-import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import Lasteboks from './Lasteboks';
 import { useSearchParameters } from '../utils/UrlManipulation';
-import emptyList from "./Objekter/EmptyList";
+import emptyList from './Objekter/EmptyList';
 
 interface Enhet {
     hovedenhet: AltinnOrganisasjon | null;
@@ -22,9 +22,9 @@ interface Context extends Enhet {
 
 export const BedriftsmenyContext = createContext<Context>({} as Context);
 
-const BedriftsmenyProvider: FunctionComponent = ({ children}) => {
-    const history = useHistory()
-    const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
+const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
+    const history = useHistory();
+    const altinnorganisasjoner: Array<AltinnOrganisasjon> = useContext(AltinnorganisasjonerContext);
     const { getSearchParameter } = useSearchParameters();
 
     const [oppstart, settOppstart] = useState(true);
@@ -34,7 +34,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children}) => {
 
     const finnOrg = useCallback(
         (orgnr: string): AltinnOrganisasjon | null =>
-            altinnorganisasjoner.find(org => org.OrganizationNumber === orgnr) ?? null,
+            altinnorganisasjoner.find((org) => org.OrganizationNumber === orgnr) ?? null,
         [altinnorganisasjoner]
     );
 
@@ -81,10 +81,10 @@ const BedriftsmenyProvider: FunctionComponent = ({ children}) => {
             settTidligereUnderenheter('laster');
             const abortController = new AbortController();
             hentTidligereVirksomheter(tidligereUnderenheterFor, abortController.signal)
-                .then(enheter => {
-                    settTidligereUnderenheter(enheter)
+                .then((enheter) => {
+                    settTidligereUnderenheter(enheter);
                 })
-                .catch(err => {
+                .catch((err) => {
                     settTidligereUnderenheter(emptyList);
                     loggInfoOmFeilTidligereOrganisasjoner(err);
                 });
@@ -96,7 +96,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children}) => {
         if (enhet === null) {
             settContext(null);
         } else {
-            settContext({ ...enhet, tidligereUnderenheter })
+            settContext({ ...enhet, tidligereUnderenheter });
         }
     }, [settContext, enhet, tidligereUnderenheter]);
 
@@ -125,9 +125,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children}) => {
                     <IngenTilgangInfo />
                 )
             ) : (
-                <BedriftsmenyContext.Provider value={context}>
-                    {children}
-                </BedriftsmenyContext.Provider>
+                <BedriftsmenyContext.Provider value={context}>{children}</BedriftsmenyContext.Provider>
             )}
         </>
     );
