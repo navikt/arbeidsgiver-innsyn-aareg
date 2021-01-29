@@ -14,7 +14,7 @@ import {
     SERVICEKODEINNSYNAAREGISTERET,
     SERVICEEDITIONINNSYNAAREGISTERET,
     AltinnorganisasjonerContext,
-    AltinnOrganisasjon
+    AltinnOrganisasjon,
 } from '../AltinnorganisasjonerProvider';
 
 const run = <T extends any>(f: () => T) => f();
@@ -27,7 +27,7 @@ const IngenTilgangInfo: FunctionComponent<Props> = ({ underenhet }) => {
     const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
 
     const bedrifterMedTilgang: Organisasjon[] = altinnorganisasjoner.filter(
-        org => org.tilgang && org.OrganizationForm === 'BEDR'
+        (org) => org.tilgang && org.OrganizationForm === 'BEDR'
     );
 
     return (
@@ -93,7 +93,7 @@ const IngenTilgangInfo: FunctionComponent<Props> = ({ underenhet }) => {
                                         border
                                     >
                                         <ul className="ingen-tilgang-innhold__panelinnhold">
-                                            {bedrifterMedTilgang.map(bedrift => (
+                                            {bedrifterMedTilgang.map((bedrift) => (
                                                 <li key={bedrift.OrganizationNumber}>
                                                     {bedrift.Name + ' (' + bedrift.OrganizationNumber + ')'}
                                                 </li>
