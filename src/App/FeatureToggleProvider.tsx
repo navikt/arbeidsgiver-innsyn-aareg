@@ -3,7 +3,7 @@ import { hentFeatureToggles } from '../api/unleashApi';
 
 export enum Feature {
     visHistorikk = 'innsynaareg.vishistorikk',
-    tillatPrint = 'innsynaareg.tillatPrint'
+    tillatPrint = 'innsynaareg.tillatPrint',
 }
 
 export const alleFeatures = Object.values(Feature);
@@ -19,9 +19,9 @@ export const FeatureToggleProvider = (props: any) => {
 
     useEffect(() => {
         hentFeatureToggles()
-            .then(toggles => setFeatureToggles(toggles))
+            .then((toggles) => setFeatureToggles(toggles))
             .catch(() => {
-                setFeatureToggles(Object.assign({}, ...alleFeatures.map(feature => ({ [feature]: false }))));
+                setFeatureToggles(Object.assign({}, ...alleFeatures.map((feature) => ({ [feature]: false }))));
             });
     }, []);
 

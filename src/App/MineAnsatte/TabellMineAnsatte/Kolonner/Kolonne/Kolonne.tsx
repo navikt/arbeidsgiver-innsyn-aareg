@@ -1,8 +1,7 @@
 import React from 'react';
 import { SorteringsAttributt } from '../../../MineAnsatte';
-import Lenke from 'nav-frontend-lenker';
-import './Kolonne.less';
 import { useSearchParameters } from '../../../../../utils/UrlManipulation';
+import './Kolonne.less';
 
 interface Props {
     label: string;
@@ -33,20 +32,18 @@ const Kolonne = (props: Props) => {
 
     return (
         <th
-            className={`tabell__th--sortert-${klasseNavnPostfiks} tabell__lenke`}
+            className={`tabell__th--sortert-${klasseNavnPostfiks} tabell__button`}
             role="columnheader"
             aria-sort={AriaSort}
         >
-            <Lenke
-                role="button"
-                href={''}
-                onClick={e => {
+            <button
+                aria-label={`Sorter ${props.label} ${erReversSortert ? 'stigende' : 'synkende'}`}
+                onClick={() => {
                     setKolonneTilAktiv();
-                    e.preventDefault();
                 }}
             >
                 {props.label}
-            </Lenke>
+            </button>
         </th>
     );
 };

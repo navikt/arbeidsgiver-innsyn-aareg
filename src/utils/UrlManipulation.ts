@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router-dom';
-import { useLocation } from "react-router";
+import { useLocation } from 'react-router';
 
 export type Params = {
     [key: string]: string;
@@ -16,7 +16,7 @@ export const useSearchParameters = (): UseSearchParameters => {
 
     const setSearchParameter = (params: Params) => {
         const search = new URLSearchParams(hist.location.search);
-        Object.entries(params).forEach(entry => {
+        Object.entries(params).forEach((entry) => {
             const [key, value] = entry;
             search.set(key, value);
         });

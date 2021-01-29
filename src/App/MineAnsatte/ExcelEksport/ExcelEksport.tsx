@@ -6,10 +6,10 @@ import Modal from 'nav-frontend-modal';
 import ReactExport from 'react-data-export';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { filtrerAktiveOgAvsluttede } from '../sorteringOgFiltreringsFunksjoner';
-import {loggBrukerTrykketPaExcel} from "../../amplitudefunksjonerForLogging";
+import { loggBrukerTrykketPaExcel } from '../../amplitudefunksjonerForLogging';
 import varselikon from './varselikon.svg';
 import { convertToDataset, infosideData, datasett } from './excelexport-utils';
-import './ExcelEksport.less'
+import './ExcelEksport.less';
 
 Modal.setAppElement('#root');
 const ExcelFile = ReactExport.ExcelFile;
@@ -36,7 +36,7 @@ const ExcelEksport = (props: ExcelEksportProps) => {
     return (
         <div className={props.className}>
             <Hovedknapp
-                aria-label={"Last ned arbeidsforhold som excelfil"}
+                aria-label={'Last ned arbeidsforhold som excelfil'}
                 className="excel-eksport-knapp"
                 onClick={() => {
                     loggBrukerTrykketPaExcel();
@@ -57,17 +57,15 @@ const ExcelEksport = (props: ExcelEksportProps) => {
                         Last ned arbeidsforhold fra Aa-registret
                     </Undertittel>
                     <div className="eksport-modal__varsel">
-                        <img
-                            src={varselikon}
-                            alt=""
-                            className="varselikon"
-                        />
+                        <img src={varselikon} alt="" className="varselikon" />
                         <Normaltekst className="varseltekst">Personvern</Normaltekst>
                     </div>
 
                     <div className="eksport-modal__personvern-info">
                         <Normaltekst className="tekst">
-                            Denne filen inneholder personopplysninger. Vær varsom dersom du laster ned eller distribuerer filen videre. Ved nedlasting er du selv ansvarlig for å overholde personvernreglene.
+                            Denne filen inneholder personopplysninger. Vær varsom dersom du laster ned eller
+                            distribuerer filen videre. Ved nedlasting er du selv ansvarlig for å overholde
+                            personvernreglene.
                         </Normaltekst>
                     </div>
 
@@ -83,11 +81,16 @@ const ExcelEksport = (props: ExcelEksportProps) => {
                                 dagensDato.toLocaleDateString()
                             }
                         >
-                            <ExcelSheet dataSet={infosideData} name="Info"/>
-                            <ExcelSheet dataSet={datasett(aktiveArbeidsforholdDataset)} name="Aktive arbeidsforhold"/>
-                            <ExcelSheet dataSet={datasett(avsluttedeArbeidsforholdDataset)} name="Avsluttede arbeidsforhold"/>
+                            <ExcelSheet dataSet={infosideData} name="Info" />
+                            <ExcelSheet dataSet={datasett(aktiveArbeidsforholdDataset)} name="Aktive arbeidsforhold" />
+                            <ExcelSheet
+                                dataSet={datasett(avsluttedeArbeidsforholdDataset)}
+                                name="Avsluttede arbeidsforhold"
+                            />
                         </ExcelFile>
-                        <Flatknapp className="avbryt-knapp" onClick={() => closeModal()}>Avbryt</Flatknapp>
+                        <Flatknapp className="avbryt-knapp" onClick={() => closeModal()}>
+                            Avbryt
+                        </Flatknapp>
                     </div>
                 </div>
             </Modal>

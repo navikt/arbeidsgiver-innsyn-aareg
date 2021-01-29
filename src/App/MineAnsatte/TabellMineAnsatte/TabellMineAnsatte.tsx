@@ -14,7 +14,7 @@ interface Props {
 
 const TabellMineAnsatte: FunctionComponent<Props> = (props) => {
 
-    const rader = props.listeMedArbeidsForhold.map(arbeidsforhold => {
+    const rader = props.listeMedArbeidsForhold.map((arbeidsforhold: Arbeidsforhold) => {
         return (
             <tr key={arbeidsforhold.navArbeidsforholdId}>
                 <td className="td">
