@@ -19,7 +19,7 @@ const miljo = () => {
         return 'PROD';
     }
     if (environment.MILJO === 'dev-sbs') {
-        return 'Q1';
+        return 'DEV';
     }
     return 'LOCAL';
 };
