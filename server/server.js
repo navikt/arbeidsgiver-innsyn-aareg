@@ -21,6 +21,7 @@ const {
     NAIS_CLUSTER_NAME = 'local',
     API_GATEWAY = 'http://localhost:8080',
     APIGW_HEADER,
+    ARBEIDSFORHOLD_API_GW_HEADER,
 } = process.env;
 
 const decoratorUrl = NAIS_CLUSTER_NAME === 'prod-sbs' ? defaultDecoratorUrl : DECORATOR_EXTERNAL_URL;
@@ -94,7 +95,7 @@ app.use(
         secure: true,
         xfwd: true,
         target: API_GATEWAY,
-        ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
+        ...(ARBEIDSFORHOLD_API_GW_HEADER ? {headers: {'x-nav-apiKey': ARBEIDSFORHOLD_API_GW_HEADER}} : {})
     })
 );
 app.use(
