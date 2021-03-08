@@ -4,8 +4,6 @@ Innsyn i Aa-reg – arbeidsgiver gir oversikt over arbeidsforhold rapportert inn
 
 ## Komme i gang
 
-Min side – Arbeidsgiver har mange integrasjoner, ved lokal kjøring mocker vi alle sammen med fetchmock
-
 - Installere avhengigheter: `yarn`
 - Kjøre applikasjonen normalt: `yarn start` (NB! Krever at backend kjører på port 8080)
 - Kjøre applikasjon med mock: `yarn start:mock` eller `yarn start:mock:win` på windows
