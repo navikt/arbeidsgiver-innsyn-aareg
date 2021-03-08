@@ -1,14 +1,38 @@
-#innsynstjeneste som gir arbeidsgiver oversikt over arbeidsforhold rapportert inn til Aa-registeret for valgt underenhet.
+# Frontend for Innsyn i Aa-reg – arbeidsgiver
 
-# Henvendelser
+Innsyn i Aa-reg – arbeidsgiver gir oversikt over arbeidsforhold rapportert inn til Aa-registeret for valgt underenhet.
 
-## For Nav-ansatte
-* Dette Git-repositoriet eies av [Team Min side — Arbeidsgiver i Produktområde arbeidsgiver](https://navno.sharepoint.com/sites/intranett-prosjekter-og-utvikling/SitePages/Produktomr%C3%A5de-arbeidsgiver.aspx).
-* Slack-kanaler:
-  * [#arbeidsgiver-utvikling](https://nav-it.slack.com/archives/CD4MES6BB)
-  * [#arbeidsgiver-general](https://nav-it.slack.com/archives/CCM649PDH)
+## Komme i gang
 
-## For folk utenfor Nav
-* Opprett gjerne en issue i Github for alle typer spørsmål
-* IT-utviklerne i Github-teamet https://github.com/orgs/navikt/teams/arbeidsgiver
-* IT-avdelingen i [Arbeids- og velferdsdirektoratet](https://www.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Relatert+informasjon/arbeids-og-velferdsdirektoratet-kontorinformasjon)
+Min side – Arbeidsgiver har mange integrasjoner, ved lokal kjøring mocker vi alle sammen med fetchmock
+
+- Installere avhengigheter: `yarn`
+- Kjøre applikasjonen normalt: `yarn start` (NB! Krever at backend kjører på port 8080)
+- Kjøre applikasjon med mock: `yarn start:mock` eller `yarn start:mock:win` på windows
+- Bygge applikasjonen: `yarn build`
+- Kjøre applikasjonen med Node-backend:
+  1. `yarn && yarn build`
+  2. `cd server`
+  3. `npm i && npm start`
+- Kjøre applikasjonen med Docker:
+  1. `yarn && yarn build`
+  2. `yarn docker:build`
+  3. `yarn docker:start`
+  4. For å stoppe, kjør `docker stop <id>` med id-en fra forrige kommando
+
+---
+
+## Henvendelser
+Spørsmål knyttet til koden eller prosjektet kan opprettes som github issues.
+Eller for genereller spørsmål sjekk commit log for personer som aktivt jobber med koden.
+
+## For NAV-ansatte
+
+Interne henvendelser kan sendes via Slack i kanalen #arbeidsgiver-min-side-arbeidsgiver.
+
+### Lenker til applikasjon
+
+dev: https://arbeidsgiver-q.nav.no/arbeidsforhold/ (i vdi, eller over vpn)
+prod: https://arbeidsgiver.nav.no/arbeidsforhold/
+labs: https://arbeidsgiver.labs.nais.io/arbeidsforhold/
+logs: https://logs.adeo.no/app/dashboards#/view/754c72d0-76d8-11eb-90cb-7315dfb7dea6
