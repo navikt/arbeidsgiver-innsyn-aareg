@@ -112,13 +112,13 @@
   },
   "scripts": {
     "start": "craco start",
-    "winmock": "set REACT_APP_MOCK=true && yarn start",
-    "mock": "REACT_APP_MOCK=true yarn start",
-    "server": "yarn build && node src/server/server.js",
+    "start:mock": "REACT_APP_MOCK=true yarn start",
+    "start:mock:win": "set REACT_APP_MOCK=true && yarn start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject",
-    "lint": "eslint --ext ts,tsx ."
+    "lint": "eslint --ext ts,tsx .",
+    "docker:build": "docker build -t innsyn-aareg-arbeidsgiver .",
+    "docker:start": "docker run -p 3000:3000 innsyn-aareg-arbeidsgiver"
   },
   "eslintConfig": {
     "extends": "react-app"
