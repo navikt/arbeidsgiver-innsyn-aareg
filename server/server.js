@@ -21,7 +21,6 @@ const {
     NAIS_CLUSTER_NAME = 'local',
     API_GATEWAY = 'http://localhost:8080',
     APIGW_HEADER,
-    ARBEIDSFORHOLD_API_GW_HEADER,
 } = process.env;
 
 const decoratorUrl = NAIS_CLUSTER_NAME === 'prod-sbs' ? defaultDecoratorUrl : DECORATOR_EXTERNAL_URL;
@@ -73,19 +72,6 @@ app.use('/*', (req, res, next) => {
     next();
 });
 app.use(
-    '/arbeidsforhold/api',
-    createProxyMiddleware({
-        changeOrigin: true,
-        pathRewrite: {
-            '^/arbeidsforhold/api': '/ditt-nav-arbeidsgiver-api/api',
-        },
-        secure: true,
-        xfwd: true,
-        target: API_GATEWAY,
-        ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
-    })
-);
-app.use(
     '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
     createProxyMiddleware({
         changeOrigin: true,
@@ -95,7 +81,7 @@ app.use(
         secure: true,
         xfwd: true,
         target: API_GATEWAY,
-        ...(ARBEIDSFORHOLD_API_GW_HEADER ? {headers: {'x-nav-apiKey': ARBEIDSFORHOLD_API_GW_HEADER}} : {})
+        ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
     })
 );
 app.use(
