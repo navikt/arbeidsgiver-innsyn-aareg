@@ -4,7 +4,6 @@
   "selvbetjening-login-url": "https://loginservice-q.nav.no/login?redirect=https://arbeidsgiver-q.nav.no/arbeidsforhold",
   "logout-url": "https://loginservice-q.nav.no/slo",
   "decorator-external-url": "https://www-q1.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4",
-  "namespace": "default",
   "vault-enabled": true,
   "webproxy-enabled": true,
   "labs": false
