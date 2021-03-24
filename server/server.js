@@ -7,6 +7,7 @@ import jsdom from "jsdom";
 import Prometheus from "prom-client";
 import require from "./esm-require.js";
 
+const {createLogger, transports, format} = require('winston');
 const apiMetricsMiddleware = require('prometheus-api-metrics');
 const {JSDOM} = jsdom;
 const {createProxyMiddleware} = httpProxyMiddleware;
@@ -21,7 +22,17 @@ const {
     NAIS_CLUSTER_NAME = 'local',
     API_GATEWAY = 'http://localhost:8080',
     APIGW_HEADER,
+    DECORATOR_UPDATE_MS = 30 * 60 * 1000,
+    PROXY_LOG_LEVEL = 'info',
 } = process.env;
+const log = createLogger({
+    transports: [
+        new transports.Console({
+            timestamp: true,
+            format: format.json()
+        })
+    ]
+});
 
 const decoratorUrl = NAIS_CLUSTER_NAME === 'prod-sbs' ? defaultDecoratorUrl : DECORATOR_EXTERNAL_URL;
 const BUILD_PATH = path.join(process.cwd(), '../build');
@@ -53,9 +64,9 @@ const startApiGWGauge = () => {
                 ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
             });
             gauge.set(res.ok ? 1 : 0);
-            console.log("healthcheck: ", gauge.name, res.ok);
+            log.info("healthcheck: ", gauge.name, res.ok);
         } catch (error) {
-            console.error("healthcheck error:", gauge.name, error)
+            log.error("healthcheck error:", gauge.name, error)
             gauge.set(0);
         }
     }, 60 * 1000);
@@ -72,8 +83,18 @@ app.use('/*', (req, res, next) => {
     next();
 });
 app.use(
+    apiMetricsMiddleware({
+        metricsPath: '/arbeidsforhold/internal/metrics',
+    })
+);
+app.use(
     '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
     createProxyMiddleware({
+        logLevel: PROXY_LOG_LEVEL,
+        logProvider: _ => log,
+        onError: (err, req, res) => {
+            log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
+        },
         changeOrigin: true,
         pathRewrite: {
             '^/arbeidsforhold/arbeidsgiver-arbeidsforhold/api': '/arbeidsgiver-arbeidsforhold-api',
@@ -87,6 +108,11 @@ app.use(
 app.use(
     '/arbeidsforhold/veilarbstepup/status',
     createProxyMiddleware({
+        logLevel: PROXY_LOG_LEVEL,
+        logProvider: _ => log,
+        onError: (err, req, res) => {
+            log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
+        },
         changeOrigin: true,
         target: NAIS_CLUSTER_NAME === 'prod-sbs' ? 'https://tjenester.nav.no/' : 'https://tjenester-q1.nav.no/',
         pathRewrite: {
@@ -99,6 +125,11 @@ app.use(
 app.use(
     '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
     createProxyMiddleware({
+        logLevel: PROXY_LOG_LEVEL,
+        logProvider: _ => log,
+        onError: (err, req, res) => {
+            log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
+        },
         changeOrigin: true,
         target: NAIS_CLUSTER_NAME === 'prod-sbs' ? 'https://www.nav.no' : 'https://www.dev.nav.no',
         pathRewrite: {
@@ -109,11 +140,6 @@ app.use(
     })
 );
 app.use('/arbeidsforhold', express.static(BUILD_PATH, { index: false }));
-app.use(
-    apiMetricsMiddleware({
-        metricsPath: '/arbeidsforhold/internal/metrics',
-    })
-);
 
 app.get('/arbeidsforhold/redirect-til-login', (req, res) => {
     res.redirect(LOGIN_URL);
@@ -129,12 +155,13 @@ app.get(
 
 
 const serve = async () => {
+    let fragments;
     try {
-        const fragments = await getDecoratorFragments();
+        fragments = await getDecoratorFragments();
         app.get('/arbeidsforhold/*', (req, res) => {
             res.render('index.html', fragments, (err, html) => {
                 if (err) {
-                    console.error(err);
+                    log.error(err);
                     res.sendStatus(500);
                 } else {
                     res.send(html);
@@ -142,14 +169,24 @@ const serve = async () => {
             });
         });
         app.listen(PORT, () => {
-            console.log('Server listening on port ', PORT);
+            log.info('Server listening on port ', PORT);
         });
     } catch (error) {
-        console.error('Server failed to start ', error);
+        log.error('Server failed to start ', error);
         process.exit(1);
     }
 
     startApiGWGauge();
+    setInterval(() => {
+        getDecoratorFragments()
+            .then(oppdatert => {
+                fragments = oppdatert;
+                log.info(`dekoratør oppdatert: ${Object.keys(oppdatert)}`);
+            })
+            .catch(error => {
+                log.warn(`oppdatering av dekoratør feilet: ${error}`);
+            });
+    }, DECORATOR_UPDATE_MS);
 }
 
 serve().then(/*noop*/);
