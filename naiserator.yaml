@@ -20,9 +20,6 @@ spec:
   prometheus:
     enabled: true
     path: /arbeidsforhold/internal/metrics
-  vault:
-    enabled: {{vault-enabled}}
-  webproxy: {{webproxy-enabled}}
   envFrom:
     - secret: innsyn-aareg
   env:
