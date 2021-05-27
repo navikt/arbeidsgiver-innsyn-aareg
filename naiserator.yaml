@@ -1,7 +1,7 @@
 apiVersion: 'nais.io/v1alpha1'
 kind: 'Application'
 metadata:
-  name: bedriftsoversikt-og-ansatte
+  name: innsyn-aareg
   namespace: arbeidsgiver
   labels:
     team: arbeidsgiver
@@ -20,9 +20,8 @@ spec:
   prometheus:
     enabled: true
     path: /arbeidsforhold/internal/metrics
-  vault:
-    enabled: {{vault-enabled}}
-  webproxy: {{webproxy-enabled}}
+  envFrom:
+    - secret: innsyn-aareg
   env:
     - name: NODE_EXTRA_CA_CERTS
       value: /etc/ssl/ca-bundle.pem
