@@ -13,18 +13,19 @@ const {JSDOM} = jsdom;
 const {createProxyMiddleware} = httpProxyMiddleware;
 
 const defaultLoginUrl = 'http://localhost:8080/ditt-nav-arbeidsgiver-api/local/selvbetjening-login?redirect=http://localhost:3000/arbeidsforhold';
-const defaultDecoratorUrl = 'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4';
+
 const {
     PORT = 3000,
     NAIS_APP_IMAGE = '?',
     LOGIN_URL = defaultLoginUrl,
-    DECORATOR_EXTERNAL_URL = defaultDecoratorUrl,
+    DECORATOR_EXTERNAL_URL = 'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4',
     NAIS_CLUSTER_NAME = 'local',
     API_GATEWAY = 'http://localhost:8080',
     APIGW_HEADER,
     DECORATOR_UPDATE_MS = 30 * 60 * 1000,
     PROXY_LOG_LEVEL = 'info',
 } = process.env;
+
 const log = createLogger({
     transports: [
         new transports.Console({
@@ -34,10 +35,10 @@ const log = createLogger({
     ]
 });
 
-const decoratorUrl = NAIS_CLUSTER_NAME === 'prod-sbs' ? defaultDecoratorUrl : DECORATOR_EXTERNAL_URL;
 const BUILD_PATH = path.join(process.cwd(), '../build');
+
 const getDecoratorFragments = async () => {
-    const response = await fetch(decoratorUrl);
+    const response = await fetch(DECORATOR_EXTERNAL_URL);
     const body = await response.text();
     const {document} = new JSDOM(body).window;
     return {
@@ -52,6 +53,7 @@ const getDecoratorFragments = async () => {
         </script>`,
     };
 }
+
 const startApiGWGauge = () => {
     const gauge = new Prometheus.Gauge({
         name: 'backend_api_gw',
@@ -82,11 +84,13 @@ app.use('/*', (req, res, next) => {
     res.setHeader('NAIS_APP_IMAGE', NAIS_APP_IMAGE);
     next();
 });
+
 app.use(
     apiMetricsMiddleware({
         metricsPath: '/arbeidsforhold/internal/metrics',
     })
 );
+
 app.use(
     '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
     createProxyMiddleware({
@@ -105,23 +109,7 @@ app.use(
         ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
     })
 );
-app.use(
-    '/arbeidsforhold/veilarbstepup/status',
-    createProxyMiddleware({
-        logLevel: PROXY_LOG_LEVEL,
-        logProvider: _ => log,
-        onError: (err, req, res) => {
-            log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
-        },
-        changeOrigin: true,
-        target: NAIS_CLUSTER_NAME === 'prod-sbs' ? 'https://tjenester.nav.no/' : 'https://tjenester-q1.nav.no/',
-        pathRewrite: {
-            '^/arbeidsforhold': ''
-        },
-        secure: true,
-        xfwd: true
-    })
-);
+
 app.use(
     '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
     createProxyMiddleware({
@@ -139,20 +127,20 @@ app.use(
         xfwd: true
     })
 );
+
 app.use('/arbeidsforhold', express.static(BUILD_PATH, { index: false }));
 
 app.get('/arbeidsforhold/redirect-til-login', (req, res) => {
     res.redirect(LOGIN_URL);
 });
-app.get(
-    '/arbeidsforhold/internal/isAlive',
-    (req, res) => res.sendStatus(200)
-);
-app.get(
-    '/arbeidsforhold/internal/isReady',
-    (req, res) => res.sendStatus(200)
+
+app.get('/arbeidsforhold/internal/isAlive', (req, res) =>
+    res.sendStatus(200)
 );
 
+app.get('/arbeidsforhold/internal/isReady', (req, res) =>
+    res.sendStatus(200)
+);
 
 const serve = async () => {
     let fragments;
