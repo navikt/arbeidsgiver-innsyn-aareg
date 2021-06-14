@@ -4,7 +4,7 @@ import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import Chevron from 'nav-frontend-chevron';
-import environment from '../../../utils/environment';
+import { gittMiljø } from '../../../utils/environment';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { useSearchParameters } from '../../../utils/UrlManipulation';
 import { BedriftsmenyContext } from '../../BedriftsmenyProvider';
@@ -14,22 +14,16 @@ import EnkeltArbeidsforholdVarselVisning from './EnkeltArbeidsforholdVarselVisni
 import Brodsmulesti from '../../Brodsmulesti/Brodsmulesti';
 import './EnkeltArbeidsforhold.less';
 
-const miljo = () => {
-    if (environment.MILJO === 'prod-sbs') {
-        return 'PROD';
-    }
-    if (environment.MILJO === 'dev-sbs') {
-        return 'DEV';
-    }
-    return 'LOCAL';
-};
+const miljø = gittMiljø<'PROD' | 'DEV' | 'LOCAL'>({
+    prod: 'PROD',
+    dev: 'DEV',
+    other: 'LOCAL',
+});
 
-const apiURL = () => {
-    if (environment.MILJO === 'prod-sbs') {
-        return 'https://arbeidsgiver.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
-    }
-    return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}';
-};
+const apiURL = gittMiljø({
+    prod: 'https://arbeidsgiver.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}',
+    other: 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}'
+});
 
 const EnkeltArbeidsforhold: FunctionComponent = () => {
     const history = useHistory();
@@ -116,11 +110,11 @@ const EnkeltArbeidsforhold: FunctionComponent = () => {
                         </div>
                         <DetaljertArbeidsforhold
                             locale="nb"
-                            miljo={miljo()}
+                            miljo={miljø}
                             navArbeidsforholdId={parseInt(valgtArbeidsforhold.navArbeidsforholdId)}
                             rolle="ARBEIDSGIVER"
                             fnrArbeidstaker={valgtArbeidsforhold.arbeidstaker.offentligIdent}
-                            customApiUrl={apiURL()}
+                            customApiUrl={apiURL}
                             printActivated={true}
                             printName={valgtArbeidsforhold.arbeidstaker.navn}
                             printSSN={valgtArbeidsforhold.arbeidstaker.offentligIdent}
