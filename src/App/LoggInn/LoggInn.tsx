@@ -2,19 +2,25 @@ import React from 'react';
 import Lenke from 'nav-frontend-lenker';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
-import environment from '../../utils/environment';
 import handshake from './handshake.svg';
 import { TilgangsStyringInfoTekst } from './TilgangsStyringInfoTekst/TilgangsStyringInfoTekst';
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import './Logginn.less';
 import EnkelBanner from '../EnkelBanner/EnkelBanner';
+import { gittMiljø } from '../../utils/environment';
 
 export const redirectTilLogin = () => {
-    if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs' || environment.MILJO === 'labs-gcp') {
-        window.location.href = '/arbeidsforhold/redirect-til-login';
-    } else {
+    const kjørerLokalt = gittMiljø({
+        prod: false,
+        dev: false,
+        labs: false,
+        other: true
+    });
+    if (kjørerLokalt) {
         document.cookie = 'selvbetjening-idtoken=0123456789..*; path=/;';
         window.location.href = '/arbeidsforhold/';
+    } else {
+        window.location.href = '/arbeidsforhold/redirect-til-login';
     }
 };
 

@@ -1,5 +1,5 @@
 import amplitude from '../utils/amplitude';
-import environment from '../utils/environment';
+import { environment } from '../utils/environment';
 
 export const loggAntallAnsatte = (antall: number) => {
     let logg = '#arbeidsforhold antall arbeidsforhold: ';
