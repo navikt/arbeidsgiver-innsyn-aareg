@@ -1,0 +1,8 @@
+{
+  "ingress": "https://arbeidsforhold.dev.nav.no/arbeidsforhold",
+  "api-gw-url": "https://api-gw-q1.oera.no",
+  "selvbetjening-login-url": "https://loginservice.dev.nav.no/login?redirect=https://arbeidsgiver-q.nav.no/arbeidsforhold",
+  "logout-url": "https://loginservice.dev.nav.no/slo",
+  "decorator-external-url": "https://dekoratoren.dev.nav.no/?context=arbeidsgiver&redirectToApp=true&chatbot=true&level=Level4",
+  "labs": false
+}

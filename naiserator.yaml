@@ -2,9 +2,9 @@ apiVersion: 'nais.io/v1alpha1'
 kind: 'Application'
 metadata:
   name: innsyn-aareg
-  namespace: arbeidsgiver
+  namespace: fager
   labels:
-    team: arbeidsgiver
+    team: fager
 spec:
   image: {{image}}
   team: arbeidsgiver
