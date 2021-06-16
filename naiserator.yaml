@@ -36,6 +36,7 @@ spec:
     outbound:
       rules:
         - application: arbeidsgiver-arbeidsforhold-api
+          namespace: fager
       external:
         - host: www.nav.no
   {{/if}}
