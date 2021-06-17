@@ -14,9 +14,9 @@ interface GittMiljø<T> {
     other?: T;
 }
 
-const PROD_REGEX = /^prod-.*/.compile()
-const DEV_REGEX = /^dev-.*/.compile()
-const LABS_REGEX = /^labs-.*/.compile()
+const PROD_REGEX = /^prod-.*/
+const DEV_REGEX = /^dev-.*/
+const LABS_REGEX = /^labs-.*/
 
 export const gittMiljø = <T>(valg: GittMiljø<T>): T => {
     const miljø = environment.MILJO;
