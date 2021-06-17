@@ -20,15 +20,15 @@ const LABS_REGEX = /^labs-.*/.compile()
 
 export const gittMiljø = <T>(valg: GittMiljø<T>): T => {
     const miljø = environment.MILJO;
-    if (miljø.match(PROD_REGEX)) {
+    if (PROD_REGEX.test(miljø)) {
         return valg.prod;
     }
 
-    if (miljø.match(DEV_REGEX) && valg.dev !== undefined) {
+    if (DEV_REGEX.test(miljø) && valg.dev !== undefined) {
         return valg.dev;
     }
 
-    if (miljø.match(LABS_REGEX) && valg.labs !== undefined) {
+    if (LABS_REGEX.test(miljø) && valg.labs !== undefined) {
         return valg.labs;
     }
 
