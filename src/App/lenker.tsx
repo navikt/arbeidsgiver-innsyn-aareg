@@ -47,7 +47,7 @@ export const linkTilMinSideArbeidsgiver = (orgnr: string) => {
     const orgNrDel = orgnr.length > 0 ? '?bedrift=' + orgnr : '';
     return gittMiljø({
         prod: 'https://arbeidsgiver.nav.no/min-side-arbeidsgiver/',
-        dev: 'https://arbeidsgiver-q.nav.no/min-side-arbeidsgiver/',
+        dev: 'https://arbeidsforhold.dev.nav.no/min-side-arbeidsgiver/',
         other: 'https://arbeidsgiver.labs.nais.io/min-side-arbeidsgiver/'
     }) + orgNrDel;
 };
@@ -56,7 +56,7 @@ export const linkTilArbeidsforhold = (orgnr: string) => {
     const orgNrDel = orgnr.length > 0 ? '?bedrift=' + orgnr : '';
     return gittMiljø({
         prod: 'https://arbeidsgiver.nav.no/arbeidsforhold/',
-        dev: 'https://arbeidsgiver-q.nav.no/arbeidsforhold/',
+        dev: 'https://arbeidsforhold.dev.nav.no/arbeidsforhold/',
         other: 'https://arbeidsgiver.labs.nais.io/arbeidsforhold/',
     }) + orgNrDel;
 };
