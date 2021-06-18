@@ -22,7 +22,7 @@ const miljø = gittMiljø<'PROD' | 'DEV' | 'LOCAL'>({
 
 const apiURL = gittMiljø({
     prod: 'https://arbeidsgiver.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}',
-    other: 'https://arbeidsgiver-q.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}'
+    other: 'https://arbeidsforhold.dev.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}'
 });
 
 const EnkeltArbeidsforhold: FunctionComponent = () => {
