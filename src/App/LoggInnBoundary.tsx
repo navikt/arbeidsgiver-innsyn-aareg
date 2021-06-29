@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import environment from '../utils/environment';
 import amplitude from '../utils/amplitude';
 import { sjekkInnlogget } from '../api/altinnApi';
 import LoggInn from './LoggInn/LoggInn';
 import EnkelBanner from './EnkelBanner/EnkelBanner';
 import Lasteboks from './Lasteboks';
+import { gittMiljø } from '../utils/environment';
 
 export enum Tilgang {
     LASTER,
@@ -27,20 +27,25 @@ const LoginBoundary: FunctionComponent = (props) => {
         setInnlogget(Tilgang.LASTER);
         const abortController = new AbortController();
 
-        if (environment.MILJO === 'prod-sbs' || environment.MILJO === 'dev-sbs' || environment.MILJO === 'labs-gcp') {
+        const kjørerLokalt = gittMiljø({
+            prod: false,
+            dev: false,
+            labs: false,
+            other: true
+        });
+
+        if (kjørerLokalt) {
+            localLogin();
+        } else {
             sjekkInnlogget(abortController.signal).then((innloggingsstatus) => {
                 if (innloggingsstatus) {
                     setInnlogget(Tilgang.TILGANG);
-                    if (environment.MILJO) {
-                        amplitude.logEvent('#arbeidsforhold bruker er innlogget');
-                    }
+                    amplitude.logEvent('#arbeidsforhold bruker er innlogget');
                 } else {
                     setInnlogget(Tilgang.IKKE_TILGANG);
                 }
             });
             return () => abortController.abort();
-        } else {
-            localLogin();
         }
     }, []);
 

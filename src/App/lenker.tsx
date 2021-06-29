@@ -1,4 +1,4 @@
-import environment from '../utils/environment';
+import { gittMiljø } from '../utils/environment';
 import { alleFeatures } from './FeatureToggleProvider';
 
 const landingsURL = '/arbeidsforhold/';
@@ -45,23 +45,26 @@ export const hentFeatureTogglesLenke = (): string => {
 
 export const linkTilMinSideArbeidsgiver = (orgnr: string) => {
     const orgNrDel = orgnr.length > 0 ? '?bedrift=' + orgnr : '';
-    if (environment.MILJO === 'prod-sbs') {
-        return 'https://arbeidsgiver.nav.no/min-side-arbeidsgiver/' + orgNrDel;
-    } else if (environment.MILJO === 'dev-sbs') {
-        return 'https://arbeidsgiver-q.nav.no/min-side-arbeidsgiver/' + orgNrDel;
-    }
-    return 'https://arbeidsgiver.labs.nais.io/min-side-arbeidsgiver/' + orgNrDel;
+    return gittMiljø({
+        prod: 'https://arbeidsgiver.nav.no/min-side-arbeidsgiver/',
+        dev: 'https://arbeidsforhold.dev.nav.no/min-side-arbeidsgiver/',
+        other: 'https://arbeidsgiver.labs.nais.io/min-side-arbeidsgiver/'
+    }) + orgNrDel;
 };
 
 export const linkTilArbeidsforhold = (orgnr: string) => {
     const orgNrDel = orgnr.length > 0 ? '?bedrift=' + orgnr : '';
-    if (environment.MILJO === 'prod-sbs') {
-        return 'https://arbeidsgiver.nav.no/arbeidsforhold/' + orgNrDel;
-    } else if (environment.MILJO === 'dev-sbs') {
-        return 'https://arbeidsgiver-q.nav.no/arbeidsforhold/' + orgNrDel;
-    }
-    return 'https://arbeidsgiver.labs.nais.io/arbeidsforhold/' + orgNrDel;
+    return gittMiljø({
+        prod: 'https://arbeidsgiver.nav.no/arbeidsforhold/',
+        dev: 'https://arbeidsforhold.dev.nav.no/arbeidsforhold/',
+        other: 'https://arbeidsgiver.labs.nais.io/arbeidsforhold/',
+    }) + orgNrDel;
 };
+
+const delegationRequestUrl = gittMiljø({
+    prod: 'https://altinn.no/ui/DelegationRequest',
+    other: 'https://tt02.altinn.no/ui/DelegationRequest'
+});
 
 export const beOmTilgangIAltinnLink = (
     orgnr: string,
@@ -69,27 +72,10 @@ export const beOmTilgangIAltinnLink = (
     serviceEditionKode: string,
     serviceEditionKodeTest?: string
 ) => {
-    if (environment.MILJO === 'prod-sbs') {
-        return (
-            'https://altinn.no/ui/DelegationRequest?offeredBy=' +
-            orgnr +
-            '&resources=' +
-            serviceKode +
-            '_' +
-            serviceEditionKode
-        );
-    } else {
-        let testServiceEditionKode = serviceEditionKode;
-        if (serviceEditionKodeTest) {
-            testServiceEditionKode = serviceEditionKodeTest;
-        }
-        return (
-            'https://tt02.altinn.no/ui/DelegationRequest?offeredBy=' +
-            orgnr +
-            '&resources=' +
-            serviceKode +
-            '_' +
-            testServiceEditionKode
-        );
-    }
+    const edition = gittMiljø({
+        prod: serviceEditionKode,
+        other: serviceEditionKodeTest ?? serviceEditionKode
+    });
+
+    return `${delegationRequestUrl}?offeredBy=${orgnr}&resources=${serviceKode}_${edition}`;
 };

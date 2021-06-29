@@ -41,15 +41,14 @@ jobs:
       - name: Sett miljøvariabel IMAGE
         run: echo "IMAGE=$IMAGE_BASE:$COMMIT">>$GITHUB_ENV
 
-      - name: Deploy til dev-sbs
+      - name: Deploy til dev-gcp
         uses: nais/deploy/actions/deploy@v1
         env:
-          TEAM: arbeidsgiver
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-sbs
+          CLUSTER: dev-gcp
           RESOURCE: naiserator.yaml
           PRINT_PAYLOAD: true
-          VARS: nais/dev-sbs.json
+          VARS: nais/dev-gcp.json
           REF: ${{ env.COMMIT }}
           IMAGE: ${{ env.IMAGE }}
 
@@ -75,14 +74,14 @@ jobs:
             github.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              labels: ['deploy', 'dev-sbs']
+              labels: ['deploy', 'dev-gcp']
             }).then(response => {
               response.data.forEach(issue => {
                 github.issues.removeLabel({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issue.number,
-                  name: 'dev-sbs'
+                  name: 'dev-gcp'
                 });
               });
             });
@@ -98,5 +97,5 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
               issue_number: ${{ github.event.client_payload.github.payload.issue.number }},
-              labels: ['dev-sbs']
+              labels: ['dev-gcp']
             });
