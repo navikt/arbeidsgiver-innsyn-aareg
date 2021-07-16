@@ -35,8 +35,8 @@ spec:
   accessPolicy:
     outbound:
       rules:
-        - application: arbeidsgiver-arbeidsforhold-api
-          namespace: arbeidsgiver
+        - application: innsyn-aareg-api
+          namespace: fager
       external:
         - host: www.nav.no
   {{/if}}
