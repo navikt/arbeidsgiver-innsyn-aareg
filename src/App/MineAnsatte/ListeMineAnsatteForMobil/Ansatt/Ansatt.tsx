@@ -4,6 +4,7 @@ import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import AttributtVisning from './AttributtVisning/AttributtVisning';
 import { loggBrukerTrykketPaVarsel } from '../../../amplitudefunksjonerForLogging';
 import './Ansatt.less';
+import { datoformat } from '../../utils';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold;
@@ -47,8 +48,8 @@ const Ansatt: FunctionComponent<Props> = ({ arbeidsforhold }) => {
                     attributt="Offentlig Ident"
                     attributtVerdi={arbeidsforhold.arbeidstaker.offentligIdent}
                 />
-                <AttributtVisning attributt="Startet" attributtVerdi={arbeidsforhold.ansattFom} />
-                <AttributtVisning attributt="Slutter" attributtVerdi={arbeidsforhold.ansattTom} />
+                <AttributtVisning attributt="Startet" attributtVerdi={datoformat(arbeidsforhold.ansattFom)} />
+                <AttributtVisning attributt="Slutter" attributtVerdi={datoformat(arbeidsforhold.ansattTom)} />
                 <AttributtVisning attributt="Stillingsprosent %" attributtVerdi={arbeidsforhold.stillingsprosent} />
                 <AttributtVisning attributt="Yrke" attributtVerdi={arbeidsforhold.yrkesbeskrivelse} />
                 {arbeidsforhold.varsler && (
