@@ -6,6 +6,7 @@ import YrkesbeskrivelsePopover from './KolonnerMedTooltip/YrkesbeskrivelsePopove
 import NavnPopover from './KolonnerMedTooltip/NavnPopover';
 import VarslingPopover from './KolonnerMedTooltip/VarslingPopover';
 import './TabellMineAnsatte.less';
+import { datoformat } from '../utils';
 
 interface Props {
     listeMedArbeidsForhold: Arbeidsforhold[];
@@ -23,8 +24,8 @@ const TabellMineAnsatte: FunctionComponent<Props> = (props) => {
                     />
                 </td>
                 <td className="td">{arbeidsforhold.arbeidstaker.offentligIdent}</td>
-                <td className="td">{arbeidsforhold.ansattFom}</td>
-                <td className="td">{arbeidsforhold.ansattTom}</td>
+                <td className="td">{datoformat(arbeidsforhold.ansattFom)}</td>
+                <td className="td">{datoformat(arbeidsforhold.ansattTom)}</td>
                 <td className="td">{arbeidsforhold.stillingsprosent+' %'}</td>
                 <td className="td">
                     <YrkesbeskrivelsePopover tekst={arbeidsforhold.yrkesbeskrivelse} />
