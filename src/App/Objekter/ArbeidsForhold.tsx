@@ -2,7 +2,7 @@ import { Varsel } from './Varsel';
 
 export interface Arbeidsforhold {
     ansattFom: string;
-    ansattTom?: string;
+    ansattTom?: string|null;
     arbeidsgiver: {
         type: string;
     };
