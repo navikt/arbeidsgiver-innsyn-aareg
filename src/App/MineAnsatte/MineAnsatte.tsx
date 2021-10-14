@@ -4,10 +4,8 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import Chevron from 'nav-frontend-chevron';
 import {
-    loggNavigasjon,
     loggSidevisningAvArbeidsforhold,
-    loggTrykketPåNåværendeArbeidsforhold,
-    loggTrykketPåTidligereArbeidsforhold
+    loggTrykketPåNåværendeArbeidsforhold
 } from '../../utils/amplitudefunksjonerForLogging';
 import { BedriftsmenyContext } from '../Context/BedriftsmenyProvider';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../Context/FiltrerteOgSorterteArbeidsforholdProvider';
@@ -22,6 +20,7 @@ import SideBytter from './SideBytter/SideBytter';
 import VelgTidligereVirksomhet from './VelgTidligereVirksomhet/VelgTidligereVirksomhet';
 import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
 import './MineAnsatte.less';
+import { LenkeMedLogging } from '../GeneriskeKomponenter/LenkeMedLogging';
 
 export enum SorteringsAttributt {
     NAVN,
@@ -42,28 +41,22 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
     const overskriftMedOrganisasjonsdel = 'Opplysninger for ' + underenhet.Name;
 
     return (
-        <div className="bakgrunnsside">
-            <div className="innhold-container">
+        <div className='bakgrunnsside'>
+            <div className='innhold-container'>
                 <Brodsmulesti valgtOrg={underenhet.OrganizationNumber} />
-
                 {tilgangTidligereArbeidsforhold && (
-                    <div className="brodsmule hoyre">
-                        <Link
-                            to={{
-                                pathname: '/tidligere-arbeidsforhold',
-                                search: `bedrift=${underenhet.OrganizationNumber}`,
-                            }}
-                            className="brodsmule__direct-tidligere-arbeidsforhold"
-                            onClick={() => loggNavigasjon("tidligere arbeidsforhold","tidligere arbeidsforhold", "")}
-                        >
+                    <div className='brodsmule hoyre'>
+                        <LenkeMedLogging loggLenketekst={`tidligere-arbeidsforhold`}
+                                         href={`/tidligere-arbeidsforhold?bedrift=${underenhet.OrganizationNumber}`}
+                                         className={'brodsmule__direct-tidligere-arbeidsforhold'}>
                             {'Arbeidsforhold i tidligere virksomheter for ' + hovedenhet?.Name}
-                            <Chevron type="høyre" />
-                        </Link>
+                            <Chevron type='høyre' />
+                        </LenkeMedLogging>
                     </div>
                 )}
 
-                <div className="mine-ansatte">
-                    <Systemtittel className="mine-ansatte__systemtittel">{overskriftMedOrganisasjonsdel}</Systemtittel>
+                <div className='mine-ansatte'>
+                    <Systemtittel className='mine-ansatte__systemtittel'>{overskriftMedOrganisasjonsdel}</Systemtittel>
                     <MineArbeidsforhold />
                 </div>
             </div>
@@ -75,26 +68,22 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
     const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
 
     return (
-        <div className="bakgrunnsside">
-            <div className="innhold-container">
+        <div className='bakgrunnsside'>
+            <div className='innhold-container'>
                 <Brodsmulesti valgtOrg={underenhet.OrganizationNumber} />
 
-                <div className="brodsmule venstre">
-                    <Link
-                        className="brodsmule__direct-tidligere-arbeidsforhold"
-                        to={{
-                            pathname: '/',
-                            search: `bedrift=${underenhet.OrganizationNumber}`,
-                        }}
-                        onClick={() => loggTrykketPåNåværendeArbeidsforhold()}
-                    >
-                        <Chevron type="venstre" />
+                <div className='brodsmule venstre'>
+                    <LenkeMedLogging loggLenketekst={`nåværende-arbeidsforhold`}
+                                     href={`/?bedrift=${underenhet.OrganizationNumber}`}
+                                     className={'brodsmule__direct-tidligere-arbeidsforhold'}>
+                        <Chevron type='venstre' />
                         Tilbake til arbeidsforhold
-                    </Link>
+                    </LenkeMedLogging>
+
                 </div>
 
-                <div className="mine-ansatte">
-                    <Systemtittel className="mine-ansatte__systemtittel">
+                <div className='mine-ansatte'>
+                    <Systemtittel className='mine-ansatte__systemtittel'>
                         {`Opplysninger for ${hovedenhet?.Name} org.nr ${hovedenhet?.OrganizationNumber}`}
                     </Systemtittel>
                     {tidligereUnderenheter !== 'laster' && <VelgTidligereVirksomhet />}
@@ -148,11 +137,11 @@ const MineArbeidsforhold: FunctionComponent = () => {
                             byttSide={setSideTallIUrlOgGenererListe}
                         />
                         <ListeMedAnsatteForMobil
-                            className="mine-ansatte__liste"
+                            className='mine-ansatte__liste'
                             listeMedArbeidsForhold={listeForNåværendeSidetall}
                         />
                         {antallSider > 1 && (
-                            <SideBytter plassering="nederst" className="nedre-sidebytter" antallSider={antallSider} />
+                            <SideBytter plassering='nederst' className='nedre-sidebytter' antallSider={antallSider} />
                         )}
                     </>
                 )}
@@ -162,7 +151,7 @@ const MineArbeidsforhold: FunctionComponent = () => {
         return <IngenTilgangInfo />;
     } else {
         return (
-            <div className="mine-ansatte__feilmelding-aareg">
+            <div className='mine-ansatte__feilmelding-aareg'>
                 <AlertStripeFeil>{aareg.lastestatus.beskjed}</AlertStripeFeil>
             </div>
         );
