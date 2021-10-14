@@ -4,9 +4,10 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import Chevron from 'nav-frontend-chevron';
 import {
+    loggNavigasjon,
     loggSidevisningAvArbeidsforhold,
     loggTrykketPåNåværendeArbeidsforhold,
-    loggTrykketPåTidligereArbeidsforhold,
+    loggTrykketPåTidligereArbeidsforhold
 } from '../amplitudefunksjonerForLogging';
 import { BedriftsmenyContext } from '../BedriftsmenyProvider';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../FiltrerteOgSorterteArbeidsforholdProvider';
@@ -53,7 +54,7 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
                                 search: `bedrift=${underenhet.OrganizationNumber}`,
                             }}
                             className="brodsmule__direct-tidligere-arbeidsforhold"
-                            onClick={() => loggTrykketPåTidligereArbeidsforhold()}
+                            onClick={() => loggNavigasjon("tidligere arbeidsforhold","tidligere arbeidsforhold", "")}
                         >
                             {'Arbeidsforhold i tidligere virksomheter for ' + hovedenhet?.Name}
                             <Chevron type="høyre" />

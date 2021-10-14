@@ -1,5 +1,47 @@
 import amplitude from '../utils/amplitude';
 import { environment } from '../utils/environment';
+import {Tilgang} from "./LoggInnBoundary";
+import {basename} from "./paths";
+
+interface EventProps {
+    url: string;
+    innlogget?: boolean;
+    tilgangskombinasjon?: string;
+    kategori?: string;
+    destinasjon?: string;
+    lenketekst?: string;
+}
+
+
+const baseUrl = `https://arbeidsgiver.nav.no${basename}`;
+
+
+export const loggSidevisning = (pathname: string, innlogget: Tilgang) => {
+    amplitude.logEvent('sidevisning', {
+        url: `${baseUrl}${pathname}`,
+        innlogget: innlogget === Tilgang.TILGANG
+    });
+};
+
+
+export const loggNavigasjon = (
+    destinasjon: string | undefined,
+    lenketekst: string,
+    currentPagePath?: string,
+) => {
+
+    if (destinasjon !== undefined && destinasjon !== '') {
+        const { origin, pathname } = new URL(destinasjon, baseUrl);
+        destinasjon = `${origin}${pathname}`;
+    }
+
+    const navigasjonsInfo: EventProps = {
+        destinasjon: destinasjon,
+        lenketekst,
+        url: `${baseUrl}${currentPagePath ?? ''}`,
+    };
+    amplitude.logEvent('navigere', navigasjonsInfo);
+};
 
 export const loggAntallAnsatte = (antall: number) => {
     let logg = '#arbeidsforhold antall arbeidsforhold: ';
@@ -22,79 +64,14 @@ export const loggAntallAnsatte = (antall: number) => {
         case antall >= 1000:
             logg += 'over 1000';
             break;
-
         default:
             logg += 'kunne ikke finne antall';
     }
     //amplitude.logEvent(logg + ' i ' + environment.MILJO);
 };
 
-export const loggSnittTidPerArbeidsforhold = (antall: number, tid: number) => {
-    let logg = '#arbeidsforhold gjennomsnittstid per arbeidsforhold: ';
-    if (antall > 0) {
-        const tidPerForhold = antall / tid;
-        switch (true) {
-            case tidPerForhold < 0.001:
-                logg += 'mindre enn 0.001 sekund';
-                break;
-            case tidPerForhold < 0.03:
-                logg += 'mindre enn 0.03 sekund';
-                break;
-            case antall < 1:
-                logg += 'mindre enn ett sekund';
-                break;
-            case antall < 3:
-                logg += 'mindre enn tre sekunder';
-                break;
-            case antall < 5:
-                logg += 'mindre enn fem sekunder';
-                break;
-            case antall > 5:
-                logg += '500 og 1000';
-                break;
-            case antall >= 1000:
-                logg += 'over 1000';
-                break;
-
-            default:
-                logg += 'kunne ikke beregne snittid';
-        }
-        //amplitude.logEvent(logg + ' i ' + environment.MILJO);
-    }
-};
-
-export const loggTidForAlleArbeidsforhold = (tid: number) => {
-    let logg = '#arbeidsforhold tid å hente alle arbeidsforhold ';
-    if (tid > 0) {
-        switch (true) {
-            case tid < 1:
-                logg += 'mindre enn 1 sekund';
-                break;
-            case tid < 5:
-                logg += 'mindre enn 5 sekund';
-                break;
-            case tid < 10:
-                logg += 'mindre enn 10 sekunder';
-                break;
-            case tid < 15:
-                logg += 'mindre enn 15 sekunder';
-                break;
-            case tid > 20:
-                logg += 'mellom 20 og 60 sekunder';
-                break;
-            case tid >= 60:
-                logg += 'over 60';
-                break;
-
-            default:
-                logg += 'kunne ikke beregne tid';
-        }
-        //amplitude.logEvent(logg + ' i ' + environment.MILJO);
-    }
-};
-
 export const loggBrukerTrykketPaVarsel = () => {
-    //amplitude.logEvent('#arbeidsforhold trykket pa ansatt med varsel' + environment.MILJO);
+    amplitude.logEvent('#arbeidsforhold trykket pa ansatt med varsel' + environment.MILJO);
 };
 
 export const loggBrukerTrykketPaExcel = () => {

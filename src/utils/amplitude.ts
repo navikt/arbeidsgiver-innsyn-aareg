@@ -1,4 +1,5 @@
 import amplitude from 'amplitude-js';
+import { gittMiljø } from './environment';
 
 const getApiKey = () => {
     return window.location.hostname === 'arbeidsgiver.nav.no'
@@ -6,13 +7,31 @@ const getApiKey = () => {
         : '55477baea93c5227d8c0f6b813653615';
 };
 
-const instance = amplitude.getInstance();
-instance.init(getApiKey(), '', {
-    apiEndpoint: 'amplitude.nav.no/collect',
-    saveEvents: false,
-    includeUtm: true,
-    batchEvents: false,
-    includeReferrer: true,
-});
+const createAmpltiudeInstance = () => {
+    const instance = amplitude.getInstance();
 
-export default instance;
+    instance.init(getApiKey(), '', {
+        apiEndpoint: 'amplitude.nav.no/collect',
+        saveEvents: false,
+        includeUtm: true,
+        batchEvents: false,
+        includeReferrer: true
+    });
+
+    return instance;
+}
+
+
+export default gittMiljø({
+    prod: () => createAmpltiudeInstance(),
+    dev: () => createAmpltiudeInstance(),
+    other: () => ({
+        logEvent: (event: string, data?: any) => {
+            console.log(`${event}: ${JSON.stringify(data)}`, {event, data})
+        },
+        setUserProperties:(userProps:object) => {
+            console.log(`set userprops: ${JSON.stringify(userProps)}`)
+        }
+    } as amplitude.AmplitudeClient )
+})();
+
