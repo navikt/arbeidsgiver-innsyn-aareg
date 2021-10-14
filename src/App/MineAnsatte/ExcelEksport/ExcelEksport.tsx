@@ -6,7 +6,7 @@ import Modal from 'nav-frontend-modal';
 import ReactExport from 'react-data-export';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { filtrerAktiveOgAvsluttede } from '../sorteringOgFiltreringsFunksjoner';
-import { loggBrukerTrykketPaExcel } from '../../amplitudefunksjonerForLogging';
+import { loggBrukerTrykketPaExcel } from '../../../utils/amplitudefunksjonerForLogging';
 import varselikon from './varselikon.svg';
 import { convertToDataset, infosideData, datasett } from './excelexport-utils';
 import './ExcelEksport.less';

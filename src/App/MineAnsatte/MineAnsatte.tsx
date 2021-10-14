@@ -8,9 +8,9 @@ import {
     loggSidevisningAvArbeidsforhold,
     loggTrykketPåNåværendeArbeidsforhold,
     loggTrykketPåTidligereArbeidsforhold
-} from '../amplitudefunksjonerForLogging';
-import { BedriftsmenyContext } from '../BedriftsmenyProvider';
-import { FiltrerteOgSorterteArbeidsforholdContext } from '../FiltrerteOgSorterteArbeidsforholdProvider';
+} from '../../utils/amplitudefunksjonerForLogging';
+import { BedriftsmenyContext } from '../Context/BedriftsmenyProvider';
+import { FiltrerteOgSorterteArbeidsforholdContext } from '../Context/FiltrerteOgSorterteArbeidsforholdProvider';
 import { useSearchParameters } from '../../utils/UrlManipulation';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';

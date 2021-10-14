@@ -3,13 +3,13 @@ import { useHistory } from 'react-router-dom';
 import Bedriftsmeny from '@navikt/bedriftsmeny';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import { AltinnOrganisasjon, AltinnorganisasjonerContext } from './AltinnorganisasjonerProvider';
-import { Organisasjon } from './Objekter/OrganisasjonFraAltinn';
-import { hentTidligereVirksomheter } from '../api/aaregApi';
-import { loggInfoOmFeilTidligereOrganisasjoner } from './amplitudefunksjonerForLogging';
-import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
-import Lasteboks from './Lasteboks';
-import { useSearchParameters } from '../utils/UrlManipulation';
-import emptyList from './Objekter/EmptyList';
+import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import { hentTidligereVirksomheter } from '../../api/aaregApi';
+import { loggInfoOmFeilTidligereOrganisasjoner } from '../../utils/amplitudefunksjonerForLogging';
+import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
+import Lasteboks from '../GeneriskeKomponenter/Lasteboks';
+import { useSearchParameters } from '../../utils/UrlManipulation';
+import emptyList from '../Objekter/EmptyList';
 
 interface Enhet {
     hovedenhet: AltinnOrganisasjon | null;

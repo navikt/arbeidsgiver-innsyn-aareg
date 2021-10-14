@@ -1,10 +1,10 @@
 import React, { createContext, FunctionComponent, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
-import { Organisasjon } from './Objekter/OrganisasjonFraAltinn';
-import { hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg } from '../api/aaregApi';
-import { loggInfoOmFeil } from './amplitudefunksjonerForLogging';
-import { Arbeidsforhold } from './Objekter/ArbeidsForhold';
-import { redirectTilLogin } from './LoggInn/LoggInn';
+import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import { hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg } from '../../api/aaregApi';
+import { loggInfoOmFeil } from '../../utils/amplitudefunksjonerForLogging';
+import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
+import { redirectTilLogin } from '../LoggInn/LoggInn';
 import { BedriftsmenyContext } from './BedriftsmenyProvider';
 
 export type Context = {

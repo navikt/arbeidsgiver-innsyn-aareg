@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
-import { loggBrukerTrykketPaVarsel } from '../../../amplitudefunksjonerForLogging';
+import { loggBrukerTrykketPaVarsel } from '../../../../utils/amplitudefunksjonerForLogging';
 import './PopOverStyling.less';
 
 interface Props {

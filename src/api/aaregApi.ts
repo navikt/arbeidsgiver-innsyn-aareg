@@ -8,7 +8,7 @@ import { FetchError } from './api-utils';
 import { overSiktPerUnderenhetPar } from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
 import {
     loggAntallAnsatte
-} from '../App/amplitudefunksjonerForLogging';
+} from '../utils/amplitudefunksjonerForLogging';
 import { Organisasjon } from '../App/Objekter/OrganisasjonFraAltinn';
 import { mapOrganisasjonerFraLowerCaseTilupper } from './altinnApi';
 

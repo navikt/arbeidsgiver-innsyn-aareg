@@ -1,7 +1,7 @@
-import amplitude from '../utils/amplitude';
-import { environment } from '../utils/environment';
-import {Tilgang} from "./LoggInnBoundary";
-import {basename} from "./paths";
+import amplitude from './amplitude';
+import { environment } from './environment';
+import {Tilgang} from "../App/LoggInnBoundary";
+import {basename} from "../App/paths";
 
 interface EventProps {
     url: string;

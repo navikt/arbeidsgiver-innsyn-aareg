@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import AttributtVisning from './AttributtVisning/AttributtVisning';
-import { loggBrukerTrykketPaVarsel } from '../../../amplitudefunksjonerForLogging';
+import { loggBrukerTrykketPaVarsel } from '../../../../utils/amplitudefunksjonerForLogging';
 import './Ansatt.less';
 import { datoformat } from '../../utils';
 

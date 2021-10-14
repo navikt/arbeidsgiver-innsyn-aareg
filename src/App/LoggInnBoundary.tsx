@@ -3,7 +3,7 @@ import amplitude from '../utils/amplitude';
 import { sjekkInnlogget } from '../api/altinnApi';
 import LoggInn from './LoggInn/LoggInn';
 import EnkelBanner from './EnkelBanner/EnkelBanner';
-import Lasteboks from './Lasteboks';
+import Lasteboks from './GeneriskeKomponenter/Lasteboks';
 import { gittMiljø } from '../utils/environment';
 
 export enum Tilgang {

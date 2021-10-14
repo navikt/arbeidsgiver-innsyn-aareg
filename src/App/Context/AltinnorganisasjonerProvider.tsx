@@ -1,10 +1,10 @@
 import React, { createContext, FunctionComponent, useEffect, useState } from 'react';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { Organisasjon } from './Objekter/OrganisasjonFraAltinn';
-import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
-import { loggForbiddenFraAltinn, loggInfoOmFeilFraAltinn } from './amplitudefunksjonerForLogging';
-import Lasteboks from './Lasteboks';
-import EnkelBanner from './EnkelBanner/EnkelBanner';
+import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../../api/altinnApi';
+import { loggForbiddenFraAltinn, loggInfoOmFeilFraAltinn } from '../../utils/amplitudefunksjonerForLogging';
+import Lasteboks from '../GeneriskeKomponenter/Lasteboks';
+import EnkelBanner from '../EnkelBanner/EnkelBanner';
 
 export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
