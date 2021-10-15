@@ -81,7 +81,6 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({ antallSider }) => {
                                 <Lenke
                                     href={skatteetatenUrl}
                                     target="_blank"
-                                    onClick={() => loggBrukerTrykketPaVeiledning()}
                                 >
                                     <span>Skatteetatens veiledning til a-meldingen</span>
                                     <NyFaneIkon />

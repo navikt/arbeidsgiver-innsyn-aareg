@@ -66,11 +66,3 @@ export const loggArbeidsforholdLastet = (arbeidsforhold:Arbeidsforhold[]) => {
     amplitude.logEvent('arbeidsforhold lastet', arbeidsforholdInfo);
 };
 
-export const loggBrukerTrykketPaVeiledning = () => {
-    //amplitude.logEvent('#arbeidsforhold bruker trykket på Skatteetatens veiledning');
-};
-
-export const loggBedriftValgt = () => {
-    amplitude.logEvent('virksomhet-valgt');
-};
-
