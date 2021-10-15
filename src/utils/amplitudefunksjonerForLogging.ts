@@ -1,7 +1,6 @@
 import amplitude from './amplitude';
-import { environment } from './environment';
-import {Tilgang} from "../App/LoggInnBoundary";
 import {basename} from "../App/paths";
+import { Arbeidsforhold } from '../App/Objekter/ArbeidsForhold';
 
 interface EventProps {
     url: string;
@@ -9,14 +8,16 @@ interface EventProps {
     destinasjon?: string;
     lenketekst?: string;
     tittel?: string;
+    arbeidsforholdMedVarsel?: boolean;
+    antallArbeidsforhold?:number;
+    antallArbeidsforholdMedVarsler?:number;
 }
 
 const baseUrl = `https://arbeidsgiver.nav.no${basename}`;
 
-export const loggSidevisning = (pathname: string, innlogget: Tilgang) => {
+export const loggSidevisning = (pathname: string) => {
     const sidevisningsInfo: EventProps = {
         url: `${baseUrl}${pathname}`,
-        innlogget: innlogget === Tilgang.TILGANG,
     };
     amplitude.logEvent('sidevisning', sidevisningsInfo);
 };
@@ -43,59 +44,33 @@ export const loggNavigasjon = (
 export const loggBrukerklikk = (
     tittel: string,
     currentPagePath?: string,
+    arbeidsforholdMedVarsel?: boolean
 ) => {
     const brukerKlikkInfo: EventProps = {
         tittel,
         url: `${baseUrl}${currentPagePath ?? ''}`,
+        arbeidsforholdMedVarsel: arbeidsforholdMedVarsel === arbeidsforholdMedVarsel
     };
     amplitude.logEvent('klikk på knapp', brukerKlikkInfo);
 };
 
-export const loggAntallAnsatte = (antall: number) => {
-    let logg = '#arbeidsforhold antall arbeidsforhold: ';
-    switch (true) {
-        case antall === 0:
-            logg += 'ingen arbeidsforhold';
-            break;
-        case antall < 30:
-            logg += 'under 30';
-            break;
-        case antall < 100:
-            logg += 'mellom 30 og 100';
-            break;
-        case antall < 500:
-            logg += 'mellom 100 og 500';
-            break;
-        case antall < 1000:
-            logg += '500 og 1000';
-            break;
-        case antall >= 1000:
-            logg += 'over 1000';
-            break;
-        default:
-            logg += 'kunne ikke finne antall';
-    }
-    //amplitude.logEvent(logg + ' i ' + environment.MILJO);
-};
+export const loggArbeidsforholdLastet = (arbeidsforhold:Arbeidsforhold[]) => {
+    if(arbeidsforhold.length === 0){return}
 
-export const loggBrukerTrykketPaVarsel = () => {
-    amplitude.logEvent('#arbeidsforhold trykket pa ansatt med varsel' + environment.MILJO);
-};
+    const arbeidsforholdInfo: EventProps = {
+        url: baseUrl,
+        antallArbeidsforhold: arbeidsforhold.length,
+        antallArbeidsforholdMedVarsler: arbeidsforhold.filter(arbeidsforhold => arbeidsforhold.varsler).length
+    };
 
-export const loggBrukerTrykketPaExcel = () => {
-    //amplitude.logEvent('#arbeidsforhold bruker trykket på exceleksport');
+    amplitude.logEvent('arbeidsforhold lastet', arbeidsforholdInfo);
 };
 
 export const loggBrukerTrykketPaVeiledning = () => {
     //amplitude.logEvent('#arbeidsforhold bruker trykket på Skatteetatens veiledning');
 };
 
-export const loggSidevisningAvArbeidsforhold = (antallArbeidsforhold: number, tidligereVirksomhet: boolean) => {
-    const url = `http://arbeidsgiver.nav.no/arbeidsforhold/${tidligereVirksomhet ? 'tidligere-virsomhet' : ''}`
-    // amplitude.logEvent('sidevisning', {
-    //     url,
-    //     tjeneste: 'arbeidsgiver-arbeidsforhold',
-    //     antallArbeidsforhold
-    // });
+export const loggBedriftValgt = () => {
+    amplitude.logEvent('virksomhet-valgt');
 };
 

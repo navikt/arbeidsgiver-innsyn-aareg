@@ -30,7 +30,6 @@ const EnkeltArbeidsforhold: FunctionComponent = () => {
     const { underenhet } = useContext(BedriftsmenyContext);
     const aareg = useContext(FiltrerteOgSorterteArbeidsforholdContext);
     const { setSearchParameter, getSearchParameter } = useSearchParameters();
-
     const redirectTilbake = () => {
         const params = new URLSearchParams(history.location.search);
         params.delete('arbeidsforhold');

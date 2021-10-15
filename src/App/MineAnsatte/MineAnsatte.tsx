@@ -1,10 +1,7 @@
-import React, { FunctionComponent, useContext, useEffect } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import Chevron from 'nav-frontend-chevron';
-import {
-    loggSidevisningAvArbeidsforhold
-} from '../../utils/amplitudefunksjonerForLogging';
 import { BedriftsmenyContext } from '../Context/BedriftsmenyProvider';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../Context/FiltrerteOgSorterteArbeidsforholdProvider';
 import { useSearchParameters } from '../../utils/UrlManipulation';
@@ -33,7 +30,6 @@ export enum SorteringsAttributt {
 
 export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
     const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
-
     const tilgangTidligereArbeidsforhold =
         hovedenhet?.tilgang === true && tidligereUnderenheter !== 'laster' && tidligereUnderenheter.length > 0;
     const overskriftMedOrganisasjonsdel = 'Opplysninger for ' + underenhet.Name;
@@ -64,7 +60,6 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
 
 export const MineTidligereArbeidsforhold: FunctionComponent = () => {
     const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
-
     return (
         <div className='bakgrunnsside'>
             <div className='innhold-container'>
@@ -105,12 +100,6 @@ const MineArbeidsforhold: FunctionComponent = () => {
         ARBEIDSFORHOLDPERSIDE,
         filtrertOgSortertListe ?? []
     );
-
-    useEffect(() => {
-        if (aaregContext?.lastestatus?.status === 'ferdig') {
-            loggSidevisningAvArbeidsforhold(aaregContext.lastestatus.arbeidsforhold.length, aaregContext.tidligereVirksomhet);
-        }
-    }, [aaregContext]);
 
     if (aaregContext === null) {
         return null;

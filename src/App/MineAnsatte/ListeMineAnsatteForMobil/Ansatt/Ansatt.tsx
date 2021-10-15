@@ -34,7 +34,7 @@ const Ansatt: FunctionComponent<Props> = ({ arbeidsforhold }) => {
                 <li className='attributt'>
                     <div className='attributt__navn'>Navn</div>
                     <div className='attributt__verdi'>
-                        <Link //TODO bytt til lenke med logging
+                        <Link
                             to={`enkeltarbeidsforhold/${spørringdelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
                             onClick={() => oppdaterValgtArbeidsforhold(arbeidsforhold)}
                             className='lenke'

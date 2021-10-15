@@ -7,7 +7,7 @@ import { ObjektFraAAregisteret } from '../App/Objekter/ObjektFraAAreg';
 import { FetchError } from './api-utils';
 import { overSiktPerUnderenhetPar } from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
 import {
-    loggAntallAnsatte
+    loggArbeidsforholdLastet
 } from '../utils/amplitudefunksjonerForLogging';
 import { Organisasjon } from '../App/Objekter/OrganisasjonFraAltinn';
 import { mapOrganisasjonerFraLowerCaseTilupper } from './altinnApi';
@@ -24,7 +24,7 @@ export async function hentArbeidsforholdFraAAreg(
     let response: Response = await fetch(linkTilEndepunkt, { headers: headere, signal: signal });
     if (response.ok) {
         const jsonRespons: ObjektFraAAregisteret = await response.json();
-        loggAntallAnsatte(jsonRespons.arbeidsforholdoversikter.length);
+        loggArbeidsforholdLastet(jsonRespons.arbeidsforholdoversikter);
         return jsonRespons;
     } else {
         throw new FetchError(response.statusText || response.type, response);

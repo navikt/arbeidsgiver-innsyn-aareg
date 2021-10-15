@@ -26,9 +26,7 @@ const NavnPopover: FunctionComponent<Props> = ({ arbeidsforhold }) => {
             ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold'
             : '/enkeltArbeidsforhold';
         history.replace({ pathname: redirectPath, search: search });
-        if (arbeidsforhold.varsler?.length) {
-            loggBrukerklikk('klikk på arbeidsforhold med varsel');
-        }
+        arbeidsforhold.varsler?.length ? loggBrukerklikk('arbeidsforhol', ) : loggBrukerklikk('arbeidsforhol');
     };
 
     useEffect(() => {
@@ -43,7 +41,7 @@ const NavnPopover: FunctionComponent<Props> = ({ arbeidsforhold }) => {
 
     return (
         <div className='pop-over-container'>
-            <Link //TODO bytt til lenke med logging
+            <Link
                 aria-label={`Gå til detaljvisning over arbeidsforhold til ${arbeidsforhold.arbeidstaker.navn}`}
                 to={`enkeltarbeidsforhold/${spørringdelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
                 onClick={() => oppdaterValgtArbeidsforhold(arbeidsforhold)}
