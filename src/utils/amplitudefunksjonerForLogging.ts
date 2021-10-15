@@ -6,23 +6,20 @@ import {basename} from "../App/paths";
 interface EventProps {
     url: string;
     innlogget?: boolean;
-    tilgangskombinasjon?: string;
-    kategori?: string;
     destinasjon?: string;
     lenketekst?: string;
+    tittel?: string;
 }
-
 
 const baseUrl = `https://arbeidsgiver.nav.no${basename}`;
 
-
 export const loggSidevisning = (pathname: string, innlogget: Tilgang) => {
-    amplitude.logEvent('sidevisning', {
+    const sidevisningsInfo: EventProps = {
         url: `${baseUrl}${pathname}`,
-        innlogget: innlogget === Tilgang.TILGANG
-    });
+        innlogget: innlogget === Tilgang.TILGANG,
+    };
+    amplitude.logEvent('sidevisning', sidevisningsInfo);
 };
-
 
 export const loggNavigasjon = (
     destinasjon: string | undefined,
@@ -41,6 +38,17 @@ export const loggNavigasjon = (
         url: `${baseUrl}${currentPagePath ?? ''}`,
     };
     amplitude.logEvent('navigere', navigasjonsInfo);
+};
+
+export const loggBrukerklikk = (
+    tittel: string,
+    currentPagePath?: string,
+) => {
+    const brukerKlikkInfo: EventProps = {
+        tittel,
+        url: `${baseUrl}${currentPagePath ?? ''}`,
+    };
+    amplitude.logEvent('klikk på knapp', brukerKlikkInfo);
 };
 
 export const loggAntallAnsatte = (antall: number) => {
@@ -82,24 +90,6 @@ export const loggBrukerTrykketPaVeiledning = () => {
     //amplitude.logEvent('#arbeidsforhold bruker trykket på Skatteetatens veiledning');
 };
 
-export const loggForbiddenFraAltinn = () => {
-    //amplitude.logEvent('#arbeidsforhold 403 fra altinn');
-};
-
-export const loggTrykketPåTidligereArbeidsforhold = () => {
-    //amplitude.logEvent('naviger', {
-    //    url: 'http://arbeidsgiver.nav.no/arbeidsforhold/tidligere-arbeidsforhold',
-    //    tjeneste: 'arbeidsgiver-arbeidsforhold'
-    //});
-};
-
-export const loggTrykketPåNåværendeArbeidsforhold = () => {
-    // amplitude.logEvent('naviger', {
-    //     url: 'http://arbeidsgiver.nav.no/arbeidsforhold/tidligere-arbeidsforhold',
-    //     tjeneste: 'arbeidsgiver-arbeidsforhold'
-    // });
-};
-
 export const loggSidevisningAvArbeidsforhold = (antallArbeidsforhold: number, tidligereVirksomhet: boolean) => {
     const url = `http://arbeidsgiver.nav.no/arbeidsforhold/${tidligereVirksomhet ? 'tidligere-virsomhet' : ''}`
     // amplitude.logEvent('sidevisning', {
@@ -107,17 +97,5 @@ export const loggSidevisningAvArbeidsforhold = (antallArbeidsforhold: number, ti
     //     tjeneste: 'arbeidsgiver-arbeidsforhold',
     //     antallArbeidsforhold
     // });
-};
-
-export const loggInfoOmFeil = (typeFeil: string, erTidligereArbeidsfohold: boolean) => {
-    // amplitude.logEvent('#arbeidsforhold FEILER ', { typeFeil, erTidligereArbeidsforhold: erTidligereArbeidsfohold });
-};
-
-export const loggInfoOmFeilTidligereOrganisasjoner = (typeFeil: string) => {
-    // amplitude.logEvent('#arbeidsforhold TIDLIGERE ORGANISASJONER FEILER ', { typeFeil });
-};
-
-export const loggInfoOmFeilFraAltinn = (typeFeil: string) => {
-    // amplitude.logEvent('#arbeidsforhold FEILER MOT ALTINN', { typeFeil });
 };
 

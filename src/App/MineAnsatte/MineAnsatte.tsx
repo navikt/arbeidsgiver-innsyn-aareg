@@ -1,11 +1,9 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import Chevron from 'nav-frontend-chevron';
 import {
-    loggSidevisningAvArbeidsforhold,
-    loggTrykketPåNåværendeArbeidsforhold
+    loggSidevisningAvArbeidsforhold
 } from '../../utils/amplitudefunksjonerForLogging';
 import { BedriftsmenyContext } from '../Context/BedriftsmenyProvider';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../Context/FiltrerteOgSorterteArbeidsforholdProvider';
@@ -71,7 +69,6 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
         <div className='bakgrunnsside'>
             <div className='innhold-container'>
                 <Brodsmulesti valgtOrg={underenhet.OrganizationNumber} />
-
                 <div className='brodsmule venstre'>
                     <LenkeMedLogging loggLenketekst={`nåværende-arbeidsforhold`}
                                      href={`/?bedrift=${underenhet.OrganizationNumber}`}
@@ -79,9 +76,7 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
                         <Chevron type='venstre' />
                         Tilbake til arbeidsforhold
                     </LenkeMedLogging>
-
                 </div>
-
                 <div className='mine-ansatte'>
                     <Systemtittel className='mine-ansatte__systemtittel'>
                         {`Opplysninger for ${hovedenhet?.Name} org.nr ${hovedenhet?.OrganizationNumber}`}
@@ -96,17 +91,13 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
 
 const MineArbeidsforhold: FunctionComponent = () => {
     const { underenhet } = useContext(BedriftsmenyContext);
-    const aareg = useContext(FiltrerteOgSorterteArbeidsforholdContext);
+    const aaregContext = useContext(FiltrerteOgSorterteArbeidsforholdContext);
     const { getSearchParameter, setSearchParameter } = useSearchParameters();
-
     const sidetall = getSearchParameter('side') || '1';
-
     const setSideTallIUrlOgGenererListe = (indeks: number) => {
         setSearchParameter({ side: indeks.toString() });
     };
-
-    const filtrertOgSortertListe = aareg?.lastestatus?.status === 'ferdig' ? aareg.lastestatus.arbeidsforhold : null;
-
+    const filtrertOgSortertListe = aaregContext?.lastestatus?.status === 'ferdig' ? aaregContext.lastestatus.arbeidsforhold : null;
     const ARBEIDSFORHOLDPERSIDE = 25;
     const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, filtrertOgSortertListe?.length ?? 0);
     const listeForNåværendeSidetall = regnUtArbeidsForholdSomSkalVisesPaEnSide(
@@ -116,20 +107,19 @@ const MineArbeidsforhold: FunctionComponent = () => {
     );
 
     useEffect(() => {
-        if (aareg?.lastestatus?.status === 'ferdig') {
-            loggSidevisningAvArbeidsforhold(aareg.lastestatus.arbeidsforhold.length, aareg.tidligereVirksomhet);
+        if (aaregContext?.lastestatus?.status === 'ferdig') {
+            loggSidevisningAvArbeidsforhold(aaregContext.lastestatus.arbeidsforhold.length, aaregContext.tidligereVirksomhet);
         }
-    }, [aareg]);
+    }, [aaregContext]);
 
-    if (aareg === null) {
+    if (aaregContext === null) {
         return null;
-    } else if (aareg.lastestatus.status === 'laster') {
-        return <Progressbar estimertAntall={aareg.lastestatus.estimertAntall} />;
-    } else if (aareg.lastestatus.status === 'ferdig') {
+    } else if (aaregContext.lastestatus.status === 'laster') {
+        return <Progressbar estimertAntall={aaregContext.lastestatus.estimertAntall} />;
+    } else if (aaregContext.lastestatus.status === 'ferdig') {
         return (
             <>
                 <MineAnsatteTopp valgtOrganisasjon={underenhet} antallSider={antallSider} />
-
                 {listeForNåværendeSidetall.length > 0 && (
                     <>
                         <TabellMineAnsatte
@@ -147,12 +137,12 @@ const MineArbeidsforhold: FunctionComponent = () => {
                 )}
             </>
         );
-    } else if (aareg.lastestatus.status === 'ikke-tilgang') {
+    } else if (aaregContext.lastestatus.status === 'ikke-tilgang') {
         return <IngenTilgangInfo />;
     } else {
         return (
             <div className='mine-ansatte__feilmelding-aareg'>
-                <AlertStripeFeil>{aareg.lastestatus.beskjed}</AlertStripeFeil>
+                <AlertStripeFeil>{aaregContext.lastestatus.beskjed}</AlertStripeFeil>
             </div>
         );
     }

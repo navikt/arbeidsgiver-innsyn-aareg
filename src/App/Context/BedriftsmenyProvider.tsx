@@ -5,7 +5,6 @@ import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import { AltinnOrganisasjon, AltinnorganisasjonerContext } from './AltinnorganisasjonerProvider';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { hentTidligereVirksomheter } from '../../api/aaregApi';
-import { loggInfoOmFeilTidligereOrganisasjoner } from '../../utils/amplitudefunksjonerForLogging';
 import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
 import Lasteboks from '../GeneriskeKomponenter/Lasteboks';
 import { useSearchParameters } from '../../utils/UrlManipulation';
@@ -86,7 +85,6 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
                 })
                 .catch((err) => {
                     settTidligereUnderenheter(emptyList);
-                    loggInfoOmFeilTidligereOrganisasjoner(err);
                 });
             return () => abortController.abort();
         }

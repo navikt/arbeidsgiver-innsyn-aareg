@@ -2,7 +2,6 @@ import React, { createContext, FunctionComponent, useEffect, useState } from 're
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../../api/altinnApi';
-import { loggForbiddenFraAltinn, loggInfoOmFeilFraAltinn } from '../../utils/amplitudefunksjonerForLogging';
 import Lasteboks from '../GeneriskeKomponenter/Lasteboks';
 import EnkelBanner from '../EnkelBanner/EnkelBanner';
 
@@ -34,9 +33,7 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
         hentOrganisasjonerFraAltinn(abortController.signal)
             .then(settOrganisasjoner)
             .catch((e: Error) => {
-                loggInfoOmFeilFraAltinn(e.message);
                 if (e.message === 'Forbidden') {
-                    loggForbiddenFraAltinn();
                     settOrganisasjoner([]);
                 } else {
                     settFeil(true);
@@ -59,7 +56,6 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
                 );
             })
             .catch((e: Error) => {
-                loggInfoOmFeilFraAltinn(e.message);
                 if (e.message === 'Forbidden') {
                     settOrganisasjonerMedTilgang(new Set());
                 } else {

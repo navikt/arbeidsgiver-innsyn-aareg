@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
-import { loggBrukerTrykketPaVarsel } from '../../../../utils/amplitudefunksjonerForLogging';
+import { loggBrukerklikk } from '../../../../utils/amplitudefunksjonerForLogging';
 import './PopOverStyling.less';
 
 interface Props {
@@ -27,7 +27,7 @@ const NavnPopover: FunctionComponent<Props> = ({ arbeidsforhold }) => {
             : '/enkeltArbeidsforhold';
         history.replace({ pathname: redirectPath, search: search });
         if (arbeidsforhold.varsler?.length) {
-            loggBrukerTrykketPaVarsel();
+            loggBrukerklikk('klikk på arbeidsforhold med varsel');
         }
     };
 
@@ -42,15 +42,15 @@ const NavnPopover: FunctionComponent<Props> = ({ arbeidsforhold }) => {
     const spørringdelAvUrl = naVærendeUrl.search;
 
     return (
-        <div className="pop-over-container">
-            <Link
+        <div className='pop-over-container'>
+            <Link //TODO bytt til lenke med logging
                 aria-label={`Gå til detaljvisning over arbeidsforhold til ${arbeidsforhold.arbeidstaker.navn}`}
                 to={`enkeltarbeidsforhold/${spørringdelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
                 onClick={() => oppdaterValgtArbeidsforhold(arbeidsforhold)}
-                className="lenke"
+                className='lenke'
             >
                 <Normaltekst
-                    className="pop-over__navn"
+                    className='pop-over__navn'
                     onMouseEnter={(e: any) => {
                         setAnker(e.currentTarget);
                     }}
