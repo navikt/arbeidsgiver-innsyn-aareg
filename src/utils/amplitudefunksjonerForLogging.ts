@@ -4,7 +4,6 @@ import { Arbeidsforhold } from '../App/Objekter/ArbeidsForhold';
 
 interface EventProps {
     url: string;
-    innlogget?: boolean;
     destinasjon?: string;
     lenketekst?: string;
     tittel?: string;
@@ -65,4 +64,5 @@ export const loggArbeidsforholdLastet = (arbeidsforhold:Arbeidsforhold[]) => {
 
     amplitude.logEvent('arbeidsforhold lastet', arbeidsforholdInfo);
 };
+
 
