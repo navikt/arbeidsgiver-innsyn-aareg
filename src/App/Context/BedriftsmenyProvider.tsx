@@ -47,8 +47,8 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
             ? enhet.hovedenhet.OrganizationNumber
             : null;
 
-    const lasteboksEllerIngenTilgang = (oppstart: boolean) => {
-        if (oppstart) {
+    const lasteboksEllerIngenTilgang = (visLasteBoks: boolean) => {
+        if (visLasteBoks) {
             return <Lasteboks />;
         }
         return <IngenTilgangInfo />;
