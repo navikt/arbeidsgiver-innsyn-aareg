@@ -37,7 +37,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
         [altinnorganisasjoner]
     );
 
-    const orgnr = getSearchParameter('bedrift');
+    const orgnrFraUrl = getSearchParameter('bedrift');
 
     const tidligereArbeidsforhold = history.location.pathname.startsWith('/tidligere-arbeidsforhold');
     const sidetittel = tidligereArbeidsforhold ? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
@@ -59,10 +59,10 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        if (orgnr === null) {
+        if (orgnrFraUrl === null) {
             settEnhet(null);
         } else {
-            const underenhet = finnOrg(orgnr);
+            const underenhet = finnOrg(orgnrFraUrl);
             const hovedenhet = underenhet === null ? null : finnOrg(underenhet.ParentOrganizationNumber);
             if (underenhet === null) {
                 console.error('Bedriftsmeny byttet til ukjent organisasjon');
@@ -71,7 +71,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
                 settEnhet({ underenhet, hovedenhet });
             }
         }
-    }, [orgnr, finnOrg]);
+    }, [orgnrFraUrl, finnOrg]);
 
     useEffect(() => {
         if (tidligereUnderenheterFor === null) {
@@ -114,14 +114,9 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
                 }}
                 history={history}
             />
-            {altinnorganisasjoner.length === 0 ? (
-                <IngenTilgangInfo />
-            ) : context === null ? (
-                oppstart ? (
-                    <Lasteboks />
-                ) : (
+            {altinnorganisasjoner.length === 0 || context === null ? (
+                oppstart ? <Lasteboks /> :
                     <IngenTilgangInfo />
-                )
             ) : (
                 <BedriftsmenyContext.Provider value={context}>{children}</BedriftsmenyContext.Provider>
             )}

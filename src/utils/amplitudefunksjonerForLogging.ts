@@ -1,5 +1,5 @@
 import amplitude from './amplitude';
-import {basename} from "../App/paths";
+import { basename } from '../App/paths';
 import { Arbeidsforhold } from '../App/Objekter/ArbeidsForhold';
 
 interface EventProps {
@@ -8,15 +8,15 @@ interface EventProps {
     lenketekst?: string;
     tittel?: string;
     arbeidsforholdMedVarsel?: boolean;
-    antallArbeidsforhold?:number;
-    antallArbeidsforholdMedVarsler?:number;
+    antallArbeidsforhold?: number;
+    antallArbeidsforholdMedVarsler?: number;
 }
 
 const baseUrl = `https://arbeidsgiver.nav.no${basename}`;
 
 export const loggSidevisning = (pathname: string) => {
     const sidevisningsInfo: EventProps = {
-        url: `${baseUrl}${pathname}`,
+        url: `${baseUrl}${pathname}`
     };
     amplitude.logEvent('sidevisning', sidevisningsInfo);
 };
@@ -24,7 +24,7 @@ export const loggSidevisning = (pathname: string) => {
 export const loggNavigasjon = (
     destinasjon: string | undefined,
     lenketekst: string,
-    currentPagePath?: string,
+    currentPagePath?: string
 ) => {
 
     if (destinasjon !== undefined && destinasjon !== '') {
@@ -35,7 +35,7 @@ export const loggNavigasjon = (
     const navigasjonsInfo: EventProps = {
         destinasjon: destinasjon,
         lenketekst,
-        url: `${baseUrl}${currentPagePath ?? ''}`,
+        url: `${baseUrl}${currentPagePath ?? ''}`
     };
     amplitude.logEvent('navigere', navigasjonsInfo);
 };
@@ -53,13 +53,15 @@ export const loggBrukerklikk = (
     amplitude.logEvent('klikk på knapp', brukerKlikkInfo);
 };
 
-export const loggArbeidsforholdLastet = (arbeidsforhold:Arbeidsforhold[]) => {
-    if(arbeidsforhold.length === 0){return}
+export const loggArbeidsforholdLastet = (arbeidsforholdListe: Arbeidsforhold[]) => {
+    if (arbeidsforholdListe.length === 0) {
+        return;
+    }
 
     const arbeidsforholdInfo: EventProps = {
         url: baseUrl,
-        antallArbeidsforhold: arbeidsforhold.length,
-        antallArbeidsforholdMedVarsler: arbeidsforhold.filter(arbeidsforhold => arbeidsforhold.varsler).length
+        antallArbeidsforhold: arbeidsforholdListe.length,
+        antallArbeidsforholdMedVarsler: arbeidsforholdListe.filter(arbeidsforhold => arbeidsforhold.varsler).length
     };
 
     amplitude.logEvent('arbeidsforhold lastet', arbeidsforholdInfo);
