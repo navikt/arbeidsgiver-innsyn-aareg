@@ -4,7 +4,6 @@ import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
 import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
-import { loggBrukerTrykketPaVeiledning } from '../../../utils/amplitudefunksjonerForLogging';
 import ExcelEksport from '../ExcelEksport/ExcelEksport';
 import Sokefelt from '../Sokefelt/Sokefelt';
 import Filtervalg from '../Filtervalg/Filtervalg';
