@@ -1,10 +1,9 @@
 import React, { createContext, FunctionComponent, useEffect, useState } from 'react';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { Organisasjon } from './Objekter/OrganisasjonFraAltinn';
-import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../api/altinnApi';
-import { loggForbiddenFraAltinn, loggInfoOmFeilFraAltinn } from './amplitudefunksjonerForLogging';
-import Lasteboks from './Lasteboks';
-import EnkelBanner from './EnkelBanner/EnkelBanner';
+import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../../api/altinnApi';
+import Lasteboks from '../GeneriskeKomponenter/Lasteboks';
+import EnkelBanner from '../EnkelBanner/EnkelBanner';
 
 export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
@@ -34,9 +33,7 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
         hentOrganisasjonerFraAltinn(abortController.signal)
             .then(settOrganisasjoner)
             .catch((e: Error) => {
-                loggInfoOmFeilFraAltinn(e.message);
                 if (e.message === 'Forbidden') {
-                    loggForbiddenFraAltinn();
                     settOrganisasjoner([]);
                 } else {
                     settFeil(true);
@@ -59,7 +56,6 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
                 );
             })
             .catch((e: Error) => {
-                loggInfoOmFeilFraAltinn(e.message);
                 if (e.message === 'Forbidden') {
                     settOrganisasjonerMedTilgang(new Set());
                 } else {

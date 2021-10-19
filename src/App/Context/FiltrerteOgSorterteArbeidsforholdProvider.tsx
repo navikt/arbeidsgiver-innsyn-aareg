@@ -1,7 +1,7 @@
 import React, { createContext, FunctionComponent, useContext, useEffect, useState } from 'react';
 import { ArbeidsforholdContext, Context } from './ArbeidsforholdProvider';
-import { useSortertOgFiltrertArbeidsforholdliste } from './MineAnsatte/sorteringOgFiltreringsFunksjoner';
-import emptyList from './Objekter/EmptyList';
+import { useSortertOgFiltrertArbeidsforholdliste } from '../MineAnsatte/sorteringOgFiltreringsFunksjoner';
+import emptyList from '../Objekter/EmptyList';
 
 export const FiltrerteOgSorterteArbeidsforholdContext = createContext<Context>(null);
 

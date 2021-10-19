@@ -1,5 +1,5 @@
 import { gittMiljø } from '../utils/environment';
-import { alleFeatures } from './FeatureToggleProvider';
+import { alleFeatures } from './Context/FeatureToggleProvider';
 
 const landingsURL = '/arbeidsforhold/';
 

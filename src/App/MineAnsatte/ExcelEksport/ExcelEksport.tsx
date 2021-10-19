@@ -6,7 +6,7 @@ import Modal from 'nav-frontend-modal';
 import ReactExport from 'react-data-export';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { filtrerAktiveOgAvsluttede } from '../sorteringOgFiltreringsFunksjoner';
-import { loggBrukerTrykketPaExcel } from '../../amplitudefunksjonerForLogging';
+import { loggBrukerklikk } from '../../../utils/amplitudefunksjonerForLogging';
 import varselikon from './varselikon.svg';
 import { convertToDataset, infosideData, datasett } from './excelexport-utils';
 import './ExcelEksport.less';
@@ -37,9 +37,9 @@ const ExcelEksport = (props: ExcelEksportProps) => {
         <div className={props.className}>
             <Hovedknapp
                 aria-label={'Last ned arbeidsforhold som excelfil'}
-                className="excel-eksport-knapp"
+                className='excel-eksport-knapp'
                 onClick={() => {
-                    loggBrukerTrykketPaExcel();
+                    loggBrukerklikk('Last ned arbeidsforhold som excelfil');
                     openModal();
                 }}
             >
@@ -49,29 +49,32 @@ const ExcelEksport = (props: ExcelEksportProps) => {
                 isOpen={modalIsOpen}
                 onRequestClose={() => closeModal()}
                 closeButton={true}
-                contentLabel="Last ned Excelfil modal"
-                className="eksport-modal"
+                contentLabel='Last ned Excelfil modal'
+                className='eksport-modal'
             >
-                <div className="eksport-modal__innhold">
-                    <Undertittel className="eksport-modal__overskrift">
+                <div className='eksport-modal__innhold'>
+                    <Undertittel className='eksport-modal__overskrift'>
                         Last ned arbeidsforhold fra Aa-registret
                     </Undertittel>
-                    <div className="eksport-modal__varsel">
-                        <img src={varselikon} alt="" className="varselikon" />
-                        <Normaltekst className="varseltekst">Personvern</Normaltekst>
+                    <div className='eksport-modal__varsel'>
+                        <img src={varselikon} alt='' className='varselikon' />
+                        <Normaltekst className='varseltekst'>Personvern</Normaltekst>
                     </div>
 
-                    <div className="eksport-modal__personvern-info">
-                        <Normaltekst className="tekst">
+                    <div className='eksport-modal__personvern-info'>
+                        <Normaltekst className='tekst'>
                             Denne filen inneholder personopplysninger. Vær varsom dersom du laster ned eller
                             distribuerer filen videre. Ved nedlasting er du selv ansvarlig for å overholde
                             personvernreglene.
                         </Normaltekst>
                     </div>
 
-                    <div className="eksport-modal__knapper">
+                    <div className='eksport-modal__knapper'>
                         <ExcelFile
-                            element={<Hovedknapp onClick={() => closeModal()}>Jeg forstår - Last ned filen</Hovedknapp>}
+                            element={<Hovedknapp onClick={() => {
+                                loggBrukerklikk('Jeg forstår - Last ned filen');
+                                closeModal();
+                            }}>Jeg forstår - Last ned filen</Hovedknapp>}
                             filename={
                                 'ANSATTFORHOLD_' +
                                 props.navnBedrift +
@@ -81,14 +84,14 @@ const ExcelEksport = (props: ExcelEksportProps) => {
                                 dagensDato.toLocaleDateString()
                             }
                         >
-                            <ExcelSheet dataSet={infosideData} name="Info" />
-                            <ExcelSheet dataSet={datasett(aktiveArbeidsforholdDataset)} name="Aktive arbeidsforhold" />
+                            <ExcelSheet dataSet={infosideData} name='Info' />
+                            <ExcelSheet dataSet={datasett(aktiveArbeidsforholdDataset)} name='Aktive arbeidsforhold' />
                             <ExcelSheet
                                 dataSet={datasett(avsluttedeArbeidsforholdDataset)}
-                                name="Avsluttede arbeidsforhold"
+                                name='Avsluttede arbeidsforhold'
                             />
                         </ExcelFile>
-                        <Flatknapp className="avbryt-knapp" onClick={() => closeModal()}>
+                        <Flatknapp className='avbryt-knapp' onClick={() => closeModal()}>
                             Avbryt
                         </Flatknapp>
                     </div>

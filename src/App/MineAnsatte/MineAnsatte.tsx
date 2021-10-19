@@ -1,15 +1,9 @@
-import React, { FunctionComponent, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { FunctionComponent, useContext } from 'react';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import Chevron from 'nav-frontend-chevron';
-import {
-    loggSidevisningAvArbeidsforhold,
-    loggTrykketPåNåværendeArbeidsforhold,
-    loggTrykketPåTidligereArbeidsforhold,
-} from '../amplitudefunksjonerForLogging';
-import { BedriftsmenyContext } from '../BedriftsmenyProvider';
-import { FiltrerteOgSorterteArbeidsforholdContext } from '../FiltrerteOgSorterteArbeidsforholdProvider';
+import { BedriftsmenyContext } from '../Context/BedriftsmenyProvider';
+import { FiltrerteOgSorterteArbeidsforholdContext } from '../Context/FiltrerteOgSorterteArbeidsforholdProvider';
 import { useSearchParameters } from '../../utils/UrlManipulation';
 import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
@@ -21,6 +15,7 @@ import SideBytter from './SideBytter/SideBytter';
 import VelgTidligereVirksomhet from './VelgTidligereVirksomhet/VelgTidligereVirksomhet';
 import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
 import './MineAnsatte.less';
+import { LenkeMedLogging } from '../GeneriskeKomponenter/LenkeMedLogging';
 
 export enum SorteringsAttributt {
     NAVN,
@@ -35,34 +30,27 @@ export enum SorteringsAttributt {
 
 export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
     const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
-
     const tilgangTidligereArbeidsforhold =
         hovedenhet?.tilgang === true && tidligereUnderenheter !== 'laster' && tidligereUnderenheter.length > 0;
     const overskriftMedOrganisasjonsdel = 'Opplysninger for ' + underenhet.Name;
 
     return (
-        <div className="bakgrunnsside">
-            <div className="innhold-container">
+        <div className='bakgrunnsside'>
+            <div className='innhold-container'>
                 <Brodsmulesti valgtOrg={underenhet.OrganizationNumber} />
-
                 {tilgangTidligereArbeidsforhold && (
-                    <div className="brodsmule hoyre">
-                        <Link
-                            to={{
-                                pathname: '/tidligere-arbeidsforhold',
-                                search: `bedrift=${underenhet.OrganizationNumber}`,
-                            }}
-                            className="brodsmule__direct-tidligere-arbeidsforhold"
-                            onClick={() => loggTrykketPåTidligereArbeidsforhold()}
-                        >
+                    <div className='brodsmule hoyre'>
+                        <LenkeMedLogging loggLenketekst={`tidligere-arbeidsforhold`}
+                                         href={`/tidligere-arbeidsforhold?bedrift=${underenhet.OrganizationNumber}`}
+                                         className={'brodsmule__direct-tidligere-arbeidsforhold'}>
                             {'Arbeidsforhold i tidligere virksomheter for ' + hovedenhet?.Name}
-                            <Chevron type="høyre" />
-                        </Link>
+                            <Chevron type='høyre' />
+                        </LenkeMedLogging>
                     </div>
                 )}
 
-                <div className="mine-ansatte">
-                    <Systemtittel className="mine-ansatte__systemtittel">{overskriftMedOrganisasjonsdel}</Systemtittel>
+                <div className='mine-ansatte'>
+                    <Systemtittel className='mine-ansatte__systemtittel'>{overskriftMedOrganisasjonsdel}</Systemtittel>
                     <MineArbeidsforhold />
                 </div>
             </div>
@@ -72,28 +60,20 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
 
 export const MineTidligereArbeidsforhold: FunctionComponent = () => {
     const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
-
     return (
-        <div className="bakgrunnsside">
-            <div className="innhold-container">
+        <div className='bakgrunnsside'>
+            <div className='innhold-container'>
                 <Brodsmulesti valgtOrg={underenhet.OrganizationNumber} />
-
-                <div className="brodsmule venstre">
-                    <Link
-                        className="brodsmule__direct-tidligere-arbeidsforhold"
-                        to={{
-                            pathname: '/',
-                            search: `bedrift=${underenhet.OrganizationNumber}`,
-                        }}
-                        onClick={() => loggTrykketPåNåværendeArbeidsforhold()}
-                    >
-                        <Chevron type="venstre" />
+                <div className='brodsmule venstre'>
+                    <LenkeMedLogging loggLenketekst={`nåværende-arbeidsforhold`}
+                                     href={`/?bedrift=${underenhet.OrganizationNumber}`}
+                                     className={'brodsmule__direct-tidligere-arbeidsforhold'}>
+                        <Chevron type='venstre' />
                         Tilbake til arbeidsforhold
-                    </Link>
+                    </LenkeMedLogging>
                 </div>
-
-                <div className="mine-ansatte">
-                    <Systemtittel className="mine-ansatte__systemtittel">
+                <div className='mine-ansatte'>
+                    <Systemtittel className='mine-ansatte__systemtittel'>
                         {`Opplysninger for ${hovedenhet?.Name} org.nr ${hovedenhet?.OrganizationNumber}`}
                     </Systemtittel>
                     {tidligereUnderenheter !== 'laster' && <VelgTidligereVirksomhet />}
@@ -106,17 +86,13 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
 
 const MineArbeidsforhold: FunctionComponent = () => {
     const { underenhet } = useContext(BedriftsmenyContext);
-    const aareg = useContext(FiltrerteOgSorterteArbeidsforholdContext);
+    const aaregContext = useContext(FiltrerteOgSorterteArbeidsforholdContext);
     const { getSearchParameter, setSearchParameter } = useSearchParameters();
-
     const sidetall = getSearchParameter('side') || '1';
-
     const setSideTallIUrlOgGenererListe = (indeks: number) => {
         setSearchParameter({ side: indeks.toString() });
     };
-
-    const filtrertOgSortertListe = aareg?.lastestatus?.status === 'ferdig' ? aareg.lastestatus.arbeidsforhold : null;
-
+    const filtrertOgSortertListe = aaregContext?.lastestatus?.status === 'ferdig' ? aaregContext.lastestatus.arbeidsforhold : null;
     const ARBEIDSFORHOLDPERSIDE = 25;
     const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, filtrertOgSortertListe?.length ?? 0);
     const listeForNåværendeSidetall = regnUtArbeidsForholdSomSkalVisesPaEnSide(
@@ -125,21 +101,14 @@ const MineArbeidsforhold: FunctionComponent = () => {
         filtrertOgSortertListe ?? []
     );
 
-    useEffect(() => {
-        if (aareg?.lastestatus?.status === 'ferdig') {
-            loggSidevisningAvArbeidsforhold(aareg.lastestatus.arbeidsforhold.length, aareg.tidligereVirksomhet);
-        }
-    }, [aareg]);
-
-    if (aareg === null) {
+    if (aaregContext === null) {
         return null;
-    } else if (aareg.lastestatus.status === 'laster') {
-        return <Progressbar estimertAntall={aareg.lastestatus.estimertAntall} />;
-    } else if (aareg.lastestatus.status === 'ferdig') {
+    } else if (aaregContext.lastestatus.status === 'laster') {
+        return <Progressbar estimertAntall={aaregContext.lastestatus.estimertAntall} />;
+    } else if (aaregContext.lastestatus.status === 'ferdig') {
         return (
             <>
                 <MineAnsatteTopp valgtOrganisasjon={underenhet} antallSider={antallSider} />
-
                 {listeForNåværendeSidetall.length > 0 && (
                     <>
                         <TabellMineAnsatte
@@ -147,22 +116,22 @@ const MineArbeidsforhold: FunctionComponent = () => {
                             byttSide={setSideTallIUrlOgGenererListe}
                         />
                         <ListeMedAnsatteForMobil
-                            className="mine-ansatte__liste"
+                            className='mine-ansatte__liste'
                             listeMedArbeidsForhold={listeForNåværendeSidetall}
                         />
                         {antallSider > 1 && (
-                            <SideBytter plassering="nederst" className="nedre-sidebytter" antallSider={antallSider} />
+                            <SideBytter plassering='nederst' className='nedre-sidebytter' antallSider={antallSider} />
                         )}
                     </>
                 )}
             </>
         );
-    } else if (aareg.lastestatus.status === 'ikke-tilgang') {
+    } else if (aaregContext.lastestatus.status === 'ikke-tilgang') {
         return <IngenTilgangInfo />;
     } else {
         return (
-            <div className="mine-ansatte__feilmelding-aareg">
-                <AlertStripeFeil>{aareg.lastestatus.beskjed}</AlertStripeFeil>
+            <div className='mine-ansatte__feilmelding-aareg'>
+                <AlertStripeFeil>{aaregContext.lastestatus.beskjed}</AlertStripeFeil>
             </div>
         );
     }

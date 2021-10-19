@@ -3,13 +3,12 @@ import { useHistory } from 'react-router-dom';
 import Bedriftsmeny from '@navikt/bedriftsmeny';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import { AltinnOrganisasjon, AltinnorganisasjonerContext } from './AltinnorganisasjonerProvider';
-import { Organisasjon } from './Objekter/OrganisasjonFraAltinn';
-import { hentTidligereVirksomheter } from '../api/aaregApi';
-import { loggInfoOmFeilTidligereOrganisasjoner } from './amplitudefunksjonerForLogging';
-import IngenTilgangInfo from './IngenTilgangInfo/IngenTilgangInfo';
-import Lasteboks from './Lasteboks';
-import { useSearchParameters } from '../utils/UrlManipulation';
-import emptyList from './Objekter/EmptyList';
+import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import { hentTidligereVirksomheter } from '../../api/aaregApi';
+import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
+import Lasteboks from '../GeneriskeKomponenter/Lasteboks';
+import { useSearchParameters } from '../../utils/UrlManipulation';
+import emptyList from '../Objekter/EmptyList';
 
 interface Enhet {
     hovedenhet: AltinnOrganisasjon | null;
@@ -38,7 +37,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
         [altinnorganisasjoner]
     );
 
-    const orgnr = getSearchParameter('bedrift');
+    const orgnrFraUrl = getSearchParameter('bedrift');
 
     const tidligereArbeidsforhold = history.location.pathname.startsWith('/tidligere-arbeidsforhold');
     const sidetittel = tidligereArbeidsforhold ? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
@@ -48,6 +47,12 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
             ? enhet.hovedenhet.OrganizationNumber
             : null;
 
+    const lasteboksEllerIngenTilgang = (visLasteBoks: boolean) => {
+        if (visLasteBoks) {
+            return <Lasteboks />;
+        }
+        return <IngenTilgangInfo />;
+    };
     /* Det kan ta litt tid før bedriftsvelgeren setter default bedrift, så
      * de første sekundene anser vi som en oppstarts-periode hvor vi ikke
      * viser ingen-tilgang-siden.
@@ -60,10 +65,10 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        if (orgnr === null) {
+        if (orgnrFraUrl === null) {
             settEnhet(null);
         } else {
-            const underenhet = finnOrg(orgnr);
+            const underenhet = finnOrg(orgnrFraUrl);
             const hovedenhet = underenhet === null ? null : finnOrg(underenhet.ParentOrganizationNumber);
             if (underenhet === null) {
                 console.error('Bedriftsmeny byttet til ukjent organisasjon');
@@ -72,7 +77,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
                 settEnhet({ underenhet, hovedenhet });
             }
         }
-    }, [orgnr, finnOrg]);
+    }, [orgnrFraUrl, finnOrg]);
 
     useEffect(() => {
         if (tidligereUnderenheterFor === null) {
@@ -86,7 +91,6 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
                 })
                 .catch((err) => {
                     settTidligereUnderenheter(emptyList);
-                    loggInfoOmFeilTidligereOrganisasjoner(err);
                 });
             return () => abortController.abort();
         }
@@ -116,14 +120,8 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
                 }}
                 history={history}
             />
-            {altinnorganisasjoner.length === 0 ? (
-                <IngenTilgangInfo />
-            ) : context === null ? (
-                oppstart ? (
-                    <Lasteboks />
-                ) : (
-                    <IngenTilgangInfo />
-                )
+            {altinnorganisasjoner.length === 0 || context === null ? (
+                lasteboksEllerIngenTilgang(oppstart)
             ) : (
                 <BedriftsmenyContext.Provider value={context}>{children}</BedriftsmenyContext.Provider>
             )}
