@@ -2,7 +2,7 @@ import React, { FunctionComponent, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Select } from 'nav-frontend-skjema';
 import UnderenhetIkon from './UnderenhetIkon';
-import { BedriftsmenyContext } from '../../BedriftsmenyProvider';
+import { BedriftsmenyContext } from '../../Context/BedriftsmenyProvider';
 import { useSearchParameters } from '../../../utils/UrlManipulation';
 import emptyList from '../../Objekter/EmptyList';
 import './VelgTidligereVirksomhet.less';
