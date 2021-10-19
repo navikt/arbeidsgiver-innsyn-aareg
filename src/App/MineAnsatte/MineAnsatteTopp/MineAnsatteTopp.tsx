@@ -4,17 +4,16 @@ import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
 import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
-import { loggBrukerTrykketPaVeiledning } from '../../amplitudefunksjonerForLogging';
 import ExcelEksport from '../ExcelEksport/ExcelEksport';
 import Sokefelt from '../Sokefelt/Sokefelt';
 import Filtervalg from '../Filtervalg/Filtervalg';
 import SideBytter from '../SideBytter/SideBytter';
 import { tellAntallAktiveOgInaktiveArbeidsforhold } from '../sorteringOgFiltreringsFunksjoner';
 import NyFaneIkon from './NyFaneIkon';
-import { ArbeidsforholdContext } from '../../ArbeidsforholdProvider';
+import { ArbeidsforholdContext } from '../../Context/ArbeidsforholdProvider';
 import { useSearchParameters } from '../../../utils/UrlManipulation';
-import { BedriftsmenyContext } from '../../BedriftsmenyProvider';
-import { FiltrerteOgSorterteArbeidsforholdContext } from '../../FiltrerteOgSorterteArbeidsforholdProvider';
+import { BedriftsmenyContext } from '../../Context/BedriftsmenyProvider';
+import { FiltrerteOgSorterteArbeidsforholdContext } from '../../Context/FiltrerteOgSorterteArbeidsforholdProvider';
 import './MineAnsatteTopp.less';
 
 interface Props {
@@ -81,7 +80,6 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({ antallSider }) => {
                                 <Lenke
                                     href={skatteetatenUrl}
                                     target="_blank"
-                                    onClick={() => loggBrukerTrykketPaVeiledning()}
                                 >
                                     <span>Skatteetatens veiledning til a-meldingen</span>
                                     <NyFaneIkon />

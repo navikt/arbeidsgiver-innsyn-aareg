@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { basename } from './paths';
 import LoginBoundary from './LoggInnBoundary';
-import { FeatureToggleProvider } from './FeatureToggleProvider';
-import { ArbeidsforholdProvider } from './ArbeidsforholdProvider';
-import { AltinnorganisasjonerProvider } from './AltinnorganisasjonerProvider';
-import BedriftsmenyProvider from './BedriftsmenyProvider';
-import FiltrerteOgSorterteArbeidsforholdProvider from './FiltrerteOgSorterteArbeidsforholdProvider';
+import { FeatureToggleProvider } from './Context/FeatureToggleProvider';
+import { ArbeidsforholdProvider } from './Context/ArbeidsforholdProvider';
+import { AltinnorganisasjonerProvider } from './Context/AltinnorganisasjonerProvider';
+import BedriftsmenyProvider from './Context/BedriftsmenyProvider';
+import FiltrerteOgSorterteArbeidsforholdProvider from './Context/FiltrerteOgSorterteArbeidsforholdProvider';
 import EnkeltArbeidsforhold from './MineAnsatte/EnkeltArbeidsforhold/EnkeltArbeidsforhold';
 import { MineNåværendeArbeidsforhold, MineTidligereArbeidsforhold } from './MineAnsatte/MineAnsatte';
 import './App.less';
+import { useLocation } from 'react-router';
+import { loggSidevisning } from '../utils/amplitudefunksjonerForLogging';
+
+const AmplitudeSidevisningEventLogger: FunctionComponent = props => {
+    const location = useLocation();
+    useEffect(() => {
+            loggSidevisning(location.pathname);
+    }, [location.pathname]);
+    return <>{props.children}</>;
+}
+
 
 const App = () => {
     return (
@@ -21,6 +32,7 @@ const App = () => {
                             <BedriftsmenyProvider>
                                 <ArbeidsforholdProvider>
                                     <FiltrerteOgSorterteArbeidsforholdProvider>
+                                        <AmplitudeSidevisningEventLogger>
                                         <Switch>
                                             <Route exact path="/" component={MineNåværendeArbeidsforhold} />
                                             <Route
@@ -39,6 +51,7 @@ const App = () => {
                                                 component={EnkeltArbeidsforhold}
                                             />
                                         </Switch>
+                                        </AmplitudeSidevisningEventLogger>
                                     </FiltrerteOgSorterteArbeidsforholdProvider>
                                 </ArbeidsforholdProvider>
                             </BedriftsmenyProvider>

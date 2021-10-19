@@ -15,7 +15,7 @@ import {
     SERVICEEDITIONINNSYNAAREGISTERET,
     AltinnorganisasjonerContext,
     AltinnOrganisasjon,
-} from '../AltinnorganisasjonerProvider';
+} from '../Context/AltinnorganisasjonerProvider';
 
 const run = <T extends any>(f: () => T) => f();
 

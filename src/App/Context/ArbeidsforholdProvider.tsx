@@ -1,10 +1,9 @@
 import React, { createContext, FunctionComponent, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
-import { Organisasjon } from './Objekter/OrganisasjonFraAltinn';
-import { hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg } from '../api/aaregApi';
-import { loggInfoOmFeil } from './amplitudefunksjonerForLogging';
-import { Arbeidsforhold } from './Objekter/ArbeidsForhold';
-import { redirectTilLogin } from './LoggInn/LoggInn';
+import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
+import { hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg } from '../../api/aaregApi';
+import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
+import { redirectTilLogin } from '../LoggInn/LoggInn';
 import { BedriftsmenyContext } from './BedriftsmenyProvider';
 
 export type Context = {
@@ -84,11 +83,7 @@ export const ArbeidsforholdProvider: FunctionComponent = (props) => {
                     })
                     .catch((error) => {
                         if (error.name !== 'AbortError') {
-                            console.error(error);
                             const status = error?.response?.status;
-                            const feilmelding = `Hent arbeidsforhold fra AAreg feilet: ${status ?? 'ukjent feil'}`;
-
-                            loggInfoOmFeil(feilmelding, erPåTidligereUnderenhet);
                             if (status === 401) {
                                 redirectTilLogin();
                             }

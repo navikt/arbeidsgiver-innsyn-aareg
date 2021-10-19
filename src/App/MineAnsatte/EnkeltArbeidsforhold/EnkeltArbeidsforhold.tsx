@@ -7,8 +7,8 @@ import Chevron from 'nav-frontend-chevron';
 import { gittMiljø } from '../../../utils/environment';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import { useSearchParameters } from '../../../utils/UrlManipulation';
-import { BedriftsmenyContext } from '../../BedriftsmenyProvider';
-import { FiltrerteOgSorterteArbeidsforholdContext } from '../../FiltrerteOgSorterteArbeidsforholdProvider';
+import { BedriftsmenyContext } from '../../Context/BedriftsmenyProvider';
+import { FiltrerteOgSorterteArbeidsforholdContext } from '../../Context/FiltrerteOgSorterteArbeidsforholdProvider';
 import IngenTilgangInfo from '../../IngenTilgangInfo/IngenTilgangInfo';
 import EnkeltArbeidsforholdVarselVisning from './EnkeltArbeidsforholdVarselVisning/EnkeltArbeidsforholdVarselVisning';
 import Brodsmulesti from '../../Brodsmulesti/Brodsmulesti';
@@ -30,7 +30,6 @@ const EnkeltArbeidsforhold: FunctionComponent = () => {
     const { underenhet } = useContext(BedriftsmenyContext);
     const aareg = useContext(FiltrerteOgSorterteArbeidsforholdContext);
     const { setSearchParameter, getSearchParameter } = useSearchParameters();
-
     const redirectTilbake = () => {
         const params = new URLSearchParams(history.location.search);
         params.delete('arbeidsforhold');
