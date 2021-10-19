@@ -1,9 +1,8 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import amplitude from '../utils/amplitude';
 import { sjekkInnlogget } from '../api/altinnApi';
 import LoggInn from './LoggInn/LoggInn';
 import EnkelBanner from './EnkelBanner/EnkelBanner';
-import Lasteboks from './Lasteboks';
+import Lasteboks from './GeneriskeKomponenter/Lasteboks';
 import { gittMiljø } from '../utils/environment';
 
 export enum Tilgang {
@@ -26,7 +25,6 @@ const LoginBoundary: FunctionComponent = (props) => {
     useEffect(() => {
         setInnlogget(Tilgang.LASTER);
         const abortController = new AbortController();
-
         const kjørerLokalt = gittMiljø({
             prod: false,
             dev: false,
@@ -40,7 +38,6 @@ const LoginBoundary: FunctionComponent = (props) => {
             sjekkInnlogget(abortController.signal).then((innloggingsstatus) => {
                 if (innloggingsstatus) {
                     setInnlogget(Tilgang.TILGANG);
-                    amplitude.logEvent('#arbeidsforhold bruker er innlogget');
                 } else {
                     setInnlogget(Tilgang.IKKE_TILGANG);
                 }

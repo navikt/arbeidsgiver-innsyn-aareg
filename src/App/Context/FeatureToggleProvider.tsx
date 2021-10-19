@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { hentFeatureToggles } from '../api/unleashApi';
+import { hentFeatureToggles } from '../../api/unleashApi';
 
 export enum Feature {
     visHistorikk = 'innsynaareg.vishistorikk',
