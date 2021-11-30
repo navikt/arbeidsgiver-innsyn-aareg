@@ -9,6 +9,8 @@ import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
 import Lasteboks from '../GeneriskeKomponenter/Lasteboks';
 import { useSearchParameters } from '../../utils/UrlManipulation';
 import emptyList from '../Objekter/EmptyList';
+import { NotifikasjonWidget } from '@navikt/arbeidsgiver-notifikasjon-widget';
+import { gittMiljø } from '../../utils/environment';
 
 interface Enhet {
     hovedenhet: AltinnOrganisasjon | null;
@@ -46,6 +48,12 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
         enhet !== null && enhet.hovedenhet !== null && enhet.hovedenhet.tilgang
             ? enhet.hovedenhet.OrganizationNumber
             : null;
+
+    const miljø = gittMiljø<'local' | 'dev-gcp' | 'prod-gcp'>({
+        prod: 'prod-gcp',
+        dev: 'dev-gcp',
+        other: 'local'
+    });
 
     const lasteboksEllerIngenTilgang = (visLasteBoks: boolean) => {
         if (visLasteBoks) {
@@ -119,7 +127,9 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
                     }
                 }}
                 history={history}
-            />
+            >
+                <NotifikasjonWidget miljo={miljø} />
+            </Bedriftsmeny>
             {altinnorganisasjoner.length === 0 || context === null ? (
                 lasteboksEllerIngenTilgang(oppstart)
             ) : (
