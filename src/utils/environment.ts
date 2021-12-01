@@ -4,7 +4,8 @@ interface Environment {
 }
 
 export const environment: Environment = {
-    MILJO: (window as any)?.appSettings?.MILJO ?? 'local'
+    MILJO: 'local',
+    ...(window as any)?.environment
 };
 
 interface GittMiljø<T> {
