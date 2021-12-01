@@ -47,7 +47,7 @@ const getDecoratorFragments = async () => {
         STYLES: document.getElementById('styles').innerHTML,
         SCRIPTS: document.getElementById('scripts').innerHTML,
         SETTINGS: `<script type="application/javascript">
-            window.appSettings = {
+            window.environment = {
                 MILJO: '${NAIS_CLUSTER_NAME}',
             }
         </script>`,
