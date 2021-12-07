@@ -49,10 +49,10 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
             ? enhet.hovedenhet.OrganizationNumber
             : null;
 
-    const miljø = gittMiljø<'local' | 'labs-gcp' | 'dev-gcp' | 'prod-gcp'>({
-        prod: 'prod-gcp',
-        dev: 'dev-gcp',
-        labs: 'labs-gcp',
+    const miljø = gittMiljø<'local' | 'labs' | 'dev' | 'prod'>({
+        prod: 'prod',
+        dev: 'dev',
+        labs: 'labs',
         other: 'local'
     });
 
