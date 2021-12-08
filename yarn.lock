@@ -1636,10 +1636,10 @@
   dependencies:
     fetch-mock "^9.11.0"
 
-"@navikt/arbeidsgiver-notifikasjon-widget@0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@navikt/arbeidsgiver-notifikasjon-widget/-/arbeidsgiver-notifikasjon-widget-0.1.2.tgz#73e8d96949151093716ddf1e32adacc970b393ba"
-  integrity sha512-s3pfmdq89QfNCBWNnrL8MimWMmM6s2lniN3WB9K7taR5xoLe4nNIZ+gi58pYNooymVPdz3otr162MtmSiOSbaA==
+"@navikt/arbeidsgiver-notifikasjon-widget@0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@navikt/arbeidsgiver-notifikasjon-widget/-/arbeidsgiver-notifikasjon-widget-0.1.5.tgz#f83c49cdc66d64090ab1c10826a79772c34cfd4f"
+  integrity sha512-KQBDzkrb0eJbvdqd2xrP1pbfohDiFjMgEVOE5x4697oE0YXzUxjn2z/ebYfT5pi3U3tqJUf8zLVxhXIPufdJrw==
   dependencies:
     "@apollo/client" "3"
     "@navikt/ds-css" "0"
