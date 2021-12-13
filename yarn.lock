@@ -1655,10 +1655,10 @@
     nav-frontend-typografi-style "2"
     prop-types "15"
 
-"@navikt/bedriftsmeny@3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@navikt/bedriftsmeny/-/bedriftsmeny-3.3.0.tgz#935532cb402b30909a0619cb1622806be10b96d4"
-  integrity sha512-lzHEsf2kQOmIbO84+QC7irW0pnZSNwPyTS8DEl/iDafeetWafZcWY+ZRw+Cj9692Y9jWoiwqVU/xLMpPn3rSTg==
+"@navikt/bedriftsmeny@3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@navikt/bedriftsmeny/-/bedriftsmeny-3.5.1.tgz#405e9070ec18f33dbbf7e133b62a2f306110194c"
+  integrity sha512-ul7FEM4NeSWl6WYmRwh7sfuDjHYju/lWot9NV4xE5WAL+MJE9ODOUIrHE4+hqKwBEtYO3rp++EpqZgXxixMClQ==
   dependencies:
     "@types/amplitude-js" "^8.0.1"
     fuzzysort "^1.1.4"
