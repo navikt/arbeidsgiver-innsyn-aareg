@@ -71,7 +71,7 @@ export const ArbeidsforholdProvider: FunctionComponent = (props) => {
 
         hentAntallArbeidsforholdFraAareg(orgnr, underenhet.ParentOrganizationNumber, abortAntall.signal)
             .then((antall) => {
-                settLastestatus({ status: 'laster', estimertAntall: antall === -1 ? undefined : antall });
+                settLastestatus({ status: 'laster', estimertAntall: antall });
                 hentArbeidsforholdFraAAreg(
                     orgnr,
                     underenhet.ParentOrganizationNumber,
