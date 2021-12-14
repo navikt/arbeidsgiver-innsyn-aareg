@@ -35,17 +35,14 @@ export async function hentAntallArbeidsforholdFraAareg(
     underenhet: string,
     enhet: string,
     signal: any
-): Promise<number> {
+): Promise<number | undefined> {
     const headere = lagHeadere(enhet, underenhet);
     let respons = await fetch(hentAntallArbeidsforholdLink(), { headers: headere, signal: signal });
     if (respons.ok) {
         const jsonRespons: overSiktPerUnderenhetPar = await respons.json();
-        if (jsonRespons.second === 0) {
-            return -1;
-        }
         return jsonRespons.second;
     } else {
-        return -1;
+        return undefined;
     }
 }
 
