@@ -106,7 +106,7 @@
     "underscore.string": "^3.3.5",
     "unorm": "^1.6.0",
     "whatwg-fetch": "^3.3.1",
-    "xlsx": "^0.16.9"
+    "xlsx": "^0.17.4"
   },
   "devDependencies": {
     "prettier": "^2.2.1"
