@@ -38,7 +38,7 @@
     "builder": "^5.0.0",
     "canvas": "^2.6.1",
     "classnames": "^2.2.6",
-    "core-js": "^3.8.3",
+    "core-js": "^3.19.1",
     "craco": "^0.0.3",
     "craco-less": "^1.14.4",
     "eslint-plugin-jsx-a11y": "^6.4.1",
