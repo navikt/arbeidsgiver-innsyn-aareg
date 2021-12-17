@@ -12,10 +12,10 @@
   resolved "https://registry.yarnpkg.com/@amplitude/ua-parser-js/-/ua-parser-js-0.7.24.tgz#2ce605af7d2c38d4a01313fb2385df55fbbd69aa"
   integrity sha512-VbQuJymJ20WEw0HtI2np7EdC3NJGUWi8+Xdbc7uk8WfMIF308T0howpzkQ3JFMN7ejnrcSM/OyNGveeE3TP3TA==
 
-"@amplitude/ua-parser-js@0.7.25":
-  version "0.7.25"
-  resolved "https://registry.yarnpkg.com/@amplitude/ua-parser-js/-/ua-parser-js-0.7.25.tgz#ccbeb0bd24fca3759cfc09a3b9ba95a23ea32756"
-  integrity sha512-AUeO9T6vLkUNw0iYxchFBw3FylJAMv5g2sPUsS5XCulAP3TpZg9Y/QESOl+oCLGqTQYumUJZHfoQBemN22eghw==
+"@amplitude/ua-parser-js@0.7.26":
+  version "0.7.26"
+  resolved "https://registry.yarnpkg.com/@amplitude/ua-parser-js/-/ua-parser-js-0.7.26.tgz#18d889d84d2ba90c248ab6fcd7e3dd07f1c9c86e"
+  integrity sha512-62/Rid6YQ7F2KT/5vTre41Y26ivrEoFC8lbrsJZqBKaiXMJWG0YpNv9RgxNSaZS2jPLVQgoB/FFeWxihOLfIcg==
 
 "@amplitude/utils@^1.0.5":
   version "1.8.2"
@@ -25,7 +25,7 @@
     "@amplitude/types" "^1.8.2"
     tslib "^1.9.3"
 
-"@apollo/client@3":
+"@apollo/client@3.5.5":
   version "3.5.5"
   resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.5.5.tgz#ce331403ee5f099e595430890f9b510c8435c932"
   integrity sha512-EiQstc8VjeqosS2h21bwY9fhL3MCRRmACtRrRh2KYpp9vkDyx5pUfMnN3swgiBVYw1twdXg9jHmyZa1gZlvlog==
@@ -1205,7 +1205,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.12.5":
+"@babel/runtime@^7.12.5", "@babel/runtime@^7.3.4":
   version "7.16.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.5.tgz#7f3e34bf8bdbbadf03fbb7b1ea0d929569c9487a"
   integrity sha512-TXWihFIS3Pyv5hzR7j6ihmeLkZfrXGxAr5UfSl8CHf+6q/wpiYDkUau0czckpYG8QmnCIuPpdLtuA9VmuGGyMA==
@@ -1643,20 +1643,20 @@
   dependencies:
     fetch-mock "^9.11.0"
 
-"@navikt/arbeidsgiver-notifikasjon-widget@0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@navikt/arbeidsgiver-notifikasjon-widget/-/arbeidsgiver-notifikasjon-widget-0.1.5.tgz#f83c49cdc66d64090ab1c10826a79772c34cfd4f"
-  integrity sha512-KQBDzkrb0eJbvdqd2xrP1pbfohDiFjMgEVOE5x4697oE0YXzUxjn2z/ebYfT5pi3U3tqJUf8zLVxhXIPufdJrw==
+"@navikt/arbeidsgiver-notifikasjon-widget@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@navikt/arbeidsgiver-notifikasjon-widget/-/arbeidsgiver-notifikasjon-widget-1.0.1.tgz#8daaad3d7d220d5d95f421d6f6d624cf41eafe61"
+  integrity sha512-DpvVeY0ccal6wRrRZQOfmJWLpF/Jw+ouuQ3YmSWeSgn5DH2r6FVr7nLKXrp5cfjLM2dDDrnR9Wyx2hcs4R0gzw==
   dependencies:
-    "@apollo/client" "3"
-    "@navikt/ds-css" "0"
-    "@navikt/ds-icons" "0"
-    "@navikt/ds-react" "0"
-    amplitude-js "^8.8.0"
+    "@apollo/client" "3.5.5"
+    "@navikt/ds-css" "0.12.5"
+    "@navikt/ds-icons" "0.7.0"
+    "@navikt/ds-react" "0.14.1"
+    amplitude-js "^8.12.0"
     classnames "2"
-    graphql "^15.5.1"
+    graphql "^15.7.2"
     nav-frontend-core "6"
-    nav-frontend-popover "2"
+    nav-frontend-popover "2.0.3"
     nav-frontend-popover-style "2"
     nav-frontend-typografi "4"
     nav-frontend-typografi-style "2"
@@ -1670,25 +1670,25 @@
     "@types/amplitude-js" "^8.0.1"
     fuzzysort "^1.1.4"
 
-"@navikt/ds-css@0":
-  version "0.11.4"
-  resolved "https://registry.yarnpkg.com/@navikt/ds-css/-/ds-css-0.11.4.tgz#ed3ee6afe420ba7a5b7b1aad0b8d3ab4dbb72885"
-  integrity sha512-Q3B0jf0TqXShegUsxqm3obwwaPOD/1mrsWpsCnyY2Mj5ULfmA3AqhF/fl5SZvgu0k+zPKbZ8gSC2K6MuMAQqjw==
+"@navikt/ds-css@0.12.5":
+  version "0.12.5"
+  resolved "https://registry.yarnpkg.com/@navikt/ds-css/-/ds-css-0.12.5.tgz#a853f1e3357dd0611899246fe7c3f814d547a617"
+  integrity sha512-MHqRadtiyNCtGo/eVn1xn/SQT+fkIlNSEPfRIjLthpIdNHZ1Y4edQR66nnc74u9qyxeVCC4/y15zcXOct9hNMg==
 
-"@navikt/ds-icons@0", "@navikt/ds-icons@^0.6.3":
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/@navikt/ds-icons/-/ds-icons-0.6.3.tgz#95dd8b7568ce770736859014cffa1571739323b7"
-  integrity sha512-sNmgP8a/V8PLccewcEc7+fy+HfA6vDf1zDbgbQ0ypW/OMf6rGsg43EoCnU/txuuh5cRWbmzbbTQnoNHHmUT58w==
+"@navikt/ds-icons@0.7.0", "@navikt/ds-icons@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@navikt/ds-icons/-/ds-icons-0.7.0.tgz#0ac3e539f7e3a9161cfc2e9038376abcfba3b4d9"
+  integrity sha512-i6Sdn/8iAjDx2SJRI9QpbVaMWaZzGHjxoCnnegu+gcbmKuKqIM7/HNogjKJ6prxAv6uRkc5GYev8k3pGNua1Nw==
   dependencies:
     uuid "^8.3.2"
 
-"@navikt/ds-react@0":
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/@navikt/ds-react/-/ds-react-0.13.1.tgz#f2ec1c76115377a6c2a07deef075053366d7ece3"
-  integrity sha512-9GzseA2xROppYLqdvQQJ8wEz9LKs3KKdaYlvfHnKEXEEmtF5sJxdKzGwHhRJk+zAsb1Y/90qJSLpenF25CA0mQ==
+"@navikt/ds-react@0.14.1":
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/@navikt/ds-react/-/ds-react-0.14.1.tgz#0d9937b258cabf248d5f955b82840dcd7d0ae0ad"
+  integrity sha512-ttUidC1CLVXU9R42SBJ9KlTw1chn39Cn/KuEa509nz3oMcsv07hAAqpGi79nrGSCfnOaw0uMRIYfDvvG7bWbjA==
   dependencies:
     "@material-ui/core" "^4.12.3"
-    "@navikt/ds-icons" "^0.6.3"
+    "@navikt/ds-icons" "^0.7.0"
     "@popperjs/core" "^2.10.1"
     classnames "^2.2.6"
     react-collapse "^5.1.0"
@@ -3003,13 +3003,14 @@ amplitude-js@^7.4.1:
     blueimp-md5 "^2.10.0"
     query-string "5"
 
-amplitude-js@^8.8.0:
-  version "8.12.0"
-  resolved "https://registry.yarnpkg.com/amplitude-js/-/amplitude-js-8.12.0.tgz#03828dbc6ec13d6a5cc46ffbc2438a3306dfc442"
-  integrity sha512-I7IS9FmRsDJJbMwdnpKMmC7DWHk/5B5fBGa5CIW2pjwEQBovrxat6ApRlomo71JCeVv4EU0nvbhisInPwfbunA==
+amplitude-js@^8.12.0:
+  version "8.13.1"
+  resolved "https://registry.yarnpkg.com/amplitude-js/-/amplitude-js-8.13.1.tgz#0ae654a5bdfb434e17e55aa40a34775a902e97dd"
+  integrity sha512-cjKtq+t51jyN5XrnXtZW05jSGRDZKtHVqx/BIuP+b1baBgWqFZ2P5GKEH2DqCWhZqwwkaBkAw+E7tanohYqLMw==
   dependencies:
-    "@amplitude/ua-parser-js" "0.7.25"
+    "@amplitude/ua-parser-js" "0.7.26"
     "@amplitude/utils" "^1.0.5"
+    "@babel/runtime" "^7.3.4"
     blueimp-md5 "^2.10.0"
     query-string "5"
 
@@ -6494,10 +6495,10 @@ graphql-tag@^2.12.3:
   dependencies:
     tslib "^2.1.0"
 
-graphql@^15.5.1:
-  version "15.7.2"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.7.2.tgz#85ab0eeb83722977151b3feb4d631b5f2ab287ef"
-  integrity sha512-AnnKk7hFQFmU/2I9YSQf3xw44ctnSFCfp3zE0N6W174gqe9fWG/2rKaKxROK7CcI3XtERpjEKFqts8o319Kf7A==
+graphql@^15.7.2:
+  version "15.8.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.8.0.tgz#33410e96b012fa3bdb1091cc99a94769db212b38"
+  integrity sha512-5gghUc24tP9HRznNpV2+FIoq3xKkj5dTQqf4v0CpdPbFVwFkWoxOM+o+2OC9ZSvjEMTjfmG9QT+gcvggTwW1zw==
 
 growly@^1.3.0:
   version "1.3.0"
@@ -9001,7 +9002,7 @@ nav-frontend-popover-style@^1.0.1:
   resolved "https://registry.yarnpkg.com/nav-frontend-popover-style/-/nav-frontend-popover-style-1.1.1.tgz#0e662c330989fe8ebed232d23b915234fb7f3d20"
   integrity sha512-6DVmHs1wPryX8lvX9d4hopM3ugY1CqD/KuUDuF7SQcxDbFCeIvAVnRvzKs5hlKnGjY0wM7izcBEk5qyfF3fung==
 
-nav-frontend-popover@2:
+nav-frontend-popover@2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/nav-frontend-popover/-/nav-frontend-popover-2.0.3.tgz#1d9b6421ffbeb05d7a25ec70aca47230045aa26a"
   integrity sha512-OBEk9K+6O2Nysn/OKL02ctUOVOxLm0wInOHqIucfsq+uXta438FhW2GDEkTVIGk6qFwmmf7n5bTlw3vDWsMJQA==
