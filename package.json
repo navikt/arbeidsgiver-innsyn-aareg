@@ -46,7 +46,7 @@
     "fetch-mock": "^9.11.0",
     "file-saver": "^2.0.2",
     "fs-extra": "^9.1.0",
-    "history": "^5.0.0",
+    "history": "^5.1.0",
     "http-proxy-middleware": "^1.0.6",
     "install": "^00.13.0",
     "jest-axe": "^4.1.0",
