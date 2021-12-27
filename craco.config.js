@@ -37,12 +37,13 @@ module.exports = {
                 pathRewrite: { '^/arbeidsforhold/api': '/ditt-nav-arbeidsgiver-api/api' }
             }
         },
-        onBeforeSetupMiddleware: ({app}) => {
+        setupMiddlewares: (middlewares, {app}) => {
             app.get('/arbeidsforhold/redirect-til-login', (req, res) => {
                 const loginUrl =
                     'http://localhost:8080/ditt-nav-arbeidsgiver-api/local/selvbetjening-login?redirect=http://localhost:3000/arbeidsforhold';
                 res.redirect(loginUrl);
             });
+            return middlewares;
         },
     },
     plugins: [{ plugin: CracoLessPlugin }]
