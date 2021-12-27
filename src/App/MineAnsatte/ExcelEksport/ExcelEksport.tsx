@@ -11,6 +11,7 @@ import varselikon from './varselikon.svg';
 import { convertToDataset, infosideData, datasett } from './excelexport-utils';
 import './ExcelEksport.less';
 
+
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 
@@ -31,7 +32,7 @@ const ExcelEksport = (props: ExcelEksportProps) => {
     const aktiveArbeidsforholdDataset = convertToDataset(aktiveArbeidsforhold);
     const avsluttedeArbeidsforhold = filtrerAktiveOgAvsluttede(props.arbeidsforholdListe, 'Avsluttede');
     const avsluttedeArbeidsforholdDataset = convertToDataset(avsluttedeArbeidsforhold);
-
+    Modal.setAppElement('#root');
     return (
         <div className={props.className}>
             <Hovedknapp
@@ -50,7 +51,6 @@ const ExcelEksport = (props: ExcelEksportProps) => {
                 closeButton={true}
                 contentLabel='Last ned Excelfil modal'
                 className='eksport-modal'
-                appElement={ document.querySelector('#root') || undefined }
             >
                 <div className='eksport-modal__innhold'>
                     <Undertittel className='eksport-modal__overskrift'>
