@@ -3,7 +3,6 @@ import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { init as Sentry } from '@sentry/browser';
-import 'unorm/lib/unorm';
 import 'whatwg-fetch';
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import App from './App/App';
