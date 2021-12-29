@@ -28,14 +28,14 @@ const App = () => {
     return (
         <div className='app'>
             <LoginProvider>
-                <LoginBoundary>
-                    <FeatureToggleProvider>
-                        <AltinnorganisasjonerProvider>
-                            <BrowserRouter basename={basename}>
-                                <BedriftsmenyProvider>
-                                    <ArbeidsforholdProvider>
-                                        <FiltrerteOgSorterteArbeidsforholdProvider>
-                                            <AmplitudeSidevisningEventLogger>
+                <BrowserRouter basename={basename}>
+                    <AmplitudeSidevisningEventLogger>
+                        <LoginBoundary>
+                            <FeatureToggleProvider>
+                                <AltinnorganisasjonerProvider>
+                                    <BedriftsmenyProvider>
+                                        <ArbeidsforholdProvider>
+                                            <FiltrerteOgSorterteArbeidsforholdProvider>
                                                 <Switch>
                                                     <Route exact path='/' component={MineNåværendeArbeidsforhold} />
                                                     <Route
@@ -54,14 +54,14 @@ const App = () => {
                                                         component={EnkeltArbeidsforhold}
                                                     />
                                                 </Switch>
-                                            </AmplitudeSidevisningEventLogger>
-                                        </FiltrerteOgSorterteArbeidsforholdProvider>
-                                    </ArbeidsforholdProvider>
-                                </BedriftsmenyProvider>
-                            </BrowserRouter>
-                        </AltinnorganisasjonerProvider>
-                    </FeatureToggleProvider>
-                </LoginBoundary>
+                                            </FiltrerteOgSorterteArbeidsforholdProvider>
+                                        </ArbeidsforholdProvider>
+                                    </BedriftsmenyProvider>
+                                </AltinnorganisasjonerProvider>
+                            </FeatureToggleProvider>
+                        </LoginBoundary>
+                    </AmplitudeSidevisningEventLogger>
+                </BrowserRouter>
             </LoginProvider>
         </div>
     );
