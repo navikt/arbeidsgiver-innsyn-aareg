@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { basename } from './paths';
 import LoginBoundary from './LoggInnBoundary';
@@ -12,53 +12,57 @@ import { MineNåværendeArbeidsforhold, MineTidligereArbeidsforhold } from './Mi
 import './App.less';
 import { useLocation } from 'react-router';
 import { loggSidevisning } from '../utils/amplitudefunksjonerForLogging';
+import { LoginContext, LoginProvider } from './Context/LoginProvider';
 
 const AmplitudeSidevisningEventLogger: FunctionComponent = props => {
     const location = useLocation();
+    const { innlogget } = useContext(LoginContext);
     useEffect(() => {
-            loggSidevisning(location.pathname);
+        loggSidevisning(location.pathname, innlogget);
     }, [location.pathname]);
     return <>{props.children}</>;
-}
+};
 
 
 const App = () => {
     return (
-        <div className="app">
-            <LoginBoundary>
-                <FeatureToggleProvider>
-                    <AltinnorganisasjonerProvider>
-                        <BrowserRouter basename={basename}>
-                            <BedriftsmenyProvider>
-                                <ArbeidsforholdProvider>
-                                    <FiltrerteOgSorterteArbeidsforholdProvider>
-                                        <AmplitudeSidevisningEventLogger>
-                                        <Switch>
-                                            <Route exact path="/" component={MineNåværendeArbeidsforhold} />
-                                            <Route
-                                                exact
-                                                path="/enkeltArbeidsforhold"
-                                                component={EnkeltArbeidsforhold}
-                                            />
-                                            <Route
-                                                exact
-                                                path="/tidligere-arbeidsforhold"
-                                                component={MineTidligereArbeidsforhold}
-                                            />
-                                            <Route
-                                                exact
-                                                path="/tidligere-arbeidsforhold/enkeltArbeidsforhold"
-                                                component={EnkeltArbeidsforhold}
-                                            />
-                                        </Switch>
-                                        </AmplitudeSidevisningEventLogger>
-                                    </FiltrerteOgSorterteArbeidsforholdProvider>
-                                </ArbeidsforholdProvider>
-                            </BedriftsmenyProvider>
-                        </BrowserRouter>
-                    </AltinnorganisasjonerProvider>
-                </FeatureToggleProvider>
-            </LoginBoundary>
+        <div className='app'>
+            <LoginProvider>
+                <LoginBoundary>
+                    <FeatureToggleProvider>
+                        <AltinnorganisasjonerProvider>
+                            <BrowserRouter basename={basename}>
+                                <BedriftsmenyProvider>
+                                    <ArbeidsforholdProvider>
+                                        <FiltrerteOgSorterteArbeidsforholdProvider>
+                                            <AmplitudeSidevisningEventLogger>
+                                                <Switch>
+                                                    <Route exact path='/' component={MineNåværendeArbeidsforhold} />
+                                                    <Route
+                                                        exact
+                                                        path='/enkeltArbeidsforhold'
+                                                        component={EnkeltArbeidsforhold}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path='/tidligere-arbeidsforhold'
+                                                        component={MineTidligereArbeidsforhold}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path='/tidligere-arbeidsforhold/enkeltArbeidsforhold'
+                                                        component={EnkeltArbeidsforhold}
+                                                    />
+                                                </Switch>
+                                            </AmplitudeSidevisningEventLogger>
+                                        </FiltrerteOgSorterteArbeidsforholdProvider>
+                                    </ArbeidsforholdProvider>
+                                </BedriftsmenyProvider>
+                            </BrowserRouter>
+                        </AltinnorganisasjonerProvider>
+                    </FeatureToggleProvider>
+                </LoginBoundary>
+            </LoginProvider>
         </div>
     );
 };

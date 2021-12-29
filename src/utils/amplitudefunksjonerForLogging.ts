@@ -1,6 +1,7 @@
 import amplitude from './amplitude';
 import { basename } from '../App/paths';
 import { Arbeidsforhold } from '../App/Objekter/ArbeidsForhold';
+import { Innlogget } from '../App/Context/LoginProvider';
 
 interface EventProps {
     url: string;
@@ -10,13 +11,15 @@ interface EventProps {
     arbeidsforholdMedVarsel?: boolean;
     antallArbeidsforhold?: number;
     antallArbeidsforholdMedVarsler?: number;
+    innlogget?: boolean;
 }
 
 const baseUrl = `https://arbeidsgiver.nav.no${basename}`;
 
-export const loggSidevisning = (pathname: string) => {
+export const loggSidevisning = (pathname: string, innlogget: Innlogget) => {
     const sidevisningsInfo: EventProps = {
-        url: `${baseUrl}${pathname}`
+        url: `${baseUrl}${pathname}`,
+        innlogget: innlogget === Innlogget.INNLOGGET
     };
     amplitude.logEvent('sidevisning', sidevisningsInfo);
 };

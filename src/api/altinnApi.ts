@@ -6,8 +6,8 @@ import {
 import { FetchError } from './api-utils';
 import { Organisasjon, OrganisasjonlowerCase, tomaAltinnOrganisasjon } from '../App/Objekter/OrganisasjonFraAltinn';
 
-export async function sjekkInnlogget(signal: any): Promise<boolean> {
-    let respons = await fetch(sjekkInnloggetLenke(), { signal: signal });
+export async function sjekkInnlogget(): Promise<boolean> {
+    let respons = await fetch(sjekkInnloggetLenke());
     return respons.ok;
 }
 
