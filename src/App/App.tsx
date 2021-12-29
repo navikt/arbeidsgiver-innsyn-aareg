@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { basename } from './paths';
-import LoginBoundary from './LoggInnBoundary';
+import LoginBoundary from './LoginBoundary';
 import { FeatureToggleProvider } from './Context/FeatureToggleProvider';
 import { ArbeidsforholdProvider } from './Context/ArbeidsforholdProvider';
 import { AltinnorganisasjonerProvider } from './Context/AltinnorganisasjonerProvider';
