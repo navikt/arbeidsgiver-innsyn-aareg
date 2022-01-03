@@ -10,7 +10,6 @@ import Lasteboks from '../GeneriskeKomponenter/Lasteboks';
 import { useSearchParameters } from '../../utils/UrlManipulation';
 import emptyList from '../Objekter/EmptyList';
 import { NotifikasjonWidget } from '@navikt/arbeidsgiver-notifikasjon-widget';
-import { gittMiljø } from '../../utils/environment';
 
 interface Enhet {
     hovedenhet: AltinnOrganisasjon | null;
