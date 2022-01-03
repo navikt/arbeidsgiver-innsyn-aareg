@@ -31,17 +31,34 @@ module.exports = {
         }),
     },
     devServer: {
-        proxy: {
-            '/arbeidsforhold/api': {
-                target: 'http://localhost:8080',
-                pathRewrite: { '^/arbeidsforhold/api': '/ditt-nav-arbeidsgiver-api/api' }
-            }
-        },
+
         setupMiddlewares: (middlewares, {app}) => {
-            app.get('/arbeidsforhold/redirect-til-login', (req, res) => {
-                const loginUrl =
-                    'http://localhost:8080/ditt-nav-arbeidsgiver-api/local/selvbetjening-login?redirect=http://localhost:3000/arbeidsforhold';
-                res.redirect(loginUrl);
+            const cookieParser = require('cookie-parser');
+            app.use(cookieParser());
+
+            app.get('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/innlogget', (req, res) => {
+                console.log("innlogget?")
+                const token = req.cookies.hasOwnProperty('selvbetjening-idtoken')
+                if (token) {
+                    console.log("innlogget? ja (cookie selvbetjening-idtoken eksisterer)")
+                    res.status(200).send()
+                } else {
+                    console.log("innlogget? nei (cookie selvbetjening-idtoken mangler)")
+                    res.status(401).send()
+                }
+            });
+            app.get('/arbeidsforhold/redirect-til-login', async (req, res) => {
+                const response = await fetch('https://fakedings.dev-gcp.nais.io/fake/custom', {
+                    method: 'POST',
+                    headers: {
+                        "Content-type": "application/x-www-form-urlencoded"
+                    },
+                    body: `sub=00112233445&aud=${encodeURIComponent("bruker-api")}&acr=Level4`
+                });
+                const token = await response.text()
+                res.cookie("selvbetjening-idtoken", token)
+                console.log(`login: setter selvbetjening-idtoken til ${token}`)
+                res.redirect("http://localhost:3000/arbeidsforhold/");
             });
             return middlewares;
         },
