@@ -49,12 +49,6 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
             ? enhet.hovedenhet.OrganizationNumber
             : null;
 
-    const miljø = gittMiljø<'local' | 'labs' | 'dev' | 'prod'>({
-        prod: 'prod',
-        dev: 'dev',
-        labs: 'labs',
-        other: 'local'
-    });
 
     const lasteboksEllerIngenTilgang = (visLasteBoks: boolean) => {
         if (visLasteBoks) {
@@ -129,7 +123,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
                 }}
                 history={history}
             >
-                <NotifikasjonWidget miljo={miljø} />
+                <NotifikasjonWidget/>
             </Bedriftsmeny>
             {altinnorganisasjoner.length === 0 || context === null ? (
                 lasteboksEllerIngenTilgang(oppstart)
