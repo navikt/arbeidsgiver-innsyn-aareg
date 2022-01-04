@@ -104,6 +104,10 @@
     "whatwg-fetch": "^3.3.1",
     "xlsx": "^0.17.4"
   },
+  "resolutions": {
+    "browserify-fs/**/bl": "1.2.3",
+    "browserify-fs/**/semver": "4.3.2"
+  },
   "devDependencies": {
     "assert": "^2.0.0",
     "cookie-parser": "*",
