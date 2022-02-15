@@ -25,7 +25,7 @@
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.3.2",
     "@types/react-transition-group": "^4.4.4",
-    "@typescript-eslint/eslint-plugin": "^5.8.1",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.8.1",
     "abortcontroller-polyfill": "^1.7.1",
     "amplitude-js": "^7.4.1",
