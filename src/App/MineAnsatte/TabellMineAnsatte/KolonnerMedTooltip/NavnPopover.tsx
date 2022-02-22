@@ -23,8 +23,8 @@ const NavnPopover: FunctionComponent<Props> = ({ arbeidsforhold }) => {
     const oppdaterValgtArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
         const { search } = naVærendeUrl;
         const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD
-            ? '/arbeidsforhold/tidligere-arbeidsforhold/enkeltArbeidsforhold'
-            : '/arbeidsforhold/enkeltArbeidsforhold';
+            ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold'
+            : '/enkeltArbeidsforhold';
         history.replace({ pathname: redirectPath, search: search });
         arbeidsforhold.varsler?.length ? loggBrukerklikk('arbeidsforhol', ) : loggBrukerklikk('arbeidsforhol');
     };
