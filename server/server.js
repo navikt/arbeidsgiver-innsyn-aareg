@@ -96,9 +96,6 @@ app.use(
     createProxyMiddleware({
         logLevel: PROXY_LOG_LEVEL,
         logProvider: _ => log,
-        onProxyRes(proxyRes, req, res) {
-            log.debug(`[${req.method}] [${proxyRes.statusCode}] ${req.path} -> ${proxyRes.req.protocol}//${proxyRes.req.host}${proxyRes.req.path}`)
-        },
         onError: (err, req, res) => {
             log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
         },
@@ -120,6 +117,9 @@ app.use(
         logProvider: _ => log,
         onError: (err, req, res) => {
             log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
+        },
+        onProxyRes(proxyRes, req, res) {
+            log.debug(`[${req.method}] [${proxyRes.statusCode}] ${req.path} -> ${proxyRes.req.protocol}//${proxyRes.req.host}${proxyRes.req.path}`)
         },
         changeOrigin: true,
         target: NAIS_CLUSTER_NAME === 'prod-gcp' ? 'https://www.nav.no' : 'https://person.dev.nav.no',
