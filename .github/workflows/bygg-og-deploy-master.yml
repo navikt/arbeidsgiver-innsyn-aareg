@@ -32,6 +32,8 @@ jobs:
 
       - name: Installer avhengigheter (yarn install)
         run:  yarn install --ignore-scripts --no-optional
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
 
   bygg:
@@ -77,6 +79,8 @@ jobs:
 
       - name: Installer avhengigheter (yarn install)
         run:  yarn install --production --ignore-scripts --no-optional
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Kjør UU-tester (yarn lint)
         run: yarn lint
