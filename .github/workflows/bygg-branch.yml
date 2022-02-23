@@ -21,6 +21,8 @@ jobs:
 
       - name: Installer avhengigheter (yarn install)
         run:  yarn install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Kjør UU-tester (yarn lint)
         run: yarn lint
