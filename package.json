@@ -6,7 +6,7 @@
   "homepage": "/arbeidsforhold",
   "dependencies": {
     "@craco/craco": "^6.4.3",
-    "@navikt/arbeidsforhold": "1.4.2",
+    "@navikt/arbeidsforhold": "1.4.4",
     "@navikt/arbeidsgiver-notifikasjon-widget": "1.1.0-rc2",
     "@navikt/bedriftsmeny": "3.5.2",
     "@navikt/fnrvalidator": "^1.1.4",
