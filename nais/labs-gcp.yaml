@@ -9,7 +9,7 @@ spec:
   image: {{image}}
   port: 3000
   ingresses:
-    - '{{{ingress}}}'
+    - https://arbeidsgiver.labs.nais.io/arbeidsforhold
   liveness:
     path: /arbeidsforhold/internal/isAlive
     initialDelay: 20
@@ -25,12 +25,11 @@ spec:
     - name: NODE_EXTRA_CA_CERTS
       value: /etc/ssl/ca-bundle.pem
     - name: API_GATEWAY
-      value: '{{{api-gw-url}}}'
+      value: http://innsyn-aareg-api.fager
     - name: LOGIN_URL
-      value: '{{{selvbetjening-login-url}}}'
+      value: https://min-side-ag-fakelogin.labs.nais.io/login?issuer=selvbetjening&sub=00000000000&domain=labs.nais.io&redirect=https://arbeidsgiver.labs.nais.io/arbeidsforhold
     - name: DECORATOR_EXTERNAL_URL
-      value: '{{{decorator-external-url}}}'
-  {{#if labs}}
+      value: https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4
   accessPolicy:
     outbound:
       rules:
@@ -38,4 +37,3 @@ spec:
           namespace: fager
       external:
         - host: www.nav.no
-  {{/if}}
