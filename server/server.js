@@ -119,7 +119,7 @@ app.use(
             log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
         },
         changeOrigin: true,
-        target: NAIS_CLUSTER_NAME === 'prod-gcp' ? 'https://www.nav.no' : 'https://www.dev.nav.no',
+        target: NAIS_CLUSTER_NAME === 'prod-gcp' ? 'https://www.nav.no' : 'https://person.dev.nav.no',
         pathRewrite: {
             '^/arbeidsforhold': ''
         },
