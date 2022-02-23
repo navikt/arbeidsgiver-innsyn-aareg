@@ -19,16 +19,22 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 16.x
+          registry-url: https://npm.pkg.github.com/
+          scope: "@navikt"
+          cache: 'yarn'
+
       - name: Installer avhengigheter (yarn install)
         run:  yarn install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      - name: Kjør UU-tester (yarn lint)
-        run: yarn lint
+      - run: yarn lint
 
-      - name: Bygg (yarn build)
-        run: yarn build
+      - run: yarn build
 
       - name: Sjekk om branch er oppdatert mot master
         id: sjekk-mot-master
