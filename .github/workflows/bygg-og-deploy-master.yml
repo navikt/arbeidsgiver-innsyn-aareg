@@ -18,23 +18,18 @@ jobs:
       - name: Sjekk ut kode
         uses: actions/checkout@v2
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Cache node modules
-        uses: actions/cache@v1
+      - name: Setup Node
+        uses: actions/setup-node@v2.1.2
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version: 16.x
+          registry-url: https://npm.pkg.github.com/
+          scope: "@navikt"
+          cache: 'yarn'
 
       - name: Installer avhengigheter (yarn install)
         run:  yarn install --ignore-scripts --no-optional
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-
 
   bygg:
     name: Bygg
@@ -65,28 +60,22 @@ jobs:
       - name: Sjekk ut kode
         uses: actions/checkout@v2
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Cache node modules
-        uses: actions/cache@v1
+      - name: Setup Node
+        uses: actions/setup-node@v2.1.2
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version: 16.x
+          registry-url: https://npm.pkg.github.com/
+          scope: "@navikt"
+          cache: 'yarn'
 
-      - name: Installer avhengigheter (yarn install)
+      - name: yarn install
         run:  yarn install --production --ignore-scripts --no-optional
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      - name: Kjør UU-tester (yarn lint)
-        run: yarn lint
+      - run: yarn lint
 
-      - name: Bygg (yarn build)
-        run: yarn build
+      - run: yarn build
 
       - name: Bygg, tag og push Docker-image
         run: |
