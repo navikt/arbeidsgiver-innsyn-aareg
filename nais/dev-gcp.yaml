@@ -30,3 +30,7 @@ spec:
       value: https://loginservice.dev.nav.no/login?redirect=https://arbeidsforhold.dev.nav.no/arbeidsforhold
     - name: DECORATOR_EXTERNAL_URL
       value: https://dekoratoren.dev.nav.no/?context=arbeidsgiver&redirectToApp=true&chatbot=true&level=Level4
+  accessPolicy:
+    outbound:
+      external:
+        - host: person.dev.nav.no
