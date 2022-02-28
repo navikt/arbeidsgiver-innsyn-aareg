@@ -41,7 +41,7 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
                 {tilgangTidligereArbeidsforhold && (
                     <div className='brodsmule hoyre'>
                         <LenkeMedLogging loggLenketekst={`tidligere-arbeidsforhold`}
-                                         href={`/tidligere-arbeidsforhold?bedrift=${underenhet.OrganizationNumber}`}
+                                         href={`tidligere-arbeidsforhold/?bedrift=${underenhet.OrganizationNumber}`}
                                          className={'brodsmule__direct-tidligere-arbeidsforhold'}>
                             {'Arbeidsforhold i tidligere virksomheter for ' + hovedenhet?.Name}
                             <Chevron type='høyre' />
@@ -66,7 +66,7 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
                 <Brodsmulesti valgtOrg={underenhet.OrganizationNumber} />
                 <div className='brodsmule venstre'>
                     <LenkeMedLogging loggLenketekst={`nåværende-arbeidsforhold`}
-                                     href={`/?bedrift=${underenhet.OrganizationNumber}`}
+                                     href={`../?bedrift=${underenhet.OrganizationNumber}`}
                                      className={'brodsmule__direct-tidligere-arbeidsforhold'}>
                         <Chevron type='venstre' />
                         Tilbake til arbeidsforhold
