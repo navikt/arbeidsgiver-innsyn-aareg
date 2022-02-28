@@ -1,0 +1,25 @@
+name: Deploy til labs
+on:
+  workflow_dispatch:
+
+env:
+  IMAGE: docker.pkg.github.com/${{ github.repository }}/${{ github.event.repository.name }}:${{ github.sha }}
+
+jobs:
+  deploy-branch:
+    name: Deploy til labs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sjekk ut kode
+        uses: actions/checkout@v2
+
+      - name: Deploy til labs-gcp
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: labs-gcp
+          RESOURCE: nais/labs-gcp.yaml
+          PRINT_PAYLOAD: true
+          REF: ${{ env.COMMIT }}
+          IMAGE: ${{ env.IMAGE }}
