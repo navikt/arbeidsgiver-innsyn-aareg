@@ -1424,10 +1424,10 @@
     prop-types "^15.7.2"
     react-is "^16.8.0 || ^17.0.0"
 
-"@navikt/arbeidsforhold@1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@navikt/arbeidsforhold/-/arbeidsforhold-1.4.2.tgz#f0ab8050ffac5f8726a0a3636964b2ba6d2e273c"
-  integrity sha512-cCK2ATnrBdwnM3F8k8rEw2J4LSkp3kAUHodyTiOgctGRlODtoqFevJktfcpMgOXzLsHTqQiiSPgHqcZPXmS35A==
+"@navikt/arbeidsforhold@1.4.4":
+  version "1.4.4"
+  resolved "https://npm.pkg.github.com/download/@navikt/arbeidsforhold/1.4.4/e2e5b12fd95dc5da30d458bf4090d055b5567d0102b71312f55014d91a5bc4d4#a948d421088a963bf7c1d4ced339f3daacdb2ca2"
+  integrity sha512-qb3GTGBlNLVHgFKQM9Yzm9CdUHMyqDERz4c3v5+3SuU+eM657qZNp+JamavewuDGPZMN9ZWrA1NWH62mMfmvNA==
   dependencies:
     fetch-mock "^9.11.0"
 
