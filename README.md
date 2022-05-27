@@ -18,6 +18,9 @@ Innsyn i Aa-reg – arbeidsgiver gir oversikt over arbeidsforhold rapportert inn
   3. `yarn docker:start`
   4. For å stoppe, kjør `docker stop <id>` med id-en fra forrige kommando
 
+NB: Denne appen er avhengig av pakker som er publisert til nav sitt github registry, og krever derfor at du setter opp en
+PAT(personal access token). Følg instruksene [her](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-token) og [her](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token)
+
 ---
 
 ## Henvendelser
