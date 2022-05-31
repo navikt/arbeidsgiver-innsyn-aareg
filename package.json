@@ -11,7 +11,7 @@
     "@navikt/bedriftsmeny": "3.5.2",
     "@navikt/fnrvalidator": "^1.1.4",
     "@navikt/nav-dekoratoren-moduler": "^1.6.9",
-    "@react-pdf/renderer": "2.1.0",
+    "@react-pdf/renderer": "2.1.2",
     "@sentry/browser": "^6.15.0",
     "@testing-library/react": "^12.1.2",
     "@types/amplitude-js": "^7.0.1",
