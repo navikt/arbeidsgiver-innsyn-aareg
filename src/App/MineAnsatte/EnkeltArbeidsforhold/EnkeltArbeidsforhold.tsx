@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import Chevron from 'nav-frontend-chevron';
 import { gittMiljø } from '../../../utils/environment';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
-import { useSearchParameters } from '../../../utils/UrlManipulation';
+import { useReplace, useSearchParameters } from '../../../utils/UrlManipulation';
 import { BedriftsmenyContext } from '../../Context/BedriftsmenyProvider';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../../Context/FiltrerteOgSorterteArbeidsforholdProvider';
 import IngenTilgangInfo from '../../IngenTilgangInfo/IngenTilgangInfo';
@@ -27,15 +27,15 @@ const apiURL = gittMiljø({
 });
 
 const EnkeltArbeidsforhold: FunctionComponent = () => {
-    const navigate = useNavigate();
-    const loc = useLocation()
+    const replace = useReplace();
+    const location = useLocation()
     const { underenhet } = useContext(BedriftsmenyContext);
     const aareg = useContext(FiltrerteOgSorterteArbeidsforholdContext);
     const { setSearchParameter, getSearchParameter } = useSearchParameters();
     const redirectTilbake = () => {
-        const params = new URLSearchParams(loc.search);
+        const params = new URLSearchParams(location.search);
         params.delete('arbeidsforhold');
-        navigate({ search: params.toString(), pathname: '..' },{replace:true});
+        replace({ search: params.toString(), pathname: '..' }, { relative: 'path' });
     };
 
     const redirectTilArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {

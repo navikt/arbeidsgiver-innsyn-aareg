@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, To, NavigateOptions } from 'react-router-dom';
 
 export type Params = {
     [key: string]: string;
@@ -9,8 +9,14 @@ type UseSearchParameters = {
     setSearchParameter: (params: Params) => void;
 };
 
+export const useReplace = () => {
+    const navigate = useNavigate()
+    return (to: To, options?: NavigateOptions) =>
+        navigate(to, {...options, replace: true})
+}
+
 export const useSearchParameters = (): UseSearchParameters => {
-    const navigate = useNavigate();
+    const replace = useReplace();
     const loc = useLocation();
 
     const setSearchParameter = (params: Params) => {
@@ -19,7 +25,7 @@ export const useSearchParameters = (): UseSearchParameters => {
             const [key, value] = entry;
             search.set(key, value);
         });
-        navigate({ search: search.toString() }, {replace: true});
+        replace({ search: search.toString() });
     };
 
     const getSearchParameter = (key: string) => {
