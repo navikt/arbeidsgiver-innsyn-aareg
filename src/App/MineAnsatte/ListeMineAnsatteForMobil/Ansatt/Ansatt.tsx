@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import AttributtVisning from './AttributtVisning/AttributtVisning';
 import { loggBrukerklikk } from '../../../../utils/amplitudefunksjonerForLogging';
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Ansatt: FunctionComponent<Props> = ({ arbeidsforhold }) => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const naVærendeUrl = new URL(window.location.href);
     const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold');
 
@@ -20,7 +20,7 @@ const Ansatt: FunctionComponent<Props> = ({ arbeidsforhold }) => {
         const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD
             ? '/tidligere-arbeidsforhold/enkeltarbeidsforhold'
             : '/enkeltarbeidsforhold';
-        history.replace({ pathname: redirectPath, search: search });
+        navigate({ pathname: redirectPath, search: search }, {replace:true});
         if (arbeidsforhold.varsler?.length) {
             loggBrukerklikk('arbeidsforhold med varsel');
         }

@@ -1,5 +1,5 @@
 import React, { createContext, FunctionComponent, useCallback, useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import Bedriftsmeny from '@navikt/bedriftsmeny';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import { AltinnOrganisasjon, AltinnorganisasjonerContext } from './AltinnorganisasjonerProvider';
@@ -23,7 +23,9 @@ interface Context extends Enhet {
 export const BedriftsmenyContext = createContext<Context>({} as Context);
 
 const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
-    const history = useHistory();
+    const navigate = useNavigate();
+    const loc = useLocation();
+
     const altinnorganisasjoner: Array<AltinnOrganisasjon> = useContext(AltinnorganisasjonerContext);
     const { getSearchParameter } = useSearchParameters();
 
@@ -40,7 +42,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
 
     const orgnrFraUrl = getSearchParameter('bedrift');
 
-    const tidligereArbeidsforhold = history.location.pathname.startsWith('/tidligere-arbeidsforhold');
+    const tidligereArbeidsforhold = loc.pathname.startsWith('/tidligere-arbeidsforhold');
     const sidetittel = tidligereArbeidsforhold ? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
 
     const tidligereUnderenheterFor =
@@ -117,10 +119,9 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
                      * filter/søk-parameterene.
                      */
                     if (enhet?.underenhet.OrganizationNumber !== OrganizationNumber) {
-                        history.replace({ pathname: '/', search: `bedrift=${OrganizationNumber}` });
+                        navigate({ pathname: '/', search: `bedrift=${OrganizationNumber}` },{replace:true});
                     }
                 }}
-                history={history}
             >
                 <NotifikasjonWidget/>
             </Bedriftsmeny>

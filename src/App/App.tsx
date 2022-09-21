@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { basename } from './paths';
 import LoginBoundary from './LoginBoundary';
 import { FeatureToggleProvider } from './Context/FeatureToggleProvider';
@@ -44,24 +44,23 @@ const App = () => {
                                         <BedriftsmenyProvider>
                                             <ArbeidsforholdProvider>
                                                 <FiltrerteOgSorterteArbeidsforholdProvider>
-                                                    <Switch>
-                                                        <Route exact path='/' component={MineNåværendeArbeidsforhold} />
+                                                    <Routes>
                                                         <Route
-                                                            exact
+                                                            path='/'
+                                                            element={<MineNåværendeArbeidsforhold/>} />
+                                                        <Route
                                                             path='/enkeltArbeidsforhold'
-                                                            component={EnkeltArbeidsforhold}
+                                                            element={<EnkeltArbeidsforhold/>}
                                                         />
                                                         <Route
-                                                            exact
                                                             path='/tidligere-arbeidsforhold'
-                                                            component={MineTidligereArbeidsforhold}
+                                                            element={<MineTidligereArbeidsforhold/>}
                                                         />
                                                         <Route
-                                                            exact
                                                             path='/tidligere-arbeidsforhold/enkeltArbeidsforhold'
-                                                            component={EnkeltArbeidsforhold}
+                                                            element={<EnkeltArbeidsforhold/>}
                                                         />
-                                                    </Switch>
+                                                    </Routes>
                                                 </FiltrerteOgSorterteArbeidsforholdProvider>
                                             </ArbeidsforholdProvider>
                                         </BedriftsmenyProvider>

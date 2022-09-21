@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
@@ -14,6 +14,7 @@ import EnkeltArbeidsforholdVarselVisning from './EnkeltArbeidsforholdVarselVisni
 import Brodsmulesti from '../../Brodsmulesti/Brodsmulesti';
 import './EnkeltArbeidsforhold.less';
 
+
 const miljø = gittMiljø<'PROD' | 'DEV' | 'LOCAL'>({
     prod: 'PROD',
     dev: 'DEV',
@@ -26,14 +27,15 @@ const apiURL = gittMiljø({
 });
 
 const EnkeltArbeidsforhold: FunctionComponent = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
+    const loc = useLocation()
     const { underenhet } = useContext(BedriftsmenyContext);
     const aareg = useContext(FiltrerteOgSorterteArbeidsforholdContext);
     const { setSearchParameter, getSearchParameter } = useSearchParameters();
     const redirectTilbake = () => {
-        const params = new URLSearchParams(history.location.search);
+        const params = new URLSearchParams(loc.search);
         params.delete('arbeidsforhold');
-        history.replace({ search: params.toString(), pathname: '..' });
+        navigate({ search: params.toString(), pathname: '..' },{replace:true});
     };
 
     const redirectTilArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {

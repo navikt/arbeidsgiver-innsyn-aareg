@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
 import { linkTilArbeidsforhold, linkTilMinSideArbeidsgiver } from '../lenker';
 
@@ -14,10 +14,10 @@ interface BrodsmuleProps {
 }
 
 const Brodsmulesti = ({ valgtOrg }: BrodsmuleProps) => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     onBreadcrumbClick(breadcrumb => {
-        history.push(breadcrumb.url);
+        navigate(breadcrumb.url);
     });
 
     const brodsmuler: Brodsmule[] = [
