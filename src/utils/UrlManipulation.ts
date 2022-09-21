@@ -1,5 +1,4 @@
-import { useHistory } from 'react-router-dom';
-import { useLocation } from 'react-router';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export type Params = {
     [key: string]: string;
@@ -11,16 +10,16 @@ type UseSearchParameters = {
 };
 
 export const useSearchParameters = (): UseSearchParameters => {
-    const hist = useHistory();
+    const navigate = useNavigate();
     const loc = useLocation();
 
     const setSearchParameter = (params: Params) => {
-        const search = new URLSearchParams(hist.location.search);
+        const search = new URLSearchParams(loc.search);
         Object.entries(params).forEach((entry) => {
             const [key, value] = entry;
             search.set(key, value);
         });
-        hist.replace({ search: search.toString() });
+        navigate({ search: search.toString() }, {replace: true});
     };
 
     const getSearchParameter = (key: string) => {
