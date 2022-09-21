@@ -1,19 +1,18 @@
 import React, { FunctionComponent, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Select } from 'nav-frontend-skjema';
 import UnderenhetIkon from './UnderenhetIkon';
 import { BedriftsmenyContext } from '../../Context/BedriftsmenyProvider';
-import { useSearchParameters } from '../../../utils/UrlManipulation';
+import { useReplace, useSearchParameters } from '../../../utils/UrlManipulation';
 import emptyList from '../../Objekter/EmptyList';
 import './VelgTidligereVirksomhet.less';
 
 const VelgTidligereVirksomhet: FunctionComponent = () => {
     const { underenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
     const { getSearchParameter } = useSearchParameters();
-    const navigate = useNavigate();
+    const replace = useReplace();
 
     const setTidligereVirksomhet = (orgnr: string) => {
-        navigate({ search: `bedrift=${underenhet.OrganizationNumber}&tidligereVirksomhet=${orgnr}` }, {replace: true});
+        replace({ search: `bedrift=${underenhet.OrganizationNumber}&tidligereVirksomhet=${orgnr}` });
     };
 
     const underenheter = tidligereUnderenheter === 'laster' ? emptyList : tidligereUnderenheter;

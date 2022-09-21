@@ -1,5 +1,5 @@
 import React, { createContext, FunctionComponent, useCallback, useContext, useEffect, useState } from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Bedriftsmeny from '@navikt/bedriftsmeny';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import { AltinnOrganisasjon, AltinnorganisasjonerContext } from './AltinnorganisasjonerProvider';
@@ -7,7 +7,7 @@ import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { hentTidligereVirksomheter } from '../../api/aaregApi';
 import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
 import Lasteboks from '../GeneriskeKomponenter/Lasteboks';
-import { useSearchParameters } from '../../utils/UrlManipulation';
+import { useReplace, useSearchParameters } from '../../utils/UrlManipulation';
 import emptyList from '../Objekter/EmptyList';
 import { NotifikasjonWidget } from '@navikt/arbeidsgiver-notifikasjon-widget';
 
@@ -23,8 +23,8 @@ interface Context extends Enhet {
 export const BedriftsmenyContext = createContext<Context>({} as Context);
 
 const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
-    const navigate = useNavigate();
-    const loc = useLocation();
+    const replace = useReplace();
+    const location = useLocation();
 
     const altinnorganisasjoner: Array<AltinnOrganisasjon> = useContext(AltinnorganisasjonerContext);
     const { getSearchParameter } = useSearchParameters();
@@ -42,7 +42,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
 
     const orgnrFraUrl = getSearchParameter('bedrift');
 
-    const tidligereArbeidsforhold = loc.pathname.startsWith('/tidligere-arbeidsforhold');
+    const tidligereArbeidsforhold = location.pathname.startsWith('/tidligere-arbeidsforhold');
     const sidetittel = tidligereArbeidsforhold ? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
 
     const tidligereUnderenheterFor =
@@ -119,7 +119,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
                      * filter/søk-parameterene.
                      */
                     if (enhet?.underenhet.OrganizationNumber !== OrganizationNumber) {
-                        navigate({ pathname: '/', search: `bedrift=${OrganizationNumber}` },{replace:true});
+                        replace({ pathname: '/', search: `bedrift=${OrganizationNumber}` });
                     }
                 }}
             >

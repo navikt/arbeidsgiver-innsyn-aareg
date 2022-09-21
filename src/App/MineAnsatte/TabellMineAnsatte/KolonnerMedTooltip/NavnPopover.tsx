@@ -1,10 +1,11 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import { loggBrukerklikk } from '../../../../utils/amplitudefunksjonerForLogging';
 import './PopOverStyling.less';
+import { useReplace } from '../../../../utils/UrlManipulation';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold;
@@ -13,7 +14,7 @@ interface Props {
 const NavnPopover: FunctionComponent<Props> = ({ arbeidsforhold }) => {
     const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
     const [skalVisePopover, setSkalVisePopover] = useState(true);
-    const navigate = useNavigate();
+    const replace = useReplace();
 
     const naVærendeUrl = new URL(window.location.href);
     const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold');
@@ -25,7 +26,7 @@ const NavnPopover: FunctionComponent<Props> = ({ arbeidsforhold }) => {
         const redirectPath = ERPATIDLIGEREARBEIDSFORHOLD
             ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold'
             : '/enkeltArbeidsforhold';
-        navigate({ pathname: redirectPath, search: search }, {replace: true});
+        replace({ pathname: redirectPath, search: search });
         arbeidsforhold.varsler?.length ? loggBrukerklikk('arbeidsforhol', ) : loggBrukerklikk('arbeidsforhol');
     };
 
