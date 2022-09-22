@@ -1,18 +1,19 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { DetaljertArbeidsforhold } from '@navikt/arbeidsforhold';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import Chevron from 'nav-frontend-chevron';
 import { gittMiljø } from '../../../utils/environment';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
-import { useSearchParameters } from '../../../utils/UrlManipulation';
+import { useReplace, useSearchParameters } from '../../../utils/UrlManipulation';
 import { BedriftsmenyContext } from '../../Context/BedriftsmenyProvider';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../../Context/FiltrerteOgSorterteArbeidsforholdProvider';
 import IngenTilgangInfo from '../../IngenTilgangInfo/IngenTilgangInfo';
 import EnkeltArbeidsforholdVarselVisning from './EnkeltArbeidsforholdVarselVisning/EnkeltArbeidsforholdVarselVisning';
 import Brodsmulesti from '../../Brodsmulesti/Brodsmulesti';
 import './EnkeltArbeidsforhold.less';
+
 
 const miljø = gittMiljø<'PROD' | 'DEV' | 'LOCAL'>({
     prod: 'PROD',
@@ -26,14 +27,15 @@ const apiURL = gittMiljø({
 });
 
 const EnkeltArbeidsforhold: FunctionComponent = () => {
-    const history = useHistory();
+    const replace = useReplace();
+    const location = useLocation()
     const { underenhet } = useContext(BedriftsmenyContext);
     const aareg = useContext(FiltrerteOgSorterteArbeidsforholdContext);
     const { setSearchParameter, getSearchParameter } = useSearchParameters();
     const redirectTilbake = () => {
-        const params = new URLSearchParams(history.location.search);
+        const params = new URLSearchParams(location.search);
         params.delete('arbeidsforhold');
-        history.replace({ search: params.toString(), pathname: '..' });
+        replace({ search: params.toString(), pathname: '..' }, { relative: 'path' });
     };
 
     const redirectTilArbeidsforhold = (arbeidsforhold: Arbeidsforhold) => {
