@@ -1,20 +1,24 @@
-import { FunctionComponent, MouseEventHandler } from 'react';
+import React, { FunctionComponent, MouseEventHandler } from 'react';
 import Lenke, {Props as LenkeProps} from 'nav-frontend-lenker';
-import { useLocation } from 'react-router-dom';
+import { Link, LinkProps, useLocation } from 'react-router-dom';
 import { loggNavigasjon } from '../../utils/amplitudefunksjonerForLogging';
 
-export interface Props extends LenkeProps {
+export interface Props {
+    href: string;
     loggLenketekst: string;
+    className: string;
+    children: React.ReactNode;
 }
 
 export const LenkeMedLogging: FunctionComponent<Props> = props => {
-    const {onClick, loggLenketekst, ...rest} = props;
+    const {children, loggLenketekst, href, className} = props;
     const {pathname} = useLocation()
 
-    const onClickLog: MouseEventHandler<HTMLAnchorElement> = event => {
+    const onClickLog: MouseEventHandler<HTMLAnchorElement> = () => {
         loggNavigasjon(props.href, loggLenketekst, pathname);
-        onClick?.(event);
     };
 
-    return <Lenke onClick={onClickLog} {...rest} />;
+    return <Link className={`lenke ${className}`} onClick={onClickLog} to={href}>
+        {children}
+    </Link>;
 };
