@@ -8,7 +8,7 @@
     "@craco/craco": "^6.4.3",
     "@navikt/arbeidsgiver-notifikasjon-widget": "3.0.0",
     "@navikt/arbeidsforhold": "1.4.4",
-    "@navikt/bedriftsmeny": "4.0.1",
+    "@navikt/bedriftsmeny": "4.0.2",
     "@navikt/fnrvalidator": "^1.1.4",
     "@navikt/nav-dekoratoren-moduler": "^1.6.9",
     "@react-pdf/renderer": "2.1.2",
