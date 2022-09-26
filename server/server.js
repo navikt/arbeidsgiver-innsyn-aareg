@@ -3,10 +3,11 @@ import fetch from 'node-fetch';
 import express from 'express';
 import mustacheExpress from 'mustache-express';
 import httpProxyMiddleware from "http-proxy-middleware";
-import {createLogger, transports, format} from 'winston';
+import {createLogger, format, transports} from 'winston';
 import jsdom from "jsdom";
 import Prometheus from "prom-client";
 import require from "./esm-require.js";
+import {createTokenXClient, tokenXMiddleware, validateIdportenJwtMiddleware} from "./tokenx.js";
 
 const apiMetricsMiddleware = require('prometheus-api-metrics');
 const {JSDOM} = jsdom;
@@ -34,6 +35,8 @@ const log = createLogger({
         })
     ]
 });
+
+const tokenxClientPromise = createTokenXClient();
 
 const BUILD_PATH = path.join(process.cwd(), '../build');
 
@@ -90,7 +93,11 @@ app.use(
         metricsPath: '/arbeidsforhold/internal/metrics',
     })
 );
-
+app.use('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api', validateIdportenJwtMiddleware);
+app.use('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api', tokenXMiddleware(tokenxClientPromise, {
+    'dev-gcp': 'dev-fss:fager:innsyn-aareg-api',
+    'prod-gcp': 'prod-fss:fager:innsyn-aareg-api',
+}[NAIS_CLUSTER_NAME]));
 app.use(
     '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
     createProxyMiddleware({
@@ -110,6 +117,9 @@ app.use(
     })
 );
 
+// TOKENX aud=dev-fss:personbruker:arbeidsforhold-api
+// enable access policy
+// enable token validation
 app.use(
     '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
     createProxyMiddleware({
