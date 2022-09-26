@@ -19,6 +19,8 @@ spec:
   prometheus:
     enabled: true
     path: /arbeidsforhold/internal/metrics
+  tokenx:
+    enabled: true
   idporten:
     enabled: true
     sidecar:
