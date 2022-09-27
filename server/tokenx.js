@@ -39,6 +39,10 @@ export const tokenXMiddleware = (tokenxClientPromise, audience) => async (req, r
     }
 
     const subject_token = (req.headers['authorization'] || '').replace('Bearer', '').trim();
+    if (!subject_token) {
+        next();
+        return;
+    }
     const accessToken = await exchangeToken(await tokenxClientPromise, {
         subject_token,
         audience
