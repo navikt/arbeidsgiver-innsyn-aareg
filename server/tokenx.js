@@ -32,7 +32,13 @@ export const createTokenXClient = async (config = {
     );
 };
 
-export const tokenXMiddleware = (tokenxClientPromise, audience) => async (req, res, next) => {
+export const tokenXMiddleware = (
+    {
+        tokenxClientPromise,
+        audience,
+        log
+    }
+) => async (req, res, next) => {
     try {
         if (!audience) {
             next();
@@ -51,6 +57,7 @@ export const tokenXMiddleware = (tokenxClientPromise, audience) => async (req, r
         req.setHeader('authorization', `Bearer ${accessToken}`);
         next();
     } catch (error) {
+        log.error(`Token exchange failed with error: ${error}`);
         next(error);
     }
 };

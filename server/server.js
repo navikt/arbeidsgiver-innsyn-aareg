@@ -66,9 +66,9 @@ const startApiGWGauge = () => {
                 ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
             });
             gauge.set(res.ok ? 1 : 0);
-            log.info("healthcheck: ", gauge.name, res.ok);
+            log.info(`healthcheck: ${gauge.name} ${res.ok}`);
         } catch (error) {
-            log.error("healthcheck error:", gauge.name, error)
+            log.error(`healthcheck error: ${gauge.name} ${error}`);
             gauge.set(0);
         }
     }, 60 * 1000);
@@ -91,10 +91,15 @@ app.use(
     })
 );
 app.use('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api', validateIdportenJwtMiddleware);
-app.use('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api', tokenXMiddleware(tokenxClientPromise, {
-    'dev-gcp': 'dev-fss:fager:innsyn-aareg-api',
-    'prod-gcp': 'prod-fss:fager:innsyn-aareg-api',
-}[NAIS_CLUSTER_NAME]));
+app.use('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api', tokenXMiddleware(
+    {
+        log: log,
+        tokenxClientPromise,
+        audience: {
+            'dev-gcp': 'dev-fss:fager:innsyn-aareg-api',
+            'prod-gcp': 'prod-fss:fager:innsyn-aareg-api',
+        }[NAIS_CLUSTER_NAME]
+    }));
 app.use(
     '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
     createProxyMiddleware({
