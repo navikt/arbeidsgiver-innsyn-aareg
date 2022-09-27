@@ -33,7 +33,7 @@ spec:
     - name: API_GATEWAY
       value: https://api-gw-q1.oera.no
     - name: LOGIN_URL
-      value: https://loginservice.dev.nav.no/login?redirect=https://arbeidsforhold.dev.nav.no/arbeidsforhold
+      value: https://arbeidsforhold.dev.nav.no/arbeidsforhold/oauth2/login
     - name: DECORATOR_EXTERNAL_URL
       value: https://dekoratoren.dev.nav.no/?context=arbeidsgiver&redirectToApp=true&level=Level4
   accessPolicy:
