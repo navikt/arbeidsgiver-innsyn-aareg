@@ -56,7 +56,7 @@ export const tokenXMiddleware = (
             subject_token,
             audience
         });
-        req.setHeader('authorization', `Bearer ${accessToken}`);
+        req.headers["authorization"] = `Bearer ${accessToken}`;
         next();
     } catch (error) {
         log.error(`Token exchange failed with error: ${error}`);
