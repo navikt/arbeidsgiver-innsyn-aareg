@@ -47,7 +47,7 @@ export const tokenXMiddleware = (
             return;
         }
 
-        const subject_token = (req.headers['authorization'] || '').replace('Bearer', '').trim();
+        const subject_token = (req.headers.authorization || '').replace('Bearer', '').trim();
         if (subject_token === '') {
             log.info("no authorization header found, skipping tokenx.")
             next();
@@ -57,7 +57,7 @@ export const tokenXMiddleware = (
             subject_token,
             audience
         });
-        req.headers["Authorization"] = `Bearer ${accessToken}`;
+        req.headers.authorization = `Bearer ${accessToken}`;
         log.info("tokenx completed. authorization header is set.")
         next();
     } catch (error) {
