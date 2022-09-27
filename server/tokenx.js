@@ -33,22 +33,26 @@ export const createTokenXClient = async (config = {
 };
 
 export const tokenXMiddleware = (tokenxClientPromise, audience) => async (req, res, next) => {
-    if (!audience) {
-        next();
-        return;
-    }
+    try {
+        if (!audience) {
+            next();
+            return;
+        }
 
-    const subject_token = (req.headers['authorization'] || '').replace('Bearer', '').trim();
-    if (subject_token === '') {
+        const subject_token = (req.headers['authorization'] || '').replace('Bearer', '').trim();
+        if (subject_token === '') {
+            next();
+            return;
+        }
+        const accessToken = await exchangeToken(await tokenxClientPromise, {
+            subject_token,
+            audience
+        });
+        req.setHeader('authorization', `Bearer ${accessToken}`);
         next();
-        return;
+    } catch (error) {
+        next(error);
     }
-    const accessToken = await exchangeToken(await tokenxClientPromise, {
-        subject_token,
-        audience
-    });
-    req.setHeader('authorization', `Bearer ${accessToken}`);
-    next();
 };
 
 export const validateIdportenJwtMiddleware = (req, res, next) => {
