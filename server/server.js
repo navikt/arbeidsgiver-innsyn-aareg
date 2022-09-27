@@ -13,12 +13,9 @@ const apiMetricsMiddleware = require('prometheus-api-metrics');
 const {JSDOM} = jsdom;
 const {createProxyMiddleware} = httpProxyMiddleware;
 
-const defaultLoginUrl = 'http://localhost:8080/ditt-nav-arbeidsgiver-api/local/selvbetjening-login?redirect=http://localhost:3000/arbeidsforhold';
-
 const {
     PORT = 3000,
     NAIS_APP_IMAGE = '?',
-    LOGIN_URL = defaultLoginUrl,
     DECORATOR_EXTERNAL_URL = 'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4',
     NAIS_CLUSTER_NAME = 'local',
     API_GATEWAY = 'http://localhost:8080',
@@ -139,10 +136,6 @@ app.use(
 );
 
 app.use('/arbeidsforhold', express.static(BUILD_PATH, { index: false }));
-
-app.get('/arbeidsforhold/redirect-til-login', (req, res) => {
-    res.redirect(LOGIN_URL);
-});
 
 app.get('/arbeidsforhold/internal/isAlive', (req, res) =>
     res.sendStatus(200)

@@ -20,7 +20,7 @@ export const redirectTilLogin = () => {
         document.cookie = 'selvbetjening-idtoken=0123456789..*; path=/;';
         window.location.href = '/arbeidsforhold/';
     } else {
-        window.location.href = '/arbeidsforhold/redirect-til-login';
+        window.location.href = '/arbeidsforhold/oauth2/login';
     }
 };
 
