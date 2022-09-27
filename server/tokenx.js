@@ -12,6 +12,8 @@ export const exchangeToken = async (tokenxClient, {subject_token, audience}) => 
         {
             clientAssertionPayload: {
                 nbf: Math.floor(Date.now() / 1000),
+                // TokenX only allows a single audience
+                aud: [tokenxClient?.issuer.metadata.token_endpoint],
             },
         }
     );
