@@ -53,11 +53,11 @@ export const tokenXMiddleware = (
             next();
             return;
         }
-        const accessToken = await exchangeToken(await tokenxClientPromise, {
+        const {access_token} = await exchangeToken(await tokenxClientPromise, {
             subject_token,
             audience
         });
-        req.headers.authorization = `Bearer ${accessToken}`;
+        req.headers.authorization = `Bearer ${access_token}`;
         log.info("tokenx completed. authorization header is set.")
         next();
     } catch (error) {
