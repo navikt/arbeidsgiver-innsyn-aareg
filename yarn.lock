@@ -2,12 +2,17 @@
 # yarn lockfile v1
 
 
-"@amplitude/analytics-connector@1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@amplitude/analytics-connector/-/analytics-connector-1.4.2.tgz#5a87f35d014fa50cb283202d8fde78fa266712c2"
-  integrity sha512-bA9hLDobWA5HBHsdv1hI2+VmQOQ8AA4e3/YB9ng80J8NOLNN2zX/952YSf36Ns86QUm9pPCKHnYrlzMFU61X2g==
+"@amplitude/analytics-connector@^1.4.5":
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/@amplitude/analytics-connector/-/analytics-connector-1.4.5.tgz#07e9375101332bd8b6f15e39e70f31f287e87ad0"
+  integrity sha512-ELAP6ivg+13uSk+TOirGZE/92M+tTbeiQ/i7eXgDO4Hiy00Abf/UxO/rp9WovtxCyeFYTILrujEYxPv5cRQmFw==
   dependencies:
-    "@amplitude/ua-parser-js" "0.7.26"
+    "@amplitude/ua-parser-js" "0.7.31"
+
+"@amplitude/types@^1.10.2":
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/@amplitude/types/-/types-1.10.2.tgz#8f3c6c3c9ee24f401ee037b351c3c67eb945eefc"
+  integrity sha512-I8qenRI7uU6wKNb9LiZrAosSHVoNHziXouKY81CrqxH9xhVTEIJFXeuCV0hbtBr0Al/8ejnGjQRx+S2SvU/pPg==
 
 "@amplitude/types@^1.9.1":
   version "1.9.1"
@@ -18,11 +23,6 @@
   version "0.7.24"
   resolved "https://registry.yarnpkg.com/@amplitude/ua-parser-js/-/ua-parser-js-0.7.24.tgz#2ce605af7d2c38d4a01313fb2385df55fbbd69aa"
   integrity sha512-VbQuJymJ20WEw0HtI2np7EdC3NJGUWi8+Xdbc7uk8WfMIF308T0howpzkQ3JFMN7ejnrcSM/OyNGveeE3TP3TA==
-
-"@amplitude/ua-parser-js@0.7.26":
-  version "0.7.26"
-  resolved "https://registry.yarnpkg.com/@amplitude/ua-parser-js/-/ua-parser-js-0.7.26.tgz#18d889d84d2ba90c248ab6fcd7e3dd07f1c9c86e"
-  integrity sha512-62/Rid6YQ7F2KT/5vTre41Y26ivrEoFC8lbrsJZqBKaiXMJWG0YpNv9RgxNSaZS2jPLVQgoB/FFeWxihOLfIcg==
 
 "@amplitude/ua-parser-js@0.7.31":
   version "0.7.31"
@@ -37,6 +37,14 @@
     "@amplitude/types" "^1.9.1"
     tslib "^1.9.3"
 
+"@amplitude/utils@^1.10.1":
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/@amplitude/utils/-/utils-1.10.2.tgz#ce77dc8a54fcd3843511531cc7d56363247c7ad8"
+  integrity sha512-tVsHXu61jITEtRjB7NugQ5cVDd4QDzne8T3ifmZye7TiJeUfVRvqe44gDtf55A+7VqhDhyEIIXTA1iVcDGqlEw==
+  dependencies:
+    "@amplitude/types" "^1.10.2"
+    tslib "^2.0.0"
+
 "@apideck/better-ajv-errors@^0.3.1":
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/@apideck/better-ajv-errors/-/better-ajv-errors-0.3.2.tgz#cd6d3814eda8aee38ee2e3fa6457be43af4f8361"
@@ -46,23 +54,23 @@
     jsonpointer "^5.0.0"
     leven "^3.1.0"
 
-"@apollo/client@3.5.7":
-  version "3.5.7"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.5.7.tgz#38051c0a414ebf784319fa5131faa19df24fa9ec"
-  integrity sha512-HSLqTGp3sp/PVIWYLLr5v3fjQSr6Fxg6Z5RQj5Q9ALyseIVudD8GZk1jHplaUblTFMBueXGw3Z6DXObuVAr3tw==
+"@apollo/client@3.6.9":
+  version "3.6.9"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.6.9.tgz#ad0ee2e3a3c92dbed4acd6917b6158a492739d94"
+  integrity sha512-Y1yu8qa2YeaCUBVuw08x8NHenFi0sw2I3KCu7Kw9mDSu86HmmtHJkCAifKVrN2iPgDTW/BbP3EpSV8/EQCcxZA==
   dependencies:
-    "@graphql-typed-document-node/core" "^3.0.0"
+    "@graphql-typed-document-node/core" "^3.1.1"
     "@wry/context" "^0.6.0"
     "@wry/equality" "^0.5.0"
     "@wry/trie" "^0.3.0"
-    graphql-tag "^2.12.3"
+    graphql-tag "^2.12.6"
     hoist-non-react-statics "^3.3.2"
     optimism "^0.16.1"
     prop-types "^15.7.2"
     symbol-observable "^4.0.0"
-    ts-invariant "^0.9.4"
+    ts-invariant "^0.10.3"
     tslib "^2.3.0"
-    zen-observable-ts "^1.2.0"
+    zen-observable-ts "^1.2.5"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.16.0", "@babel/code-frame@^7.8.3":
   version "7.16.0"
@@ -1197,7 +1205,7 @@
   dependencies:
     "@floating-ui/dom" "^1.0.0"
 
-"@graphql-typed-document-node/core@^3.0.0":
+"@graphql-typed-document-node/core@^3.1.1":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.1.tgz#076d78ce99822258cf813ecc1e7fa460fa74d052"
   integrity sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==
@@ -1408,17 +1416,17 @@
   dependencies:
     fetch-mock "^9.11.0"
 
-"@navikt/arbeidsgiver-notifikasjon-widget@3.0.1":
-  version "3.0.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/arbeidsgiver-notifikasjon-widget/3.0.1/b1c1d9887ba57af2d0a4996d84e96197f71e8c19#b1c1d9887ba57af2d0a4996d84e96197f71e8c19"
-  integrity sha512-Ppcsljs1U7f5ZLzJXSDir8S72ekznxNOkWah+Cbv/Xwck9gRIjq7njelaBeCuFpyDh0kXogHCGb2YT9dB4QfYw==
+"@navikt/arbeidsgiver-notifikasjon-widget@4.0.0-rc3":
+  version "4.0.0-rc3"
+  resolved "https://npm.pkg.github.com/download/@navikt/arbeidsgiver-notifikasjon-widget/4.0.0-rc3/692ffd23b5eadd0435c3e2c6ea4fd09a74a3ccfa#692ffd23b5eadd0435c3e2c6ea4fd09a74a3ccfa"
+  integrity sha512-QTwosiLFq60nMQoz3DnDLODJ/GqZ+V2bCGVHEZa8wNUaKciAe9Bctl9QNYj6IMvP0nvWFYFRMCDDaO+V+b4glg==
   dependencies:
-    "@apollo/client" "3.5.7"
-    "@navikt/ds-css" "1.3.0"
-    "@navikt/ds-icons" "1.3.0"
-    "@navikt/ds-react" "1.3.0"
-    amplitude-js "^8.16.0"
-    graphql "^15.8.0"
+    "@apollo/client" "3.6.9"
+    "@navikt/ds-css" "1.3.4"
+    "@navikt/ds-icons" "1.3.4"
+    "@navikt/ds-react" "1.3.4"
+    amplitude-js "^8.21.1"
+    graphql "^16.6.0"
     prop-types "15.8.1"
 
 "@navikt/bedriftsmeny@4.0.2":
@@ -1429,28 +1437,23 @@
     "@types/amplitude-js" "^8.9.4"
     fuzzysort "^1.1.4"
 
-"@navikt/ds-css@1.3.0":
-  version "1.3.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-css/1.3.0/9f97e4abd6dc089c035b3df897a10527811ec41e#9f97e4abd6dc089c035b3df897a10527811ec41e"
-  integrity sha512-dXs+rfjWpYFk3EJsuE4o22otNJ5R4WovtKlVgBqOCOvCOFPU69nTl1Lz7ySJOTaIoAr2P3sT3TcTjeAs1R8B3Q==
+"@navikt/ds-css@1.3.4":
+  version "1.3.4"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-css/1.3.4/6fbbe9294884cc7d66c9f95bd2b89a9f1ab4628d#6fbbe9294884cc7d66c9f95bd2b89a9f1ab4628d"
+  integrity sha512-3ADdeHyBql12T2q6iF3NpNqJjGjIiY8Y0bDoVmFmK9Q/Mi6X3TFBlJgP7f7Bm2UmtNbP4skcwgtWxESx23MJoA==
 
-"@navikt/ds-icons@1.3.0":
-  version "1.3.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-icons/1.3.0/76de22fdaf15e445fc19557833d4aee97c8f31f7#76de22fdaf15e445fc19557833d4aee97c8f31f7"
-  integrity sha512-1+kdTyv+NuaQ5rSsWYctv9l5KMBgPxomBUDnbucf+ipewiXgopj0tYDaFJtGTO1i8xVZ5u/AIesTMbAKZGpFbw==
+"@navikt/ds-icons@1.3.4", "@navikt/ds-icons@^1.3.4":
+  version "1.3.4"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-icons/1.3.4/58670a8c1a7277eafbb0a7b5e4d8ee60f31ad23d#58670a8c1a7277eafbb0a7b5e4d8ee60f31ad23d"
+  integrity sha512-oGuajg5U6wAgqvwIKkLjA+dq4wbLZY4otLHvfgcUJyz5uNmFtYFsjdO1dP+G0+PqK5630vlKRbfYpeTbJY4cWQ==
 
-"@navikt/ds-icons@^1.3.0":
-  version "1.3.2"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-icons/1.3.2/432941aedc514f07b16719090d6f6d47f94f0dd2#432941aedc514f07b16719090d6f6d47f94f0dd2"
-  integrity sha512-TWkEeQgnsn9dR0jsoKbDqA3qgZDmNPN8eFTyEoFVf36mQPmWvwFDJz+tYm9SFfIF1koRRF7FoVFGv7fbexvkDg==
-
-"@navikt/ds-react@1.3.0":
-  version "1.3.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-react/1.3.0/73d376eb07b208800f893c51a15908ed54c23cc6#73d376eb07b208800f893c51a15908ed54c23cc6"
-  integrity sha512-kKggDARyc6QPm1+Yx1e0v0mCwOOKgtRd7fSnr3mzLmMo/CdSljLlIau6bi/Y10NgUzEvFayDZMJPStb9NIEh+A==
+"@navikt/ds-react@1.3.4":
+  version "1.3.4"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-react/1.3.4/c33a6c9a2b4f6ede4e769d5b80f1fa68883ddac8#c33a6c9a2b4f6ede4e769d5b80f1fa68883ddac8"
+  integrity sha512-VK5HfZGoUPAyUpiGXHKDuEN0v5hfuPvzI5CxEQZyceM8A/+TybacMX2EcYqNlJAOcbHHMOiBRgej/hnj75AHOA==
   dependencies:
     "@floating-ui/react-dom-interactions" "0.9.2"
-    "@navikt/ds-icons" "^1.3.0"
+    "@navikt/ds-icons" "^1.3.4"
     "@radix-ui/react-tabs" "1.0.0"
     "@radix-ui/react-toggle-group" "1.0.0"
     clsx "^1.1.1"
@@ -2956,14 +2959,14 @@ amplitude-js@^7.4.1:
     blueimp-md5 "^2.10.0"
     query-string "5"
 
-amplitude-js@^8.16.0:
-  version "8.18.3"
-  resolved "https://registry.yarnpkg.com/amplitude-js/-/amplitude-js-8.18.3.tgz#cec2424f139ea5cfc4e8bbefb8e2101f027bba05"
-  integrity sha512-Qs4bspIufDZ9UcG1FLgOPoOP8qJUN/W5IoueOcmi+6u5fX+wigDNfLlbaga2sZ5/Tk6qUUWT+ZuNouLA3+2izQ==
+amplitude-js@^8.21.1:
+  version "8.21.1"
+  resolved "https://registry.yarnpkg.com/amplitude-js/-/amplitude-js-8.21.1.tgz#c68700456cb0c64b05bb47a786f19204fc7b850a"
+  integrity sha512-02S0EWLTkCYurpKx6o6K7+BbtVHzhCTHDM+jgvCAV5VbbsXdhLqVY7Q6NtAF+Wb8phb9K0GSW1SuDKPy4TY9OA==
   dependencies:
-    "@amplitude/analytics-connector" "1.4.2"
+    "@amplitude/analytics-connector" "^1.4.5"
     "@amplitude/ua-parser-js" "0.7.31"
-    "@amplitude/utils" "^1.0.5"
+    "@amplitude/utils" "^1.10.1"
     "@babel/runtime" "^7.3.4"
     blueimp-md5 "^2.10.0"
     query-string "5"
@@ -5716,17 +5719,17 @@ graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0, graceful-fs@^4.2.4, 
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.8.tgz#e412b8d33f5e006593cbd3cee6df9f2cebbe802a"
   integrity sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==
 
-graphql-tag@^2.12.3:
+graphql-tag@^2.12.6:
   version "2.12.6"
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.12.6.tgz#d441a569c1d2537ef10ca3d1633b48725329b5f1"
   integrity sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg==
   dependencies:
     tslib "^2.1.0"
 
-graphql@^15.8.0:
-  version "15.8.0"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.8.0.tgz#33410e96b012fa3bdb1091cc99a94769db212b38"
-  integrity sha512-5gghUc24tP9HRznNpV2+FIoq3xKkj5dTQqf4v0CpdPbFVwFkWoxOM+o+2OC9ZSvjEMTjfmG9QT+gcvggTwW1zw==
+graphql@^16.6.0:
+  version "16.6.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.6.0.tgz#c2dcffa4649db149f6282af726c8c83f1c7c5fdb"
+  integrity sha512-KPIBPDlW7NxrbT/eh4qPXz5FiFdL5UbaA0XUNz2Rp3Z3hqBSkbj0GVjwFDztsWVauZUWsbKHgMg++sk8UX0bkw==
 
 gzip-size@^6.0.0:
   version "6.0.0"
@@ -10440,10 +10443,10 @@ tryer@^1.0.1:
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
   integrity sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA==
 
-ts-invariant@^0.9.4:
-  version "0.9.4"
-  resolved "https://registry.yarnpkg.com/ts-invariant/-/ts-invariant-0.9.4.tgz#42ac6c791aade267dd9dc65276549df5c5d71cac"
-  integrity sha512-63jtX/ZSwnUNi/WhXjnK8kz4cHHpYS60AnmA6ixz17l7E12a5puCWFlNpkne5Rl0J8TBPVHpGjsj4fxs8ObVLQ==
+ts-invariant@^0.10.3:
+  version "0.10.3"
+  resolved "https://registry.yarnpkg.com/ts-invariant/-/ts-invariant-0.10.3.tgz#3e048ff96e91459ffca01304dbc7f61c1f642f6c"
+  integrity sha512-uivwYcQaxAucv1CzRp2n/QdYPo4ILf9VXgH19zEIjFx2EJufV16P0JtJVpYHy89DItG6Kwj2oIUjrcK5au+4tQ==
   dependencies:
     tslib "^2.1.0"
 
@@ -11313,10 +11316,10 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zen-observable-ts@^1.2.0:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-1.2.3.tgz#c2f5ccebe812faf0cfcde547e6004f65b1a6d769"
-  integrity sha512-hc/TGiPkAWpByykMwDcem3SdUgA4We+0Qb36bItSuJC9xD0XVBZoFHYoadAomDSNf64CG8Ydj0Qb8Od8BUWz5g==
+zen-observable-ts@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-1.2.5.tgz#6c6d9ea3d3a842812c6e9519209365a122ba8b58"
+  integrity sha512-QZWQekv6iB72Naeake9hS1KxHlotfRpe+WGNbNx5/ta+R3DNjVO2bswf63gXlWDcs+EMd7XY8HfVQyP1X6T4Zg==
   dependencies:
     zen-observable "0.8.15"
 
