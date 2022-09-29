@@ -142,6 +142,11 @@ app.get('/arbeidsforhold/internal/isReady', (req, res) =>
     res.sendStatus(200)
 );
 
+app.use(
+    '/arbeidsforhold/notifikasjon-bruker-api',
+    createNotifikasjonBrukerApiProxyMiddleware(),
+);
+
 const serve = async () => {
     let fragments;
     try {
