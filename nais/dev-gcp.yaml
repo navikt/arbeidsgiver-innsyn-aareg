@@ -19,6 +19,8 @@ spec:
   prometheus:
     enabled: true
     path: /arbeidsforhold/internal/metrics
+  tokenx:
+    enabled: true
   envFrom:
     - secret: innsyn-aareg
   env:
