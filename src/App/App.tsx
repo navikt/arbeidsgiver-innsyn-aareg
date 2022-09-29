@@ -35,7 +35,7 @@ const App = () => {
     return (
         <div className='app'>
             <LoginProvider>
-                <NotifikasjonWidgetProvider miljo={miljø}>
+                <NotifikasjonWidgetProvider apiUrl={`${basename}/notifikasjon-bruker-api`}>
                     <BrowserRouter basename={basename}>
                         <AmplitudeSidevisningEventLogger>
                             <LoginBoundary>
