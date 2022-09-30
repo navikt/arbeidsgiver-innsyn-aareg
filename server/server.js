@@ -8,6 +8,7 @@ import jsdom from "jsdom";
 import Prometheus from "prom-client";
 import require from "./esm-require.js";
 import {createNotifikasjonBrukerApiProxyMiddleware} from "./brukerapi-proxy-middleware.js";
+import cookieParser from "cookie-parser";
 
 const apiMetricsMiddleware = require('prometheus-api-metrics');
 const {JSDOM} = jsdom;
@@ -80,6 +81,9 @@ app.disable("x-powered-by");
 app.engine('html', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', BUILD_PATH);
+
+app.use(cookieParser());
+
 
 app.use('/*', (req, res, next) => {
     res.setHeader('NAIS_APP_IMAGE', NAIS_APP_IMAGE);
