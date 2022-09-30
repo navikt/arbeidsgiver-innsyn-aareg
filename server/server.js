@@ -7,6 +7,7 @@ import {createLogger, transports, format} from 'winston';
 import jsdom from "jsdom";
 import Prometheus from "prom-client";
 import require from "./esm-require.js";
+import {createNotifikasjonBrukerApiProxyMiddleware} from "./brukerapi-proxy-middleware.js";
 
 const apiMetricsMiddleware = require('prometheus-api-metrics');
 const {JSDOM} = jsdom;
@@ -92,6 +93,7 @@ app.use(
 );
 
 app.use(
+
     '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
     createProxyMiddleware({
         logLevel: PROXY_LOG_LEVEL,
