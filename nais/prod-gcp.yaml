@@ -19,6 +19,8 @@ spec:
   prometheus:
     enabled: true
     path: /arbeidsforhold/internal/metrics
+  tokenx:
+    enabled: true
   envFrom:
     - secret: innsyn-aareg
   env:
@@ -32,5 +34,7 @@ spec:
       value: https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4
   accessPolicy:
     outbound:
+      rules:
+        - application: notifikasjon-bruker-api
       external:
         - host: www.nav.no
