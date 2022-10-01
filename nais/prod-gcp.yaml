@@ -26,6 +26,8 @@ spec:
       value: /etc/ssl/ca-bundle.pem
     - name: API_GATEWAY
       value: https://api-gw.oera.no
+    - name: LOGIN_URL
+      value: https://loginservice.nav.no/login?redirect=https://arbeidsgiver.nav.no/arbeidsforhold
     - name: DECORATOR_EXTERNAL_URL
       value: https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4
   accessPolicy:

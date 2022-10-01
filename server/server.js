@@ -4,18 +4,25 @@ import express from 'express';
 import mustacheExpress from 'mustache-express';
 import httpProxyMiddleware from "http-proxy-middleware";
 import {createLogger, format, transports} from 'winston';
+import cookieParser from 'cookie-parser';
 import jsdom from "jsdom";
 import Prometheus from "prom-client";
 import require from "./esm-require.js";
-import {createTokenXClient, tokenXMiddleware, validateIdportenJwtMiddleware} from "./tokenx.js";
+import {
+    createTokenXClient,
+    loginserviceCookieSubjectTokenExtractor,
+    tokenXMiddleware,
+} from "./tokenx.js";
 
 const apiMetricsMiddleware = require('prometheus-api-metrics');
 const {JSDOM} = jsdom;
 const {createProxyMiddleware} = httpProxyMiddleware;
 
+const defaultLoginUrl = 'http://localhost:8080/ditt-nav-arbeidsgiver-api/local/selvbetjening-login?redirect=http://localhost:3000/arbeidsforhold';
 const {
     PORT = 3000,
     NAIS_APP_IMAGE = '?',
+    LOGIN_URL = defaultLoginUrl,
     DECORATOR_EXTERNAL_URL = 'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4',
     NAIS_CLUSTER_NAME = 'local',
     API_GATEWAY = 'http://localhost:8080',
@@ -79,6 +86,7 @@ app.disable("x-powered-by");
 app.engine('html', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', BUILD_PATH);
+app.use(cookieParser());
 
 app.use('/*', (req, res, next) => {
     res.setHeader('NAIS_APP_IMAGE', NAIS_APP_IMAGE);
@@ -90,11 +98,11 @@ app.use(
         metricsPath: '/arbeidsforhold/internal/metrics',
     })
 );
-app.use('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api', validateIdportenJwtMiddleware);
 app.use('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api', tokenXMiddleware(
     {
         log: log,
         tokenxClientPromise,
+        subjectTokenExtractor: loginserviceCookieSubjectTokenExtractor,
         audience: {
             'dev-gcp': 'dev-fss:fager:innsyn-aareg-api',
             'prod-gcp': 'prod-fss:fager:innsyn-aareg-api',
@@ -119,9 +127,6 @@ app.use(
     })
 );
 
-// TOKENX aud=dev-fss:personbruker:arbeidsforhold-api
-// enable access policy
-// enable token validation
 app.use(
     '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
     createProxyMiddleware({
@@ -141,6 +146,10 @@ app.use(
 );
 
 app.use('/arbeidsforhold', express.static(BUILD_PATH, { index: false }));
+
+app.get('/arbeidsforhold/redirect-til-login', (req, res) => {
+    res.redirect(LOGIN_URL);
+});
 
 app.get('/arbeidsforhold/internal/isAlive', (req, res) =>
     res.sendStatus(200)

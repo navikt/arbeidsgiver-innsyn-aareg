@@ -34,10 +34,14 @@ export const createTokenXClient = async (config = {
     );
 };
 
+export const authorizationBearerSubjectTokenExtractor = (req) => (req.headers.authorization || '').replace('Bearer', '').trim();
+export const loginserviceCookieSubjectTokenExtractor = (req) => req.cookies['selvbetjening-idtoken'];
+
 export const tokenXMiddleware = (
     {
         tokenxClientPromise,
         audience,
+        subjectTokenExtractor,
         log
     }
 ) => async (req, res, next) => {
@@ -47,7 +51,7 @@ export const tokenXMiddleware = (
             return;
         }
 
-        const subject_token = (req.headers.authorization || '').replace('Bearer', '').trim();
+        const subject_token = subjectTokenExtractor(req);
         if (subject_token === '') {
             log.info("no authorization header found, skipping tokenx.")
             next();
@@ -64,10 +68,4 @@ export const tokenXMiddleware = (
         log.error(`Token exchange failed with error: ${error}`);
         next(error);
     }
-};
-
-export const validateIdportenJwtMiddleware = (req, res, next) => {
-    // TODO: validate token
-    // https://github.com/navikt/dp-auth/blob/674fac682d40d1a7a527704d2a413b5ee51aa473/lib/providers/idporten.ts#L23
-    next();
 };
