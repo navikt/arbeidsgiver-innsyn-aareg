@@ -123,7 +123,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
                     }
                 }}
             >
-                <NotifikasjonWidget/>
+                <NotifikasjonWidget />
             </Bedriftsmeny>
             {altinnorganisasjoner.length === 0 || context === null ? (
                 lasteboksEllerIngenTilgang(oppstart)

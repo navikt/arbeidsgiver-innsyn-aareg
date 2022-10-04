@@ -4,10 +4,11 @@ import express from 'express';
 import mustacheExpress from 'mustache-express';
 import httpProxyMiddleware from "http-proxy-middleware";
 import {createLogger, format, transports} from 'winston';
-import cookieParser from 'cookie-parser';
 import jsdom from "jsdom";
 import Prometheus from "prom-client";
 import require from "./esm-require.js";
+import {createNotifikasjonBrukerApiProxyMiddleware} from "./brukerapi-proxy-middleware.js";
+import cookieParser from "cookie-parser";
 import {
     createTokenXClient,
     loginserviceCookieSubjectTokenExtractor,
@@ -88,6 +89,7 @@ app.set('view engine', 'mustache');
 app.set('views', BUILD_PATH);
 app.use(cookieParser());
 
+
 app.use('/*', (req, res, next) => {
     res.setHeader('NAIS_APP_IMAGE', NAIS_APP_IMAGE);
     next();
@@ -157,6 +159,11 @@ app.get('/arbeidsforhold/internal/isAlive', (req, res) =>
 
 app.get('/arbeidsforhold/internal/isReady', (req, res) =>
     res.sendStatus(200)
+);
+
+app.use(
+    '/arbeidsforhold/notifikasjon-bruker-api',
+    createNotifikasjonBrukerApiProxyMiddleware(),
 );
 
 const serve = async () => {
