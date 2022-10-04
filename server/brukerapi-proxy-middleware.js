@@ -74,3 +74,40 @@ const exchangeToken = async (tokenxClient, {subject_token, audience}) => {
         }
     );
 };
+
+
+export const authorizationBearerSubjectTokenExtractor = (req) => (req.headers.authorization || '').replace('Bearer', '').trim();
+export const loginserviceCookieSubjectTokenExtractor = (req) => req.cookies['selvbetjening-idtoken'];
+
+export const tokenXMiddleware = (
+    {
+        audience,
+        subjectTokenExtractor,
+        log
+    }
+) => async (req, res, next) => {
+    const {tokenXClientPromise} = config()
+    try {
+        if (!audience) {
+            next();
+            return;
+        }
+
+        const subject_token = subjectTokenExtractor(req);
+        if (subject_token === '') {
+            log.info("no authorization header found, skipping tokenx.")
+            next();
+            return;
+        }
+        const {access_token} = await exchangeToken(await tokenXClientPromise, {
+            subject_token,
+            audience
+        });
+        req.headers.authorization = `Bearer ${access_token}`;
+        log.info("tokenx completed. authorization header is set.")
+        next();
+    } catch (error) {
+        log.error(`Token exchange failed with error: ${error}`);
+        next(error);
+    }
+};

@@ -7,13 +7,12 @@ import {createLogger, format, transports} from 'winston';
 import jsdom from "jsdom";
 import Prometheus from "prom-client";
 import require from "./esm-require.js";
-import {createNotifikasjonBrukerApiProxyMiddleware} from "./brukerapi-proxy-middleware.js";
-import cookieParser from "cookie-parser";
 import {
-    createTokenXClient,
     loginserviceCookieSubjectTokenExtractor,
     tokenXMiddleware,
-} from "./tokenx.js";
+    createNotifikasjonBrukerApiProxyMiddleware,
+} from "./brukerapi-proxy-middleware.js";
+import cookieParser from "cookie-parser";
 
 const apiMetricsMiddleware = require('prometheus-api-metrics');
 const {JSDOM} = jsdom;
@@ -40,8 +39,6 @@ const log = createLogger({
         })
     ]
 });
-
-const tokenxClientPromise = createTokenXClient();
 
 const BUILD_PATH = path.join(process.cwd(), '../build');
 
@@ -103,7 +100,6 @@ app.use(
 app.use('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api', tokenXMiddleware(
     {
         log: log,
-        tokenxClientPromise,
         subjectTokenExtractor: loginserviceCookieSubjectTokenExtractor,
         audience: {
             'dev-gcp': 'dev-fss:fager:innsyn-aareg-api',
