@@ -150,7 +150,7 @@ app.get('/arbeidsforhold/internal/isReady', (req, res) =>
 
 app.use(
     '/arbeidsforhold/notifikasjon-bruker-api',
-    createNotifikasjonBrukerApiProxyMiddleware(),
+    createNotifikasjonBrukerApiProxyMiddleware({log}),
 );
 
 const serve = async () => {
