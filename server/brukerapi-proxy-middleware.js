@@ -1,4 +1,4 @@
-import {Issuer} from 'openid-client';
+import {Issuer, errors} from 'openid-client';
 import expressHttpProxy from 'express-http-proxy';
 
 const {
@@ -40,7 +40,7 @@ const createTokenXClient = async () => {
     );
 };
 
-export const createNotifikasjonBrukerApiProxyMiddleware = () => {
+export const createNotifikasjonBrukerApiProxyMiddleware = ({ log }) => {
     const {target, tokenXClientPromise} = config()
     const audience = `${NAIS_CLUSTER_NAME}:fager:notifikasjon-bruker-api`;
     return expressHttpProxy(target, {
@@ -53,6 +53,14 @@ export const createNotifikasjonBrukerApiProxyMiddleware = () => {
             options.headers.Authorization = `Bearer ${access_token}`;
             return options;
         },
+        proxyErrorHandler: (err, res, next) => {
+            if (err instanceof errors.OPError) {
+                log.error(`token exchange feilet ${err.message}`, err);
+                res.status(401).send();
+            } else {
+                next(err);
+            }
+        }
     });
 }
 
