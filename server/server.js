@@ -68,9 +68,8 @@ const startApiGWGauge = () => {
                 ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
             });
             gauge.set(res.ok ? 1 : 0);
-            log.info("healthcheck: ", gauge.name, res.ok);
         } catch (error) {
-            log.error("healthcheck error:", gauge.name, error)
+            log.error(`healthcheck error: ${gauge.name}`, error)
             gauge.set(0);
         }
     }, 60 * 1000);
