@@ -8,26 +8,6 @@ const {
     TOKEN_X_PRIVATE_JWK
 } = process.env;
 
-if (NAIS_CLUSTER_NAME === 'local' || NAIS_CLUSTER_NAME === 'labs-gcp') {
-    import("@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock")
-}
-
-const config = () => {
-    if (NAIS_CLUSTER_NAME === 'local' || NAIS_CLUSTER_NAME === 'labs-gcp') {
-        return {
-            target: 'http://localhost:8081',
-            tokenXClientPromise: Promise.resolve({
-                grant: () => ({access_token: "foo"}),
-                issuer: {metadata: {token_endpoint: ''}}
-            }),
-        }
-    } else {
-        return {
-            target: 'http://notifikasjon-bruker-api.fager.svc.cluster.local',
-            tokenXClientPromise: createTokenXClient(),
-        }
-    }
-}
 
 const createTokenXClient = async () => {
     const issuer = await Issuer.discover(TOKEN_X_WELL_KNOWN_URL);
@@ -41,12 +21,11 @@ const createTokenXClient = async () => {
 };
 
 export const createNotifikasjonBrukerApiProxyMiddleware = ({ log }) => {
-    const {target, tokenXClientPromise} = config()
     const audience = `${NAIS_CLUSTER_NAME}:fager:notifikasjon-bruker-api`;
-    return expressHttpProxy(target, {
+    return expressHttpProxy('http://notifikasjon-bruker-api.fager.svc.cluster.local', {
         proxyReqPathResolver: () => '/api/graphql',
         proxyReqOptDecorator: async (options, req) => {
-            const tokenXClient = await tokenXClientPromise;
+            const tokenXClient = await createTokenXClient();
             const subject_token = req.cookies['selvbetjening-idtoken'];
             const {access_token} = await exchangeToken(tokenXClient, {subject_token, audience});
 

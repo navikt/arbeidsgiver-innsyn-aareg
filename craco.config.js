@@ -1,5 +1,6 @@
 const CracoLessPlugin = require('craco-less');
 const {ProvidePlugin} = require("webpack");
+const {applyNotifikasjonMockMiddleware} = require('@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock');
 
 module.exports = {
     webpack: {
@@ -36,6 +37,7 @@ module.exports = {
             const cookieParser = require('cookie-parser');
             app.use(cookieParser());
 
+            applyNotifikasjonMockMiddleware({app, path: '/arbeidsforhold/notifikasjon-bruker-api'});
             app.get('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/innlogget', (req, res) => {
                 console.log("innlogget?")
                 const token = req.cookies.hasOwnProperty('selvbetjening-idtoken')

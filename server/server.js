@@ -148,10 +148,15 @@ app.get('/arbeidsforhold/internal/isReady', (req, res) =>
     res.sendStatus(200)
 );
 
-app.use(
-    '/arbeidsforhold/notifikasjon-bruker-api',
-    createNotifikasjonBrukerApiProxyMiddleware({log}),
-);
+if (NAIS_CLUSTER_NAME === 'local' || NAIS_CLUSTER_NAME === 'labs-gcp') {
+    const {applyNotifikasjonMockMiddleware} = require('@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock');
+    applyNotifikasjonMockMiddleware({app, path: '/arbeidsforhold/notifikasjon-bruker-api'})
+} else {
+    app.use(
+        '/arbeidsforhold/notifikasjon-bruker-api',
+        createNotifikasjonBrukerApiProxyMiddleware({log}),
+    );
+}
 
 const serve = async () => {
     let fragments;
