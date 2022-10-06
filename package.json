@@ -1,12 +1,11 @@
 {
   "name": "innsyn-aareg",
-  "proxy": "http://localhost:8080",
   "version": "0.1.0",
   "private": true,
   "homepage": "/arbeidsforhold",
   "dependencies": {
     "@craco/craco": "^6.4.3",
-    "@navikt/arbeidsgiver-notifikasjon-widget": "4.0.0",
+    "@navikt/arbeidsgiver-notifikasjon-widget": "5.0.1",
     "@navikt/arbeidsforhold": "1.4.4",
     "@navikt/bedriftsmeny": "4.0.2",
     "@navikt/fnrvalidator": "^1.1.4",
@@ -108,12 +107,11 @@
   },
   "devDependencies": {
     "cookie-parser": "*",
+    "@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock": "5.0.1",
     "prettier": "^2.2.1"
   },
   "scripts": {
-    "start": "craco start",
-    "start:mock": "REACT_APP_MOCK=true yarn start",
-    "start:mock:win": "set REACT_APP_MOCK=true && yarn start",
+    "start": "REACT_APP_MOCK=true craco start",
     "build": "craco build",
     "test": "craco test",
     "lint": "eslint --ext ts,tsx .",
