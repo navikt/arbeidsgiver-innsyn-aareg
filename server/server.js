@@ -68,6 +68,9 @@ const startApiGWGauge = () => {
                 ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
             });
             gauge.set(res.ok ? 1 : 0);
+            if (NAIS_CLUSTER_NAME === 'dev-gcp') {
+                log.info(`healthcheck result http code: ${res.statusCode}`)
+            }
         } catch (error) {
             log.error(`healthcheck error: ${gauge.name}`, error)
             gauge.set(0);
