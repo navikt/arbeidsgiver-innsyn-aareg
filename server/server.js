@@ -112,7 +112,8 @@ app.use(
             log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
         },
         onProxyReq: (proxyReq, req, res) => {
-            log.info(`onProxyReq(proto=${proxyReq.protocol} host=${proxyReq.host} path=${proxyReq.path})`)
+            log.info(`onProxyReq( proxyReq( ${proxyReq.protocol} ${proxyReq.host} ${proxyReq.path}), req(${req.protocol} ${req.hostname} ${req.path}))`,
+                {"x-correlation-id": req.get("x-correlation-id")})
         },
         changeOrigin: true,
         pathRewrite: {
