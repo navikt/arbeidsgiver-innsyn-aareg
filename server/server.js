@@ -94,10 +94,10 @@ app.use('/*', (req, res, next) => {
         req.headers["x-correlation-id"] = randomUUID()
     }
 
-    const token = req.get("selvbetjening-idtoken");
-    if (token) {
+    const subject_token = req.cookies['selvbetjening-idtoken'];
+    if (subject_token) {
         log.info("moving token from cookie to header")
-        req.headers.Authorization = `Bearer ${token}`
+        req.headers.Authorization = `Bearer ${subject_token}`
     }
     next();
 });
