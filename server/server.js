@@ -69,7 +69,7 @@ const startApiGWGauge = () => {
             });
             gauge.set(res.ok ? 1 : 0);
             if (NAIS_CLUSTER_NAME === 'dev-gcp') {
-                log.info(`healthcheck result http code: ${res.statusCode}`)
+                log.info(`healthcheck: ${JSON.stringify(res)} body:${await res.text()}`)
             }
         } catch (error) {
             log.error(`healthcheck error: ${gauge.name}`, error)
