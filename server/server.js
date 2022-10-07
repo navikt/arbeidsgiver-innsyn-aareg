@@ -2,6 +2,7 @@ import path from 'path';
 import fetch from 'node-fetch';
 import express from 'express';
 import mustacheExpress from 'mustache-express';
+import {randomUUID} from 'crypto';
 import httpProxyMiddleware from "http-proxy-middleware";
 import {createLogger, transports, format} from 'winston';
 import jsdom from "jsdom";
@@ -89,6 +90,9 @@ app.use(cookieParser());
 
 app.use('/*', (req, res, next) => {
     res.setHeader('NAIS_APP_IMAGE', NAIS_APP_IMAGE);
+    if (!req.get("x-correlation-id")) {
+        req.headers["x-correlation-id"] = randomUUID()
+    }
     next();
 });
 
