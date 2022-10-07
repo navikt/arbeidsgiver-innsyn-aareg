@@ -107,6 +107,9 @@ app.use(
         onError: (err, req, res) => {
             log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
         },
+        onProxyReq: (proxyReq, req, res) => {
+            log.info(`onProxyReq(proto=${proxyReq.protocol} host=${proxyReq.host} path=${proxyReq.path})`)
+        },
         changeOrigin: true,
         pathRewrite: {
             '^/arbeidsforhold/arbeidsgiver-arbeidsforhold/api': '/arbeidsgiver-arbeidsforhold-api',
