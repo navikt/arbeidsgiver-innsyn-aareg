@@ -21,6 +21,8 @@ spec:
     path: /arbeidsforhold/internal/metrics
   tokenx:
     enabled: true
+  envFrom:
+    - secret: innsyn-aareg
   env:
     - name: NODE_EXTRA_CA_CERTS
       value: /etc/ssl/ca-bundle.pem
