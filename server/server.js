@@ -117,7 +117,7 @@ app.use(
         },
         selfHandleResponse: true,
         onProxyRes: responseInterceptor(async (responseBuffer, proxyRes) => {
-            console.log(`onProxyRes('${responseBuffer.toString()}')`);
+            log.info(`onProxyRes('${responseBuffer.toString()}')`);
             return responseBuffer;
         }),
         changeOrigin: true,
