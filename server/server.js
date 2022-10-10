@@ -9,6 +9,7 @@ import Prometheus from "prom-client";
 import require from "./esm-require.js";
 import {createNotifikasjonBrukerApiProxyMiddleware} from "./brukerapi-proxy-middleware.js";
 import cookieParser from "cookie-parser";
+import {applyNotifikasjonMockMiddleware} from "@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock";
 
 const apiMetricsMiddleware = require('prometheus-api-metrics');
 const {JSDOM} = jsdom;
@@ -98,8 +99,20 @@ app.use(
     })
 );
 
-app.use(
+if (NAIS_CLUSTER_NAME === 'local' || NAIS_CLUSTER_NAME === 'labs-gcp') {
+    const {applyNotifikasjonMockMiddleware} = require('@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock');
+    applyNotifikasjonMockMiddleware({app, path: '/arbeidsforhold/notifikasjon-bruker-api'});
 
+    // mocks:
+    require('./mock/all.cjs').mockAll(app);
+} else {
+    app.use(
+        '/arbeidsforhold/notifikasjon-bruker-api',
+        createNotifikasjonBrukerApiProxyMiddleware({log}),
+    );
+}
+
+app.use(
     '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
     createProxyMiddleware({
         logLevel: PROXY_LOG_LEVEL,
@@ -149,16 +162,6 @@ app.get('/arbeidsforhold/internal/isAlive', (req, res) =>
 app.get('/arbeidsforhold/internal/isReady', (req, res) =>
     res.sendStatus(200)
 );
-
-if (NAIS_CLUSTER_NAME === 'local' || NAIS_CLUSTER_NAME === 'labs-gcp') {
-    const {applyNotifikasjonMockMiddleware} = require('@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock');
-    applyNotifikasjonMockMiddleware({app, path: '/arbeidsforhold/notifikasjon-bruker-api'})
-} else {
-    app.use(
-        '/arbeidsforhold/notifikasjon-bruker-api',
-        createNotifikasjonBrukerApiProxyMiddleware({log}),
-    );
-}
 
 const serve = async () => {
     let fragments;
