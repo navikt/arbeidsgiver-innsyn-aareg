@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import express from 'express';
 import mustacheExpress from 'mustache-express';
 import {randomUUID} from 'crypto';
-import httpProxyMiddleware from "http-proxy-middleware";
+import httpProxyMiddleware, {responseInterceptor} from "http-proxy-middleware";
 import {createLogger, transports, format} from 'winston';
 import jsdom from "jsdom";
 import Prometheus from "prom-client";
@@ -87,7 +87,6 @@ app.set('views', BUILD_PATH);
 
 app.use(cookieParser());
 
-
 app.use('/*', (req, res, next) => {
     res.setHeader('NAIS_APP_IMAGE', NAIS_APP_IMAGE);
     if (!req.get("x-correlation-id")) {
@@ -109,7 +108,6 @@ app.use(
 );
 
 app.use(
-
     '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
     createProxyMiddleware({
         logLevel: PROXY_LOG_LEVEL,
@@ -117,13 +115,14 @@ app.use(
         onError: (err, req, res) => {
             log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
         },
-        onProxyReq: (proxyReq, req, res) => {
-            log.info(`onProxyReq( proxyReq( ${proxyReq.protocol} ${proxyReq.host} ${proxyReq.path}), req(${req.protocol} ${req.hostname} ${req.path}))`,
-                {"x-correlation-id": req.get("x-correlation-id")})
-        },
+        selfHandleResponse: true,
+        onProxyRes: responseInterceptor(async (responseBuffer, proxyRes) => {
+            console.log(`onProxyRes('${responseBuffer.toString()}')`);
+            return responseBuffer;
+        }),
         changeOrigin: true,
         pathRewrite: {
-            '^/arbeidsforhold/arbeidsgiver-arbeidsforhold/api': '/arbeidsgiver-arbeidsforhold-api',
+            '^/arbeidsforhold/arbeidsgiver-arbeidsforhold/api': '',
         },
         secure: true,
         xfwd: true,
