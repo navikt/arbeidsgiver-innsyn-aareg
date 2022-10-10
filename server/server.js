@@ -149,7 +149,10 @@ app.get('/arbeidsforhold/internal/isReady', (req, res) =>
 
 if (NAIS_CLUSTER_NAME === 'local' || NAIS_CLUSTER_NAME === 'labs-gcp') {
     const {applyNotifikasjonMockMiddleware} = require('@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock');
-    applyNotifikasjonMockMiddleware({app, path: '/arbeidsforhold/notifikasjon-bruker-api'})
+    applyNotifikasjonMockMiddleware({app, path: '/arbeidsforhold/notifikasjon-bruker-api'});
+
+    // mocks:
+    require('./mock/all.cjs').mockAll(app);
 } else {
     app.use(
         '/arbeidsforhold/notifikasjon-bruker-api',

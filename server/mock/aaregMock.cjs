@@ -1,8 +1,6 @@
-import { Arbeidsforhold } from '../App/Objekter/ArbeidsForhold';
-import { ObjektFraAAregisteret, tomResponsFraAareg } from '../App/Objekter/ObjektFraAAreg';
-import { Varsel } from '../App/Objekter/Varsel';
+const {delay} = require('./utils.cjs');
 
-export const listeMedFornavn: string[] = [
+const listeMedFornavn = [
     'Håkon',
     'Harald',
     'Sonja',
@@ -36,7 +34,7 @@ export const listeMedFornavn: string[] = [
     'Trond'
 ];
 
-export const listeMedEtterNavn: string[] = [
+const listeMedEtterNavn = [
     'Hagerup',
     'Vesaas',
     'Calmar',
@@ -53,7 +51,7 @@ export const listeMedEtterNavn: string[] = [
     'Holth'
 ];
 
-export const yrker: string[] = [
+const yrker = [
     'aa dette er et langt yrkesnavn',
     'Systemutvikler',
     'Interasksjonsdesigner',
@@ -84,7 +82,7 @@ export const yrker: string[] = [
     'Performer'
 ];
 
-export const fodselsNr: string[] = [
+const fodselsNr = [
     '04135226825',
     '32119702590',
     '30157234940',
@@ -114,11 +112,10 @@ export const fodselsNr: string[] = [
     '21183832989'
 ];
 
-export const varlingskoder: string[] = ['ERKONK', 'EROPPH', 'ERVIRK', 'IBARBG', 'IBKAOR','AFIDHI','IBPPAG','NAVEND','PPIDHI'];
-type varslingsId = typeof varlingskoder[number];
-export const prosent: string[] = ['10', '20', '30', '80', '100'];
+const varlingskoder = ['ERKONK', 'EROPPH', 'ERVIRK', 'IBARBG', 'IBKAOR', 'AFIDHI', 'IBPPAG', 'NAVEND', 'PPIDHI'];
+const prosent = ['10', '20', '30', '80', '100'];
 
-const tomtArbeidsForhold: Arbeidsforhold = {
+const tomtArbeidsForhold = {
     ansattFom: '',
     ansattTom: '',
     arbeidsgiver: {
@@ -144,45 +141,45 @@ const tomtArbeidsForhold: Arbeidsforhold = {
     yrkesbeskrivelse: ''
 };
 
-const genererRandomIndex = (lengde: number): number => {
+const genererRandomIndex = (lengde) => {
     let tilfeldigIndeks = Math.random();
     tilfeldigIndeks = tilfeldigIndeks * lengde;
     return Math.floor(tilfeldigIndeks);
 };
 
-const setNavn = (): string => {
+const setNavn = () => {
     const indeksFornavn = genererRandomIndex(listeMedFornavn.length);
     const indeksEtternavn = genererRandomIndex(listeMedEtterNavn.length);
     return (listeMedFornavn[indeksFornavn] + ' ' + listeMedEtterNavn[indeksEtternavn]).toUpperCase();
 };
 
-const setProsent = (): string => {
+const setProsent = () => {
     const indeks = genererRandomIndex(prosent.length);
     return prosent[indeks];
 };
 
-const tilfeldigDatoITidsintervall = (startdato: Date, sluttdato: Date) => {
+const tilfeldigDatoITidsintervall = (startdato, sluttdato) => {
     return new Date(startdato.getTime() + Math.random() * (sluttdato.getTime() - startdato.getTime()));
 }
 
-const formaterDato = (dato: Date): string => {
+const formaterDato = (dato) => {
     const måned = dato.getMonth() + 1;
-    const månedSomString = måned<10 ? '0'+måned.toString() : måned.toString();
+    const månedSomString = måned < 10 ? '0' + måned.toString() : måned.toString();
     const dag = dato.getDate();
-    const dagSomString = dag<10 ? '0'+dag.toString() : dag.toString();
-    return dato.getFullYear() +'-'+månedSomString+'-'+dagSomString
+    const dagSomString = dag < 10 ? '0' + dag.toString() : dag.toString();
+    return dato.getFullYear() + '-' + månedSomString + '-' + dagSomString
 }
 
-const setYrke = (): string => {
+const setYrke = () => {
     const indeks = genererRandomIndex(yrker.length);
     return yrker[indeks].toUpperCase();
 };
 
-const setFnr = (): string => {
+const setFnr = () => {
     const indeks = genererRandomIndex(fodselsNr.length);
     return fodselsNr[indeks];
 };
-const varselkodeBeskrivelser: Record<varslingsId, string> = {
+const varselkodeBeskrivelser = {
     ERKONK: 'Kontroller sluttdatoen. NAV har satt samme sluttdato som konkursåpningsdato i Konkursregisteret.',
     EROPPH: 'Kontroller sluttdatoen. NAV har satt samme sluttdato som datoen foretaket opphørte i Enhetsregisteret.',
     ERVIRK: 'Kontroller sluttdatoen.  NAV har satt samme sluttdato som datoen da foretaket ble overdratt til en annen juridisk enhet i Enhetsregisteret.',
@@ -194,7 +191,7 @@ const varselkodeBeskrivelser: Record<varslingsId, string> = {
     PPIDHI: 'NAV har slått sammen denne permitteringen/permisjonen med en annen da opplysningene er så like at vi tolker det som en og samme. Hvis du tror det er feil, sjekk at du ikke savner en permittering eller permisjon på dette arbeidsforholdet.'
 };
 
-const genererTilfeldigVarsel = (indeks: number): Varsel => {
+const genererTilfeldigVarsel = (indeks) => {
     const varslingskodeFraIndex = varlingskoder[indeks];
     return {
         entitet: 'ANSETTELSESPERIODE',
@@ -202,8 +199,8 @@ const genererTilfeldigVarsel = (indeks: number): Varsel => {
         varslingskodeForklaring: varselkodeBeskrivelser[varslingskodeFraIndex]
     };
 };
-const setVarslingskode = (): Varsel[] | undefined => {
-    const skalHaVarslingskode: boolean = Math.random() >= 0.8;
+const setVarslingskode = () => {
+    const skalHaVarslingskode = Math.random() >= 0.8;
     if (skalHaVarslingskode) {
         const varselArray = [];
         varselArray.push(genererTilfeldigVarsel(genererRandomIndex(varlingskoder.length)));
@@ -215,11 +212,11 @@ const setVarslingskode = (): Varsel[] | undefined => {
     return undefined;
 };
 
-const lagAnsattForhold = (): Arbeidsforhold => {
-    const arbeidsforholdStarttidspunkt: Date =
-        tilfeldigDatoITidsintervall(new Date(2015,1,1), new Date());
-    const arbeidsforholdSluttidspunkt: Date =
-        tilfeldigDatoITidsintervall(arbeidsforholdStarttidspunkt, new Date(2022,1,1));
+const lagAnsattForhold = () => {
+    const arbeidsforholdStarttidspunkt =
+        tilfeldigDatoITidsintervall(new Date(2015, 1, 1), new Date());
+    const arbeidsforholdSluttidspunkt =
+        tilfeldigDatoITidsintervall(arbeidsforholdStarttidspunkt, new Date(2022, 1, 1));
     return {
         ...tomtArbeidsForhold,
         ansattFom: formaterDato(arbeidsforholdStarttidspunkt),
@@ -236,10 +233,10 @@ const lagAnsattForhold = (): Arbeidsforhold => {
     };
 };
 
-const lagAvluttetAnsattForhold = (): Arbeidsforhold => {
-    const arbeidsforholdStarttidspunkt: Date =
-        tilfeldigDatoITidsintervall(new Date(2015,1,1), new Date());
-    const arbeidsforholdSluttidspunkt: Date =
+const lagAvluttetAnsattForhold = () => {
+    const arbeidsforholdStarttidspunkt =
+        tilfeldigDatoITidsintervall(new Date(2015, 1, 1), new Date());
+    const arbeidsforholdSluttidspunkt =
         tilfeldigDatoITidsintervall(arbeidsforholdStarttidspunkt, new Date())
     return {
         ...tomtArbeidsForhold,
@@ -257,25 +254,58 @@ const lagAvluttetAnsattForhold = (): Arbeidsforhold => {
     };
 };
 
-const genererMockingAvArbeidsForhold = (antall: number, kunAvsluttede: boolean): Arbeidsforhold[] => {
-    const listeMedArbeidsForhold: Arbeidsforhold[] = [];
+const genererMockingAvArbeidsForhold = (antall, kunAvsluttede) => {
+    const listeMedArbeidsForhold = [];
 
-    for (let i: number = 0; i < antall; i++) {
+    for (let i = 0; i < antall; i++) {
         const lagAnsattFunksjon = kunAvsluttede ? lagAvluttetAnsattForhold() : lagAnsattForhold()
         listeMedArbeidsForhold.push(lagAnsattFunksjon);
     }
 
     return listeMedArbeidsForhold.map(forhold => {
-        return { ...forhold, navArbeidsforholdId: listeMedArbeidsForhold.indexOf(forhold).toString() };
+        return {...forhold, navArbeidsforholdId: listeMedArbeidsForhold.indexOf(forhold).toString()};
     });
 };
 
-export const AaregMockObjekt = (antall: number):  ObjektFraAAregisteret => ({
-    ...tomResponsFraAareg,
-    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(antall, false)
-});
-
-export const AaregMockObjektForNedlagtVirksomhet: ObjektFraAAregisteret = {
-    ...tomResponsFraAareg,
-    arbeidsforholdoversikter: genererMockingAvArbeidsForhold(104, true)
-};
+module.exports = {
+    mock: (app) => {
+        app.get('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/arbeidsforhold', async (req, res) => {
+            await delay(4000);
+            const antall = Number.parseInt(req.headers.orgnr ?? '100') % 1000;
+            res.send({
+                antall: '',
+                startrad: '',
+                totalAntall: '',
+                arbeidsforholdoversikter: genererMockingAvArbeidsForhold(antall, false)
+            });
+        });
+        app.get('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/tidligere-arbeidsforhold', async (req, res) => {
+            await delay(2000);
+            res.send({
+                antall: '',
+                startrad: '',
+                totalAntall: '',
+                arbeidsforholdoversikter: genererMockingAvArbeidsForhold(104, true)
+            });
+        });
+        app.get('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/tidligere-virksomheter', async (req, res) => {
+            await delay(1000);
+            res.send([{
+                    name: 'HASLUM OG HOLTE REGNSKAP',
+                    type: 'BEDR',
+                    parentOrganizationNumber: '810825472',
+                    organizationNumber: '954168395',
+                    organizationForm: 'AS',
+                    status: 'Active',
+                },
+                {
+                    name: 'HASLUM OG HAUGNES REGNSKAP',
+                    type: 'BEDR',
+                    parentOrganizationNumber: '810825472',
+                    organizationNumber: '954168399',
+                    organizationForm: 'AS',
+                    status: 'Active',
+                }]);
+        });
+    }
+}
