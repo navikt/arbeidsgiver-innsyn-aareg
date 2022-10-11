@@ -95,8 +95,9 @@ app.use('/*', (req, res, next) => {
 
     const subject_token = req.cookies['selvbetjening-idtoken'];
     if (subject_token) {
-        log.info("moving token from cookie to header")
-        req.headers.Authorization = `Bearer ${subject_token}`
+        log.info("moving token from cookie to header");
+        req.headers.Authorization = `Bearer ${subject_token}`;
+        delete req.headers.Cookie;
     }
     next();
 });
