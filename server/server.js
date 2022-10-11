@@ -93,12 +93,12 @@ app.use('/*', (req, res, next) => {
         req.headers["x-correlation-id"] = randomUUID()
     }
 
-    const subject_token = req.cookies['selvbetjening-idtoken'];
-    if (subject_token) {
-        log.info("moving token from cookie to header");
-        req.headers.Authorization = `Bearer ${subject_token}`;
-        res.removeHeader('cookie'); // nb. this strips away all cookies
-    }
+    // const subject_token = req.cookies['selvbetjening-idtoken'];
+    // if (subject_token) {
+    //     log.info("moving token from cookie to header");
+    //     req.headers.Authorization = `Bearer ${subject_token}`;
+    //     res.removeHeader('cookie'); // nb. this strips away all cookies
+    // }
     next();
 });
 
