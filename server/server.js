@@ -122,7 +122,7 @@ app.use(
         }),
         changeOrigin: true,
         pathRewrite: {
-            '^/arbeidsforhold/arbeidsgiver-arbeidsforhold/api': '',
+            '^/arbeidsforhold/arbeidsgiver-arbeidsforhold/api': '/arbeidsgiver-arbeidsforhold-api',
         },
         secure: true,
         xfwd: true,
