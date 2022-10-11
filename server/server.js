@@ -97,7 +97,7 @@ app.use('/*', (req, res, next) => {
     if (subject_token) {
         log.info("moving token from cookie to header");
         req.headers.Authorization = `Bearer ${subject_token}`;
-        delete req.headers.Cookie;
+        res.removeHeader('cookie'); // nb. this strips away all cookies
     }
     next();
 });
