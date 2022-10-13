@@ -46,7 +46,7 @@ const Ansatt: FunctionComponent<Props> = ({ arbeidsforhold }) => {
                     </div>
                 </li>
                 <AttributtVisning
-                    attributt='Offentlig Ident'
+                    attributt='Fødselsnummer'
                     attributtVerdi={arbeidsforhold.arbeidstaker.offentligIdent}
                 />
                 <AttributtVisning attributt='Startet' attributtVerdi={datoformat(arbeidsforhold.ansattFom)} />
