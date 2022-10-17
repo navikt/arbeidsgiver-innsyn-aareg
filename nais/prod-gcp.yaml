@@ -27,7 +27,7 @@ spec:
     - name: NODE_EXTRA_CA_CERTS
       value: /etc/ssl/ca-bundle.pem
     - name: API_GATEWAY
-      value: https://api-gw.oera.no
+      value: https://aareg-innsyn-arbeidsgiver-api.prod-fss-pub.nais.io
     - name: LOGIN_URL
       value: https://loginservice.nav.no/login?redirect=https://arbeidsgiver.nav.no/arbeidsforhold
     - name: DECORATOR_EXTERNAL_URL
@@ -38,3 +38,4 @@ spec:
         - application: notifikasjon-bruker-api
       external:
         - host: www.nav.no
+        - host: aareg-innsyn-arbeidsgiver-api.prod-fss-pub.nais.io
