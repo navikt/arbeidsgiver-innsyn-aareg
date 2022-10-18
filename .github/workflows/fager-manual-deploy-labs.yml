@@ -1,4 +1,4 @@
-name: Deploy til dev
+name: Deploy til labs Fager
 on:
   workflow_dispatch:
 
@@ -7,19 +7,19 @@ env:
 
 jobs:
   deploy-branch:
-    name: Deploy til dev
+    name: Deploy til labs
     runs-on: ubuntu-latest
 
     steps:
       - name: Sjekk ut kode
         uses: actions/checkout@v2
 
-      - name: Deploy til dev-gcp
+      - name: Deploy til labs-gcp (Fager)
         uses: nais/deploy/actions/deploy@v1
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: nais/dev-gcp.yaml
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY_FAGER }}
+          CLUSTER: labs-gcp
+          RESOURCE: nais/fager-labs-gcp.yaml
           PRINT_PAYLOAD: true
           REF: ${{ env.COMMIT }}
           IMAGE: ${{ env.IMAGE }}
