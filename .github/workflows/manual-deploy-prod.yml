@@ -1,0 +1,25 @@
+name: Deploy til prod
+on:
+  workflow_dispatch:
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}/${{ github.event.repository.name }}:${{ github.sha }}
+
+jobs:
+  deploy-branch:
+    name: Deploy til prod
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sjekk ut kode
+        uses: actions/checkout@v2
+
+      - name: Deploy til prod-gcp
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: nais/prod-gcp.yaml
+          PRINT_PAYLOAD: true
+          REF: ${{ env.COMMIT }}
+          IMAGE: ${{ env.IMAGE }}
