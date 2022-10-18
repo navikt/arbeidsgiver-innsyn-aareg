@@ -1,0 +1,40 @@
+apiVersion: 'nais.io/v1alpha1'
+kind: 'Application'
+metadata:
+  name: aareg-innsyn-arbeidsgiver
+  namespace: arbeidsforhold
+  labels:
+    team: arbeidsforhold
+spec:
+  image: {{image}}
+  port: 3000
+  ingresses:
+    - https://arbeidsgiver.intern.nav.no/arbeidsforhold
+  liveness:
+    path: /arbeidsforhold/internal/isAlive
+    initialDelay: 20
+  readiness:
+    path: /arbeidsforhold/internal/isReady
+    initialDelay: 20
+  prometheus:
+    enabled: true
+    path: /arbeidsforhold/internal/metrics
+  tokenx:
+    enabled: true
+  env:
+    - name: NODE_EXTRA_CA_CERTS
+      value: /etc/ssl/ca-bundle.pem
+    - name: API_GATEWAY
+      value: https://aareg-innsyn-arbeidsgiver-api.prod-fss-pub.nais.io
+    - name: LOGIN_URL
+      value: https://loginservice.nav.no/login?redirect=https://arbeidsgiver.nav.no/arbeidsforhold
+    - name: DECORATOR_EXTERNAL_URL
+      value: https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4
+  accessPolicy:
+    outbound:
+      rules:
+        - application: notifikasjon-bruker-api
+          namespace: fager
+      external:
+        - host: www.nav.no
+        - host: aareg-innsyn-arbeidsgiver-api.prod-fss-pub.nais.io
