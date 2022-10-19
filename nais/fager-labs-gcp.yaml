@@ -33,7 +33,7 @@ spec:
   accessPolicy:
     outbound:
       rules:
-        - application: innsyn-aareg-api
-          namespace: fager
+        - application: aareg-innsyn-arbeidsgiver-api
+          namespace: arbeidsforhold
       external:
         - host: www.nav.no
