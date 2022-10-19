@@ -79,19 +79,19 @@ jobs:
           PRINT_PAYLOAD: true
 
       - name: Deploy til dev-gcp
-          uses: nais/deploy/actions/deploy@v1
-          env:
-            APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-            CLUSTER: dev-gcp
-            RESOURCE: nais/dev-gcp.yaml
-            PRINT_PAYLOAD: true
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: nais/dev-gcp.yaml
+          PRINT_PAYLOAD: true
 
       - name: Deploy til prod-gcp
-          uses: nais/deploy/actions/deploy@v1
-          env:
-            APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-            CLUSTER: prod-gcp
-            RESOURCE: nais/prod-gcp.yaml
-            PRINT_PAYLOAD: true
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: nais/prod-gcp.yaml
+          PRINT_PAYLOAD: true
 
 
