@@ -54,30 +54,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Deploy til dev-gcp (Fager)
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY_FAGER }}
-          CLUSTER: dev-gcp
-          RESOURCE: nais/fager-dev-gcp.yaml
-          PRINT_PAYLOAD: true
-
-      - name: Deploy til labs-gcp (Fager)
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY_FAGER }}
-          CLUSTER: labs-gcp
-          RESOURCE: nais/fager-labs-gcp.yaml
-          PRINT_PAYLOAD: true
-
-      - name: Deploy til prod-gcp (Fager)
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY_FAGER }}
-          CLUSTER: prod-gcp
-          RESOURCE: nais/fager-prod-gcp.yaml
-          PRINT_PAYLOAD: true
-
       - name: Deploy til dev-gcp
         uses: nais/deploy/actions/deploy@v1
         env:
@@ -94,4 +70,11 @@ jobs:
           RESOURCE: nais/prod-gcp.yaml
           PRINT_PAYLOAD: true
 
+      - name: Deploy til labs-gcp
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: labs-gcp
+          RESOURCE: nais/labs-gcp.yaml
+          PRINT_PAYLOAD: true
 
