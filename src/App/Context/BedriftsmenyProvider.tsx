@@ -1,6 +1,6 @@
 import React, { createContext, FunctionComponent, useCallback, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import Bedriftsmeny from '@navikt/bedriftsmeny';
+import Bedriftsmeny, {Arbeidsforhold} from '@navikt/bedriftsmeny';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import { AltinnOrganisasjon, AltinnorganisasjonerContext } from './AltinnorganisasjonerProvider';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
@@ -112,6 +112,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
         <>
             <Bedriftsmeny
                 sidetittel={sidetittel}
+                piktogram={<Arbeidsforhold/>}
                 organisasjoner={tidligereArbeidsforhold ? [] : altinnorganisasjoner}
                 onOrganisasjonChange={({ OrganizationNumber }) => {
                     /* Bedriftsmenyen vil ved oppstart kalle hit, selv om det ikke er en
