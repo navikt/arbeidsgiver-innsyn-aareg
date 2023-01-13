@@ -15,6 +15,7 @@ import { loggSidevisning } from '../utils/amplitudefunksjonerForLogging';
 import { LoginContext, LoginProvider } from './Context/LoginProvider';
 import { NotifikasjonWidgetProvider } from '@navikt/arbeidsgiver-notifikasjon-widget';
 import { gittMiljø } from '../utils/environment';
+import "@navikt/ds-css"
 
 const AmplitudeSidevisningEventLogger: FunctionComponent = props => {
     const location = useLocation();
