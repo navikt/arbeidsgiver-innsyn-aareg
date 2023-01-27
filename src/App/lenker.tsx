@@ -22,7 +22,7 @@ export const hentOrganisasjonerLink = () => {
 };
 
 export const hentRettigheterTilAltinnTjenesteLink = () => {
-    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/rettigheter-til-tjeneste/';
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/rettigheter-til-tjeneste';
 };
 
 export const sjekkInnloggetLenke = () => {
