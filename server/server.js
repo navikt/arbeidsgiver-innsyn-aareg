@@ -23,7 +23,7 @@ const {
     LOGIN_URL = defaultLoginUrl,
     DECORATOR_EXTERNAL_URL = 'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4',
     NAIS_CLUSTER_NAME = 'local',
-    MILJO = 'local',
+    MILJO = 'prod',
     API_GATEWAY = 'http://localhost:8080',
     APIGW_HEADER,
     DECORATOR_UPDATE_MS = 30 * 60 * 1000,
