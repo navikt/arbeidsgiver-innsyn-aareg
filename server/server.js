@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import express from 'express';
 import mustacheExpress from 'mustache-express';
 import httpProxyMiddleware from "http-proxy-middleware";
-import {createLogger, transports, format} from 'winston';
+import {createLogger, format, transports} from 'winston';
 import jsdom from "jsdom";
 import Prometheus from "prom-client";
 import require from "./esm-require.js";
@@ -56,28 +56,6 @@ const getDecoratorFragments = async () => {
             }
         </script>`,
     };
-}
-
-const startApiGWGauge = () => {
-    const gauge = new Prometheus.Gauge({
-        name: 'backend_api_gw',
-        help: 'Status til backend via API-Gateway (sonekrysning). up=1, down=0',
-    });
-
-    setInterval(async () => {
-        try {
-            const res = await fetch(`${API_GATEWAY}/arbeidsgiver-arbeidsforhold-api/internal/actuator/health`, {
-                ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
-            });
-            gauge.set(res.ok ? 1 : 0);
-            if (NAIS_CLUSTER_NAME === 'dev-gcp') {
-                log.info(`healthcheck result http code: ${res.statusCode}`)
-            }
-        } catch (error) {
-            log.error(`healthcheck error: ${gauge.name}`, error)
-            gauge.set(0);
-        }
-    }, 60 * 1000);
 }
 
 const app = express();
@@ -186,7 +164,28 @@ const serve = async () => {
         process.exit(1);
     }
 
-    startApiGWGauge();
+    if (MILJO === 'dev' || MILJO === 'prod') {
+        const gauge = new Prometheus.Gauge({
+            name: 'backend_api_gw',
+            help: 'Status til backend via API-Gateway (sonekrysning). up=1, down=0',
+        });
+
+        setInterval(async () => {
+            try {
+                const res = await fetch(`${API_GATEWAY}/arbeidsgiver-arbeidsforhold-api/internal/actuator/health`, {
+                    ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
+                });
+                gauge.set(res.ok ? 1 : 0);
+                if (NAIS_CLUSTER_NAME === 'dev-gcp') {
+                    log.info(`healthcheck result http code: ${res.statusCode}`)
+                }
+            } catch (error) {
+                log.error(`healthcheck error: ${gauge.name}`, error)
+                gauge.set(0);
+            }
+        }, 60 * 1000);
+    }
+
     setInterval(() => {
         getDecoratorFragments()
             .then(oppdatert => {
