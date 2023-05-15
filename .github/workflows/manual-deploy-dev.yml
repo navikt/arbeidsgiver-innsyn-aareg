@@ -14,22 +14,12 @@ jobs:
       - name: Sjekk ut kode
         uses: actions/checkout@v3
 
-      #- name: Deploy til dev-gcp
-      #  uses: nais/deploy/actions/deploy@v1
-      #  env:
-      #    APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-      #    CLUSTER: dev-gcp
-      #    RESOURCE: nais/dev-gcp.yaml
-      #    PRINT_PAYLOAD: true
-      #    REF: ${{ env.COMMIT }}
-      #    IMAGE: ${{ env.IMAGE }}
-
-      - name: Deploy demo til dev-gcp
+      - name: Deploy til dev-gcp
         uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: nais/demo-dev-gcp.yaml
+          RESOURCE: nais/dev-gcp.yaml
           PRINT_PAYLOAD: true
           REF: ${{ env.COMMIT }}
           IMAGE: ${{ env.IMAGE }}

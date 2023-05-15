@@ -70,12 +70,13 @@ jobs:
           RESOURCE: nais/prod-gcp.yaml
           PRINT_PAYLOAD: true
 
-      - name: Deploy til labs-gcp
+      - name: Deploy demo til dev-gcp
         uses: nais/deploy/actions/deploy@v1
         env:
-          DEPLOY_SERVER: deploy.nais.io:443
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: labs-gcp
-          RESOURCE: nais/labs-gcp.yaml
+          CLUSTER: dev-gcp
+          RESOURCE: nais/demo-dev-gcp.yaml
           PRINT_PAYLOAD: true
+          REF: ${{ env.COMMIT }}
+          IMAGE: ${{ env.IMAGE }}
 
