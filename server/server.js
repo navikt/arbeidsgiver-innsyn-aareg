@@ -23,6 +23,7 @@ const {
     LOGIN_URL = defaultLoginUrl,
     DECORATOR_EXTERNAL_URL = 'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4',
     NAIS_CLUSTER_NAME = 'local',
+    MILJO = 'local',
     API_GATEWAY = 'http://localhost:8080',
     APIGW_HEADER,
     DECORATOR_UPDATE_MS = 30 * 60 * 1000,
@@ -99,7 +100,7 @@ app.use(
     })
 );
 
-if (NAIS_CLUSTER_NAME === 'local' || NAIS_CLUSTER_NAME === 'labs-gcp') {
+if (MILJO === 'local' || MILJO === 'demo') {
     const {applyNotifikasjonMockMiddleware} = require('@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock');
     applyNotifikasjonMockMiddleware({app, path: '/arbeidsforhold/notifikasjon-bruker-api'});
 
@@ -110,44 +111,44 @@ if (NAIS_CLUSTER_NAME === 'local' || NAIS_CLUSTER_NAME === 'labs-gcp') {
         '/arbeidsforhold/notifikasjon-bruker-api',
         createNotifikasjonBrukerApiProxyMiddleware({log}),
     );
+
+    app.use(
+        '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
+        createProxyMiddleware({
+            logLevel: PROXY_LOG_LEVEL,
+            logProvider: _ => log,
+            onError: (err, req, res) => {
+                log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
+            },
+            changeOrigin: true,
+            pathRewrite: {
+                '^/arbeidsforhold/arbeidsgiver-arbeidsforhold/api': '/arbeidsgiver-arbeidsforhold-api',
+            },
+            secure: true,
+            xfwd: true,
+            target: API_GATEWAY,
+            ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
+        })
+    );
+
+    app.use(
+        '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+        createProxyMiddleware({
+            logLevel: PROXY_LOG_LEVEL,
+            logProvider: _ => log,
+            onError: (err, req, res) => {
+                log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
+            },
+            changeOrigin: true,
+            target: NAIS_CLUSTER_NAME === 'prod-gcp' ? 'https://www.nav.no' : 'https://person.dev.nav.no',
+            pathRewrite: {
+                '^/arbeidsforhold': ''
+            },
+            secure: true,
+            xfwd: true
+        })
+    );
 }
-
-app.use(
-    '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
-    createProxyMiddleware({
-        logLevel: PROXY_LOG_LEVEL,
-        logProvider: _ => log,
-        onError: (err, req, res) => {
-            log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
-        },
-        changeOrigin: true,
-        pathRewrite: {
-            '^/arbeidsforhold/arbeidsgiver-arbeidsforhold/api': '/arbeidsgiver-arbeidsforhold-api',
-        },
-        secure: true,
-        xfwd: true,
-        target: API_GATEWAY,
-        ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
-    })
-);
-
-app.use(
-    '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
-    createProxyMiddleware({
-        logLevel: PROXY_LOG_LEVEL,
-        logProvider: _ => log,
-        onError: (err, req, res) => {
-            log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
-        },
-        changeOrigin: true,
-        target: NAIS_CLUSTER_NAME === 'prod-gcp' ? 'https://www.nav.no' : 'https://person.dev.nav.no',
-        pathRewrite: {
-            '^/arbeidsforhold': ''
-        },
-        secure: true,
-        xfwd: true
-    })
-);
 
 app.use('/arbeidsforhold', express.static(BUILD_PATH, { index: false }));
 
