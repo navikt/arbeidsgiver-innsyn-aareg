@@ -30,6 +30,8 @@ spec:
       value: https://loginservice.nav.no/login?redirect=https://arbeidsgiver.nav.no/arbeidsforhold
     - name: DECORATOR_EXTERNAL_URL
       value: https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4
+    - name: MILJO
+      value: prod
   accessPolicy:
     outbound:
       rules:
