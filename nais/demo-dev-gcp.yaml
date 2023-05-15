@@ -22,10 +22,6 @@ spec:
   env:
     - name: NODE_EXTRA_CA_CERTS
       value: /etc/ssl/ca-bundle.pem
-    - name: API_GATEWAY
-      value: http://aareg-innsyn-arbeidsgiver-api.arbeidsforhold
-    - name: LOGIN_URL
-      value: https://min-side-ag-fakelogin.labs.nais.io/login?issuer=selvbetjening&sub=00000000000&domain=labs.nais.io&redirect=https://arbeidsgiver.labs.nais.io/arbeidsforhold
     - name: DECORATOR_EXTERNAL_URL
       value: https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4
     - name: MILJO
