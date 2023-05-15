@@ -23,3 +23,13 @@ jobs:
           PRINT_PAYLOAD: true
           REF: ${{ env.COMMIT }}
           IMAGE: ${{ env.IMAGE }}
+
+      - name: Deploy demo til dev-gcp
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: nais/demo-dev-gcp.yaml
+          PRINT_PAYLOAD: true
+          REF: ${{ env.COMMIT }}
+          IMAGE: ${{ env.IMAGE }}
