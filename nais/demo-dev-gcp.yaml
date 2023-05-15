@@ -28,8 +28,6 @@ spec:
       value: demo
   accessPolicy:
     outbound:
-      rules:
-        - application: aareg-innsyn-arbeidsgiver-api
-          namespace: arbeidsforhold
       external:
         - host: www.nav.no
+        - host: fakedings.dev-gcp.nais.io
