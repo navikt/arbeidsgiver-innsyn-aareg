@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import express from 'express';
 import mustacheExpress from 'mustache-express';
 import httpProxyMiddleware from "http-proxy-middleware";
-import {createLogger, transports, format} from 'winston';
+import {createLogger, format, transports} from 'winston';
 import jsdom from "jsdom";
 import Prometheus from "prom-client";
 import require from "./esm-require.js";
@@ -23,6 +23,7 @@ const {
     LOGIN_URL = defaultLoginUrl,
     DECORATOR_EXTERNAL_URL = 'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4',
     NAIS_CLUSTER_NAME = 'local',
+    MILJO = 'prod',
     API_GATEWAY = 'http://localhost:8080',
     APIGW_HEADER,
     DECORATOR_UPDATE_MS = 30 * 60 * 1000,
@@ -57,28 +58,6 @@ const getDecoratorFragments = async () => {
     };
 }
 
-const startApiGWGauge = () => {
-    const gauge = new Prometheus.Gauge({
-        name: 'backend_api_gw',
-        help: 'Status til backend via API-Gateway (sonekrysning). up=1, down=0',
-    });
-
-    setInterval(async () => {
-        try {
-            const res = await fetch(`${API_GATEWAY}/arbeidsgiver-arbeidsforhold-api/internal/actuator/health`, {
-                ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
-            });
-            gauge.set(res.ok ? 1 : 0);
-            if (NAIS_CLUSTER_NAME === 'dev-gcp') {
-                log.info(`healthcheck result http code: ${res.statusCode}`)
-            }
-        } catch (error) {
-            log.error(`healthcheck error: ${gauge.name}`, error)
-            gauge.set(0);
-        }
-    }, 60 * 1000);
-}
-
 const app = express();
 app.disable("x-powered-by");
 app.engine('html', mustacheExpress());
@@ -99,7 +78,7 @@ app.use(
     })
 );
 
-if (NAIS_CLUSTER_NAME === 'local' || NAIS_CLUSTER_NAME === 'labs-gcp') {
+if (MILJO === 'local' || MILJO === 'demo') {
     const {applyNotifikasjonMockMiddleware} = require('@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock');
     applyNotifikasjonMockMiddleware({app, path: '/arbeidsforhold/notifikasjon-bruker-api'});
 
@@ -110,44 +89,44 @@ if (NAIS_CLUSTER_NAME === 'local' || NAIS_CLUSTER_NAME === 'labs-gcp') {
         '/arbeidsforhold/notifikasjon-bruker-api',
         createNotifikasjonBrukerApiProxyMiddleware({log}),
     );
+
+    app.use(
+        '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
+        createProxyMiddleware({
+            logLevel: PROXY_LOG_LEVEL,
+            logProvider: _ => log,
+            onError: (err, req, res) => {
+                log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
+            },
+            changeOrigin: true,
+            pathRewrite: {
+                '^/arbeidsforhold/arbeidsgiver-arbeidsforhold/api': '/arbeidsgiver-arbeidsforhold-api',
+            },
+            secure: true,
+            xfwd: true,
+            target: API_GATEWAY,
+            ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
+        })
+    );
+
+    app.use(
+        '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+        createProxyMiddleware({
+            logLevel: PROXY_LOG_LEVEL,
+            logProvider: _ => log,
+            onError: (err, req, res) => {
+                log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
+            },
+            changeOrigin: true,
+            target: NAIS_CLUSTER_NAME === 'prod-gcp' ? 'https://www.nav.no' : 'https://www.intern.dev.nav.no',
+            pathRewrite: {
+                '^/arbeidsforhold': ''
+            },
+            secure: true,
+            xfwd: true
+        })
+    );
 }
-
-app.use(
-    '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
-    createProxyMiddleware({
-        logLevel: PROXY_LOG_LEVEL,
-        logProvider: _ => log,
-        onError: (err, req, res) => {
-            log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
-        },
-        changeOrigin: true,
-        pathRewrite: {
-            '^/arbeidsforhold/arbeidsgiver-arbeidsforhold/api': '/arbeidsgiver-arbeidsforhold-api',
-        },
-        secure: true,
-        xfwd: true,
-        target: API_GATEWAY,
-        ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
-    })
-);
-
-app.use(
-    '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
-    createProxyMiddleware({
-        logLevel: PROXY_LOG_LEVEL,
-        logProvider: _ => log,
-        onError: (err, req, res) => {
-            log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
-        },
-        changeOrigin: true,
-        target: NAIS_CLUSTER_NAME === 'prod-gcp' ? 'https://www.nav.no' : 'https://person.dev.nav.no',
-        pathRewrite: {
-            '^/arbeidsforhold': ''
-        },
-        secure: true,
-        xfwd: true
-    })
-);
 
 app.use('/arbeidsforhold', express.static(BUILD_PATH, { index: false }));
 
@@ -185,7 +164,28 @@ const serve = async () => {
         process.exit(1);
     }
 
-    startApiGWGauge();
+    if (MILJO === 'dev' || MILJO === 'prod') {
+        const gauge = new Prometheus.Gauge({
+            name: 'backend_api_gw',
+            help: 'Status til backend via API-Gateway (sonekrysning). up=1, down=0',
+        });
+
+        setInterval(async () => {
+            try {
+                const res = await fetch(`${API_GATEWAY}/arbeidsgiver-arbeidsforhold-api/internal/actuator/health`, {
+                    ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
+                });
+                gauge.set(res.ok ? 1 : 0);
+                if (NAIS_CLUSTER_NAME === 'dev-gcp') {
+                    log.info(`healthcheck result http code: ${res.statusCode}`)
+                }
+            } catch (error) {
+                log.error(`healthcheck error: ${gauge.name}`, error)
+                gauge.set(0);
+            }
+        }, 60 * 1000);
+    }
+
     setInterval(() => {
         getDecoratorFragments()
             .then(oppdatert => {
