@@ -98,12 +98,6 @@ if (MILJO === 'local' || MILJO === 'demo') {
             onError: (err, req, res) => {
                 log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
             },
-            onProxyReq: (proxyReq, req, res) => {
-                log.info("onProxyReq MILJO=" + MILJO, req);
-            },
-            onProxyRes: (proxyRes, req, res) => {
-                log.info("onProxyRes MILJO=" + MILJO, res);
-            },
             changeOrigin: true,
             pathRewrite: {
                 '^/arbeidsforhold/arbeidsgiver-arbeidsforhold/api': '/arbeidsgiver-arbeidsforhold-api',
