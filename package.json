@@ -113,7 +113,7 @@
     "prettier": "^2.2.1"
   },
   "scripts": {
-    "start": "REACT_APP_MOCK=true craco start",
+    "start": "REACT_APP_MOCK=true MILJO=local craco start",
     "build": "craco build",
     "test": "craco test",
     "lint": "eslint --ext ts,tsx .",
