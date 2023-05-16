@@ -38,6 +38,6 @@ spec:
         - application: notifikasjon-bruker-api
           namespace: fager
       external:
-        - host: person.dev.nav.no
+        - host: person.intern.dev.nav.no
         - host: aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io
         - host: dekoratoren.ekstern.dev.nav.no
