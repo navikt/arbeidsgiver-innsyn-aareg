@@ -14,7 +14,7 @@
     "prom-client": "^13.2.0",
     "prometheus-api-metrics": "^3.2.0",
     "winston": "3.4.0",
-    "@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock": "5.4.2",
+    "@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock": "6.2.2",
     "express-http-proxy": "1.6.3",
     "openid-client": "5.1.9"
   },
