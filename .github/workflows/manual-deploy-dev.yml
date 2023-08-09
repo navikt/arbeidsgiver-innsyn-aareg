@@ -6,6 +6,44 @@ env:
   IMAGE: ghcr.io/${{ github.repository }}/${{ github.event.repository.name }}:${{ github.sha }}
 
 jobs:
+  bygg:
+    name: Bygg
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          registry-url: https://npm.pkg.github.com/
+          scope: "@navikt"
+          cache: 'yarn'
+
+      - name: Installer avhengigheter (yarn install)
+        run: yarn install --production --ignore-scripts --no-optional
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+
+      - run: yarn lint
+
+      - run: yarn build
+
+      - uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.IMAGE }}
+            ${{ env.IMAGE_BASE }}:latest
+          cache-from: type=registry,ref=${{ env.IMAGE_BASE }}:latest
+          cache-to: type=inline
+
   deploy-branch:
     name: Deploy til dev
     runs-on: ubuntu-latest
