@@ -42,6 +42,9 @@ spec:
       rules:
         - application: notifikasjon-bruker-api
           namespace: fager
+        - application: arbeidsgiver-innsyn-aareg-api
+          namespace: arbeidsforhold
+          cluster: dev-fss
       external:
         - host: person.intern.dev.nav.no
         - host: aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io

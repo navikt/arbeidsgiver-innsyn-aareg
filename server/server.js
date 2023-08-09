@@ -10,6 +10,7 @@ import require from "./esm-require.js";
 import {createNotifikasjonBrukerApiProxyMiddleware} from "./brukerapi-proxy-middleware.js";
 import cookieParser from "cookie-parser";
 import {applyNotifikasjonMockMiddleware} from "@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock";
+import {tokenXMiddleware} from "./tokenx.js";
 
 const apiMetricsMiddleware = require('prometheus-api-metrics');
 const {JSDOM} = jsdom;
@@ -92,6 +93,14 @@ if (MILJO === 'local' || MILJO === 'demo') {
 
     app.use(
         '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
+        tokenXMiddleware(
+            {
+                log: log,
+                audience: {
+                    'dev': 'dev-fss:arbeidsforhold:arbeidsgiver-innsyn-aareg-api',
+                    'prod': 'prod-fss:arbeidsforhold:arbeidsgiver-innsyn-aareg-api',
+                }[MILJO]
+            }),
         createProxyMiddleware({
             logLevel: PROXY_LOG_LEVEL,
             logProvider: _ => log,
@@ -111,6 +120,14 @@ if (MILJO === 'local' || MILJO === 'demo') {
 
     app.use(
         '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+        tokenXMiddleware(
+            {
+                log: log,
+                audience: {
+                    'dev': 'dev-gcp:personbruker:arbeidsforhold-api',
+                    'prod': 'prod-gcp:personbruker:arbeidsforhold-api',
+                }[MILJO]
+            }),
         createProxyMiddleware({
             logLevel: PROXY_LOG_LEVEL,
             logProvider: _ => log,
