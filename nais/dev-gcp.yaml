@@ -23,7 +23,9 @@ spec:
     enabled: true
   spec:
     idporten:
+      enabled: true
       sidecar:
+        endabled: true
         autoLogin: true
   env:
     - name: NODE_EXTRA_CA_CERTS
