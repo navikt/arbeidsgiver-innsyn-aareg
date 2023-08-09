@@ -97,8 +97,8 @@ if (MILJO === 'local' || MILJO === 'demo') {
             {
                 log: log,
                 audience: {
-                    'dev': 'dev-fss:arbeidsforhold:arbeidsgiver-innsyn-aareg-api',
-                    'prod': 'prod-fss:arbeidsforhold:arbeidsgiver-innsyn-aareg-api',
+                    'dev': 'dev-fss:arbeidsforhold:aareg-innsyn-arbeidsgiver-api',
+                    'prod': 'prod-fss:arbeidsforhold:aareg-innsyn-arbeidsgiver-api',
                 }[MILJO]
             }),
         createProxyMiddleware({

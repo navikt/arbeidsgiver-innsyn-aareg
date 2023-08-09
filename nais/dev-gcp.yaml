@@ -41,7 +41,7 @@ spec:
       rules:
         - application: notifikasjon-bruker-api
           namespace: fager
-        - application: arbeidsgiver-innsyn-aareg-api
+        - application: aareg-innsyn-arbeidsgiver-api
           namespace: arbeidsforhold
           cluster: dev-fss
       external:
