@@ -37,6 +37,9 @@ spec:
       rules:
         - application: notifikasjon-bruker-api
           namespace: fager
+        - application: aareg-innsyn-arbeidsgiver-api
+          namespace: arbeidsforhold
+          cluster: prod-fss
       external:
         - host: www.nav.no
         - host: aareg-innsyn-arbeidsgiver-api.prod-fss-pub.nais.io
