@@ -21,13 +21,17 @@ spec:
     path: /arbeidsforhold/internal/metrics
   tokenx:
     enabled: true
+  idporten:
+    enabled: true
+    sidecar:
+      enabled: true
   env:
     - name: NODE_EXTRA_CA_CERTS
       value: /etc/ssl/ca-bundle.pem
     - name: API_GATEWAY
       value: https://aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io
     - name: LOGIN_URL
-      value: https://loginservice.intern.dev.nav.no/login?redirect=https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold
+      value: https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold/oauth2/login?redirect=https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold
     - name: DECORATOR_EXTERNAL_URL
       value: https://dekoratoren.ekstern.dev.nav.no/?context=arbeidsgiver&redirectToApp=true&level=Level4
     - name: MILJO
@@ -37,6 +41,9 @@ spec:
       rules:
         - application: notifikasjon-bruker-api
           namespace: fager
+        - application: aareg-innsyn-arbeidsgiver-api
+          namespace: arbeidsforhold
+          cluster: dev-fss
       external:
         - host: person.intern.dev.nav.no
         - host: aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io
