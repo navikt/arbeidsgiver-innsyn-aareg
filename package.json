@@ -5,7 +5,7 @@
   "homepage": "/arbeidsforhold",
   "dependencies": {
     "@craco/craco": "^7.0.0",
-    "@navikt/arbeidsgiver-notifikasjon-widget": "6.2.2",
+    "@navikt/arbeidsgiver-notifikasjon-widget": "6.3.9",
     "@navikt/arbeidsforhold": "1.4.4",
     "@navikt/bedriftsmeny": "6.3.0",
     "@navikt/fnrvalidator": "^1.1.4",
@@ -109,7 +109,7 @@
   },
   "devDependencies": {
     "cookie-parser": "*",
-    "@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock": "5.4.2",
+    "@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock": "6.3.9",
     "prettier": "^2.2.1"
   },
   "scripts": {
