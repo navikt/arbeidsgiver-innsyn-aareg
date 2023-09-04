@@ -8,6 +8,10 @@ env:
 
 jobs:
   bygg:
+    permissions:
+      contents: read
+      actions: write
+      packages: write
     name: Bygg
     runs-on: ubuntu-latest
     steps:
