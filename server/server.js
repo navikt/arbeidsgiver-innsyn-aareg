@@ -28,7 +28,7 @@ const {
     API_GATEWAY = 'http://localhost:8080',
     APIGW_HEADER,
     DECORATOR_UPDATE_MS = 30 * 60 * 1000,
-    PROXY_LOG_LEVEL = 'info',
+    PROXY_LOG_LEVEL = 'debug',
 } = process.env;
 
 const log = createLogger({
