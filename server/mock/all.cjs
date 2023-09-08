@@ -3,7 +3,6 @@ module.exports = {
         require('./aaregMock.cjs').mock(app);
         require('./altinnMock.cjs').mock(app);
         require('./arbeidsforholdMock.cjs').mock(app);
-        require('./unleash.cjs').mock(app);
 
         app.get('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/innlogget', (req, res) => {
             console.log("innlogget?")
