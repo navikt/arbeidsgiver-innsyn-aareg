@@ -17,7 +17,7 @@ module.exports = {
         });
 
         app.get('/arbeidsforhold/redirect-til-login', async (req, res) => {
-            const response = await fetch('https://fakedings.dev-gcp.nais.io/fake/custom', {
+            const response = await fetch('https://fakedings.intern.dev.nav.no/fake/custom', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded"
