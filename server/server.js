@@ -16,7 +16,7 @@ const apiMetricsMiddleware = require('prometheus-api-metrics');
 const {JSDOM} = jsdom;
 const {createProxyMiddleware} = httpProxyMiddleware;
 
-const defaultLoginUrl = 'http://localhost:8080/arbeidsforhold/oauth2/login?redirect?redirect=http://localhost:3000/arbeidsforhold';
+const defaultLoginUrl = 'http://localhost:8080/ditt-nav-arbeidsgiver-api/local/selvbetjening-login?redirect=http://localhost:3000/arbeidsforhold';
 
 const {
     PORT = 3000,
