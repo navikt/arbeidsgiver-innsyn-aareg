@@ -30,4 +30,4 @@ spec:
     outbound:
       external:
         - host: www.nav.no
-        - host: fakedings.dev-gcp.nais.io
+        - host: fakedings.intern.dev.nav.no
