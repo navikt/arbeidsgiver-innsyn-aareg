@@ -21,6 +21,10 @@ spec:
     path: /arbeidsforhold/internal/metrics
   tokenx:
     enabled: true
+  idporten:
+    enabled: true
+    sidecar:
+      enabled: true
   env:
     - name: NODE_EXTRA_CA_CERTS
       value: /etc/ssl/ca-bundle.pem
