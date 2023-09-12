@@ -44,6 +44,9 @@ spec:
         - application: aareg-innsyn-arbeidsgiver-api
           namespace: arbeidsforhold
           cluster: dev-fss
+        - application: arbeidsforhold-api
+          namespace: personbruker
+          cluster: dev-gcp
       external:
         - host: person.intern.dev.nav.no
         - host: aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io
