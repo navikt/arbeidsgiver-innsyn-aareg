@@ -44,6 +44,9 @@ spec:
         - application: aareg-innsyn-arbeidsgiver-api
           namespace: arbeidsforhold
           cluster: prod-fss
+        - application: arbeidsforhold-api
+          namespace: personbruker
+          cluster: prod-gcp
       external:
         - host: www.nav.no
         - host: aareg-innsyn-arbeidsgiver-api.prod-fss-pub.nais.io
