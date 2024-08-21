@@ -9,7 +9,7 @@ spec:
   image: {{image}}
   port: 3000
   ingresses:
-    - https://arbeidsforhold.ekstern.dev.nav.no/arbeidsforhold
+    - https://arbeidsforhold.ansatt.dev.nav.no/arbeidsforhold
   liveness:
     path: /arbeidsforhold/internal/isAlive
     initialDelay: 20
