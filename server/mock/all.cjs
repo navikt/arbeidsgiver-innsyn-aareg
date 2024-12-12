@@ -1,5 +1,5 @@
 module.exports = {
-    mockAll: (app) => {
+    mockAll: (app, fetch) => {
         require('./aaregMock.cjs').mock(app);
         require('./altinnMock.cjs').mock(app);
         require('./arbeidsforholdMock.cjs').mock(app);
