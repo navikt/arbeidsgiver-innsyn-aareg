@@ -84,7 +84,7 @@ if (MILJO === 'local' || MILJO === 'demo') {
     applyNotifikasjonMockMiddleware({app, path: '/arbeidsforhold/notifikasjon-bruker-api'});
 
     // mocks:
-    require('./mock/all.cjs').mockAll(app);
+    require('./mock/all.cjs').mockAll(app, fetch);
 } else {
     app.use(
         '/arbeidsforhold/notifikasjon-bruker-api',
