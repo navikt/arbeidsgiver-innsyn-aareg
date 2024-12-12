@@ -27,7 +27,7 @@ module.exports = {
             const token = await response.text()
             res.cookie("selvbetjening-idtoken", token)
             console.log(`login: setter selvbetjening-idtoken til ${token}`)
-            res.redirect("http://localhost:3000/arbeidsforhold/");
+            res.redirect("/arbeidsforhold/");
         });
     }
 }
