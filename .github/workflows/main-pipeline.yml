@@ -49,53 +49,35 @@ jobs:
 
   deploy:
     name: Deploy
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     needs: bygg
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy til dev-gcp
-        needs: bygg
-        permissions:
-          contents: read
-          id-token: write
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v4
-          - uses: nais/deploy/actions/deploy@v2
-            env:
-              CLUSTER: dev-gcp
-              RESOURCE: .nais/dev-gcp.yaml
-              ENVIRONMENT: dev-gcp:arbeidsforhold:aareg-innsyn-arbeidsgiver
-              IMAGE: ${{ needs.bygg.outputs.docker_image }}
+      - name: deploy dev
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/dev-gcp.yaml
+          ENVIRONMENT: dev-gcp:arbeidsforhold:aareg-innsyn-arbeidsgiver
+          IMAGE: ${{ needs.bygg.outputs.docker_image }}
 
-      - name: Deploy til prod-gcp
-        needs: bygg
-        permissions:
-          contents: read
-          id-token: write
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v4
-          - uses: nais/deploy/actions/deploy@v2
-            env:
-              CLUSTER: prod-gcp
-              RESOURCE: .nais/prod-gcp.yaml
-              ENVIRONMENT: prod-gcp:arbeidsforhold:aareg-innsyn-arbeidsgiver
-              IMAGE: ${{ needs.bygg.outputs.docker_image }}
+      - name: deploy prod
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/prod-gcp.yaml
+          ENVIRONMENT: prod-gcp:arbeidsforhold:aareg-innsyn-arbeidsgiver
+          IMAGE: ${{ needs.bygg.outputs.docker_image }}
 
-      - name: Deploy demo til dev-gcp
-        needs: bygg
-        permissions:
-          contents: read
-          id-token: write
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v4
-          - uses: nais/deploy/actions/deploy@v2
-            env:
-              CLUSTER: dev-gcp
-              RESOURCE: .nais/demo-dev-gcp.yaml
-              ENVIRONMENT: dev-gcp:arbeidsforhold:demo-aareg-innsyn-arbeidsgiver
-              IMAGE: ${{ needs.bygg.outputs.docker_image }}
+      - name: deploy demo
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/demo-dev-gcp.yaml
+          ENVIRONMENT: dev-gcp:arbeidsforhold:demo-aareg-innsyn-arbeidsgiver
+          IMAGE: ${{ needs.bygg.outputs.docker_image }}
