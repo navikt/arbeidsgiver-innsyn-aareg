@@ -47,6 +47,9 @@ spec:
         - application: tms-arbeidsforhold-api
           namespace: min-side
           cluster: prod-gcp
+        - application: arbeidsforhold-api
+          namespace: personbruker
+          cluster: prod-gcp
       external:
         - host: www.nav.no
         - host: aareg-innsyn-arbeidsgiver-api.prod-fss-pub.nais.io
