@@ -62,7 +62,7 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: .nais/dev-gcp.yaml
+          RESOURCE: nais/dev-gcp.yaml
           ENVIRONMENT: dev-gcp:arbeidsforhold:aareg-innsyn-arbeidsgiver
           IMAGE: ${{ needs.bygg.outputs.docker_image }}
 
@@ -70,7 +70,7 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
-          RESOURCE: .nais/prod-gcp.yaml
+          RESOURCE: nais/prod-gcp.yaml
           ENVIRONMENT: prod-gcp:arbeidsforhold:aareg-innsyn-arbeidsgiver
           IMAGE: ${{ needs.bygg.outputs.docker_image }}
 
@@ -78,6 +78,6 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: .nais/demo-dev-gcp.yaml
+          RESOURCE: nais/demo-dev-gcp.yaml
           ENVIRONMENT: dev-gcp:arbeidsforhold:demo-aareg-innsyn-arbeidsgiver
           IMAGE: ${{ needs.bygg.outputs.docker_image }}
