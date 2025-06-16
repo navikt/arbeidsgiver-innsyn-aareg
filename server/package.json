@@ -5,6 +5,7 @@
   "type": "module",
   "main": "server.js",
   "dependencies": {
+    "@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock": "7.2.3",
     "@navikt/oasis": "3.4.0",
     "express": "5.1.0",
     "express-rate-limit": "7.5.0",
@@ -15,6 +16,6 @@
     "winston": "3.13.0"
   },
   "scripts": {
-    "start": "node --experimental-modules server.js"
+    "start": "node server.js"
   }
 }

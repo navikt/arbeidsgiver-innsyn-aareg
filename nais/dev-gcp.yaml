@@ -25,8 +25,8 @@ spec:
   env:
     - name: NODE_EXTRA_CA_CERTS
       value: /etc/ssl/ca-bundle.pem
-    - name: API_GATEWAY
-      value: https://aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io
+    - name: API_URL
+      value: https://aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io/arbeidsgiver-arbeidsforhold-api
     - name: LOGIN_URL
       value: https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold/oauth2/login?redirect=https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold
     - name: DECORATOR_EXTERNAL_URL
