@@ -2,12 +2,16 @@ import path from 'path';
 import fetch from 'node-fetch';
 import express from 'express';
 import mustacheExpress from 'mustache-express';
-import httpProxyMiddleware from "http-proxy-middleware";
+import httpProxyMiddleware, {
+    debugProxyErrorsPlugin,
+    errorResponsePlugin,
+    proxyEventsPlugin,
+    responseInterceptor,
+} from 'http-proxy-middleware';
 import {createLogger, format, transports} from 'winston';
 import jsdom from "jsdom";
 import Prometheus from "prom-client";
 import require from "./esm-require.js";
-import {createNotifikasjonBrukerApiProxyMiddleware} from "./brukerapi-proxy-middleware.js";
 import cookieParser from "cookie-parser";
 import {applyNotifikasjonMockMiddleware} from "@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock";
 import {tokenXMiddleware} from "./tokenx.js";
@@ -28,17 +32,107 @@ const {
     API_GATEWAY = 'http://localhost:8080',
     APIGW_HEADER,
     DECORATOR_UPDATE_MS = 30 * 60 * 1000,
-    PROXY_LOG_LEVEL = 'debug',
 } = process.env;
 
-const log = createLogger({
-    transports: [
-        new transports.Console({
-            timestamp: true,
-            format: format.json()
-        })
-    ]
+const log_events_counter = new Prometheus.Counter({
+    name: 'logback_events_total',
+    help: 'Antall log events fordelt på level',
+    labelNames: ['level'],
 });
+const proxy_events_counter = new Prometheus.Counter({
+    name: 'proxy_events_total',
+    help: 'Antall proxy events',
+    labelNames: ['target', 'proxystatus', 'status', 'errcode'],
+});
+
+const maskFormat = format((info) => ({
+    ...info,
+    message: info.message.replace(/\d{9,}/g, (match) => '*'.repeat(match.length)),
+}));
+
+// proxy calls to log.<level> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/get
+const log = new Proxy(
+    createLogger({
+        format: maskFormat(),
+        transports: [
+            new transports.Console({
+                timestamp: true,
+                format: format.combine(format.splat(), format.json()),
+            }),
+        ],
+    }),
+    {
+        get: (_log, level) => {
+            return (...args) => {
+                log_events_counter.inc({ level: `${level}` });
+                return _log[level](...args);
+            };
+        },
+    }
+);
+
+const cookieScraperPlugin = (proxyServer, options) => {
+    proxyServer.on('proxyReq', (proxyReq, req, res, options) => {
+        if (proxyReq.getHeader('cookie')) {
+            proxyReq.removeHeader('cookie');
+        }
+    });
+};
+
+// copy with mods from http-proxy-middleware https://github.com/chimurai/http-proxy-middleware/blob/master/src/plugins/default/logger-plugin.ts
+const loggerPlugin = (proxyServer, options) => {
+    proxyServer.on('error', (err, req, res, target) => {
+        const hostname = req?.headers?.host;
+        // target is undefined when websocket errors
+        const errReference = 'https://nodejs.org/api/errors.html#errors_common_system_errors'; // link to Node Common Systems Errors page
+        proxy_events_counter.inc({
+            target: target.host,
+            proxystatus: null,
+            status: res.statusCode,
+            errcode: err.code || 'unknown',
+        });
+        const level =
+            /HPE_INVALID/.test(err.code) ||
+            ['ECONNRESET', 'ENOTFOUND', 'ECONNREFUSED', 'ETIMEDOUT'].includes(err.code)
+                ? 'warn'
+                : 'error';
+        log.log(
+            level,
+            '[HPM] Error occurred while proxying request %s to %s [%s] (%s)',
+            `${hostname}${req?.host}${req?.path}`,
+            `${target?.href}`,
+            err.code || err,
+            errReference
+        );
+    });
+
+    proxyServer.on('proxyRes', (proxyRes, req, res) => {
+        const originalUrl = req.originalUrl ?? `${req.baseUrl || ''}${req.url}`;
+        const pathUpToSearch = proxyRes.req.path.replace(/\?.*$/, '');
+        const exchange = `[HPM] ${req.method} ${originalUrl} -> ${proxyRes.req.protocol}//${proxyRes.req.host}${pathUpToSearch} [${proxyRes.statusCode}]`;
+        proxy_events_counter.inc({
+            target: proxyRes.req.host,
+            proxystatus: proxyRes.statusCode,
+            status: res.statusCode,
+            errcode: null,
+        });
+        log.info(exchange);
+    });
+
+    /**
+     * When client opens WebSocket connection
+     */
+    proxyServer.on('open', (socket) => {
+        log.info('[HPM] Client connected: %o', socket.address());
+    });
+
+    /**
+     * When client closes WebSocket connection
+     */
+    proxyServer.on('close', (req, proxySocket, proxyHead) => {
+        log.info('[HPM] Client disconnected: %o', proxySocket.address());
+    });
+};
 
 const BUILD_PATH = path.join(process.cwd(), '../build');
 
@@ -78,6 +172,20 @@ app.use(
         metricsPath: '/arbeidsforhold/internal/metrics',
     })
 );
+const proxyOptions = {
+    logger: log,
+    secure: true,
+    xfwd: true,
+    changeOrigin: true,
+    ejectPlugins: true,
+    plugins: [
+        cookieScraperPlugin,
+        debugProxyErrorsPlugin,
+        errorResponsePlugin,
+        loggerPlugin,
+        proxyEventsPlugin,
+    ],
+};
 
 if (MILJO === 'local' || MILJO === 'demo') {
     const {applyNotifikasjonMockMiddleware} = require('@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock');
@@ -88,7 +196,18 @@ if (MILJO === 'local' || MILJO === 'demo') {
 } else {
     app.use(
         '/arbeidsforhold/notifikasjon-bruker-api',
-        createNotifikasjonBrukerApiProxyMiddleware({log}),
+        tokenXMiddleware({
+            log: log,
+            audience: {
+                dev: 'dev-gcp:fager:notifikasjon-bruker-api',
+                prod: 'prod-gcp:fager:notifikasjon-bruker-api',
+            }[MILJO],
+        }),
+        createProxyMiddleware({
+            ...proxyOptions,
+            pathRewrite: { '^/': '' },
+            target: 'http://notifikasjon-bruker-api.fager.svc.cluster.local/api/graphql',
+        })
     );
 
     app.use(
@@ -102,18 +221,8 @@ if (MILJO === 'local' || MILJO === 'demo') {
                 }[MILJO]
             }),
         createProxyMiddleware({
-            logLevel: PROXY_LOG_LEVEL,
-            logProvider: _ => log,
-            onError: (err, req, res) => {
-                log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
-            },
-            changeOrigin: true,
-            pathRewrite: {
-                '^/arbeidsforhold/arbeidsgiver-arbeidsforhold/api': '/arbeidsgiver-arbeidsforhold-api',
-            },
-            secure: true,
-            xfwd: true,
-            target: API_GATEWAY,
+            ...proxyOptions,
+            target: `${API_GATEWAY}/arbeidsgiver-arbeidsforhold-api`,
             ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
         })
     );
@@ -129,18 +238,8 @@ if (MILJO === 'local' || MILJO === 'demo') {
                 }[MILJO]
             }),
         createProxyMiddleware({
-            logLevel: PROXY_LOG_LEVEL,
-            logProvider: _ => log,
-            onError: (err, req, res) => {
-                log.error(`${req.method} ${req.path} => [${res.statusCode}:${res.statusText}]: ${err.message}`);
-            },
-            changeOrigin: true,
-            target: NAIS_CLUSTER_NAME === 'prod-gcp' ? 'https://www.nav.no' : 'https://www.intern.dev.nav.no',
-            pathRewrite: {
-                '^/arbeidsforhold': ''
-            },
-            secure: true,
-            xfwd: true
+            ...proxyOptions,
+            target: NAIS_CLUSTER_NAME === 'prod-gcp' ? 'https://www.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver' : 'https://www.intern.dev.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
         })
     );
 }
