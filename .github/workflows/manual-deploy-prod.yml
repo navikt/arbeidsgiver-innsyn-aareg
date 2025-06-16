@@ -8,7 +8,7 @@ jobs:
     permissions:
       contents: "read"
       id-token: "write"
-    name: Bygg
+    name: Deploy prod
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
