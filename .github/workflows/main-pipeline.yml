@@ -2,8 +2,6 @@ name: Bygg og deploy master
 
 on:
   push:
-    branches:
-      - "master"
 
 env:
   IMAGE_BASE: ghcr.io/${{ github.repository }}/${{ github.event.repository.name }}
