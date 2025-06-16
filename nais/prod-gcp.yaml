@@ -7,15 +7,12 @@ metadata:
     team: arbeidsforhold
 spec:
   image: {{image}}
-  port: 3000
   ingresses:
     - https://arbeidsgiver.nav.no/arbeidsforhold
   liveness:
     path: /arbeidsforhold/internal/isAlive
-    initialDelay: 20
   readiness:
     path: /arbeidsforhold/internal/isReady
-    initialDelay: 20
   prometheus:
     enabled: true
     path: /arbeidsforhold/internal/metrics
@@ -36,6 +33,8 @@ spec:
       value: https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4
     - name: MILJO
       value: prod
+    - name: GIT_COMMIT
+      value: {{{commit}}}
   accessPolicy:
     outbound:
       rules:

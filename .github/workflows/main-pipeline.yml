@@ -2,10 +2,9 @@ name: Bygg og deploy master
 
 on:
   push:
-
-env:
-  IMAGE_BASE: ghcr.io/${{ github.repository }}/${{ github.event.repository.name }}
-  IMAGE: ghcr.io/${{ github.repository }}/${{ github.event.repository.name }}:${{ github.sha }}
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1' # bygg nytt image hver mandag morgen
 
 jobs:
   bygg:
@@ -16,12 +15,22 @@ jobs:
     name: Bygg
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: '22'
+          registry-url: https://npm.pkg.github.com/
+          cache: 'npm'
+
+      - run: npm ci --omit=dev --omit=optional
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+        working-directory: ./server
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
           registry-url: https://npm.pkg.github.com/
           scope: "@navikt"
           cache: 'yarn'
@@ -35,35 +44,28 @@ jobs:
 
       - run: yarn build
 
-      - uses: docker/login-action@v2
+      - uses: nais/docker-build-push@v0
+        id: gar-push
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: |
-            ${{ env.IMAGE }}
-            ${{ env.IMAGE_BASE }}:latest
-          cache-from: type=registry,ref=${{ env.IMAGE_BASE }}:latest
-          cache-to: type=inline
+          team: arbeidsforhold
+          tag: ${{ github.sha }}
 
   deploy:
     name: Deploy
+    needs: bygg
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
-    needs: bygg
+    permissions:
+      id-token: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Deploy til dev-gcp
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: nais/dev-gcp.yaml
+          VAR: commit=${{ github.sha }},image=${{ needs.bygg.outputs.image }}
           PRINT_PAYLOAD: true
 
       - name: Deploy til prod-gcp
@@ -72,6 +74,7 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: nais/prod-gcp.yaml
+          VAR: commit=${{ github.sha }},image=${{ needs.bygg.outputs.image }}
           PRINT_PAYLOAD: true
 
       - name: Deploy demo til dev-gcp
@@ -81,6 +84,5 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: nais/demo-dev-gcp.yaml
           PRINT_PAYLOAD: true
-          REF: ${{ env.COMMIT }}
-          IMAGE: ${{ env.IMAGE }}
+          VAR: commit=${{ github.sha }},image=${{ needs.bygg.outputs.image }}
 
