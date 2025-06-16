@@ -1,23 +1,18 @@
 import path from 'path';
 import fetch from 'node-fetch';
 import express from 'express';
-import mustacheExpress from 'mustache-express';
 import httpProxyMiddleware, {
     debugProxyErrorsPlugin,
     errorResponsePlugin,
     proxyEventsPlugin,
-    responseInterceptor,
 } from 'http-proxy-middleware';
 import {createLogger, format, transports} from 'winston';
-import jsdom from "jsdom";
 import Prometheus from "prom-client";
 import require from "./esm-require.js";
-import cookieParser from "cookie-parser";
 import {applyNotifikasjonMockMiddleware} from "@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock";
 import {tokenXMiddleware} from "./tokenx.js";
 
 const apiMetricsMiddleware = require('prometheus-api-metrics');
-const {JSDOM} = jsdom;
 const {createProxyMiddleware} = httpProxyMiddleware;
 
 const defaultLoginUrl = 'http://localhost:8080/ditt-nav-arbeidsgiver-api/local/selvbetjening-login?redirect=http://localhost:3000/arbeidsforhold';
@@ -25,13 +20,11 @@ const defaultLoginUrl = 'http://localhost:8080/ditt-nav-arbeidsgiver-api/local/s
 const {
     PORT = 3000,
     NAIS_APP_IMAGE = '?',
+    GIT_COMMIT = '?',
     LOGIN_URL = defaultLoginUrl,
-    DECORATOR_EXTERNAL_URL = 'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4',
     NAIS_CLUSTER_NAME = 'local',
     MILJO = 'prod',
-    API_GATEWAY = 'http://localhost:8080',
-    APIGW_HEADER,
-    DECORATOR_UPDATE_MS = 30 * 60 * 1000,
+    API_URL = 'http://localhost:8080/arbeidsgiver-arbeidsforhold-api',
 } = process.env;
 
 const log_events_counter = new Prometheus.Counter({
@@ -64,7 +57,7 @@ const log = new Proxy(
     {
         get: (_log, level) => {
             return (...args) => {
-                log_events_counter.inc({ level: `${level}` });
+                log_events_counter.inc({level: `${level}`});
                 return _log[level](...args);
             };
         },
@@ -136,42 +129,6 @@ const loggerPlugin = (proxyServer, options) => {
 
 const BUILD_PATH = path.join(process.cwd(), '../build');
 
-const getDecoratorFragments = async () => {
-    const response = await fetch(DECORATOR_EXTERNAL_URL);
-    const body = await response.text();
-    const {document} = new JSDOM(body).window;
-    return {
-        HEADER: document.getElementById('header-withmenu').innerHTML,
-        FOOTER: document.getElementById('footer-withmenu').innerHTML,
-        STYLES: document.getElementById('styles').innerHTML,
-        SCRIPTS: document.getElementById('scripts').innerHTML,
-        SETTINGS: `<script type="application/javascript">
-            window.environment = {
-                MILJO: '${NAIS_CLUSTER_NAME}',
-            }
-        </script>`,
-    };
-}
-
-const app = express();
-app.disable("x-powered-by");
-app.engine('html', mustacheExpress());
-app.set('view engine', 'mustache');
-app.set('views', BUILD_PATH);
-
-app.use(cookieParser());
-
-
-app.use('/*', (req, res, next) => {
-    res.setHeader('NAIS_APP_IMAGE', NAIS_APP_IMAGE);
-    next();
-});
-
-app.use(
-    apiMetricsMiddleware({
-        metricsPath: '/arbeidsforhold/internal/metrics',
-    })
-);
 const proxyOptions = {
     logger: log,
     secure: true,
@@ -205,7 +162,7 @@ if (MILJO === 'local' || MILJO === 'demo') {
         }),
         createProxyMiddleware({
             ...proxyOptions,
-            pathRewrite: { '^/': '' },
+            pathRewrite: {'^/': ''},
             target: 'http://notifikasjon-bruker-api.fager.svc.cluster.local/api/graphql',
         })
     );
@@ -222,8 +179,7 @@ if (MILJO === 'local' || MILJO === 'demo') {
             }),
         createProxyMiddleware({
             ...proxyOptions,
-            target: `${API_GATEWAY}/arbeidsgiver-arbeidsforhold-api`,
-            ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
+            target: API_URL,
         })
     );
 
@@ -244,74 +200,138 @@ if (MILJO === 'local' || MILJO === 'demo') {
     );
 }
 
-app.use('/arbeidsforhold', express.static(BUILD_PATH, { index: false }));
 
-app.get('/arbeidsforhold/redirect-til-login', (req, res) => {
-    res.redirect(LOGIN_URL);
-});
+const main = async () => {
+    let appReady = false;
+    const app = express();
+    app.disable("x-powered-by");
 
-app.get('/arbeidsforhold/internal/isAlive', (req, res) =>
-    res.sendStatus(200)
-);
+    app.use('/{*splat}', (req, res, next) => {
+        res.setHeader('NAIS_APP_IMAGE', NAIS_APP_IMAGE);
+        next();
+    });
 
-app.get('/arbeidsforhold/internal/isReady', (req, res) =>
-    res.sendStatus(200)
-);
+    app.use(
+        apiMetricsMiddleware({
+            metricsPath: '/arbeidsforhold/internal/metrics',
+        })
+    );
 
-const serve = async () => {
-    let fragments;
+
+    if (MILJO === 'dev' || MILJO === 'prod') {
+        app.use(
+            '/arbeidsforhold/notifikasjon-bruker-api',
+            tokenXMiddleware({
+                log: log,
+                audience: {
+                    dev: 'dev-gcp:fager:notifikasjon-bruker-api',
+                    prod: 'prod-gcp:fager:notifikasjon-bruker-api',
+                }[MILJO],
+            }),
+            createProxyMiddleware({
+                ...proxyOptions,
+                pathRewrite: {'^/': ''},
+                target: 'http://notifikasjon-bruker-api.fager.svc.cluster.local/api/graphql',
+            })
+        );
+
+        app.use(
+            '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
+            tokenXMiddleware(
+                {
+                    log: log,
+                    audience: {
+                        'dev': 'dev-fss:arbeidsforhold:aareg-innsyn-arbeidsgiver-api',
+                        'prod': 'prod-fss:arbeidsforhold:aareg-innsyn-arbeidsgiver-api',
+                    }[MILJO]
+                }),
+            createProxyMiddleware({
+                ...proxyOptions,
+                target: API_URL,
+            })
+        );
+
+        app.use(
+            '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+            tokenXMiddleware(
+                {
+                    log: log,
+                    audience: {
+                        'dev': 'dev-gcp:personbruker:arbeidsforhold-api',
+                        'prod': 'prod-gcp:personbruker:arbeidsforhold-api',
+                    }[MILJO]
+                }),
+            createProxyMiddleware({
+                ...proxyOptions,
+                target: {
+                    'dev': 'https://www.intern.dev.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+                    'prod': 'https://www.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+                }[MILJO]
+            })
+        );
+    } else {
+        const {applyNotifikasjonMockMiddleware} = require('@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock');
+        applyNotifikasjonMockMiddleware({app, path: '/arbeidsforhold/notifikasjon-bruker-api'});
+
+        // mocks:
+        require('./mock/all.cjs').mockAll(app, fetch);
+    }
+
+    /**
+     * Dersom man ikke har gyldig sesjon redirecter vi til login-proxy aka. wonderwall
+     * brukeren vil bli sendt tilbake til referer (siden hen stod på) etter innlogging
+     *
+     * https://doc.nais.io/auth/explanations/?h=wonder#login-proxy
+     */
+    app.get('/arbeidsforhold/redirect-til-login', (req, res) => {
+        const target = new URL(LOGIN_URL);
+        target.searchParams.set('redirect', req.get('referer'));
+        res.redirect(target.href);
+    });
+
+    app.use('/arbeidsforhold', express.static(BUILD_PATH, {
+        index: false,
+        etag: false,
+        maxAge: '1h'
+    }));
+
+    app.get('/arbeidsforhold/static/js/settings.js', (req, res) => {
+        res.contentType('text/javascript');
+        res.send(`
+            window.environment = {
+                MILJO: '${MILJO}',
+                NAIS_APP_IMAGE: '${NAIS_APP_IMAGE}',
+                GIT_COMMIT: '${GIT_COMMIT}'
+            };
+        `);
+    });
+
+
+
+    app.get('/arbeidsforhold/internal/isAlive', (req, res) => res.sendStatus(200));
+    app.get('/arbeidsforhold/internal/isReady', (req, res) =>
+        res.sendStatus(appReady ? 200 : 500)
+    );
+
+    app.get('/arbeidsforhold/{*splat}', (req, res) => {
+        res.setHeader('Cache-Control', 'no-store');
+        res.setHeader('Etag', GIT_COMMIT);
+        res.sendFile(path.join(BUILD_PATH, 'index.html'));
+    });
+
     try {
-        fragments = await getDecoratorFragments();
-        app.get('/arbeidsforhold/*', (req, res) => {
-            res.render('index.html', fragments, (err, html) => {
-                if (err) {
-                    log.error(err);
-                    res.sendStatus(500);
-                } else {
-                    res.send(html);
-                }
-            });
-        });
         app.listen(PORT, () => {
-            log.info('Server listening on port ', PORT);
+            log.info(`Server listening on port ${PORT}`);
+            setTimeout(() => {
+                appReady = true;
+            }, 5_000);
         });
     } catch (error) {
         log.error('Server failed to start ', error);
         process.exit(1);
     }
-
-    if (MILJO === 'dev' || MILJO === 'prod') {
-        const gauge = new Prometheus.Gauge({
-            name: 'backend_api_gw',
-            help: 'Status til backend via API-Gateway (sonekrysning). up=1, down=0',
-        });
-
-        setInterval(async () => {
-            try {
-                const res = await fetch(`${API_GATEWAY}/arbeidsgiver-arbeidsforhold-api/internal/actuator/health`, {
-                    ...(APIGW_HEADER ? {headers: {'x-nav-apiKey': APIGW_HEADER}} : {})
-                });
-                gauge.set(res.ok ? 1 : 0);
-                if (NAIS_CLUSTER_NAME === 'dev-gcp') {
-                    log.info(`healthcheck result http code: ${res.statusCode}`)
-                }
-            } catch (error) {
-                log.error(`healthcheck error: ${gauge.name}`, error)
-                gauge.set(0);
-            }
-        }, 60 * 1000);
-    }
-
-    setInterval(() => {
-        getDecoratorFragments()
-            .then(oppdatert => {
-                fragments = oppdatert;
-                log.info(`dekoratør oppdatert: ${Object.keys(oppdatert)}`);
-            })
-            .catch(error => {
-                log.warn(`oppdatering av dekoratør feilet: ${error}`);
-            });
-    }, DECORATOR_UPDATE_MS);
 }
 
-serve().then(/*noop*/);
+main()
+    .then((_) => log.info('main started'))
+    .catch((e) => log.error('main failed', e));
