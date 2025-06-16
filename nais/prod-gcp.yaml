@@ -43,6 +43,9 @@ spec:
         - application: aareg-innsyn-arbeidsgiver-api
           namespace: arbeidsforhold
           cluster: prod-fss
+        - application: tms-arbeidsforhold-api
+          namespace: min-side
+          cluster: prod-gcp
         - application: arbeidsforhold-api
           namespace: personbruker
           cluster: prod-gcp
