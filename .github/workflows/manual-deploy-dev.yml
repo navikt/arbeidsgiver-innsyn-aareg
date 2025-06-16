@@ -8,7 +8,7 @@ jobs:
     permissions:
       contents: "read"
       id-token: "write"
-    name: Bygg
+    name: Deploy dev og demo
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,5 +20,12 @@ jobs:
         env:
           CLUSTER: dev-gcp
           RESOURCE: nais/dev-gcp.yaml
+          VAR: commit=${{ github.sha }},image=${{ steps.login.outputs.registry }}/arbeidsgiver-innsyn-aareg:${{ github.sha }}
+          REF: ${{ github.sha }}
+
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: nais/demo-dev-gcp.yaml
           VAR: commit=${{ github.sha }},image=${{ steps.login.outputs.registry }}/arbeidsgiver-innsyn-aareg:${{ github.sha }}
           REF: ${{ github.sha }}
