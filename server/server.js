@@ -1,21 +1,20 @@
 import path from 'path';
-import fetch from 'node-fetch';
 import express from 'express';
 import httpProxyMiddleware, {
     debugProxyErrorsPlugin,
     errorResponsePlugin,
     proxyEventsPlugin,
 } from 'http-proxy-middleware';
-import {createLogger, format, transports} from 'winston';
-import Prometheus from "prom-client";
-import require from "./esm-require.js";
-import {applyNotifikasjonMockMiddleware} from "@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock";
-import {tokenXMiddleware} from "./tokenx.js";
+import { createLogger, format, transports } from 'winston';
+import Prometheus from 'prom-client';
+import require from './esm-require.js';
+import { tokenXMiddleware } from './tokenx.js';
 
 const apiMetricsMiddleware = require('prometheus-api-metrics');
-const {createProxyMiddleware} = httpProxyMiddleware;
+const { createProxyMiddleware } = httpProxyMiddleware;
 
-const defaultLoginUrl = 'http://localhost:8080/ditt-nav-arbeidsgiver-api/local/selvbetjening-login?redirect=http://localhost:3000/arbeidsforhold';
+const defaultLoginUrl =
+    'http://localhost:8080/ditt-nav-arbeidsgiver-api/local/selvbetjening-login?redirect=http://localhost:3000/arbeidsforhold';
 
 const {
     PORT = 3000,
@@ -57,7 +56,7 @@ const log = new Proxy(
     {
         get: (_log, level) => {
             return (...args) => {
-                log_events_counter.inc({level: `${level}`});
+                log_events_counter.inc({ level: `${level}` });
                 return _log[level](...args);
             };
         },
@@ -144,67 +143,10 @@ const proxyOptions = {
     ],
 };
 
-if (MILJO === 'local' || MILJO === 'demo') {
-    const {applyNotifikasjonMockMiddleware} = require('@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock');
-    applyNotifikasjonMockMiddleware({app, path: '/arbeidsforhold/notifikasjon-bruker-api'});
-
-    // mocks:
-    require('./mock/all.cjs').mockAll(app, fetch);
-} else {
-    app.use(
-        '/arbeidsforhold/notifikasjon-bruker-api',
-        tokenXMiddleware({
-            log: log,
-            audience: {
-                dev: 'dev-gcp:fager:notifikasjon-bruker-api',
-                prod: 'prod-gcp:fager:notifikasjon-bruker-api',
-            }[MILJO],
-        }),
-        createProxyMiddleware({
-            ...proxyOptions,
-            pathRewrite: {'^/': ''},
-            target: 'http://notifikasjon-bruker-api.fager.svc.cluster.local/api/graphql',
-        })
-    );
-
-    app.use(
-        '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
-        tokenXMiddleware(
-            {
-                log: log,
-                audience: {
-                    'dev': 'dev-fss:arbeidsforhold:aareg-innsyn-arbeidsgiver-api',
-                    'prod': 'prod-fss:arbeidsforhold:aareg-innsyn-arbeidsgiver-api',
-                }[MILJO]
-            }),
-        createProxyMiddleware({
-            ...proxyOptions,
-            target: API_URL,
-        })
-    );
-
-    app.use(
-        '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
-        tokenXMiddleware(
-            {
-                log: log,
-                audience: {
-                    'dev': 'dev-gcp:personbruker:arbeidsforhold-api',
-                    'prod': 'prod-gcp:personbruker:arbeidsforhold-api',
-                }[MILJO]
-            }),
-        createProxyMiddleware({
-            ...proxyOptions,
-            target: NAIS_CLUSTER_NAME === 'prod-gcp' ? 'https://www.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver' : 'https://www.intern.dev.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
-        })
-    );
-}
-
-
 const main = async () => {
     let appReady = false;
     const app = express();
-    app.disable("x-powered-by");
+    app.disable('x-powered-by');
 
     app.use('/{*splat}', (req, res, next) => {
         res.setHeader('NAIS_APP_IMAGE', NAIS_APP_IMAGE);
@@ -216,7 +158,6 @@ const main = async () => {
             metricsPath: '/arbeidsforhold/internal/metrics',
         })
     );
-
 
     if (MILJO === 'dev' || MILJO === 'prod') {
         app.use(
@@ -230,21 +171,20 @@ const main = async () => {
             }),
             createProxyMiddleware({
                 ...proxyOptions,
-                pathRewrite: {'^/': ''},
+                pathRewrite: { '^/': '' },
                 target: 'http://notifikasjon-bruker-api.fager.svc.cluster.local/api/graphql',
             })
         );
 
         app.use(
             '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api',
-            tokenXMiddleware(
-                {
-                    log: log,
-                    audience: {
-                        'dev': 'dev-fss:arbeidsforhold:aareg-innsyn-arbeidsgiver-api',
-                        'prod': 'prod-fss:arbeidsforhold:aareg-innsyn-arbeidsgiver-api',
-                    }[MILJO]
-                }),
+            tokenXMiddleware({
+                log: log,
+                audience: {
+                    dev: 'dev-fss:arbeidsforhold:aareg-innsyn-arbeidsgiver-api',
+                    prod: 'prod-fss:arbeidsforhold:aareg-innsyn-arbeidsgiver-api',
+                }[MILJO],
+            }),
             createProxyMiddleware({
                 ...proxyOptions,
                 target: API_URL,
@@ -253,47 +193,43 @@ const main = async () => {
 
         app.use(
             '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
-            tokenXMiddleware(
-                {
-                    log: log,
-                    audience: {
-                        'dev': 'dev-gcp:personbruker:arbeidsforhold-api',
-                        'prod': 'prod-gcp:personbruker:arbeidsforhold-api',
-                    }[MILJO]
-                }),
+            tokenXMiddleware({
+                log: log,
+                audience: {
+                    dev: 'dev-gcp:personbruker:arbeidsforhold-api',
+                    prod: 'prod-gcp:personbruker:arbeidsforhold-api',
+                }[MILJO],
+            }),
             createProxyMiddleware({
                 ...proxyOptions,
                 target: {
-                    'dev': 'https://www.intern.dev.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
-                    'prod': 'https://www.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
-                }[MILJO]
+                    dev: 'https://www.intern.dev.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+                    prod: 'https://www.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+                }[MILJO],
             })
         );
-    } else {
-        const {applyNotifikasjonMockMiddleware} = require('@navikt/arbeidsgiver-notifikasjoner-brukerapi-mock');
-        applyNotifikasjonMockMiddleware({app, path: '/arbeidsforhold/notifikasjon-bruker-api'});
 
-        // mocks:
-        require('./mock/all.cjs').mockAll(app, fetch);
+        /**
+         * Dersom man ikke har gyldig sesjon redirecter vi til login-proxy aka. wonderwall
+         * brukeren vil bli sendt tilbake til referer (siden hen stod på) etter innlogging
+         *
+         * https://doc.nais.io/auth/explanations/?h=wonder#login-proxy
+         */
+        app.get('/arbeidsforhold/redirect-til-login', (req, res) => {
+            const target = new URL(LOGIN_URL);
+            target.searchParams.set('redirect', req.get('referer'));
+            res.redirect(target.href);
+        });
     }
 
-    /**
-     * Dersom man ikke har gyldig sesjon redirecter vi til login-proxy aka. wonderwall
-     * brukeren vil bli sendt tilbake til referer (siden hen stod på) etter innlogging
-     *
-     * https://doc.nais.io/auth/explanations/?h=wonder#login-proxy
-     */
-    app.get('/arbeidsforhold/redirect-til-login', (req, res) => {
-        const target = new URL(LOGIN_URL);
-        target.searchParams.set('redirect', req.get('referer'));
-        res.redirect(target.href);
-    });
-
-    app.use('/arbeidsforhold', express.static(BUILD_PATH, {
-        index: false,
-        etag: false,
-        maxAge: '1h'
-    }));
+    app.use(
+        '/arbeidsforhold',
+        express.static(BUILD_PATH, {
+            index: false,
+            etag: false,
+            maxAge: '1h',
+        })
+    );
 
     app.get('/arbeidsforhold/static/js/settings.js', (req, res) => {
         res.contentType('text/javascript');
@@ -306,12 +242,8 @@ const main = async () => {
         `);
     });
 
-
-
     app.get('/arbeidsforhold/internal/isAlive', (req, res) => res.sendStatus(200));
-    app.get('/arbeidsforhold/internal/isReady', (req, res) =>
-        res.sendStatus(appReady ? 200 : 500)
-    );
+    app.get('/arbeidsforhold/internal/isReady', (req, res) => res.sendStatus(appReady ? 200 : 500));
 
     app.get('/arbeidsforhold/{*splat}', (req, res) => {
         res.setHeader('Cache-Control', 'no-store');
@@ -330,7 +262,7 @@ const main = async () => {
         log.error('Server failed to start ', error);
         process.exit(1);
     }
-}
+};
 
 main()
     .then((_) => log.info('main started'))

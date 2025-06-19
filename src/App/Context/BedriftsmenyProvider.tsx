@@ -1,6 +1,14 @@
-import React, { createContext, FunctionComponent, useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+    createContext,
+    FunctionComponent,
+    PropsWithChildren,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import { useLocation } from 'react-router-dom';
-import Bedriftsmeny, {Arbeidsforhold} from '@navikt/bedriftsmeny';
+import Bedriftsmeny from '@navikt/bedriftsmeny';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import { AltinnOrganisasjon, AltinnorganisasjonerContext } from './AltinnorganisasjonerProvider';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
@@ -8,7 +16,6 @@ import { hentTidligereVirksomheter } from '../../api/aaregApi';
 import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
 import Lasteboks from '../GeneriskeKomponenter/Lasteboks';
 import { useReplace, useSearchParameters } from '../../utils/UrlManipulation';
-import emptyList from '../Objekter/EmptyList';
 import { NotifikasjonWidget } from '@navikt/arbeidsgiver-notifikasjon-widget';
 
 interface Enhet {
@@ -22,7 +29,7 @@ interface Context extends Enhet {
 
 export const BedriftsmenyContext = createContext<Context>({} as Context);
 
-const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
+const BedriftsmenyProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
     const replace = useReplace();
     const location = useLocation();
 
@@ -32,7 +39,9 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
     const [oppstart, settOppstart] = useState(true);
     const [context, settContext] = useState<Context | null>(null);
     const [enhet, settEnhet] = useState<Enhet | null>(null);
-    const [tidligereUnderenheter, settTidligereUnderenheter] = useState<Organisasjon[] | 'laster'>('laster');
+    const [tidligereUnderenheter, settTidligereUnderenheter] = useState<Organisasjon[] | 'laster'>(
+        'laster'
+    );
 
     const finnOrg = useCallback(
         (orgnr: string): AltinnOrganisasjon | null =>
@@ -49,7 +58,6 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
         enhet !== null && enhet.hovedenhet !== null && enhet.hovedenhet.tilgang
             ? enhet.hovedenhet.OrganizationNumber
             : null;
-
 
     const lasteboksEllerIngenTilgang = (visLasteBoks: boolean) => {
         if (visLasteBoks) {
@@ -73,7 +81,8 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
             settEnhet(null);
         } else {
             const underenhet = finnOrg(orgnrFraUrl);
-            const hovedenhet = underenhet === null ? null : finnOrg(underenhet.ParentOrganizationNumber);
+            const hovedenhet =
+                underenhet === null ? null : finnOrg(underenhet.ParentOrganizationNumber);
             if (underenhet === null) {
                 console.error('Bedriftsmeny byttet til ukjent organisasjon');
                 settEnhet(null);
@@ -85,7 +94,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
 
     useEffect(() => {
         if (tidligereUnderenheterFor === null) {
-            settTidligereUnderenheter(emptyList);
+            settTidligereUnderenheter([]);
         } else {
             settTidligereUnderenheter('laster');
             const abortController = new AbortController();
@@ -94,7 +103,7 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
                     settTidligereUnderenheter(enheter);
                 })
                 .catch((err) => {
-                    settTidligereUnderenheter(emptyList);
+                    settTidligereUnderenheter([]);
                 });
             return () => abortController.abort();
         }
@@ -112,7 +121,6 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
         <>
             <Bedriftsmeny
                 sidetittel={sidetittel}
-                piktogram={<Arbeidsforhold/>}
                 organisasjoner={tidligereArbeidsforhold ? [] : altinnorganisasjoner}
                 onOrganisasjonChange={({ OrganizationNumber }) => {
                     /* Bedriftsmenyen vil ved oppstart kalle hit, selv om det ikke er en
@@ -120,7 +128,10 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
                      * filter/søk-parameterene.
                      */
                     if (enhet?.underenhet.OrganizationNumber !== OrganizationNumber) {
-                        replace({ pathname: '/', search: `bedrift=${OrganizationNumber}` });
+                        replace({
+                            pathname: location.pathname + '/',
+                            search: `bedrift=${OrganizationNumber}`,
+                        });
                     }
                 }}
             >
@@ -129,7 +140,9 @@ const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
             {altinnorganisasjoner.length === 0 || context === null ? (
                 lasteboksEllerIngenTilgang(oppstart)
             ) : (
-                <BedriftsmenyContext.Provider value={context}>{children}</BedriftsmenyContext.Provider>
+                <BedriftsmenyContext.Provider value={context}>
+                    {children}
+                </BedriftsmenyContext.Provider>
             )}
         </>
     );
