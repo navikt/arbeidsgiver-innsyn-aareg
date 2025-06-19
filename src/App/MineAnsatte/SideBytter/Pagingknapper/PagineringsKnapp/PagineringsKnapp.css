@@ -1,0 +1,37 @@
+.sidebytter__valg {
+  -webkit-border-radius: 27px;
+  -moz-border-radius: 27px;
+  border-radius: 27px;
+  border-color: transparent;
+  width: 25px;
+  height: 25px;
+  padding: 1px 2px 0 2px;
+  text-align: center;
+  background-color: var(--a-gray-100);
+  color: var(--a-gray-900);
+  align-self: center;
+  margin: 0 0.5rem 0 0.5rem;
+}
+.sidebytter__valg:focus {
+  background-color: var(--a-blue-100);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--a-blue-800);
+  color: var(--a-gray-900);
+}
+.sidebytter__valg__sidetall {
+  font-size: 0.875rem;
+}
+.er-valgt {
+  background-color: var(--a-blue-800);
+  color: white;
+}
+.indeks-valg__sidetall {
+  font-size: 14px;
+}
+.valg-appear {
+  opacity: 0.01;
+}
+.valg-appear.valg-appear-active {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}

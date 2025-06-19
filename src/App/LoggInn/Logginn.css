@@ -1,0 +1,61 @@
+.innloggingsside {
+  min-height: 100vh;
+  background-color: white;
+}
+.innloggingsside__innhold {
+  text-align: center;
+  padding: 2.5rem 1rem;
+}
+@media (min-width: 768px) {
+  .innloggingsside__innhold {
+    padding: 5.5rem 2rem;
+  }
+}
+@media (min-width: 992px) {
+  .innloggingsside__innhold {
+    width: 40rem;
+    margin: 0 auto;
+  }
+}
+.innloggingsside__circle {
+  margin: 0 auto;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  background-color: var(--a-blue-100);
+}
+.innloggingsside__circle .handtrykkbilde {
+  margin-top: 1.65rem;
+}
+.innloggingsside__sidetittel {
+  margin-top: 1.5rem;
+  padding: 0 0 2rem;
+}
+@media (min-width: 768px) {
+  .innloggingsside__sidetittel {
+    padding: 0 1.5rem 2rem;
+  }
+}
+.innloggingsside__ingress {
+  max-width: 25.5rem;
+  margin: 0 auto;
+  padding-bottom: 2rem;
+}
+.innloggingsside__punktliste {
+  text-align: left;
+}
+.innloggingsside__punkt {
+  margin: 0.5rem;
+}
+.innloggingsside__margintop {
+  margin-top: 2rem;
+}
+.innloggingsside__loginKnapp {
+  margin: 2.5rem 1.5rem;
+}
+.innloggingsside__besok-ditt-nav {
+  margin-bottom: 3rem;
+}
+.innloggingsside__besok-ditt-nav .logg-inn-lenke {
+  margin-top: 0.5rem;
+}

@@ -1,0 +1,23 @@
+.attributt {
+  display: flex;
+  margin-bottom: 0.5rem;
+  color: var(--a-gray-800);
+}
+.attributt__navn {
+  width: 40%;
+  min-width: 9rem;
+  color: var(--a-gray-600);
+}
+.attributt__verdi {
+  width: 60%;
+  overflow-wrap: break-word;
+}
+@media (min-width: 768px) {
+  .attributt {
+    margin-right: 2rem;
+  }
+  .attributt__navn {
+    width: 30%;
+    min-width: 10rem;
+  }
+}

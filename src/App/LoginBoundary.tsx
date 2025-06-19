@@ -1,11 +1,10 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useContext } from 'react';
 import LoggInn from './LoggInn/LoggInn';
 import EnkelBanner from './EnkelBanner/EnkelBanner';
 import Lasteboks from './GeneriskeKomponenter/Lasteboks';
 import { Innlogget, LoginContext } from './Context/LoginProvider';
 
-
-const LoginBoundary: FunctionComponent = (props) => {
+const LoginBoundary: FunctionComponent<PropsWithChildren> = (props) => {
     const { innlogget } = useContext(LoginContext);
     return (
         <>

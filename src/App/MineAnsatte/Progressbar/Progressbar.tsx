@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Ingress } from 'nav-frontend-typografi';
-import './Progressbar.less';
+import './Progressbar.css';
+import { BodyLong } from '@navikt/ds-react';
 
 interface Props {
     estimertAntall?: number;
@@ -48,12 +48,16 @@ const Progressbar = ({ estimertAntall }: Props) => {
 
     return (
         <div className={'progressbar__container'}>
-            <Ingress aria-live="assertive" className={'progressbar__henter-antall'}>
+            <BodyLong size="large" aria-live="assertive" className={'progressbar__henter-antall'}>
                 {'Henter ' + overtekst + ' arbeidsforhold'}
-            </Ingress>
+            </BodyLong>
             <div className={'progressbar__prosent'}>{tekst}</div>
             <div className="progressbar">
-                <div style={{ width: `${percent}%` }} className={'progressbar__fyll'} id={'progressbar__fyll'} />
+                <div
+                    style={{ width: `${percent}%` }}
+                    className={'progressbar__fyll'}
+                    id={'progressbar__fyll'}
+                />
             </div>
         </div>
     );

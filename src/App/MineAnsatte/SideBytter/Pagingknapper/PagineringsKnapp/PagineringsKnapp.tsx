@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { Element } from 'nav-frontend-typografi';
-import './PagineringsKnapp.less';
+import './PagineringsKnapp.css';
 import { useSearchParameters } from '../../../../../utils/UrlManipulation';
-const CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
+import { Label } from '@navikt/ds-react';
 
 interface Props {
     sidetall: number;
@@ -45,15 +44,7 @@ const GraSirkelMedNr = (props: Props) => {
             aria-label={ariaLabel}
             aria-current={erNavarendeSide}
         >
-            <CSSTransitionGroup
-                transitionName="valg"
-                transitionAppear={true}
-                transitionAppearTimeout={700}
-                transitionEnterTimeout={500}
-                transitionLeaveTimeout={300}
-            >
-                <Element className="valg__sidetall">{props.sidetall.toString()}</Element>
-            </CSSTransitionGroup>
+            <Label className="valg__sidetall">{props.sidetall.toString()}</Label>
         </button>
     );
 };

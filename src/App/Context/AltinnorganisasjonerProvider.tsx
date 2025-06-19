@@ -1,9 +1,18 @@
-import React, { createContext, FunctionComponent, useEffect, useState } from 'react';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import React, {
+    createContext,
+    FunctionComponent,
+    PropsWithChildren,
+    useEffect,
+    useState,
+} from 'react';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
-import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../../api/altinnApi';
+import {
+    hentOrganisasjonerFraAltinn,
+    hentOrganisasjonerMedTilgangTilAltinntjeneste,
+} from '../../api/altinnApi';
 import Lasteboks from '../GeneriskeKomponenter/Lasteboks';
 import EnkelBanner from '../EnkelBanner/EnkelBanner';
+import { Alert } from '@navikt/ds-react';
 
 export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
@@ -22,9 +31,11 @@ type Context = Array<AltinnOrganisasjon>;
 
 export const AltinnorganisasjonerContext = createContext<Context>([]);
 
-export const AltinnorganisasjonerProvider: FunctionComponent = props => {
+export const AltinnorganisasjonerProvider: FunctionComponent<PropsWithChildren> = (props) => {
     const [organisasjoner, settOrganisasjoner] = useState<null | Array<Organisasjon>>(null);
-    const [organisasjonerMedTilgang, settOrganisasjonerMedTilgang] = useState<null | Set<string>>(null);
+    const [organisasjonerMedTilgang, settOrganisasjonerMedTilgang] = useState<null | Set<string>>(
+        null
+    );
     const [feil, settFeil] = useState(false);
 
     useEffect(() => {
@@ -46,12 +57,12 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
             SERVICEEDITIONINNSYNAAREGISTERET,
             abortController.signal
         )
-            .then(organisasjonerMedTilgangFraAltinn => {
+            .then((organisasjonerMedTilgangFraAltinn) => {
                 settOrganisasjonerMedTilgang(
                     new Set(
                         organisasjonerMedTilgangFraAltinn
                             .filter(erGyldigOrganisasjon)
-                            .map(org => org.OrganizationNumber)
+                            .map((org) => org.OrganizationNumber)
                     )
                 );
             })
@@ -69,9 +80,9 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
     }, []);
 
     if (organisasjoner !== null && organisasjonerMedTilgang !== null) {
-        const context = organisasjoner.map(org => ({
+        const context = organisasjoner.map((org) => ({
             ...org,
-            tilgang: organisasjonerMedTilgang.has(org.OrganizationNumber)
+            tilgang: organisasjonerMedTilgang.has(org.OrganizationNumber),
         }));
 
         return (
@@ -84,10 +95,10 @@ export const AltinnorganisasjonerProvider: FunctionComponent = props => {
             <>
                 <EnkelBanner />
                 <div className="feilmelding-altinn">
-                    <AlertStripeFeil>
-                        Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn kan du prøve å laste
-                        siden på nytt.
-                    </AlertStripeFeil>
+                    <Alert variant="error">
+                        Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn
+                        kan du prøve å laste siden på nytt.
+                    </Alert>
                 </div>
             </>
         );

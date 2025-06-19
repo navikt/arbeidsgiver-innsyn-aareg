@@ -1,19 +1,16 @@
 import React, { FunctionComponent } from 'react';
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import Ansatt from './Ansatt/Ansatt';
-import './ListeMineAnsatteForMobil.less';
+import './ListeMineAnsatteForMobil.css';
 
 interface Props {
-    listeMedArbeidsForhold: Arbeidsforhold[],
+    listeMedArbeidsForhold: Arbeidsforhold[];
     className?: string;
 }
 
 const ListeMedAnsatteForMobil: FunctionComponent<Props> = (props) => {
-    const rader = props.listeMedArbeidsForhold.map(forhold => (
-        <Ansatt
-            key={forhold.navArbeidsforholdId}
-            arbeidsforhold={forhold}
-        />
+    const rader = props.listeMedArbeidsForhold.map((forhold) => (
+        <Ansatt key={forhold.navArbeidsforholdId} arbeidsforhold={forhold} />
     ));
 
     return <ul className={props.className}>{rader}</ul>;

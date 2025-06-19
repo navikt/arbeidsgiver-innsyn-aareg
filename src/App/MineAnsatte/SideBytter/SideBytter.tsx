@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { HoyreChevron, VenstreChevron } from 'nav-frontend-chevron';
 import TreForste from './Pagingknapper/ForsteDel';
 import TreSiste from './Pagingknapper/SisteDel';
 import Midtdel from './Pagingknapper/Midtdel';
-import './SideBytter.less';
+import './SideBytter.css';
 import { useSearchParameters } from '../../../utils/UrlManipulation';
+import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 
 interface Props {
     className: string;
@@ -64,10 +64,12 @@ const SideBytter = ({ className, antallSider, plassering }: Props) => {
                         onKeyDown={(e) => onSideendring(e.key)}
                         className="sidebytter__chevron"
                         id={'sidebytter-chevron-venstre-' + plassering}
-                        onClick={() => setSearchParameter({ side: (nåVærendeSidetall - 1).toString() })}
+                        onClick={() =>
+                            setSearchParameter({ side: (nåVærendeSidetall - 1).toString() })
+                        }
                         aria-label={'Gå til forrige side'}
                     >
-                        <VenstreChevron type={'venstre'} />
+                        <ChevronLeftIcon />
                     </button>
                 )}
 
@@ -78,9 +80,15 @@ const SideBytter = ({ className, antallSider, plassering }: Props) => {
                         siderTilsammen={antallSider}
                     />
                 )}
-                {antallSider > 3 && nåVærendeSidetall > 2 && nåVærendeSidetall < antallSider - 1 && (
-                    <Midtdel onSideendring={onSideendring} elementIFokus={elementIFokus} siderTilsammen={antallSider} />
-                )}
+                {antallSider > 3 &&
+                    nåVærendeSidetall > 2 &&
+                    nåVærendeSidetall < antallSider - 1 && (
+                        <Midtdel
+                            onSideendring={onSideendring}
+                            elementIFokus={elementIFokus}
+                            siderTilsammen={antallSider}
+                        />
+                    )}
                 {antallSider > 3 && nåVærendeSidetall >= antallSider - 1 && (
                     <TreSiste
                         onSideendring={onSideendring}
@@ -95,7 +103,7 @@ const SideBytter = ({ className, antallSider, plassering }: Props) => {
                     aria-label={'Gå til neste side'}
                     id={'sidebytter-chevron-hoyre-' + plassering}
                 >
-                    <HoyreChevron />
+                    <ChevronRightIcon />
                 </button>
             </div>
         </nav>

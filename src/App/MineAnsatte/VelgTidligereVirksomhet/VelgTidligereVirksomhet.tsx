@@ -1,10 +1,9 @@
 import React, { FunctionComponent, useContext } from 'react';
-import { Select } from 'nav-frontend-skjema';
 import UnderenhetIkon from './UnderenhetIkon';
 import { BedriftsmenyContext } from '../../Context/BedriftsmenyProvider';
 import { useReplace, useSearchParameters } from '../../../utils/UrlManipulation';
-import emptyList from '../../Objekter/EmptyList';
-import './VelgTidligereVirksomhet.less';
+import './VelgTidligereVirksomhet.css';
+import { Select } from '@navikt/ds-react';
 
 const VelgTidligereVirksomhet: FunctionComponent = () => {
     const { underenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
@@ -12,10 +11,12 @@ const VelgTidligereVirksomhet: FunctionComponent = () => {
     const replace = useReplace();
 
     const setTidligereVirksomhet = (orgnr: string) => {
-        replace({ search: `bedrift=${underenhet.OrganizationNumber}&tidligereVirksomhet=${orgnr}` });
+        replace({
+            search: `bedrift=${underenhet.OrganizationNumber}&tidligereVirksomhet=${orgnr}`,
+        });
     };
 
-    const underenheter = tidligereUnderenheter === 'laster' ? emptyList : tidligereUnderenheter;
+    const underenheter = tidligereUnderenheter === 'laster' ? [] : tidligereUnderenheter;
     const tidligereVirksomhet = getSearchParameter('tidligereVirksomhet');
 
     return (
@@ -28,7 +29,6 @@ const VelgTidligereVirksomhet: FunctionComponent = () => {
                     </div>
                 }
                 defaultValue={tidligereVirksomhet ?? ''}
-                placeholder={'Velg tidligere virksomhet'}
                 onChange={(event) => setTidligereVirksomhet(event.target.value)}
                 id={'velg-tidligere-virksomhet'}
             >
