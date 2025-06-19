@@ -1,7 +1,7 @@
 import React from 'react';
 import { SorteringsAttributt } from '../../../MineAnsatte';
 import { useSearchParameters } from '../../../../../utils/UrlManipulation';
-import './Kolonne.less';
+import './Kolonne.css';
 
 interface Props {
     label: string;
