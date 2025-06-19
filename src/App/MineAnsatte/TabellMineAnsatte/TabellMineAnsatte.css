@@ -1,0 +1,9 @@
+.tabell-container {
+  display: none;
+  width: 58rem;
+}
+@media (min-width: 992px) {
+  .tabell-container {
+    display: initial;
+  }
+}

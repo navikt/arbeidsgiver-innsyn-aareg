@@ -1,4 +1,4 @@
-import { gittMiljø } from '../utils/environment';
+import { gittMiljo } from '../utils/environment';
 
 const landingsURL = '/arbeidsforhold/';
 
@@ -14,7 +14,8 @@ export const hentAntallArbeidsforholdLink = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/antall-arbeidsforhold';
 };
 
-export const hentTidligereVirksomheterLink = landingsURL + 'arbeidsgiver-arbeidsforhold/api/tidligere-virksomheter';
+export const hentTidligereVirksomheterLink =
+    landingsURL + 'arbeidsgiver-arbeidsforhold/api/tidligere-virksomheter';
 
 export const hentOrganisasjonerLink = () => {
     return landingsURL + 'arbeidsgiver-arbeidsforhold/api/organisasjoner';
@@ -38,25 +39,29 @@ export const hentOverordnetEnhetApiLink = (orgnr: string) => {
 
 export const linkTilMinSideArbeidsgiver = (orgnr: string) => {
     const orgNrDel = orgnr.length > 0 ? '?bedrift=' + orgnr : '';
-    return gittMiljø({
-        prod: 'https://arbeidsgiver.nav.no/min-side-arbeidsgiver/',
-        dev: 'https://arbeidsforhold.dev.nav.no/min-side-arbeidsgiver/',
-        other: 'https://arbeidsgiver.labs.nais.io/min-side-arbeidsgiver/'
-    }) + orgNrDel;
+    return (
+        gittMiljo({
+            prod: 'https://arbeidsgiver.nav.no/min-side-arbeidsgiver/',
+            dev: 'https://arbeidsgiver.intern.dev.nav.no/min-side-arbeidsgiver/',
+            other: 'https://arbeidsgiver.ansatt.dev.nav.no/min-side-arbeidsgiver/',
+        }) + orgNrDel
+    );
 };
 
 export const linkTilArbeidsforhold = (orgnr: string) => {
     const orgNrDel = orgnr.length > 0 ? '?bedrift=' + orgnr : '';
-    return gittMiljø({
-        prod: 'https://arbeidsgiver.nav.no/arbeidsforhold/',
-        dev: 'https://arbeidsforhold.dev.nav.no/arbeidsforhold/',
-        other: 'https://arbeidsgiver.labs.nais.io/arbeidsforhold/',
-    }) + orgNrDel;
+    return (
+        gittMiljo({
+            prod: 'https://arbeidsgiver.nav.no/arbeidsforhold/',
+            dev: 'https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold',
+            other: 'https://arbeidsforhold.ansatt.dev.nav.no/arbeidsforhold/',
+        }) + orgNrDel
+    );
 };
 
-const delegationRequestUrl = gittMiljø({
+const delegationRequestUrl = gittMiljo({
     prod: 'https://altinn.no/ui/DelegationRequest',
-    other: 'https://tt02.altinn.no/ui/DelegationRequest'
+    other: 'https://tt02.altinn.no/ui/DelegationRequest',
 });
 
 export const beOmTilgangIAltinnLink = (
@@ -65,9 +70,9 @@ export const beOmTilgangIAltinnLink = (
     serviceEditionKode: string,
     serviceEditionKodeTest?: string
 ) => {
-    const edition = gittMiljø({
+    const edition = gittMiljo({
         prod: serviceEditionKode,
-        other: serviceEditionKodeTest ?? serviceEditionKode
+        other: serviceEditionKodeTest ?? serviceEditionKode,
     });
 
     return `${delegationRequestUrl}?offeredBy=${orgnr}&resources=${serviceKode}_${edition}`;
