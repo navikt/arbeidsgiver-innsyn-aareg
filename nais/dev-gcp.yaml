@@ -28,7 +28,7 @@ spec:
     - name: API_URL
       value: https://aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io/arbeidsgiver-arbeidsforhold-api
     - name: LOGIN_URL
-      value: https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold/oauth2/login?redirect=https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold
+      value: https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold/oauth2/login
     - name: DECORATOR_EXTERNAL_URL
       value: https://dekoratoren.ekstern.dev.nav.no/?context=arbeidsgiver&redirectToApp=true&level=Level4
     - name: MILJO

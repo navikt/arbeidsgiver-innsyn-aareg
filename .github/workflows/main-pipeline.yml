@@ -51,6 +51,14 @@ jobs:
           team: arbeidsforhold
           tag: ${{ github.sha }}
 
+      - id: upload
+        uses: nais/deploy/actions/cdn-upload/v2@master
+        with:
+          team: arbeidsforhold
+          source: ./build/
+          destination: '/aareg-innsyn-arbeidsgiver'
+
+
   deploy:
     name: Deploy
     needs: bygg
