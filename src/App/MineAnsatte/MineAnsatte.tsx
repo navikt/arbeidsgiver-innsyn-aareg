@@ -1,11 +1,6 @@
 import React, { FunctionComponent, useContext } from 'react';
 import { BedriftsmenyContext } from '../Context/BedriftsmenyProvider';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../Context/FiltrerteOgSorterteArbeidsforholdProvider';
-import { useSearchParameters } from '../../utils/UrlManipulation';
-import {
-    regnUtantallSider,
-    regnUtArbeidsForholdSomSkalVisesPaEnSide,
-} from './pagineringsFunksjoner';
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import Progressbar from './Progressbar/Progressbar';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
@@ -18,17 +13,6 @@ import './MineAnsatte.css';
 import { LenkeMedLogging } from '../GeneriskeKomponenter/LenkeMedLogging';
 import { Alert, Heading } from '@navikt/ds-react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
-
-export enum SorteringsAttributt {
-    NAVN,
-    FNR,
-    YRKE,
-    STARTDATO,
-    SLUTTDATO,
-    VARSEL,
-    PERMITTERINGSPROSENT,
-    STILLINGSPROSENT,
-}
 
 export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
     const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
@@ -95,25 +79,7 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
 };
 
 const MineArbeidsforhold: FunctionComponent = () => {
-    const { underenhet } = useContext(BedriftsmenyContext);
     const { aareg } = useContext(FiltrerteOgSorterteArbeidsforholdContext);
-    const { getSearchParameter, setSearchParameter } = useSearchParameters();
-    const sidetall = getSearchParameter('side') || '1';
-    const setSideTallIUrlOgGenererListe = (indeks: number) => {
-        setSearchParameter({ side: indeks.toString() });
-    };
-    const filtrertOgSortertListe =
-        aareg?.lastestatus?.status === 'ferdig' ? aareg.lastestatus.arbeidsforhold : null;
-    const ARBEIDSFORHOLDPERSIDE = 25;
-    const antallSider = regnUtantallSider(
-        ARBEIDSFORHOLDPERSIDE,
-        filtrertOgSortertListe?.length ?? 0
-    );
-    const listeForNåværendeSidetall = regnUtArbeidsForholdSomSkalVisesPaEnSide(
-        parseInt(sidetall),
-        ARBEIDSFORHOLDPERSIDE,
-        filtrertOgSortertListe ?? []
-    );
 
     if (aareg === null) {
         return null;
@@ -122,26 +88,10 @@ const MineArbeidsforhold: FunctionComponent = () => {
     } else if (aareg.lastestatus.status === 'ferdig') {
         return (
             <>
-                <MineAnsatteTopp valgtOrganisasjon={underenhet} antallSider={antallSider} />
-                {listeForNåværendeSidetall.length > 0 && (
-                    <>
-                        <TabellMineAnsatte
-                            listeMedArbeidsForhold={listeForNåværendeSidetall}
-                            byttSide={setSideTallIUrlOgGenererListe}
-                        />
-                        <ListeMedAnsatteForMobil
-                            className="mine-ansatte__liste"
-                            listeMedArbeidsForhold={listeForNåværendeSidetall}
-                        />
-                        {antallSider > 1 && (
-                            <SideBytter
-                                plassering="nederst"
-                                className="nedre-sidebytter"
-                                antallSider={antallSider}
-                            />
-                        )}
-                    </>
-                )}
+                <MineAnsatteTopp />
+                <TabellMineAnsatte />
+                <ListeMedAnsatteForMobil className="mine-ansatte__liste" />
+                <SideBytter plassering="nederst" className="nedre-sidebytter" />
             </>
         );
     } else if (aareg.lastestatus.status === 'ikke-tilgang') {

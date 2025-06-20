@@ -1,19 +1,22 @@
-import React, { FunctionComponent } from 'react';
-import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
+import React, { FunctionComponent, useContext } from 'react';
 import Ansatt from './Ansatt/Ansatt';
 import './ListeMineAnsatteForMobil.css';
+import { FiltrerteOgSorterteArbeidsforholdContext } from '../../Context/FiltrerteOgSorterteArbeidsforholdProvider';
 
 interface Props {
-    listeMedArbeidsForhold: Arbeidsforhold[];
     className?: string;
 }
 
 const ListeMedAnsatteForMobil: FunctionComponent<Props> = (props) => {
-    const rader = props.listeMedArbeidsForhold.map((forhold) => (
-        <Ansatt key={forhold.navArbeidsforholdId} arbeidsforhold={forhold} />
-    ));
+    const { currentSelection } = useContext(FiltrerteOgSorterteArbeidsforholdContext);
 
-    return <ul className={props.className}>{rader}</ul>;
+    return (
+        <ul className={props.className}>
+            {currentSelection.map((forhold) => (
+                <Ansatt key={forhold.navArbeidsforholdId} arbeidsforhold={forhold} />
+            ))}
+        </ul>
+    );
 };
 
 export default ListeMedAnsatteForMobil;

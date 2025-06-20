@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import TreForste from './Pagingknapper/ForsteDel';
 import TreSiste from './Pagingknapper/SisteDel';
 import Midtdel from './Pagingknapper/Midtdel';
 import './SideBytter.css';
 import { useSearchParameters } from '../../../utils/UrlManipulation';
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
+import { FiltrerteOgSorterteArbeidsforholdContext } from '../../Context/FiltrerteOgSorterteArbeidsforholdProvider';
 
 interface Props {
     className: string;
-    antallSider: number;
     plassering: string;
 }
 
-const SideBytter = ({ className, antallSider, plassering }: Props) => {
+const SideBytter = ({ className, plassering }: Props) => {
+    const { antallSider } = useContext(FiltrerteOgSorterteArbeidsforholdContext);
+
+    if (antallSider === 0) return null;
+
     const chevronOverst = document.getElementById('sidebytter-chevron-hoyre-overst');
     const chevronNederst = document.getElementById('sidebytter-chevron-hoyre-nederst');
 

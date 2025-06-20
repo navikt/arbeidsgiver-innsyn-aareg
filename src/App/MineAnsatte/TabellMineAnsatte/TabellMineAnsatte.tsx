@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 
 import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import KolonnerFullSkjerm from './Kolonner/Kolonner';
@@ -7,14 +7,12 @@ import NavnPopover from './KolonnerMedTooltip/NavnPopover';
 import VarslingPopover from './KolonnerMedTooltip/VarslingPopover';
 import './TabellMineAnsatte.css';
 import { datoformat } from '../utils';
+import { FiltrerteOgSorterteArbeidsforholdContext } from '../../Context/FiltrerteOgSorterteArbeidsforholdProvider';
 
-interface Props {
-    listeMedArbeidsForhold: Arbeidsforhold[];
-    byttSide: (indeks: number) => void;
-}
+const TabellMineAnsatte: FunctionComponent = () => {
+    const { currentSelection } = useContext(FiltrerteOgSorterteArbeidsforholdContext);
 
-const TabellMineAnsatte: FunctionComponent<Props> = (props) => {
-    const rader = props.listeMedArbeidsForhold.map((arbeidsforhold: Arbeidsforhold) => {
+    const rader = currentSelection.map((arbeidsforhold: Arbeidsforhold) => {
         return (
             <tr key={arbeidsforhold.navArbeidsforholdId}>
                 <td className="td">

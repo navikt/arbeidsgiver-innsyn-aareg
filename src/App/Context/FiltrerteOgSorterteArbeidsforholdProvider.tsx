@@ -5,30 +5,34 @@ import { useSearchParameters } from '../../utils/UrlManipulation';
 import { byggArbeidsforholdSokeresultat } from '../MineAnsatte/Sokefelt/byggArbeidsforholdSokeresultat';
 import {
     arbeidsForholdGroupedByFilterStatus,
+    mapToSortering,
     mapToStatusFilter,
     sorterArbeidsforhold,
+    Sortering,
     StatusFilter,
 } from '../MineAnsatte/sorteringOgFiltreringsFunksjoner';
+import { paginer } from '../MineAnsatte/pagineringsFunksjoner';
 
 export type FiltrerteOgSorterteArbeidsforholdContext = {
     aareg: ArbeidsforholdContext;
     searchParams: {
         side: string;
         sok: string;
-        sorter: string;
+        sorter: Sortering;
         revers: boolean;
         varsler: boolean;
         filter: StatusFilter;
     };
     setSearchParams: (params: {
         sok?: string;
-        sorter?: string;
+        sorter?: Sortering;
         revers?: boolean;
         varsler?: boolean;
         filter?: StatusFilter;
         side: string;
     }) => void;
     count: Record<StatusFilter | 'MedVarsler', number>;
+    antallSider: number;
     grouped: Record<StatusFilter, Arbeidsforhold[]>;
     currentSelection: Arbeidsforhold[];
 };
@@ -38,7 +42,7 @@ export const FiltrerteOgSorterteArbeidsforholdContext =
         searchParams: {
             sok: '',
             side: '1',
-            sorter: '0',
+            sorter: 'NAVN',
             revers: false,
             varsler: false,
             filter: 'Alle',
@@ -50,6 +54,7 @@ export const FiltrerteOgSorterteArbeidsforholdContext =
             Avsluttede: 0,
             MedVarsler: 0,
         },
+        antallSider: 0,
         grouped: {
             Alle: [],
             Aktive: [],
@@ -58,12 +63,13 @@ export const FiltrerteOgSorterteArbeidsforholdContext =
         currentSelection: [],
     });
 
+const ARBEIDSFORHOLDPERSIDE = 25;
 const useFiltreringOgSortering = (
     alleArbeidsforhold: Arbeidsforhold[]
 ): Omit<FiltrerteOgSorterteArbeidsforholdContext, 'aareg'> => {
     const { getSearchParameter, setSearchParameter } = useSearchParameters();
     const sok = getSearchParameter('sok') || '';
-    const sorter = getSearchParameter('sorter') || '0';
+    const sorter = mapToSortering(getSearchParameter('sorter')) ?? 'NAVN';
     const side = getSearchParameter('side') || '1';
     const revers = getSearchParameter('revers') === 'true';
     const varsler = getSearchParameter('varsler') === 'true';
@@ -79,8 +85,11 @@ const useFiltreringOgSortering = (
         currentSelection = byggArbeidsforholdSokeresultat(currentSelection, sok);
     }
     currentSelection = revers
-        ? sorterArbeidsforhold(currentSelection, parseInt(sorter)).reverse()
-        : sorterArbeidsforhold(currentSelection, parseInt(sorter));
+        ? sorterArbeidsforhold(currentSelection, sorter).reverse()
+        : sorterArbeidsforhold(currentSelection, sorter);
+
+    const antallSider = Math.ceil(currentSelection.length / ARBEIDSFORHOLDPERSIDE);
+    currentSelection = paginer(parseInt(side, 10), ARBEIDSFORHOLDPERSIDE, currentSelection);
 
     const setSearchParams = ({
         side = '1',
@@ -92,7 +101,7 @@ const useFiltreringOgSortering = (
     }: {
         side?: string;
         sok?: string;
-        sorter?: string;
+        sorter?: Sortering;
         revers?: boolean;
         varsler?: boolean;
         filter?: StatusFilter;
@@ -126,6 +135,7 @@ const useFiltreringOgSortering = (
             ).length,
         },
         grouped: groupedByFilterStatus,
+        antallSider,
         currentSelection,
     };
 };

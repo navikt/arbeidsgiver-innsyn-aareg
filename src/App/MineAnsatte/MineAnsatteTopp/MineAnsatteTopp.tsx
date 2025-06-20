@@ -1,22 +1,15 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import React, { FunctionComponent, useContext } from 'react';
-import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
 import ExcelEksport from '../ExcelEksport/ExcelEksport';
 import Sokefelt from '../Sokefelt/Sokefelt';
 import Filtervalg from '../Filtervalg/Filtervalg';
 import SideBytter from '../SideBytter/SideBytter';
 import NyFaneIkon from './NyFaneIkon';
-import { BedriftsmenyContext } from '../../Context/BedriftsmenyProvider';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../../Context/FiltrerteOgSorterteArbeidsforholdProvider';
 import './MineAnsatteTopp.css';
 import { Alert, BodyLong, BodyShort, Heading, Link as Lenke } from '@navikt/ds-react';
 
-interface Props {
-    valgtOrganisasjon: Organisasjon;
-    antallSider: number;
-}
-
-const MineAnsatteTopp: FunctionComponent<Props> = ({ antallSider }) => {
+const MineAnsatteTopp: FunctionComponent = () => {
     const { currentSelection, count, searchParams, aareg } = useContext(
         FiltrerteOgSorterteArbeidsforholdContext
     );
@@ -72,13 +65,7 @@ const MineAnsatteTopp: FunctionComponent<Props> = ({ antallSider }) => {
                         <BodyShort className="mine-ansatte__antall-forhold" aria-live="assertive">
                             {antallArbeidsforholdPaSideTekst}
                         </BodyShort>
-                        {antallSider > 1 && (
-                            <SideBytter
-                                plassering="overst"
-                                className="ovre-sidebytter"
-                                antallSider={antallSider}
-                            />
-                        )}
+                        <SideBytter plassering="overst" className="ovre-sidebytter" />
                     </div>
                 </>
             )}
