@@ -20,7 +20,7 @@ export default defineConfig(({ command, mode }) => {
         },
         define: {
             __BUILD_TIMESTAMP__: new Date(),
-            __BASE_PATH__: JSON.stringify('/arbeidsforhold/'),
+            __BASE_PATH__: JSON.stringify('/arbeidsforhold'),
         },
         build: {
             outDir: `build/${mode}`,
