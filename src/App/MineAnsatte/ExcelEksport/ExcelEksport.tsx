@@ -11,13 +11,13 @@ import { StatusFilter } from '../sorteringOgFiltreringsFunksjoner';
 import { Organisasjon } from '../../Objekter/OrganisasjonFraAltinn';
 
 const cols = [
-    { wch: 25 }, // Navn
+    { wch: 35 }, // Navn
     { wch: 14 }, // Fødselsnummer
     { wch: 13 }, // Startdato
     { wch: 13 }, // Sluttdato
-    { wch: 35 }, // Yrke
-    { wch: 20 }, // Stilling %
-    { wch: 20 }, // Varsel
+    { wch: 40 }, // Yrke
+    { wch: 10 }, // Stilling %
+    { wch: 100 }, // Varsel
 ];
 
 const xlsFormat = (a: Arbeidsforhold) => ({
@@ -35,34 +35,45 @@ const xlsFormat = (a: Arbeidsforhold) => ({
 const exportToExcel = (org: Organisasjon, grouped: Record<StatusFilter, Arbeidsforhold[]>) => {
     const dagensDato: Date = new Date();
     const infosideData = [
-        [
-            'Oversikten viser alle aktive og avsluttede arbeidsforhold rapportert etter 01.01.2015 for valgt underenhet. Hvis det er feil i et arbeidsforhold, skal du som arbeidsgiver endre dette gjennom a-meldingen',
-        ],
+        {
+            'Om dokumentet':
+                'Oversikten viser alle aktive og avsluttede arbeidsforhold rapportert etter 01.01.2015 for valgt underenhet.',
+        },
+        {
+            'Om dokumentet':
+                'Hvis det er feil i et arbeidsforhold, skal du som arbeidsgiver endre dette gjennom a-meldingen',
+        },
     ];
     const aktiveArbeidsforholdDataset = grouped.Aktive.map(xlsFormat);
     const avsluttedeArbeidsforholdDataset = grouped.Avsluttede.map(xlsFormat);
-    // Convert JSON to worksheet
-    // Create a new workbook and append the worksheet
+
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(infosideData), 'Info');
+
+    const infoSheet = XLSX.utils.json_to_sheet(infosideData);
+    infoSheet['!cols'] = [{ wch: 80 }];
+    infoSheet['!rows'] = [{ hpt: 40 }, { hpt: 40 }, { hpt: 40 }];
+    XLSX.utils.book_append_sheet(workbook, infoSheet, 'Info');
+
     const aktivSheet = XLSX.utils.json_to_sheet(aktiveArbeidsforholdDataset);
     aktivSheet['!cols'] = cols;
-    const avsluttedeSheet = XLSX.utils.json_to_sheet(avsluttedeArbeidsforholdDataset);
-    aktivSheet['!cols'] = cols;
-
     XLSX.utils.book_append_sheet(workbook, aktivSheet, 'Aktive arbeidsforhold');
+
+    const avsluttedeSheet = XLSX.utils.json_to_sheet(avsluttedeArbeidsforholdDataset);
+    avsluttedeSheet['!cols'] = cols;
     XLSX.utils.book_append_sheet(workbook, avsluttedeSheet, 'Avsluttede arbeidsforhold');
 
-    // Write workbook and trigger download
-    const excelBuffer = XLSX.write(workbook, {
-        bookType: 'xlsx',
-        type: 'array',
-    });
-    const data = new Blob([excelBuffer], {
-        type: 'application/octet-stream',
-    });
     saveAs(
-        data,
+        new Blob(
+            [
+                XLSX.write(workbook, {
+                    bookType: 'xlsx',
+                    type: 'array',
+                }),
+            ],
+            {
+                type: 'application/octet-stream',
+            }
+        ),
         `ANSATTFORHOLD_${org.Name}_${org.OrganizationNumber}_${dagensDato.toLocaleDateString()}.xlsx`
     );
 };
