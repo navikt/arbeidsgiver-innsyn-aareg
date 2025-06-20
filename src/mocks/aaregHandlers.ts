@@ -135,6 +135,7 @@ const lagAnsattForhold = () => {
         ...tomtArbeidsForhold,
         ansattFom: formaterDato(arbeidsforholdStarttidspunkt),
         ansattTom: formaterDato(arbeidsforholdSluttidspunkt),
+        yrke: faker.string.numeric(5),
         yrkesbeskrivelse: randomYrke(),
         varsler: setVarslingskode(),
         permisjonPermitteringsprosent: randomProsent(),
@@ -195,7 +196,7 @@ export const aaregHandlers = [
     http.get(
         '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/arbeidsforhold',
         async ({ request }) => {
-            await delay(4000);
+            await delay(500);
             return HttpResponse.json({
                 antall: '',
                 startrad: '',
@@ -210,7 +211,7 @@ export const aaregHandlers = [
     http.get(
         '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/tidligere-arbeidsforhold',
         async ({ request }) => {
-            await delay(2000);
+            await delay(1000);
             return HttpResponse.json({
                 antall: '',
                 startrad: '',
