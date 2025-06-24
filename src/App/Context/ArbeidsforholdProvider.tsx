@@ -6,7 +6,7 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { hentAntallArbeidsforholdFraAareg, hentArbeidsforholdFraAAreg } from '../../api/aaregApi';
 import { Arbeidsforhold } from '../Objekter/ArbeidsForhold';
