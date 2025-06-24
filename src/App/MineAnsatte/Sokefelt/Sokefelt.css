@@ -9,21 +9,3 @@
     width: 19rem;
   }
 }
-.mine-ansatte .sokefelt__felt {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0;
-  position: relative;
-}
-.mine-ansatte .sokefelt__ikon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  margin-right: 0.5rem;
-}
-.mine-ansatte .sokefelt__ikon--klikkbart {
-  cursor: pointer;
-}

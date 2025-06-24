@@ -19,7 +19,11 @@ const Filtervalg: FunctionComponent = () => {
                 }}
             >
                 {StatusFilterValues.map((filter: StatusFilter) => (
-                    <ToggleGroup.Item value={filter} label={`${filter} (${count[filter]})`} />
+                    <ToggleGroup.Item
+                        key={filter}
+                        value={filter}
+                        label={`${filter} (${count[filter]})`}
+                    />
                 ))}
             </ToggleGroup>
             <div className="varselKnapp">

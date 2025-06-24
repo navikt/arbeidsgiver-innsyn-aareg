@@ -85,8 +85,8 @@ const useFiltreringOgSortering = (
         currentSelection = byggArbeidsforholdSokeresultat(currentSelection, sok);
     }
     currentSelection = revers
-        ? sorterArbeidsforhold(currentSelection, sorter).reverse()
-        : sorterArbeidsforhold(currentSelection, sorter);
+        ? sorterArbeidsforhold(currentSelection, sorter, 'descending')
+        : sorterArbeidsforhold(currentSelection, sorter, 'ascending');
 
     const antallSider = Math.ceil(currentSelection.length / ARBEIDSFORHOLDPERSIDE);
     currentSelection = paginer(parseInt(side, 10), ARBEIDSFORHOLDPERSIDE, currentSelection);
