@@ -12,7 +12,7 @@ import {
     MineTidligereArbeidsforhold,
 } from './MineAnsatte/MineAnsatte';
 import './App.css';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import { loggSidevisning } from '../utils/amplitudefunksjonerForLogging';
 import { LoginContext, LoginProvider } from './Context/LoginProvider';
 import { NotifikasjonWidgetProvider } from '@navikt/arbeidsgiver-notifikasjon-widget';
