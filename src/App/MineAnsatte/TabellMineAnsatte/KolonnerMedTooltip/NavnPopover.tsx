@@ -28,9 +28,7 @@ const NavnPopover: FunctionComponent<Props> = ({ arbeidsforhold }) => {
             ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold'
             : '/enkeltArbeidsforhold';
         replace({ pathname: redirectPath, search: search });
-        arbeidsforhold.varsler?.length
-            ? loggBrukerklikk('arbeidsforhol')
-            : loggBrukerklikk('arbeidsforhol');
+        loggBrukerklikk('arbeidsforhol');
     };
 
     useEffect(() => {

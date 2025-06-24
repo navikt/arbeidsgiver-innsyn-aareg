@@ -24,7 +24,7 @@ const Ansatt: FunctionComponent<Props> = ({ arbeidsforhold }) => {
             ? '/tidligere-arbeidsforhold/enkeltarbeidsforhold'
             : '/enkeltarbeidsforhold';
         replace({ pathname: redirectPath, search: search });
-        if (arbeidsforhold.varsler?.length) {
+        if ((arbeidsforhold.varsler?.length ?? 0) > 0) {
             loggBrukerklikk('arbeidsforhold med varsel');
         }
     };

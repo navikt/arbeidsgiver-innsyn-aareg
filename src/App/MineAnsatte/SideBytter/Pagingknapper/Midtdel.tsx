@@ -11,7 +11,7 @@ interface Props {
 
 const Midtdel: FunctionComponent<Props> = (props) => {
     const { getSearchParameter } = useSearchParameters();
-    const nåVærendeSidetall = parseInt(getSearchParameter('side') || '1');
+    const nåVærendeSidetall = parseInt(getSearchParameter('side') ?? '1');
 
     return (
         <>

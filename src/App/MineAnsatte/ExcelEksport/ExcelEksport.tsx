@@ -24,7 +24,7 @@ const xlsFormat = (a: Arbeidsforhold) => ({
     Navn: a.arbeidstaker.navn,
     Fødselsnummer: a.arbeidstaker.offentligIdent,
     Startdato: a.ansattFom,
-    Sluttdato: a.ansattTom ? a.ansattTom : '',
+    Sluttdato: a.ansattTom ?? '',
     Yrke: `${a.yrkesbeskrivelse} (yrkeskode: ${a.yrke})`,
     'Stilling %': a.stillingsprosent,
     Varsel: a.varsler

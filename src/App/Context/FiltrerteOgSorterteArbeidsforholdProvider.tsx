@@ -68,9 +68,9 @@ const useFiltreringOgSortering = (
     alleArbeidsforhold: Arbeidsforhold[]
 ): Omit<FiltrerteOgSorterteArbeidsforholdContext, 'aareg'> => {
     const { getSearchParameter, setSearchParameter } = useSearchParameters();
-    const sok = getSearchParameter('sok') || '';
+    const sok = getSearchParameter('sok') ?? '';
     const sorter = mapToSortering(getSearchParameter('sorter')) ?? 'NAVN';
-    const side = getSearchParameter('side') || '1';
+    const side = getSearchParameter('side') ?? '1';
     const revers = getSearchParameter('revers') === 'true';
     const varsler = getSearchParameter('varsler') === 'true';
     const filter = mapToStatusFilter(getSearchParameter('filter')) ?? 'Alle';
