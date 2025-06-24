@@ -18,16 +18,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Installer pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           registry-url: https://npm.pkg.github.com/
           cache: 'pnpm'
-
-      - name: Installer pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
 
       - name: Installer avhengigheter for server (pnpm install)
         run: pnpm install --frozen-lockfile --prod
@@ -78,7 +78,7 @@ jobs:
           PRINT_PAYLOAD: true
 
       - name: Deploy til prod-gcp
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
@@ -87,7 +87,7 @@ jobs:
           PRINT_PAYLOAD: true
 
       - name: Deploy demo til dev-gcp
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
