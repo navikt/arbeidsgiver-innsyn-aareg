@@ -27,7 +27,7 @@ export async function hentArbeidsforholdFraAAreg(
         loggArbeidsforholdLastet(jsonRespons.arbeidsforholdoversikter);
         return jsonRespons;
     } else {
-        throw new FetchError(response.statusText || response.type, response);
+        throw new FetchError(response.statusText ?? response.type, response);
     }
 }
 
@@ -56,13 +56,13 @@ export async function hentTidligereVirksomheter(
         const organisasjoner = await response.json();
         return mapOrganisasjonerFraLowerCaseTilupper(organisasjoner);
     } else {
-        throw new FetchError(response.statusText || response.type, response);
+        throw new FetchError(response.statusText ?? response.type, response);
     }
 }
 
 const lagHeadere = (jurenhet: string, orgnr?: string) => {
     const headere = new Headers();
     headere.set('jurenhet', jurenhet);
-    orgnr && headere.set('orgnr', orgnr);
+    orgnr !== undefined && headere.set('orgnr', orgnr);
     return headere;
 };
