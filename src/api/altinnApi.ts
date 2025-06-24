@@ -17,7 +17,7 @@ export async function hentOrganisasjonerFraAltinn(signal: any): Promise<Organisa
         const organisasjoner = await respons.json();
         return mapOrganisasjonerFraLowerCaseTilupper(organisasjoner);
     } else {
-        throw new FetchError(respons.statusText || respons.type, respons);
+        throw new FetchError(respons.statusText ?? respons.type, respons);
     }
 }
 
@@ -34,7 +34,7 @@ export async function hentOrganisasjonerMedTilgangTilAltinntjeneste(
         const organisasjoner = await respons.json();
         return mapOrganisasjonerFraLowerCaseTilupper(organisasjoner);
     } else {
-        throw new FetchError(respons.statusText || respons.type, respons);
+        throw new FetchError(respons.statusText ?? respons.type, respons);
     }
 }
 
