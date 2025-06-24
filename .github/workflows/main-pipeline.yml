@@ -22,28 +22,27 @@ jobs:
         with:
           node-version: '22'
           registry-url: https://npm.pkg.github.com/
-          cache: 'npm'
+          cache: 'pnpm'
 
-      - run: npm ci --omit=dev --omit=optional
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-        working-directory: ./server
-
-      - uses: actions/setup-node@v4
+      - name: Installer pnpm
+        uses: pnpm/action-setup@v2
         with:
-          node-version: '22'
-          registry-url: https://npm.pkg.github.com/
-          scope: "@navikt"
-          cache: 'yarn'
+          version: 8
 
-      - name: Installer avhengigheter (yarn install)
-        run:  yarn install --production --ignore-scripts --no-optional
+      - name: Installer avhengigheter for server (pnpm install)
+        run: pnpm install --frozen-lockfile --prod
+        working-directory: ./server
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      - run: yarn lint
+      - name: Installer avhengigheter for klient
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      - run: yarn build
+      - run: pnpm lint
+
+      - run: pnpm build
 
       - uses: nais/docker-build-push@v0
         id: gar-push
@@ -58,7 +57,6 @@ jobs:
           source: ./build/
           destination: '/aareg-innsyn-arbeidsgiver'
 
-
   deploy:
     name: Deploy
     needs: bygg
@@ -67,6 +65,7 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
+
     steps:
       - uses: actions/checkout@v4
 
@@ -93,6 +92,5 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: nais/demo-dev-gcp.yaml
-          PRINT_PAYLOAD: true
           VAR: commit=${{ github.sha }},image=${{ needs.bygg.outputs.image }}
-
+          PRINT_PAYLOAD: true
