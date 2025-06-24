@@ -73,7 +73,7 @@ const EnkeltArbeidsforhold: FunctionComponent = () => {
                         <BodyShort>Tilbake til liste</BodyShort>
                     </button>
                     <div className="enkelt-arbeidsforhold-innhold__fram-tilbake-knapp">
-                        {forrigeArbeidsforhold && (
+                        {forrigeArbeidsforhold !== undefined && (
                             <button
                                 className="brodsmule"
                                 onClick={() => redirectTilArbeidsforhold(forrigeArbeidsforhold)}
@@ -82,7 +82,7 @@ const EnkeltArbeidsforhold: FunctionComponent = () => {
                                 <BodyShort>Forrige</BodyShort>
                             </button>
                         )}
-                        {nesteArbeidsforhold && (
+                        {nesteArbeidsforhold !== undefined && (
                             <button
                                 className="brodsmule"
                                 onClick={() => redirectTilArbeidsforhold(nesteArbeidsforhold)}
