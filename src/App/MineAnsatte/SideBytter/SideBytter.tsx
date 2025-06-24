@@ -24,7 +24,7 @@ const SideBytter = ({ className, plassering }: Props) => {
     const [elementIFokus, setElementIFokus] = useState(0);
 
     const onSideendring = (key: string) => {
-        const nåværendeSidetall = getSearchParameter('side') || '1';
+        const nåværendeSidetall = getSearchParameter('side') ?? '1';
         if (key === 'ArrowRight' || key === 'Right') {
             if (nåværendeSidetall === antallSider.toString()) {
             } else {
@@ -43,7 +43,7 @@ const SideBytter = ({ className, plassering }: Props) => {
         }
     };
 
-    const nåVærendeSidetallParameter = getSearchParameter('side') || '1';
+    const nåVærendeSidetallParameter = getSearchParameter('side') ?? '1';
     const nåVærendeSidetall = parseInt(nåVærendeSidetallParameter);
 
     if (chevronOverst && chevronNederst) {

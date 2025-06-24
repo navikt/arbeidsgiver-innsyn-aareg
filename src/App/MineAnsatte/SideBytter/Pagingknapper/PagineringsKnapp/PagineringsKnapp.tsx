@@ -14,7 +14,7 @@ const GraSirkelMedNr = (props: Props) => {
     const { getSearchParameter, setSearchParameter } = useSearchParameters();
 
     let ariaLabel = 'Gå til side ' + props.sidetall.toString();
-    const erNavarendeSide = parseInt(getSearchParameter('side') || '1') === props.sidetall;
+    const erNavarendeSide = parseInt(getSearchParameter('side') ?? '1') === props.sidetall;
     const className = erNavarendeSide ? 'sidebytter__valg er-valgt' : 'sidebytter__valg';
 
     if (erNavarendeSide) {

@@ -33,7 +33,7 @@ export const arbeidsForholdGroupedByFilterStatus = (
             acc['Alle'].push(forhold);
 
             const navarendeDato = new Date();
-            if (forhold.ansattTom) {
+            if (forhold.ansattTom != null) {
                 const avslutningsdato = new Date(forhold.ansattTom);
                 if (avslutningsdato < navarendeDato) {
                     acc['Avsluttede'].push(forhold);
