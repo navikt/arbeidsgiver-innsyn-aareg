@@ -49,9 +49,6 @@
 .bakgrunnsside .innhold-container .mine-ansatte__systemtittel {
   margin: 0.5rem 0 1.5rem;
 }
-.bakgrunnsside .innhold-container .mine-ansatte__table {
-  display: none;
-}
 .bakgrunnsside .innhold-container .mine-ansatte__feilmelding-aareg {
   margin-top: 1rem;
   margin-bottom: 13rem;
@@ -80,17 +77,22 @@
   .bakgrunnsside .innhold-container .mine-ansatte__spinner {
     margin-top: 2rem;
   }
-  .bakgrunnsside .innhold-container .mine-ansatte__table {
-    padding: 0.75rem 0;
-    text-align: left;
-    color: var(--a-gray-800);
-    width: 90%;
-    border-collapse: collapse;
-    justify-self: center;
-    margin-left: 2rem;
-    margin-top: 1rem;
+}
+
+.mine-ansatte__liste {
+  display: none;
+}
+
+.mine-ansatte__table {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .mine-ansatte__liste {
+    display: block;
   }
-  .bakgrunnsside .innhold-container .mine-ansatte__liste {
+
+  .mine-ansatte__table {
     display: none;
   }
 }

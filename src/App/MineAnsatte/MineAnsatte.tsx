@@ -91,7 +91,7 @@ const MineArbeidsforhold: FunctionComponent = () => {
                 <MineAnsatteTopp />
                 <TabellMineAnsatte />
                 <ListeMedAnsatteForMobil className="mine-ansatte__liste" />
-                <SideBytter plassering="nederst" className="nedre-sidebytter" />
+                <SideBytter />
             </>
         );
     } else if (aareg.lastestatus.status === 'ikke-tilgang') {
