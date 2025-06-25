@@ -251,17 +251,17 @@ const main = async () => {
         res.sendFile(path.join(BUILD_PATH, 'index.html'));
     });
 
-    try {
-        app.listen(PORT, () => {
-            log.info(`Server listening on port ${PORT}`);
-            setTimeout(() => {
-                appReady = true;
-            }, 5_000);
-        });
-    } catch (error) {
-        log.error('Server failed to start ', error);
+    const server = app.listen(PORT, () => {
+        log.info(`Server listening on port ${PORT}`);
+        setTimeout(() => {
+            appReady = true;
+        }, 5000);
+    });
+
+    server.on('error', (error) => {
+        log.error('Server failed to start', error);
         process.exit(1);
-    }
+    });
 };
 
 main()
