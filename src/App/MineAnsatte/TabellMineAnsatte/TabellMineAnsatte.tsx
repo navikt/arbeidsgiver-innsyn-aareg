@@ -36,7 +36,13 @@ const TabellMineAnsatte: FunctionComponent = () => {
         : currentSelection;
 
     return (
-        <Table onSortChange={(sortKey) => handleSort(sortKey as Sortering)} sort={sortState}>
+        <Table
+            className='mine-ansatte__table'
+            onSortChange={(sortKey) => handleSort(sortKey as Sortering)}
+            sort={sortState}
+            style={{ marginBottom: "1rem" }}
+            zebraStripes
+        >
             <KolonnerFullSkjerm />
             <Table.Body>
                 {sorted.map((arbeidsforhold) => (

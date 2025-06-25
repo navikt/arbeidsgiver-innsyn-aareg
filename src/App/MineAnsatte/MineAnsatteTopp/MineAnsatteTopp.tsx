@@ -64,7 +64,7 @@ const MineAnsatteTopp: FunctionComponent = () => {
                         <BodyShort className="mine-ansatte__antall-forhold" aria-live="assertive">
                             {antallArbeidsforholdPaSideTekst}
                         </BodyShort>
-                        <SideBytter plassering="overst" className="ovre-sidebytter" />
+                        <SideBytter />
                     </div>
                 </>
             )}
