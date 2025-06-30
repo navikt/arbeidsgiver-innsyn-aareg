@@ -246,9 +246,10 @@ const main = async () => {
     app.get('/arbeidsforhold/internal/isReady', (req, res) => res.sendStatus(appReady ? 200 : 500));
 
     app.get('/arbeidsforhold/{*splat}', (req, res) => {
+        const subDir = MILJO === 'demo' ? 'demo' : 'production';
         res.setHeader('Cache-Control', 'no-store');
         res.setHeader('Etag', GIT_COMMIT);
-        res.sendFile(path.join(BUILD_PATH, 'index.html'));
+        res.sendFile(path.join(BUILD_PATH, subDir, 'index.html'));
     });
 
     const server = app.listen(PORT, () => {
