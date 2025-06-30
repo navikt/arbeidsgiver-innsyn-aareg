@@ -24,8 +24,8 @@ importers:
         specifier: 4.1.3
         version: 4.1.3(@navikt/aksel-icons@7.23.2)(@navikt/ds-css@7.23.2)(@navikt/ds-react@7.23.2(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@navikt/fnrvalidator@2.1.5)(@react-pdf/renderer@3.4.4(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(lodash.throttle@4.1.1)(react-dom@18.3.1(react@18.3.1))(react-modal@3.16.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@navikt/arbeidsgiver-notifikasjon-widget':
-        specifier: 7.2.3
-        version: 7.2.3(@navikt/ds-css@7.23.2)(@navikt/ds-icons@3.4.3(@types/react@18.3.1)(react@18.3.1))(@navikt/ds-react@7.23.2(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 8.0.0
+        version: 8.0.0(@navikt/aksel-icons@7.23.2)(@navikt/ds-css@7.23.2)(@navikt/ds-react@7.23.2(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@navikt/nav-dekoratoren-moduler@3.2.3(csp-header@6.1.0)(html-react-parser@5.2.5(@types/react@18.3.1)(react@18.3.1))(jsdom@26.1.0)(react@18.3.1))(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/bedriftsmeny':
         specifier: 8.0.3
         version: 8.0.3(@navikt/ds-css@7.23.2)(@navikt/ds-react@7.23.2(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react-dom@18.3.1)(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react-router@7.6.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
@@ -1071,14 +1071,15 @@ packages:
       react: '18'
       react-modal: '3'
 
-  '@navikt/arbeidsgiver-notifikasjon-widget@7.2.3':
-    resolution: {integrity: sha512-Kb0JbuW9xSipmsiOX2HR/xTcsAX/YKplS6oEEENC2FB02W2bWgedl7BBhtXIV+GeHxa36VtYTnp/riaBLV+t4w==, tarball: https://npm.pkg.github.com/download/@navikt/arbeidsgiver-notifikasjon-widget/7.2.3/225093fcd1b0543a2c11f53f8a44c2b8a7715de6}
+  '@navikt/arbeidsgiver-notifikasjon-widget@8.0.0':
+    resolution: {integrity: sha512-JyRYO3oJPE9MIjzBI8uNKgqmWnoLXr+nyX9AnF/ivnGzeDryW9/OiIy1tsPsKleQU9Bd9ptvv96po9PUlIrYWw==, tarball: https://npm.pkg.github.com/download/@navikt/arbeidsgiver-notifikasjon-widget/8.0.0/887b296e398cadff9b9d56dda815f935e28ab57a}
     peerDependencies:
-      '@navikt/ds-css': '>=4'
-      '@navikt/ds-icons': '>=2'
-      '@navikt/ds-react': '>=4'
-      react: 17 || 18
-      react-dom: 17 || 18
+      '@navikt/aksel-icons': '>=7.21.1'
+      '@navikt/ds-css': '>=7.21.1'
+      '@navikt/ds-react': '>=7.21.1'
+      '@navikt/nav-dekoratoren-moduler': '>=3.2.3'
+      react: 18 || 19
+      react-dom: 18 || 19
 
   '@navikt/bedriftsmeny@8.0.3':
     resolution: {integrity: sha512-JTRUmHL5lhMgMcCvU93GZJNCVBuFz6WwuAw3kvf6rpbzZ/wUlpzBMhF0UPHbdP0+2CMCQhzghXIKkPB3QfqYZA==, tarball: https://npm.pkg.github.com/download/@navikt/bedriftsmeny/8.0.3/57dfb139219f9bc3a26038077bd75c9a08942205}
@@ -1096,12 +1097,6 @@ packages:
 
   '@navikt/ds-css@7.23.2':
     resolution: {integrity: sha512-yl1m86RUdP5n9U66PDRyv0EJywbLnVCoeAXuuR6TjQJVOuCL/S+nG8AahKYRTZVZ//uJrpsSkY0nDLEBi9BJLw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/7.23.2/70a2d8c52bbc50122f42fe65dd99d4932d9c29c5}
-
-  '@navikt/ds-icons@3.4.3':
-    resolution: {integrity: sha512-Ys25tnDUzS+AtagMMW4/154OCZy+pTxCv9uiV4YcZUeXMfjnMiRWx1dueyCODb7FF7Jd6TwELd3G6ieQt/rf+w==, tarball: https://npm.pkg.github.com/download/@navikt/ds-icons/3.4.3/eaa8fc38f6d184806d3405a5efbc9d137c2b8d27}
-    peerDependencies:
-      '@types/react': ^17.0.30 || ^18.0.0
-      react: ^17.0.0 || ^18.0.0
 
   '@navikt/ds-react@7.23.2':
     resolution: {integrity: sha512-E6NUUgZ7Egw3U9ThaV5tqD+HRdRqentH3N4eo2A6pIvWIo7Rm0GV9XOZgRn3kkmP2tkC4P+laEsBbiN3v4G96Q==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.23.2/96459a01109acb20c93d4073013ee0bee91fe638}
@@ -4996,12 +4991,13 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@navikt/arbeidsgiver-notifikasjon-widget@7.2.3(@navikt/ds-css@7.23.2)(@navikt/ds-icons@3.4.3(@types/react@18.3.1)(react@18.3.1))(@navikt/ds-react@7.23.2(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@navikt/arbeidsgiver-notifikasjon-widget@8.0.0(@navikt/aksel-icons@7.23.2)(@navikt/ds-css@7.23.2)(@navikt/ds-react@7.23.2(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@navikt/nav-dekoratoren-moduler@3.2.3(csp-header@6.1.0)(html-react-parser@5.2.5(@types/react@18.3.1)(react@18.3.1))(jsdom@26.1.0)(react@18.3.1))(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@apollo/client': 3.13.8(@types/react@18.3.1)(graphql@16.11.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@navikt/aksel-icons': 7.23.2
       '@navikt/ds-css': 7.23.2
-      '@navikt/ds-icons': 3.4.3(@types/react@18.3.1)(react@18.3.1)
       '@navikt/ds-react': 7.23.2(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@navikt/nav-dekoratoren-moduler': 3.2.3(csp-header@6.1.0)(html-react-parser@5.2.5(@types/react@18.3.1)(react@18.3.1))(jsdom@26.1.0)(react@18.3.1)
       graphql: 16.11.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -5025,11 +5021,6 @@ snapshots:
       react-router: 7.6.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   '@navikt/ds-css@7.23.2': {}
-
-  '@navikt/ds-icons@3.4.3(@types/react@18.3.1)(react@18.3.1)':
-    dependencies:
-      '@types/react': 18.3.1
-      react: 18.3.1
 
   '@navikt/ds-react@7.23.2(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
