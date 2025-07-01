@@ -14,7 +14,9 @@ import { sorterArbeidsforhold, Sortering } from '../sorteringOgFiltreringsFunksj
 type ScopedSortState = SortState & { orderBy: Sortering };
 
 const TabellMineAnsatte: FunctionComponent = () => {
-    const { currentSelection } = useContext(FiltrerteOgSorterteArbeidsforholdContext);
+    const { currentSelection, count } = useContext(FiltrerteOgSorterteArbeidsforholdContext);
+    if (count.Alle) return null
+
     const [sortState, setSortState] = useState<ScopedSortState | undefined>();
 
     const handleSort = (sortKey: Sortering) => {
