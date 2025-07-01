@@ -72,21 +72,14 @@ export const ArbeidsforholdProvider: FunctionComponent<PropsWithChildren> = (pro
             return;
         }
 
-        const abortAntall = new AbortController();
-        const abortForhold = new AbortController();
         settLastestatus({ status: 'laster' });
 
-        hentAntallArbeidsforholdFraAareg(
-            orgnr,
-            underenhet.ParentOrganizationNumber,
-            abortAntall.signal
-        )
+        hentAntallArbeidsforholdFraAareg(orgnr, underenhet.ParentOrganizationNumber)
             .then((antall) => {
                 settLastestatus({ status: 'laster', estimertAntall: antall });
                 hentArbeidsforholdFraAAreg(
                     orgnr,
                     underenhet.ParentOrganizationNumber,
-                    abortForhold.signal,
                     erPåTidligereUnderenhet
                 )
                     .then((respons) => {
@@ -111,10 +104,6 @@ export const ArbeidsforholdProvider: FunctionComponent<PropsWithChildren> = (pro
                     settLastestatus({ status: 'feil', beskjed: feilmeldingtekst(null) });
                 }
             });
-        return () => {
-            abortAntall.abort();
-            abortForhold.abort();
-        };
     }, [tilgang, arbeidsforholdFor, erPåTidligereUnderenhet, underenhet.ParentOrganizationNumber]);
 
     useEffect(() => {

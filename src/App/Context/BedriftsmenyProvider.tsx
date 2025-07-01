@@ -97,15 +97,13 @@ const BedriftsmenyProvider: FunctionComponent<PropsWithChildren> = ({ children }
             settTidligereUnderenheter([]);
         } else {
             settTidligereUnderenheter('laster');
-            const abortController = new AbortController();
-            hentTidligereVirksomheter(tidligereUnderenheterFor, abortController.signal)
+            hentTidligereVirksomheter(tidligereUnderenheterFor)
                 .then((enheter) => {
                     settTidligereUnderenheter(enheter);
                 })
                 .catch((err) => {
                     settTidligereUnderenheter([]);
                 });
-            return () => abortController.abort();
         }
     }, [altinnorganisasjoner, tidligereUnderenheterFor]);
 
