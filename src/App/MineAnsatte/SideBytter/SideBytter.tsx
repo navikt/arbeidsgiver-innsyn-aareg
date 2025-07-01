@@ -6,7 +6,7 @@ import { Pagination } from '@navikt/ds-react';
 const SideBytter = () => {
     const { antallSider } = useContext(FiltrerteOgSorterteArbeidsforholdContext);
 
-    if (antallSider === 0) return null;
+    if (antallSider <= 1) return null;
     const { getSearchParameter, setSearchParameter } = useSearchParameters();
 
     const nåVærendeSidetallParameter = getSearchParameter('side') ?? '1';
