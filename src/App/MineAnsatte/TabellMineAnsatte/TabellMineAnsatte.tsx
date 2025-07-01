@@ -15,7 +15,7 @@ type ScopedSortState = SortState & { orderBy: Sortering };
 
 const TabellMineAnsatte: FunctionComponent = () => {
     const { currentSelection, count } = useContext(FiltrerteOgSorterteArbeidsforholdContext);
-    if (count.Alle) return null
+    if (count.Alle === 0) return null
 
     const [sortState, setSortState] = useState<ScopedSortState | undefined>();
 
