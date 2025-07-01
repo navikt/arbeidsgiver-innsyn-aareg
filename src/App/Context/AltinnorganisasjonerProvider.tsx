@@ -39,9 +39,7 @@ export const AltinnorganisasjonerProvider: FunctionComponent<PropsWithChildren> 
     const [feil, settFeil] = useState(false);
 
     useEffect(() => {
-        const abortController = new AbortController();
-
-        hentOrganisasjonerFraAltinn(abortController.signal)
+        hentOrganisasjonerFraAltinn()
             .then(settOrganisasjoner)
             .catch((e: Error) => {
                 if (e.message === 'Forbidden') {
@@ -49,13 +47,11 @@ export const AltinnorganisasjonerProvider: FunctionComponent<PropsWithChildren> 
                 } else {
                     settFeil(true);
                 }
-                abortController.abort();
             });
 
         hentOrganisasjonerMedTilgangTilAltinntjeneste(
             SERVICEKODEINNSYNAAREGISTERET,
-            SERVICEEDITIONINNSYNAAREGISTERET,
-            abortController.signal
+            SERVICEEDITIONINNSYNAAREGISTERET
         )
             .then((organisasjonerMedTilgangFraAltinn) => {
                 settOrganisasjonerMedTilgang(
@@ -72,11 +68,7 @@ export const AltinnorganisasjonerProvider: FunctionComponent<PropsWithChildren> 
                 } else {
                     settFeil(true);
                 }
-                abortController.abort();
             });
-        return function cleanup() {
-            abortController.abort();
-        };
     }, []);
 
     if (organisasjoner !== null && organisasjonerMedTilgang !== null) {
