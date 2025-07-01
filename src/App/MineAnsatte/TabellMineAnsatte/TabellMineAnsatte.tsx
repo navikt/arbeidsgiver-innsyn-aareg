@@ -1,11 +1,9 @@
 import React, { FunctionComponent, useContext, useState } from 'react';
 
-import { Arbeidsforhold } from '../../Objekter/ArbeidsForhold';
 import KolonnerFullSkjerm from './Kolonner/Kolonner';
 import YrkesbeskrivelsePopover from './KolonnerMedTooltip/YrkesbeskrivelsePopover';
 import NavnPopover from './KolonnerMedTooltip/NavnPopover';
 import VarslingPopover from './KolonnerMedTooltip/VarslingPopover';
-// import './TabellMineAnsatte.css';
 import { datoformat } from '../utils';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../../Context/FiltrerteOgSorterteArbeidsforholdProvider';
 import { SortState, Table } from '@navikt/ds-react';
