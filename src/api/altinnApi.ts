@@ -1,18 +1,22 @@
 import {
     hentOrganisasjonerLink,
     hentRettigheterTilAltinnTjenesteLink,
-    sjekkInnloggetLenke
+    sjekkInnloggetLenke,
 } from '../App/lenker';
 import { FetchError } from './api-utils';
-import { Organisasjon, OrganisasjonlowerCase, tomaAltinnOrganisasjon } from '../App/Objekter/OrganisasjonFraAltinn';
+import {
+    Organisasjon,
+    OrganisasjonlowerCase,
+    tomaAltinnOrganisasjon,
+} from '../App/Objekter/OrganisasjonFraAltinn';
 
 export async function sjekkInnlogget(): Promise<boolean> {
     let respons = await fetch(sjekkInnloggetLenke());
     return respons.ok;
 }
 
-export async function hentOrganisasjonerFraAltinn(signal: any): Promise<Organisasjon[]> {
-    let respons = await fetch(hentOrganisasjonerLink(), { signal: signal });
+export async function hentOrganisasjonerFraAltinn(): Promise<Organisasjon[]> {
+    let respons = await fetch(hentOrganisasjonerLink());
     if (respons.ok) {
         const organisasjoner = await respons.json();
         return mapOrganisasjonerFraLowerCaseTilupper(organisasjoner);
@@ -23,12 +27,14 @@ export async function hentOrganisasjonerFraAltinn(signal: any): Promise<Organisa
 
 export async function hentOrganisasjonerMedTilgangTilAltinntjeneste(
     serviceKode: string,
-    serviceEdition: string,
-    signal: any
+    serviceEdition: string
 ): Promise<Organisasjon[]> {
     let respons = await fetch(
-        hentRettigheterTilAltinnTjenesteLink() + '?serviceKode=' + serviceKode + '&serviceEdition=' + serviceEdition,
-        { signal: signal }
+        hentRettigheterTilAltinnTjenesteLink() +
+            '?serviceKode=' +
+            serviceKode +
+            '&serviceEdition=' +
+            serviceEdition
     );
     if (respons.ok) {
         const organisasjoner = await respons.json();
@@ -38,8 +44,10 @@ export async function hentOrganisasjonerMedTilgangTilAltinntjeneste(
     }
 }
 
-export const mapOrganisasjonerFraLowerCaseTilupper = (organisasjonerRaw: OrganisasjonlowerCase[]): Organisasjon[] => {
-    return organisasjonerRaw.map(rawOrg => {
+export const mapOrganisasjonerFraLowerCaseTilupper = (
+    organisasjonerRaw: OrganisasjonlowerCase[]
+): Organisasjon[] => {
+    return organisasjonerRaw.map((rawOrg) => {
         return {
             ...tomaAltinnOrganisasjon,
             OrganizationNumber: rawOrg.organizationNumber,
@@ -47,7 +55,7 @@ export const mapOrganisasjonerFraLowerCaseTilupper = (organisasjonerRaw: Organis
             Name: rawOrg.name,
             ParentOrganizationNumber: rawOrg.parentOrganizationNumber,
             Type: rawOrg.type,
-            Status: rawOrg.status
+            Status: rawOrg.status,
         };
     });
 };
