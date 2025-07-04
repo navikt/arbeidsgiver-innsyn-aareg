@@ -1,42 +1,5 @@
 import { gittMiljo } from '../utils/environment';
 
-const landingsURL = '/arbeidsforhold/';
-
-export const hentArbeidsforholdLink = () => {
-    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/arbeidsforhold';
-};
-
-export const hentTidligereArbeidsforholdLink = () => {
-    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/tidligere-arbeidsforhold';
-};
-
-export const hentAntallArbeidsforholdLink = () => {
-    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/antall-arbeidsforhold';
-};
-
-export const hentTidligereVirksomheterLink =
-    landingsURL + 'arbeidsgiver-arbeidsforhold/api/tidligere-virksomheter';
-
-export const hentOrganisasjonerLink = () => {
-    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/organisasjoner';
-};
-
-export const hentRettigheterTilAltinnTjenesteLink = () => {
-    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/rettigheter-til-tjeneste';
-};
-
-export const sjekkInnloggetLenke = () => {
-    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/innlogget';
-};
-
-export const hentUnderenhetApiLink = (orgnr: string) => {
-    return `https://data.brreg.no/enhetsregisteret/api/underenheter/${orgnr}`;
-};
-
-export const hentOverordnetEnhetApiLink = (orgnr: string) => {
-    return `https://data.brreg.no/enhetsregisteret/api/enheter/${orgnr}`;
-};
-
 export const linkTilMinSideArbeidsgiver = (orgnr: string) => {
     const orgNrDel = orgnr.length > 0 ? '?bedrift=' + orgnr : '';
     return (

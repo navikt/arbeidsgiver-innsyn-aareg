@@ -59,12 +59,6 @@ const BedriftsmenyProvider: FunctionComponent<PropsWithChildren> = ({ children }
             ? enhet.hovedenhet.OrganizationNumber
             : null;
 
-    const lasteboksEllerIngenTilgang = (visLasteBoks: boolean) => {
-        if (visLasteBoks) {
-            return <Lasteboks />;
-        }
-        return <IngenTilgangInfo />;
-    };
     /* Det kan ta litt tid før bedriftsvelgeren setter default bedrift, så
      * de første sekundene anser vi som en oppstarts-periode hvor vi ikke
      * viser ingen-tilgang-siden.
@@ -136,7 +130,11 @@ const BedriftsmenyProvider: FunctionComponent<PropsWithChildren> = ({ children }
                 <NotifikasjonWidget />
             </Bedriftsmeny>
             {altinnorganisasjoner.length === 0 || context === null ? (
-                lasteboksEllerIngenTilgang(oppstart)
+                oppstart ? (
+                    <Lasteboks />
+                ) : (
+                    <IngenTilgangInfo />
+                )
             ) : (
                 <BedriftsmenyContext.Provider value={context}>
                     {children}
