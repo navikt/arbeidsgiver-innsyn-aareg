@@ -1,20 +1,21 @@
 import {
     ListeMedJuridiskeEnheter,
     OrganisasjonFraEnhetsregisteret,
-    tomEnhetsregOrg
+    tomEnhetsregOrg,
 } from '../App/Objekter/OrganisasjonFraEnhetsregisteret';
 import { Organisasjon, tomaAltinnOrganisasjon } from '../App/Objekter/OrganisasjonFraAltinn';
-import { hentOverordnetEnhetApiLink, hentUnderenhetApiLink } from '../App/lenker';
 
-export async function hentAlleJuridiskeEnheter(listeMedJuridiskeOrgNr: string[]): Promise<Organisasjon[]> {
-    const listerMedDefinerteOrgNr = listeMedJuridiskeOrgNr.filter(orgnr => {
+export async function hentAlleJuridiskeEnheter(
+    listeMedJuridiskeOrgNr: string[]
+): Promise<Organisasjon[]> {
+    const listerMedDefinerteOrgNr = listeMedJuridiskeOrgNr.filter((orgnr) => {
         return orgnr !== null;
     });
     let url: string = 'https://data.brreg.no/enhetsregisteret/api/enheter/?organisasjonsnummer=';
     const distinkteJuridiskeEnhetsnr: string[] = listerMedDefinerteOrgNr.filter(
         (jurOrg, index) => listeMedJuridiskeOrgNr.indexOf(jurOrg) === index
     );
-    distinkteJuridiskeEnhetsnr.forEach(orgnr => {
+    distinkteJuridiskeEnhetsnr.forEach((orgnr) => {
         if (distinkteJuridiskeEnhetsnr.indexOf(orgnr) === 0) {
             url += orgnr;
         } else {
@@ -29,16 +30,15 @@ export async function hentAlleJuridiskeEnheter(listeMedJuridiskeOrgNr: string[])
             Array.isArray(distinkteJuridiskeEnheterFraEreg._embedded.enheter) &&
             distinkteJuridiskeEnheterFraEreg._embedded.enheter.length > 0
         ) {
-            const distinkteJuridiskeEnheter: Organisasjon[] = distinkteJuridiskeEnheterFraEreg._embedded.enheter.map(
-                orgFraEereg => {
+            const distinkteJuridiskeEnheter: Organisasjon[] =
+                distinkteJuridiskeEnheterFraEreg._embedded.enheter.map((orgFraEereg) => {
                     const jurOrg: Organisasjon = {
                         ...tomaAltinnOrganisasjon,
                         Name: orgFraEereg.navn,
-                        OrganizationNumber: orgFraEereg.organisasjonsnummer
+                        OrganizationNumber: orgFraEereg.organisasjonsnummer,
                     };
                     return jurOrg;
-                }
-            );
+                });
             return distinkteJuridiskeEnheter;
         }
     }
@@ -46,7 +46,7 @@ export async function hentAlleJuridiskeEnheter(listeMedJuridiskeOrgNr: string[])
 }
 
 export async function hentUnderenhet(orgnr: string): Promise<OrganisasjonFraEnhetsregisteret> {
-    let respons = await fetch(hentUnderenhetApiLink(orgnr));
+    let respons = await fetch(`https://data.brreg.no/enhetsregisteret/api/underenheter/${orgnr}`);
     if (respons.ok) {
         const enhet: OrganisasjonFraEnhetsregisteret = await respons.json();
         return enhet;
@@ -56,7 +56,7 @@ export async function hentUnderenhet(orgnr: string): Promise<OrganisasjonFraEnhe
 
 export async function hentOverordnetEnhet(orgnr: string): Promise<OrganisasjonFraEnhetsregisteret> {
     if (orgnr !== '') {
-        let respons = await fetch(hentOverordnetEnhetApiLink(orgnr));
+        let respons = await fetch(`https://data.brreg.no/enhetsregisteret/api/enheter/${orgnr}`);
         if (respons.ok) {
             const enhet: OrganisasjonFraEnhetsregisteret = await respons.json();
             return enhet;

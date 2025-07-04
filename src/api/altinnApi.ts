@@ -1,8 +1,3 @@
-import {
-    hentOrganisasjonerLink,
-    hentRettigheterTilAltinnTjenesteLink,
-    sjekkInnloggetLenke,
-} from '../App/lenker';
 import { FetchError } from './api-utils';
 import {
     Organisasjon,
@@ -11,12 +6,12 @@ import {
 } from '../App/Objekter/OrganisasjonFraAltinn';
 
 export async function sjekkInnlogget(): Promise<boolean> {
-    let respons = await fetch(sjekkInnloggetLenke());
+    let respons = await fetch('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/innlogget');
     return respons.ok;
 }
 
 export async function hentOrganisasjonerFraAltinn(): Promise<Organisasjon[]> {
-    let respons = await fetch(hentOrganisasjonerLink());
+    let respons = await fetch('/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/organisasjoner');
     if (respons.ok) {
         const organisasjoner = await respons.json();
         return mapOrganisasjonerFraLowerCaseTilupper(organisasjoner);
@@ -30,11 +25,7 @@ export async function hentOrganisasjonerMedTilgangTilAltinntjeneste(
     serviceEdition: string
 ): Promise<Organisasjon[]> {
     let respons = await fetch(
-        hentRettigheterTilAltinnTjenesteLink() +
-            '?serviceKode=' +
-            serviceKode +
-            '&serviceEdition=' +
-            serviceEdition
+        `/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/rettigheter-til-tjeneste?serviceKode=${serviceKode}&serviceEdition=${serviceEdition}`
     );
     if (respons.ok) {
         const organisasjoner = await respons.json();
