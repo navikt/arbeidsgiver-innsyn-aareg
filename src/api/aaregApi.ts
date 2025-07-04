@@ -1,9 +1,3 @@
-import {
-    hentAntallArbeidsforholdLink,
-    hentArbeidsforholdLink,
-    hentTidligereArbeidsforholdLink,
-    hentTidligereVirksomheterLink,
-} from '../App/lenker';
 import { ObjektFraAAregisteret } from '../App/Objekter/ObjektFraAAreg';
 import { FetchError } from './api-utils';
 import { overSiktPerUnderenhetPar } from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
@@ -16,11 +10,17 @@ export async function hentArbeidsforholdFraAAreg(
     enhet: string,
     erTidligereArbeidsforhold: boolean
 ): Promise<ObjektFraAAregisteret> {
-    const headere = lagHeadere(enhet, underenhet);
-    const linkTilEndepunkt = erTidligereArbeidsforhold
-        ? hentTidligereArbeidsforholdLink()
-        : hentArbeidsforholdLink();
-    let response: Response = await fetch(linkTilEndepunkt, { headers: headere });
+    const response: Response = await fetch(
+        erTidligereArbeidsforhold
+            ? '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/tidligere-arbeidsforhold'
+            : '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/arbeidsforhold',
+        {
+            headers: {
+                jurenhet: enhet,
+                orgnr: underenhet,
+            },
+        }
+    );
     if (response.ok) {
         const jsonRespons: ObjektFraAAregisteret = await response.json();
         loggArbeidsforholdLastet(jsonRespons.arbeidsforholdoversikter);
@@ -34,8 +34,15 @@ export async function hentAntallArbeidsforholdFraAareg(
     underenhet: string,
     enhet: string
 ): Promise<number | undefined> {
-    const headere = lagHeadere(enhet, underenhet);
-    let respons = await fetch(hentAntallArbeidsforholdLink(), { headers: headere });
+    const respons = await fetch(
+        '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/antall-arbeidsforhold',
+        {
+            headers: {
+                jurenhet: enhet,
+                orgnr: underenhet,
+            },
+        }
+    );
     if (respons.ok) {
         const jsonRespons: overSiktPerUnderenhetPar = await respons.json();
         return jsonRespons.second;
@@ -45,8 +52,14 @@ export async function hentAntallArbeidsforholdFraAareg(
 }
 
 export async function hentTidligereVirksomheter(enhet: string): Promise<Organisasjon[]> {
-    const headere = lagHeadere(enhet);
-    let response: Response = await fetch(hentTidligereVirksomheterLink, { headers: headere });
+    const response: Response = await fetch(
+        '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/tidligere-virksomheter',
+        {
+            headers: {
+                jurenhet: enhet,
+            },
+        }
+    );
     if (response.ok) {
         const organisasjoner = await response.json();
         return mapOrganisasjonerFraLowerCaseTilupper(organisasjoner);
@@ -54,10 +67,3 @@ export async function hentTidligereVirksomheter(enhet: string): Promise<Organisa
         throw new FetchError(response.statusText ?? response.type, response);
     }
 }
-
-const lagHeadere = (jurenhet: string, orgnr?: string) => {
-    const headere = new Headers();
-    headere.set('jurenhet', jurenhet);
-    orgnr !== undefined && headere.set('orgnr', orgnr);
-    return headere;
-};
