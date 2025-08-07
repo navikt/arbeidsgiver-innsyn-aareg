@@ -6,7 +6,7 @@ import App from './App';
 expect.extend(toHaveNoViolations);
 
 beforeEach(() => {
-    window.history.pushState({}, '', '/arbeidsforhold');
+    window.history.pushState({}, '', '/arbeidsforhold/');
 });
 
 it('renders without crashing', () => {
