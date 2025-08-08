@@ -33,10 +33,3 @@ export interface ObjektFraAAregisteret {
     startrad: string;
     totalAntall: string;
 }
-
-export const tomResponsFraAareg: ObjektFraAAregisteret = {
-    antall: '',
-    arbeidsforholdoversikter: [],
-    startrad: '',
-    totalAntall: ''
-};

@@ -1,29 +1,26 @@
-import React, { FunctionComponent } from 'react';
-import { Input } from 'nav-frontend-skjema';
-import Forstorrelsesglass from './Forstørrelsesglass';
-import './Sokefelt.less';
+import React from 'react';
+import './Sokefelt.css';
 import { useSearchParameters } from '../../../utils/UrlManipulation';
+import { Search } from '@navikt/ds-react';
 
-const Sokefelt: FunctionComponent = () => {
+const Sokefelt: React.FC = () => {
     const { getSearchParameter, setSearchParameter } = useSearchParameters();
+    const searchText = getSearchParameter('sok') ?? '';
 
-    const søketekstvariabel = getSearchParameter('sok');
-    const søkeTekst = søketekstvariabel ? søketekstvariabel : '';
-
-    const onSoketekstChange = (soketekst: string) => setSearchParameter({ sok: soketekst, side: '1' });
+    const handleSearchChange = (value: string) => {
+        setSearchParameter({ sok: value, side: '1' });
+    };
 
     return (
         <div className="sokefelt">
-            <Input
+            <Search
                 className="sokefelt__felt"
-                type="search"
-                aira-live="polite"
+                aria-live="polite"
                 label=""
-                value={søkeTekst}
-                onChange={(e: any) => onSoketekstChange(e.target.value)}
+                value={searchText}
+                onChange={handleSearchChange}
                 placeholder="Søk på navn eller fødselsnummer"
             />
-            <div className="sokefelt__ikon">{søkeTekst.length === 0 && <Forstorrelsesglass />}</div>
         </div>
     );
 };

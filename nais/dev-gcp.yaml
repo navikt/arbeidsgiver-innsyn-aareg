@@ -7,15 +7,12 @@ metadata:
     team: arbeidsforhold
 spec:
   image: {{image}}
-  port: 3000
   ingresses:
     - https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold
   liveness:
     path: /arbeidsforhold/internal/isAlive
-    initialDelay: 20
   readiness:
     path: /arbeidsforhold/internal/isReady
-    initialDelay: 20
   prometheus:
     enabled: true
     path: /arbeidsforhold/internal/metrics
@@ -28,14 +25,16 @@ spec:
   env:
     - name: NODE_EXTRA_CA_CERTS
       value: /etc/ssl/ca-bundle.pem
-    - name: API_GATEWAY
-      value: https://aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io
+    - name: API_URL
+      value: https://aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io/arbeidsgiver-arbeidsforhold-api
     - name: LOGIN_URL
-      value: https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold/oauth2/login?redirect=https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold
+      value: https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold/oauth2/login
     - name: DECORATOR_EXTERNAL_URL
       value: https://dekoratoren.ekstern.dev.nav.no/?context=arbeidsgiver&redirectToApp=true&level=Level4
     - name: MILJO
       value: dev
+    - name: GIT_COMMIT
+      value: {{commit}}
   accessPolicy:
     outbound:
       rules:
@@ -51,6 +50,6 @@ spec:
           namespace: personbruker
           cluster: dev-gcp
       external:
-        - host: person.intern.dev.nav.no
+        - host: www.intern.dev.nav.no
         - host: aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io
         - host: dekoratoren.ekstern.dev.nav.no

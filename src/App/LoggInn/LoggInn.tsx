@@ -1,20 +1,18 @@
 import React from 'react';
-import Lenke from 'nav-frontend-lenker';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import handshake from './handshake.svg';
 import { TilgangsStyringInfoTekst } from './TilgangsStyringInfoTekst/TilgangsStyringInfoTekst';
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
-import './Logginn.less';
+import './Logginn.css';
 import EnkelBanner from '../EnkelBanner/EnkelBanner';
-import { gittMiljø } from '../../utils/environment';
+import { gittMiljo } from '../../utils/environment';
+import { BodyLong, BodyShort, Button, Heading, Link as Lenke } from '@navikt/ds-react';
 
 export const redirectTilLogin = () => {
-    const kjørerLokalt = gittMiljø({
+    const kjørerLokalt = gittMiljo({
         prod: false,
         dev: false,
-        labs: false,
-        other: true
+        demo: false,
+        other: true,
     });
     if (kjørerLokalt) {
         document.cookie = 'selvbetjening-idtoken=0123456789..*; path=/;';
@@ -33,23 +31,32 @@ const LoggInn = () => {
                 <div className="innloggingsside__circle">
                     <img src={handshake} className="handtrykkbilde" alt="bilde av håndtrykk" />
                 </div>
-                <Systemtittel className="innloggingsside__sidetittel">Innsyn i Aa-registeret</Systemtittel>
+                <Heading size="medium" className="innloggingsside__sidetittel">
+                    Innsyn i Aa-registeret
+                </Heading>
 
-                <Ingress className="innloggingsside__ingress">
+                <BodyLong size="large" className="innloggingsside__ingress">
                     Oversikt over alle arbeidsforhold rapportert inn via A-meldingen.
-                </Ingress>
+                </BodyLong>
 
                 <TilgangsStyringInfoTekst />
 
-                <Hovedknapp className="innloggingsside__loginKnapp" onClick={redirectTilLogin}>
+                <Button
+                    variant="primary"
+                    size="medium"
+                    className="innloggingsside__loginKnapp"
+                    onClick={redirectTilLogin}
+                >
                     Logg inn
-                </Hovedknapp>
+                </Button>
 
                 <div className="innloggingsside__besok-ditt-nav">
-                    <Normaltekst>Ønsker du å se dine tjenester som privatperson?</Normaltekst>
-                    <Normaltekst className="logg-inn-lenke">
-                        <Lenke href="https://www.nav.no/person/dittnav/">Logg inn på Ditt NAV</Lenke>
-                    </Normaltekst>
+                    <BodyShort>Ønsker du å se dine tjenester som privatperson?</BodyShort>
+                    <BodyShort className="logg-inn-lenke">
+                        <Lenke href="https://www.nav.no/person/dittnav/">
+                            Logg inn på Ditt NAV
+                        </Lenke>
+                    </BodyShort>
                 </div>
             </div>
         </div>

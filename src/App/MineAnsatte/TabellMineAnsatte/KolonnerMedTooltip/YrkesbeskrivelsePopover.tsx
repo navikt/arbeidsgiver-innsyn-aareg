@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Popover, { PopoverOrientering } from 'nav-frontend-popover';
-import { Normaltekst } from 'nav-frontend-typografi';
-import './PopOverStyling.less';
+import './PopOverStyling.css';
+import { BodyShort, Popover } from '@navikt/ds-react';
 
 type PopoverProps = {
     tekst: string;
 };
 
 const YrkesbeskrivelsePopover = (props: PopoverProps) => {
-    const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
+    const [anker, setAnker] = useState<HTMLElement | null>(null);
     const [skalVisePopover, setSkalVisePopover] = useState(true);
     const maxBreddeAvKolonne = 90;
 
@@ -20,24 +19,23 @@ const YrkesbeskrivelsePopover = (props: PopoverProps) => {
         }
     }, [anker]);
 
-    const yrkesnavnLowerCase = props.tekst[0] + props.tekst.substr(1,props.tekst.length).toLocaleLowerCase();
+    const yrkesnavnLowerCase =
+        props.tekst[0] + props.tekst.substr(1, props.tekst.length).toLocaleLowerCase();
 
     return (
         <div className="pop-over-container">
-            <Normaltekst
+            <BodyShort
                 className="pop-over__yrke"
                 onMouseEnter={(e: any) => {
                     setAnker(e.currentTarget);
                 }}
-                onMouseLeave={(e) => setAnker(undefined)}
+                onMouseLeave={(e) => setAnker(null)}
             >
                 {yrkesnavnLowerCase}
-            </Normaltekst>
-            {skalVisePopover && (
-                <Popover ankerEl={anker} orientering={PopoverOrientering.Over}>
-                    <p style={{ padding: '1rem' }}>{props.tekst} </p>
-                </Popover>
-            )}
+            </BodyShort>
+            <Popover open={skalVisePopover} anchorEl={anker} placement="top" onClose={() => null}>
+                <p style={{ padding: '1rem' }}>{props.tekst} </p>
+            </Popover>
         </div>
     );
 };

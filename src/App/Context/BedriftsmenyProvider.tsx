@@ -1,15 +1,26 @@
-import React, { createContext, FunctionComponent, useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+    type FunctionComponent,
+    type PropsWithChildren,
+} from 'react';
 import { useLocation } from 'react-router-dom';
-import Bedriftsmeny, {Arbeidsforhold} from '@navikt/bedriftsmeny';
+import Bedriftsmeny, {
+    Organisasjon as BedriftsmenyOrganisasjon,
+} from '@navikt/bedriftsmeny';
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
+
 import { AltinnOrganisasjon, AltinnorganisasjonerContext } from './AltinnorganisasjonerProvider';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
 import { hentTidligereVirksomheter } from '../../api/aaregApi';
 import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
 import Lasteboks from '../GeneriskeKomponenter/Lasteboks';
 import { useReplace, useSearchParameters } from '../../utils/UrlManipulation';
-import emptyList from '../Objekter/EmptyList';
 import { NotifikasjonWidget } from '@navikt/arbeidsgiver-notifikasjon-widget';
+
 
 interface Enhet {
     hovedenhet: AltinnOrganisasjon | null;
@@ -22,114 +33,120 @@ interface Context extends Enhet {
 
 export const BedriftsmenyContext = createContext<Context>({} as Context);
 
-const BedriftsmenyProvider: FunctionComponent = ({ children }) => {
+const useOppstart = (ms: number) => {
+    const [oppstart, setOppstart] = useState(true);
+    useEffect(() => {
+        const t = setTimeout(() => setOppstart(false), ms);
+        return () => clearTimeout(t);
+    }, [ms]);
+    return oppstart;
+};
+
+const useEnhet = (orgnrFraUrl: string | null, finnOrg: (orgnr: string) => AltinnOrganisasjon | null): Enhet | null => {
+    const [enhet, setEnhet] = useState<Enhet | null>(null);
+
+    useEffect(() => {
+        if (orgnrFraUrl == null || orgnrFraUrl === '') {
+            setEnhet(null);
+            return;
+        }
+
+        const underenhet = finnOrg(orgnrFraUrl);
+        const hovedenhet = underenhet ? finnOrg(underenhet.ParentOrganizationNumber) : null;
+
+        if (!underenhet) {
+            console.error('Bedriftsmeny byttet til ukjent organisasjon');
+            return setEnhet(null);
+        }
+
+        setEnhet({ underenhet, hovedenhet });
+    }, [orgnrFraUrl, finnOrg]);
+
+    return enhet;
+};
+
+const useTidligereUnderenheter = (orgnr: string | null) => {
+    const [data, setData] = useState<Organisasjon[] | 'laster'>('laster');
+
+    useEffect(() => {
+        if (orgnr == null || orgnr === '') {
+            setData([]);
+            return;
+        }
+
+        setData('laster');
+        hentTidligereVirksomheter(orgnr)
+            .then(setData)
+            .catch(() => setData([]));
+    }, [orgnr]);
+
+    return data;
+};
+
+const BedriftsmenyProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
     const replace = useReplace();
     const location = useLocation();
-
-    const altinnorganisasjoner: Array<AltinnOrganisasjon> = useContext(AltinnorganisasjonerContext);
+    const altinnorganisasjoner = useContext(AltinnorganisasjonerContext);
     const { getSearchParameter } = useSearchParameters();
 
-    const [oppstart, settOppstart] = useState(true);
-    const [context, settContext] = useState<Context | null>(null);
-    const [enhet, settEnhet] = useState<Enhet | null>(null);
-    const [tidligereUnderenheter, settTidligereUnderenheter] = useState<Organisasjon[] | 'laster'>('laster');
-
-    const finnOrg = useCallback(
-        (orgnr: string): AltinnOrganisasjon | null =>
-            altinnorganisasjoner.find((org) => org.OrganizationNumber === orgnr) ?? null,
-        [altinnorganisasjoner]
-    );
-
     const orgnrFraUrl = getSearchParameter('bedrift');
-
     const tidligereArbeidsforhold = location.pathname.startsWith('/tidligere-arbeidsforhold');
     const sidetittel = tidligereArbeidsforhold ? 'Tidligere arbeidsforhold' : 'Arbeidsforhold';
 
+    const finnOrg = useCallback(
+        (orgnr: string) => altinnorganisasjoner.find(org => org.OrganizationNumber === orgnr) ?? null,
+        [altinnorganisasjoner]
+    );
+
+    const oppstart = useOppstart(20_000);
+    const enhet = useEnhet(orgnrFraUrl, finnOrg);
+
     const tidligereUnderenheterFor =
-        enhet !== null && enhet.hovedenhet !== null && enhet.hovedenhet.tilgang
+        enhet?.hovedenhet?.tilgang === true
             ? enhet.hovedenhet.OrganizationNumber
             : null;
 
+    const tidligereUnderenheter = useTidligereUnderenheter(tidligereUnderenheterFor);
 
-    const lasteboksEllerIngenTilgang = (visLasteBoks: boolean) => {
-        if (visLasteBoks) {
-            return <Lasteboks />;
+    const context: Context | null = enhet
+        ? { ...enhet, tidligereUnderenheter }
+        : null;
+
+    const handleOrganisasjonChange = (organisasjon: BedriftsmenyOrganisasjon) => {
+        const { OrganizationNumber } = organisasjon;
+
+        const fullOrg = altinnorganisasjoner.find(
+            (org) => org.OrganizationNumber === OrganizationNumber
+        );
+
+        if (fullOrg && enhet?.underenhet.OrganizationNumber !== OrganizationNumber) {
+            replace({
+                pathname: location.pathname + '/',
+                search: `bedrift=${OrganizationNumber}`,
+            });
         }
-        return <IngenTilgangInfo />;
     };
-    /* Det kan ta litt tid før bedriftsvelgeren setter default bedrift, så
-     * de første sekundene anser vi som en oppstarts-periode hvor vi ikke
-     * viser ingen-tilgang-siden.
-     */
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            settOppstart(false);
-        }, 20_000);
-        return () => clearTimeout(timeout);
-    }, []);
 
-    useEffect(() => {
-        if (orgnrFraUrl === null) {
-            settEnhet(null);
-        } else {
-            const underenhet = finnOrg(orgnrFraUrl);
-            const hovedenhet = underenhet === null ? null : finnOrg(underenhet.ParentOrganizationNumber);
-            if (underenhet === null) {
-                console.error('Bedriftsmeny byttet til ukjent organisasjon');
-                settEnhet(null);
-            } else {
-                settEnhet({ underenhet, hovedenhet });
-            }
-        }
-    }, [orgnrFraUrl, finnOrg]);
-
-    useEffect(() => {
-        if (tidligereUnderenheterFor === null) {
-            settTidligereUnderenheter(emptyList);
-        } else {
-            settTidligereUnderenheter('laster');
-            const abortController = new AbortController();
-            hentTidligereVirksomheter(tidligereUnderenheterFor, abortController.signal)
-                .then((enheter) => {
-                    settTidligereUnderenheter(enheter);
-                })
-                .catch((err) => {
-                    settTidligereUnderenheter(emptyList);
-                });
-            return () => abortController.abort();
-        }
-    }, [altinnorganisasjoner, tidligereUnderenheterFor]);
-
-    useEffect(() => {
-        if (enhet === null) {
-            settContext(null);
-        } else {
-            settContext({ ...enhet, tidligereUnderenheter });
-        }
-    }, [settContext, enhet, tidligereUnderenheter]);
+    const skalViseInnhold = altinnorganisasjoner.length > 0 && context !== null;
 
     return (
         <>
             <Bedriftsmeny
                 sidetittel={sidetittel}
-                piktogram={<Arbeidsforhold/>}
                 organisasjoner={tidligereArbeidsforhold ? [] : altinnorganisasjoner}
-                onOrganisasjonChange={({ OrganizationNumber }) => {
-                    /* Bedriftsmenyen vil ved oppstart kalle hit, selv om det ikke er en
-                     * endring i bedrift-parameteret. I så fall ønsker vi ikke å slette
-                     * filter/søk-parameterene.
-                     */
-                    if (enhet?.underenhet.OrganizationNumber !== OrganizationNumber) {
-                        replace({ pathname: '/', search: `bedrift=${OrganizationNumber}` });
-                    }
-                }}
+                onOrganisasjonChange={handleOrganisasjonChange}
             >
                 <NotifikasjonWidget />
             </Bedriftsmeny>
-            {altinnorganisasjoner.length === 0 || context === null ? (
-                lasteboksEllerIngenTilgang(oppstart)
+
+            {skalViseInnhold ? (
+                <BedriftsmenyContext.Provider value={context}>
+                    {children}
+                </BedriftsmenyContext.Provider>
+            ) : oppstart ? (
+                <Lasteboks />
             ) : (
-                <BedriftsmenyContext.Provider value={context}>{children}</BedriftsmenyContext.Provider>
+                <IngenTilgangInfo />
             )}
         </>
     );

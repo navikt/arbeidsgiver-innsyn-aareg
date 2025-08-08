@@ -2,82 +2,95 @@ name: Bygg og deploy master
 
 on:
   push:
-    branches:
-      - "master"
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1' # bygg nytt image hver mandag morgen
 
 jobs:
   bygg:
-    permissions:
-      contents: read
-      actions: write
-      packages: write
-      id-token: write
-    outputs:
-      docker_image: ${{ steps.docker-push.outputs.image }}
     name: Bygg
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - name: Installer pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: 16.x
-          registry-url: https://npm.pkg.github.com/
-          scope: "@navikt"
-          cache: 'yarn'
+          version: 9
 
-      - name: Installer avhengigheter (yarn install)
-        run: yarn install --production --ignore-scripts --no-optional
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: https://npm.pkg.github.com/
+          cache: 'pnpm'
+
+      - name: Installer avhengigheter for server (pnpm install)
+        run: pnpm install --frozen-lockfile --prod
+        working-directory: ./server
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-          GITHUB_ACTOR: ${{ github.actor }}
-          ACCESS_TOKEN: ${{ secrets.PAT }}
 
-      - run: yarn lint
+      - name: Installer avhengigheter for klient
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      - run: yarn build
+      - run: pnpm lint
+
+      - run: pnpm build
 
       - uses: nais/docker-build-push@v0
-        id: docker-push
+        id: gar-push
         with:
           team: arbeidsforhold
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          build_args: |
-            JAR_PATH=target/app.jar
+          tag: ${{ github.sha }}
+
+      - id: upload
+        uses: nais/deploy/actions/cdn-upload/v2@master
+        with:
+          team: arbeidsforhold
+          source: ./build/
+          destination: '/aareg-innsyn-arbeidsgiver'
 
   deploy:
     name: Deploy
     needs: bygg
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
     if: github.ref == 'refs/heads/master'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: deploy dev
+      - name: Deploy til dev-gcp
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           RESOURCE: nais/dev-gcp.yaml
-          ENVIRONMENT: dev-gcp:arbeidsforhold:aareg-innsyn-arbeidsgiver
-          IMAGE: ${{ needs.bygg.outputs.docker_image }}
+          VAR: commit=${{ github.sha }},image=${{ needs.bygg.outputs.image }}
+          PRINT_PAYLOAD: true
 
-      - name: deploy prod
+      - name: Deploy til prod-gcp
         uses: nais/deploy/actions/deploy@v2
         env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: nais/prod-gcp.yaml
-          ENVIRONMENT: prod-gcp:arbeidsforhold:aareg-innsyn-arbeidsgiver
-          IMAGE: ${{ needs.bygg.outputs.docker_image }}
+          VAR: commit=${{ github.sha }},image=${{ needs.bygg.outputs.image }}
+          PRINT_PAYLOAD: true
 
-      - name: deploy demo
+      - name: Deploy demo til dev-gcp
         uses: nais/deploy/actions/deploy@v2
         env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: nais/demo-dev-gcp.yaml
-          ENVIRONMENT: dev-gcp:arbeidsforhold:demo-aareg-innsyn-arbeidsgiver
-          IMAGE: ${{ needs.bygg.outputs.docker_image }}
+          VAR: commit=${{ github.sha }},image=${{ needs.bygg.outputs.image }}
+          PRINT_PAYLOAD: true
