@@ -23,6 +23,8 @@ spec:
       value: https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4
     - name: MILJO
       value: demo
+    - name: GIT_COMMIT
+      value: { {{commit } } }
   accessPolicy:
     outbound:
       external:
