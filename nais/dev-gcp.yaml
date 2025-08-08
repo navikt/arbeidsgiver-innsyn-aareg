@@ -6,7 +6,7 @@ metadata:
   labels:
     team: arbeidsforhold
 spec:
-  image: {{{image}}}
+  image: {{image}}
   ingresses:
     - https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold
   liveness:
@@ -34,7 +34,7 @@ spec:
     - name: MILJO
       value: dev
     - name: GIT_COMMIT
-      value: {{{commit}}}
+      value: {{commit}}
   accessPolicy:
     outbound:
       rules:
