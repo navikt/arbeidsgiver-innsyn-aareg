@@ -1,0 +1,98 @@
+@media (min-width: 992px) {
+  .bakgrunnsside {
+    padding-bottom: 1rem;
+  }
+}
+@media (min-width: 992px) {
+  .bakgrunnsside .innhold-container {
+    margin: 0 auto;
+    max-width: 68rem;
+    min-width: 56rem;
+  }
+}
+.bakgrunnsside .innhold-container .brodsmule {
+  padding: 1.5rem 0 0.5rem 1rem;
+  display: flex;
+  color: var(--a-blue-500);
+}
+.bakgrunnsside .innhold-container .brodsmule.venstre {
+  justify-content: flex-start;
+}
+.bakgrunnsside .innhold-container .brodsmule.hoyre {
+  justify-content: flex-end;
+}
+.bakgrunnsside .innhold-container .brodsmule__direct-tidligere-arbeidsforhold {
+  color: var(--a-blue-500);
+  background: none;
+  text-decoration: underline;
+  cursor: pointer;
+  border: none;
+}
+.bakgrunnsside .innhold-container .brodsmule__direct-tidligere-arbeidsforhold:hover {
+  text-decoration: none;
+}
+@media (min-width: 768px) {
+  .bakgrunnsside .innhold-container .brodsmule {
+    padding: 1.5rem 0 0.5rem 2rem;
+  }
+}
+@media (min-width: 992px) {
+  .bakgrunnsside .innhold-container .brodsmule {
+    padding: 1.5rem 0 0.5rem;
+  }
+}
+.bakgrunnsside .innhold-container .mine-ansatte {
+  padding: 1rem;
+  background-color: white;
+  margin: 1rem 0 3rem;
+}
+.bakgrunnsside .innhold-container .mine-ansatte__systemtittel {
+  margin: 0.5rem 0 1.5rem;
+}
+.bakgrunnsside .innhold-container .mine-ansatte__feilmelding-aareg {
+  margin-top: 1rem;
+  margin-bottom: 13rem;
+  max-width: 49.5rem;
+}
+@media (min-width: 768px) {
+  .bakgrunnsside .innhold-container .mine-ansatte {
+    padding: 2rem;
+  }
+}
+@media (min-width: 992px) {
+  .bakgrunnsside .innhold-container .mine-ansatte {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 2rem 5rem;
+    border-radius: 4px;
+    position: relative;
+  }
+  .bakgrunnsside .innhold-container .mine-ansatte__spinner-container {
+    display: flex;
+    align-self: center;
+    margin: 4rem;
+    flex-direction: column;
+    align-items: center;
+  }
+  .bakgrunnsside .innhold-container .mine-ansatte__spinner {
+    margin-top: 2rem;
+  }
+}
+
+.mine-ansatte__liste {
+  display: none;
+}
+
+.mine-ansatte__table {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .mine-ansatte__liste {
+    display: block;
+  }
+
+  .mine-ansatte__table {
+    display: none;
+  }
+}
