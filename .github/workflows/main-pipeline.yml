@@ -15,6 +15,9 @@ jobs:
       id-token: write
       packages: write
 
+    outputs:
+      image: ${{ steps.gar-push.outputs.image }}
+
     steps:
       - uses: actions/checkout@v4
 
