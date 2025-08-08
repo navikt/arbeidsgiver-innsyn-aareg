@@ -22,11 +22,11 @@ const Brodsmulesti = ({ valgtOrg }: BrodsmuleProps) => {
 
     const brodsmuler: Brodsmule[] = [
         {
-            url: linkTilMinSideArbeidsgiver(valgtOrg || ''),
+            url: linkTilMinSideArbeidsgiver(valgtOrg ?? ''),
             title: 'Min side – arbeidsgiver',
             handleInApp: false
         },
-        { url: linkTilArbeidsforhold(valgtOrg || ''), title: 'Arbeidsforhold', handleInApp: true }
+        { url: linkTilArbeidsforhold(valgtOrg ?? ''), title: 'Arbeidsforhold', handleInApp: true }
     ];
 
     setBreadcrumbs(brodsmuler);
