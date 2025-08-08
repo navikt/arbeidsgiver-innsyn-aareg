@@ -126,7 +126,10 @@ const loggerPlugin = (proxyServer, options) => {
     });
 };
 
-const BUILD_PATH = path.join(process.cwd(), '../build');
+let BUILD_PATH = path.join(process.cwd(), '../build/production');
+if (MILJO === 'local' || MILJO === 'demo') {
+    BUILD_PATH = path.join(process.cwd(), '../build/demo');
+}
 
 const proxyOptions = {
     logger: log,
