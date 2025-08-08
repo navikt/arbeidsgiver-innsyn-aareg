@@ -1,33 +1,28 @@
 import React, { FunctionComponent, useContext, useState } from 'react';
+import { Table, SortState } from '@navikt/ds-react';
 
 import KolonnerFullSkjerm from './Kolonner/Kolonner';
 import YrkesbeskrivelsePopover from './KolonnerMedTooltip/YrkesbeskrivelsePopover';
 import NavnPopover from './KolonnerMedTooltip/NavnPopover';
 import VarslingPopover from './KolonnerMedTooltip/VarslingPopover';
+
 import { datoformat } from '../utils';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../../Context/FiltrerteOgSorterteArbeidsforholdProvider';
-import { SortState, Table } from '@navikt/ds-react';
 import { sorterArbeidsforhold, Sortering } from '../sorteringOgFiltreringsFunksjoner';
 
 type ScopedSortState = SortState & { orderBy: Sortering };
 
 const TabellMineAnsatte: FunctionComponent = () => {
     const { currentSelection, count } = useContext(FiltrerteOgSorterteArbeidsforholdContext);
-    if (count.Alle === 0) return null
+    const [sortState, setSortState] = useState<ScopedSortState>();
 
-    const [sortState, setSortState] = useState<ScopedSortState | undefined>();
+    if (count.Alle === 0 || currentSelection.length === 0) return null;
 
-    const handleSort = (sortKey: Sortering) => {
+    const handleSort = (orderBy: Sortering) => {
         setSortState((prev) =>
-            prev && prev.orderBy === sortKey && prev.direction === 'descending'
-                ? undefined
-                : {
-                      orderBy: sortKey,
-                      direction:
-                          prev && prev.orderBy === sortKey && prev.direction === 'ascending'
-                              ? 'descending'
-                              : 'ascending',
-                  }
+            prev?.orderBy === orderBy
+                ? { orderBy, direction: prev.direction === 'ascending' ? 'descending' : 'ascending' }
+                : { orderBy, direction: 'ascending' }
         );
     };
 
@@ -37,32 +32,28 @@ const TabellMineAnsatte: FunctionComponent = () => {
 
     return (
         <Table
-            className='mine-ansatte__table'
-            onSortChange={(sortKey) => handleSort(sortKey as Sortering)}
-            sort={sortState}
-            style={{ marginBottom: "1rem" }}
+            className="mine-ansatte__table"
+            style={{ marginBottom: '1rem' }}
             zebraStripes
+            sort={sortState}
+            onSortChange={(key) => handleSort(key as Sortering)}
         >
             <KolonnerFullSkjerm />
             <Table.Body>
-                {sorted.map((arbeidsforhold) => (
-                    <Table.Row key={arbeidsforhold.navArbeidsforholdId}>
+                {sorted.map((af) => (
+                    <Table.Row key={af.navArbeidsforholdId}>
                         <Table.HeaderCell scope="row">
-                            <NavnPopover arbeidsforhold={arbeidsforhold} />
+                            <NavnPopover arbeidsforhold={af} />
                         </Table.HeaderCell>
+                        <Table.DataCell>{af.arbeidstaker.offentligIdent}</Table.DataCell>
+                        <Table.DataCell>{datoformat(af.ansattFom)}</Table.DataCell>
+                        <Table.DataCell>{datoformat(af.ansattTom)}</Table.DataCell>
+                        <Table.DataCell>{`${af.stillingsprosent} %`}</Table.DataCell>
                         <Table.DataCell>
-                            {arbeidsforhold.arbeidstaker.offentligIdent}
-                        </Table.DataCell>
-                        <Table.DataCell>{datoformat(arbeidsforhold.ansattFom)}</Table.DataCell>
-                        <Table.DataCell>{datoformat(arbeidsforhold.ansattTom)}</Table.DataCell>
-                        <Table.DataCell>{arbeidsforhold.stillingsprosent + ' %'}</Table.DataCell>
-                        <Table.DataCell>
-                            <YrkesbeskrivelsePopover tekst={arbeidsforhold.yrkesbeskrivelse} />
+                            <YrkesbeskrivelsePopover tekst={af.yrkesbeskrivelse} />
                         </Table.DataCell>
                         <Table.DataCell>
-                            {arbeidsforhold.varsler && (
-                                <VarslingPopover varsler={arbeidsforhold.varsler} />
-                            )}
+                            {af.varsler && <VarslingPopover varsler={af.varsler} />}
                         </Table.DataCell>
                     </Table.Row>
                 ))}
