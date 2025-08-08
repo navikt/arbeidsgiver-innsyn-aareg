@@ -1,0 +1,51 @@
+.modal__overlay {
+  padding: 1rem 0;
+}
+.eksport-modal__innhold {
+  padding: 1rem;
+}
+.eksport-modal__overskrift {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+.eksport-modal__varsel {
+  display: flex;
+  margin: 2rem 0 0.6rem;
+}
+.eksport-modal__varsel .varselikon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.5rem;
+}
+.eksport-modal__varsel .varseltekst {
+  min-width: 10rem;
+  font-weight: 600;
+}
+.eksport-modal__personvern-info {
+  padding-bottom: 2rem;
+}
+.eksport-modal__personvern-info .tekst {
+  margin-bottom: 2rem;
+}
+.eksport-modal__knapper .avbryt-knapp {
+  margin-top: 1.5rem;
+}
+@media (min-width: 768px) {
+  .modal__overlay {
+    padding: initial;
+  }
+  .eksport-modal__innhold {
+    padding: 0;
+    margin: 2.5rem 1.5rem 1.6rem;
+  }
+  .eksport-modal__overskrift {
+    margin-top: 0;
+  }
+  .eksport-modal__knapper {
+    display: flex;
+    justify-content: space-between;
+  }
+  .eksport-modal__knapper .avbryt-knapp {
+    margin-top: 0;
+  }
+}
