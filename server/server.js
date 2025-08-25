@@ -199,8 +199,8 @@ const main = async () => {
             tokenXMiddleware({
                 log: log,
                 audience: {
-                    dev: 'dev-gcp:personbruker:arbeidsforhold-api',
-                    prod: 'prod-gcp:personbruker:arbeidsforhold-api',
+                    dev: 'dev-gcp:min-side:tms-arbeidsforhold-api',
+                    prod: 'prod-gcp:min-side:tms-arbeidsforhold-api',
                 }[MILJO],
             }),
             createProxyMiddleware({
