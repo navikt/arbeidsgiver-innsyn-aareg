@@ -205,10 +205,7 @@ const main = async () => {
             }),
             createProxyMiddleware({
                 ...proxyOptions,
-                target: {
-                    dev: 'https://www.intern.dev.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
-                    prod: 'https://www.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
-                }[MILJO],
+                target: 'http://tms-arbeidsforhold-api.min-side/tms-arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
             })
         );
 
