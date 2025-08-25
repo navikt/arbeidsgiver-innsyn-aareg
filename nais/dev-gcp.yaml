@@ -49,4 +49,3 @@ spec:
       external:
         - host: aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io
         - host: dekoratoren.ekstern.dev.nav.no
-        - host: www.ansatt.dev.nav.no
