@@ -195,7 +195,7 @@ const main = async () => {
         );
 
         app.use(
-            '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+            '/arbeidsforhold/tms-arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
             tokenXMiddleware({
                 log: log,
                 audience: {
@@ -205,7 +205,10 @@ const main = async () => {
             }),
             createProxyMiddleware({
                 ...proxyOptions,
-                target: 'http://tms-arbeidsforhold-api.min-side.svc.cluster.local/tms-arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+                target: {
+                    dev: 'https://www.ansatt.dev.nav.no/tms-arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+                    prod: 'https://www.nav.no/tms-arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+                }[MILJO],
             })
         );
 
