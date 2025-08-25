@@ -3,7 +3,7 @@ import { delay, randomInt } from './utils';
 
 export const arbeidsforholdHandlers = [
     http.get(
-        '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/:id',
+        '/arbeidsforhold/tms-arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/:id',
         async () => {
             await delay(500);
             return HttpResponse.json({
