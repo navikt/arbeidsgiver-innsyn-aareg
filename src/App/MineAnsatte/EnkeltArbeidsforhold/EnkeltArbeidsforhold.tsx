@@ -20,9 +20,9 @@ const miljø = gittMiljo<'PROD' | 'DEV' | 'LOCAL'>({
 });
 
 const apiURL = gittMiljo({
-    prod: 'https://arbeidsgiver.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}',
-    dev: 'https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}',
-    other: '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}',
+    prod: 'https://arbeidsgiver.nav.no/arbeidsforhold/tms-arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}',
+    dev: 'https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold/tms-arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}',
+    other: '/arbeidsforhold/tms-arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver/{id}',
 });
 
 const EnkeltArbeidsforhold: FunctionComponent = () => {
