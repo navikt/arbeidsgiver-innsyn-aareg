@@ -50,6 +50,6 @@ spec:
           namespace: personbruker
           cluster: dev-gcp
       external:
-        - host: www.intern.dev.nav.no
         - host: aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io
         - host: dekoratoren.ekstern.dev.nav.no
+        - host: tms-arbeidsforhold-api.min-side
