@@ -94,7 +94,7 @@ const EnkeltArbeidsforhold: FunctionComponent = () => {
                     </div>
                 </div>
 
-                {aareg === null || aareg?.lastestatus?.status === 'ikke-tilgang' ? (
+                {aareg?.lastestatus?.status === 'ikke-tilgang' ? (
                     <IngenTilgangInfo underenhet={underenhet} />
                 ) : valgtArbeidsforhold === undefined ? (
                     <Alert variant="warning">Arbeidsforhold ikke funnet</Alert>

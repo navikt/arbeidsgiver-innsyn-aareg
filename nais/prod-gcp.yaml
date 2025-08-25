@@ -52,3 +52,4 @@ spec:
       external:
         - host: www.nav.no
         - host: aareg-innsyn-arbeidsgiver-api.prod-fss-pub.nais.io
+        - host: tms-arbeidsforhold-api.min-side
