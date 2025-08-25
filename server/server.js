@@ -205,7 +205,7 @@ const main = async () => {
             }),
             createProxyMiddleware({
                 ...proxyOptions,
-                target: 'http://tms-arbeidsforhold-api.min-side/tms-arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+                target: 'http://tms-arbeidsforhold-api.min-side.svc.cluster.local/tms-arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
             })
         );
 
