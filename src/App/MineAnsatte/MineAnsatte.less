@@ -1,0 +1,107 @@
+@import '~nav-frontend-core/less/_variabler';
+
+.bakgrunnsside {
+    @media (min-width: @screen-md) {
+        padding-bottom: 1rem;
+    }
+
+    .innhold-container {
+        @media (min-width: @screen-md) {
+            margin: 0 auto;
+            max-width: 62rem;
+            min-width: 56rem;
+        }
+
+        .brodsmule {
+            padding: 1.5rem 0 0.5rem 1rem;
+            display: flex;
+            color: @navBla;
+
+            &.venstre {
+                justify-content: flex-start;
+            }
+
+            &.hoyre {
+                justify-content: flex-end;
+            }
+
+            &__direct-tidligere-arbeidsforhold {
+                color: @navBla;
+                background: none;
+                text-decoration: underline;
+                cursor: pointer;
+                border: none;
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+
+            @media (min-width: @screen-sm) {
+                padding: 1.5rem 0 0.5rem 2rem;
+            }
+            @media (min-width: @screen-md) {
+                padding: 1.5rem 0 0.5rem;
+            }
+        }
+
+        .mine-ansatte {
+            padding: 1rem;
+            background-color: white;
+            margin: 1rem 0 3rem;
+
+            &__systemtittel {
+                margin: 0.5rem 0 1.5rem;
+            }
+
+            &__table {
+                display: none;
+            }
+
+            &__feilmelding-aareg {
+                margin-top: 1rem;
+                margin-bottom: 13rem;
+                max-width: 49.5rem;
+            }
+
+            @media (min-width: @screen-sm) {
+                padding: 2rem;
+            }
+
+            @media (min-width: @screen-md) {
+                display: flex;
+                flex-direction: column;
+                padding: 2rem 2rem 5rem;
+                border-radius: 4px;
+                position: relative;
+
+                &__spinner-container {
+                    display: flex;
+                    align-self: center;
+                    margin: 4rem;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                &__spinner {
+                    margin-top: 2rem;
+                }
+
+                &__table {
+                    padding: 0.75rem 0;
+                    text-align: left;
+                    color: @navGra80;
+                    width: 90%;
+                    border-collapse: collapse;
+                    justify-self: center;
+                    margin-left: 2rem;
+                    margin-top: 1rem;
+                }
+
+                &__liste {
+                    display: none;
+                }
+            }
+        }
+    }
+}

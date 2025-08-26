@@ -1,18 +1,9 @@
-import React, {
-    createContext,
-    FunctionComponent,
-    PropsWithChildren,
-    useEffect,
-    useState,
-} from 'react';
+import React, { createContext, FunctionComponent, useEffect, useState } from 'react';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Organisasjon } from '../Objekter/OrganisasjonFraAltinn';
-import {
-    hentOrganisasjonerFraAltinn,
-    hentOrganisasjonerMedTilgangTilAltinntjeneste,
-} from '../../api/altinnApi';
+import { hentOrganisasjonerFraAltinn, hentOrganisasjonerMedTilgangTilAltinntjeneste } from '../../api/altinnApi';
 import Lasteboks from '../GeneriskeKomponenter/Lasteboks';
 import EnkelBanner from '../EnkelBanner/EnkelBanner';
-import { Alert } from '@navikt/ds-react';
 
 export const SERVICEKODEINNSYNAAREGISTERET = '5441';
 export const SERVICEEDITIONINNSYNAAREGISTERET = '1';
@@ -31,15 +22,15 @@ type Context = Array<AltinnOrganisasjon>;
 
 export const AltinnorganisasjonerContext = createContext<Context>([]);
 
-export const AltinnorganisasjonerProvider: FunctionComponent<PropsWithChildren> = (props) => {
+export const AltinnorganisasjonerProvider: FunctionComponent = props => {
     const [organisasjoner, settOrganisasjoner] = useState<null | Array<Organisasjon>>(null);
-    const [organisasjonerMedTilgang, settOrganisasjonerMedTilgang] = useState<null | Set<string>>(
-        null
-    );
+    const [organisasjonerMedTilgang, settOrganisasjonerMedTilgang] = useState<null | Set<string>>(null);
     const [feil, settFeil] = useState(false);
 
     useEffect(() => {
-        hentOrganisasjonerFraAltinn()
+        const abortController = new AbortController();
+
+        hentOrganisasjonerFraAltinn(abortController.signal)
             .then(settOrganisasjoner)
             .catch((e: Error) => {
                 if (e.message === 'Forbidden') {
@@ -47,18 +38,20 @@ export const AltinnorganisasjonerProvider: FunctionComponent<PropsWithChildren> 
                 } else {
                     settFeil(true);
                 }
+                abortController.abort();
             });
 
         hentOrganisasjonerMedTilgangTilAltinntjeneste(
             SERVICEKODEINNSYNAAREGISTERET,
-            SERVICEEDITIONINNSYNAAREGISTERET
+            SERVICEEDITIONINNSYNAAREGISTERET,
+            abortController.signal
         )
-            .then((organisasjonerMedTilgangFraAltinn) => {
+            .then(organisasjonerMedTilgangFraAltinn => {
                 settOrganisasjonerMedTilgang(
                     new Set(
                         organisasjonerMedTilgangFraAltinn
                             .filter(erGyldigOrganisasjon)
-                            .map((org) => org.OrganizationNumber)
+                            .map(org => org.OrganizationNumber)
                     )
                 );
             })
@@ -68,13 +61,17 @@ export const AltinnorganisasjonerProvider: FunctionComponent<PropsWithChildren> 
                 } else {
                     settFeil(true);
                 }
+                abortController.abort();
             });
+        return function cleanup() {
+            abortController.abort();
+        };
     }, []);
 
     if (organisasjoner !== null && organisasjonerMedTilgang !== null) {
-        const context = organisasjoner.map((org) => ({
+        const context = organisasjoner.map(org => ({
             ...org,
-            tilgang: organisasjonerMedTilgang.has(org.OrganizationNumber),
+            tilgang: organisasjonerMedTilgang.has(org.OrganizationNumber)
         }));
 
         return (
@@ -87,10 +84,10 @@ export const AltinnorganisasjonerProvider: FunctionComponent<PropsWithChildren> 
             <>
                 <EnkelBanner />
                 <div className="feilmelding-altinn">
-                    <Alert variant="error">
-                        Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn
-                        kan du prøve å laste siden på nytt.
-                    </Alert>
+                    <AlertStripeFeil>
+                        Vi opplever ustabilitet med Altinn. Hvis du mener at du har roller i Altinn kan du prøve å laste
+                        siden på nytt.
+                    </AlertStripeFeil>
                 </div>
             </>
         );

@@ -1,42 +1,42 @@
+
 interface Environment {
     MILJO: string;
-    NAIS_APP_IMAGE: string;
-    GIT_COMMIT: string;
-    VITE_UMAMI_TRACKING_ID: string;
 }
 
-const environment: Environment = {
+export const environment: Environment = {
     MILJO: 'local',
-    NAIS_APP_IMAGE: 'unknown',
-    GIT_COMMIT: 'unknown',
-    ...(window as any)?.environment,
+    ...(window as any)?.environment
 };
 
-interface Miljo<T> {
+interface GittMiljø<T> {
     prod: T;
-    demo?: T;
     dev?: T;
-    other: T;
+    labs?: T;
+    other?: T;
 }
 
-export const gittMiljo = <T>(e: Miljo<T>): T => {
-    switch (environment.MILJO) {
-        case 'prod':
-            return e.prod;
-        case 'dev':
-            return e.hasOwnProperty('dev') ? e.dev! : e.other;
-        case 'demo':
-            return e.hasOwnProperty('demo') ? e.demo! : e.other;
-        default:
-            return e.other;
+const PROD_REGEX = /^prod-.*/
+const DEV_REGEX = /^dev-.*/
+const LABS_REGEX = /^labs-.*/
+
+export const gittMiljø = <T>(valg: GittMiljø<T>): T => {
+    const miljø = environment.MILJO;
+    if (PROD_REGEX.test(miljø)) {
+        return valg.prod;
     }
-};
 
-export const isProd = gittMiljo<boolean>({
-    prod: true,
-    other: false,
-});
+    if (DEV_REGEX.test(miljø) && valg.dev !== undefined) {
+        return valg.dev;
+    }
 
-export const caseMiljo = <T>(e: Miljo<(miljo: string) => T>): T => gittMiljo(e)(environment.MILJO);
+    if (LABS_REGEX.test(miljø) && valg.labs !== undefined) {
+        return valg.labs;
+    }
 
-export default environment;
+    if (valg.other !== undefined) {
+        return valg.other;
+    }
+
+    console.error(`gittMiljø: ingen valgmuligheter for '${miljø}'`)
+    return undefined as any
+}

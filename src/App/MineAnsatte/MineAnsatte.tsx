@@ -1,6 +1,11 @@
 import React, { FunctionComponent, useContext } from 'react';
+import { Systemtittel } from 'nav-frontend-typografi';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import Chevron from 'nav-frontend-chevron';
 import { BedriftsmenyContext } from '../Context/BedriftsmenyProvider';
 import { FiltrerteOgSorterteArbeidsforholdContext } from '../Context/FiltrerteOgSorterteArbeidsforholdProvider';
+import { useSearchParameters } from '../../utils/UrlManipulation';
+import { regnUtantallSider, regnUtArbeidsForholdSomSkalVisesPaEnSide } from './pagineringsFunksjoner';
 import Brodsmulesti from '../Brodsmulesti/Brodsmulesti';
 import Progressbar from './Progressbar/Progressbar';
 import MineAnsatteTopp from './MineAnsatteTopp/MineAnsatteTopp';
@@ -9,40 +14,43 @@ import ListeMedAnsatteForMobil from './ListeMineAnsatteForMobil/ListeMineAnsatte
 import SideBytter from './SideBytter/SideBytter';
 import VelgTidligereVirksomhet from './VelgTidligereVirksomhet/VelgTidligereVirksomhet';
 import IngenTilgangInfo from '../IngenTilgangInfo/IngenTilgangInfo';
-import './MineAnsatte.css';
+import './MineAnsatte.less';
 import { LenkeMedLogging } from '../GeneriskeKomponenter/LenkeMedLogging';
-import { Alert, Heading } from '@navikt/ds-react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
+
+export enum SorteringsAttributt {
+    NAVN,
+    FNR,
+    YRKE,
+    STARTDATO,
+    SLUTTDATO,
+    VARSEL,
+    PERMITTERINGSPROSENT,
+    STILLINGSPROSENT,
+}
 
 export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
     const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
     const tilgangTidligereArbeidsforhold =
-        hovedenhet?.tilgang === true &&
-        tidligereUnderenheter !== 'laster' &&
-        tidligereUnderenheter.length > 0;
+        hovedenhet?.tilgang === true && tidligereUnderenheter !== 'laster' && tidligereUnderenheter.length > 0;
     const overskriftMedOrganisasjonsdel = 'Opplysninger for ' + underenhet.Name;
 
     return (
-        <div className="bakgrunnsside">
-            <div className="innhold-container">
+        <div className='bakgrunnsside'>
+            <div className='innhold-container'>
                 <Brodsmulesti valgtOrg={underenhet.OrganizationNumber} />
                 {tilgangTidligereArbeidsforhold && (
-                    <div className="brodsmule hoyre">
-                        <LenkeMedLogging
-                            loggLenketekst={`tidligere-arbeidsforhold`}
-                            href={`tidligere-arbeidsforhold/?bedrift=${underenhet.OrganizationNumber}`}
-                            className={'brodsmule__direct-tidligere-arbeidsforhold'}
-                        >
+                    <div className='brodsmule hoyre'>
+                        <LenkeMedLogging loggLenketekst={`tidligere-arbeidsforhold`}
+                                         href={`tidligere-arbeidsforhold/?bedrift=${underenhet.OrganizationNumber}`}
+                                         className={'brodsmule__direct-tidligere-arbeidsforhold'}>
                             {'Arbeidsforhold i tidligere virksomheter for ' + hovedenhet?.Name}
-                            <ChevronRightIcon />
+                            <Chevron type='høyre' />
                         </LenkeMedLogging>
                     </div>
                 )}
 
-                <div className="mine-ansatte">
-                    <Heading size="medium" className="mine-ansatte__systemtittel">
-                        {overskriftMedOrganisasjonsdel}
-                    </Heading>
+                <div className='mine-ansatte'>
+                    <Systemtittel className='mine-ansatte__systemtittel'>{overskriftMedOrganisasjonsdel}</Systemtittel>
                     <MineArbeidsforhold />
                 </div>
             </div>
@@ -53,23 +61,21 @@ export const MineNåværendeArbeidsforhold: FunctionComponent = () => {
 export const MineTidligereArbeidsforhold: FunctionComponent = () => {
     const { underenhet, hovedenhet, tidligereUnderenheter } = useContext(BedriftsmenyContext);
     return (
-        <div className="bakgrunnsside">
-            <div className="innhold-container">
+        <div className='bakgrunnsside'>
+            <div className='innhold-container'>
                 <Brodsmulesti valgtOrg={underenhet.OrganizationNumber} />
-                <div className="brodsmule venstre">
-                    <LenkeMedLogging
-                        loggLenketekst={`nåværende-arbeidsforhold`}
-                        href={`../?bedrift=${underenhet.OrganizationNumber}`}
-                        className={'brodsmule__direct-tidligere-arbeidsforhold'}
-                    >
-                        <ChevronLeftIcon />
+                <div className='brodsmule venstre'>
+                    <LenkeMedLogging loggLenketekst={`nåværende-arbeidsforhold`}
+                                     href={`../?bedrift=${underenhet.OrganizationNumber}`}
+                                     className={'brodsmule__direct-tidligere-arbeidsforhold'}>
+                        <Chevron type='venstre' />
                         Tilbake til arbeidsforhold
                     </LenkeMedLogging>
                 </div>
-                <div className="mine-ansatte">
-                    <Heading size="medium" className="mine-ansatte__systemtittel">
+                <div className='mine-ansatte'>
+                    <Systemtittel className='mine-ansatte__systemtittel'>
                         {`Opplysninger for ${hovedenhet?.Name} org.nr ${hovedenhet?.OrganizationNumber}`}
-                    </Heading>
+                    </Systemtittel>
                     {tidligereUnderenheter !== 'laster' && <VelgTidligereVirksomhet />}
                     <MineArbeidsforhold />
                 </div>
@@ -79,27 +85,53 @@ export const MineTidligereArbeidsforhold: FunctionComponent = () => {
 };
 
 const MineArbeidsforhold: FunctionComponent = () => {
-    const { aareg } = useContext(FiltrerteOgSorterteArbeidsforholdContext);
+    const { underenhet } = useContext(BedriftsmenyContext);
+    const aaregContext = useContext(FiltrerteOgSorterteArbeidsforholdContext);
+    const { getSearchParameter, setSearchParameter } = useSearchParameters();
+    const sidetall = getSearchParameter('side') || '1';
+    const setSideTallIUrlOgGenererListe = (indeks: number) => {
+        setSearchParameter({ side: indeks.toString() });
+    };
+    const filtrertOgSortertListe = aaregContext?.lastestatus?.status === 'ferdig' ? aaregContext.lastestatus.arbeidsforhold : null;
+    const ARBEIDSFORHOLDPERSIDE = 25;
+    const antallSider = regnUtantallSider(ARBEIDSFORHOLDPERSIDE, filtrertOgSortertListe?.length ?? 0);
+    const listeForNåværendeSidetall = regnUtArbeidsForholdSomSkalVisesPaEnSide(
+        parseInt(sidetall),
+        ARBEIDSFORHOLDPERSIDE,
+        filtrertOgSortertListe ?? []
+    );
 
-    if (aareg === null) {
+    if (aaregContext === null) {
         return null;
-    } else if (aareg.lastestatus.status === 'laster') {
-        return <Progressbar estimertAntall={aareg.lastestatus.estimertAntall} />;
-    } else if (aareg.lastestatus.status === 'ferdig') {
+    } else if (aaregContext.lastestatus.status === 'laster') {
+        return <Progressbar estimertAntall={aaregContext.lastestatus.estimertAntall} />;
+    } else if (aaregContext.lastestatus.status === 'ferdig') {
         return (
             <>
-                <MineAnsatteTopp />
-                <TabellMineAnsatte />
-                <ListeMedAnsatteForMobil className="mine-ansatte__liste" />
-                <SideBytter />
+                <MineAnsatteTopp valgtOrganisasjon={underenhet} antallSider={antallSider} />
+                {listeForNåværendeSidetall.length > 0 && (
+                    <>
+                        <TabellMineAnsatte
+                            listeMedArbeidsForhold={listeForNåværendeSidetall}
+                            byttSide={setSideTallIUrlOgGenererListe}
+                        />
+                        <ListeMedAnsatteForMobil
+                            className='mine-ansatte__liste'
+                            listeMedArbeidsForhold={listeForNåværendeSidetall}
+                        />
+                        {antallSider > 1 && (
+                            <SideBytter plassering='nederst' className='nedre-sidebytter' antallSider={antallSider} />
+                        )}
+                    </>
+                )}
             </>
         );
-    } else if (aareg.lastestatus.status === 'ikke-tilgang') {
+    } else if (aaregContext.lastestatus.status === 'ikke-tilgang') {
         return <IngenTilgangInfo />;
     } else {
         return (
-            <div className="mine-ansatte__feilmelding-aareg">
-                <Alert variant="error">{aareg.lastestatus.beskjed}</Alert>
+            <div className='mine-ansatte__feilmelding-aareg'>
+                <AlertStripeFeil>{aaregContext.lastestatus.beskjed}</AlertStripeFeil>
             </div>
         );
     }

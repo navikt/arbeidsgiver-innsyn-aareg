@@ -1,11 +1,15 @@
-FROM gcr.io/distroless/nodejs22-debian12
+FROM navikt/node-express:16
 
 WORKDIR /usr/src/app
+
 COPY build/ build/
-COPY server/ server/
 
 WORKDIR /usr/src/app/server
+COPY server/ .
+
+USER root
+RUN npm ci
 USER apprunner
 
-EXPOSE 8080
-CMD ["server.js"]
+EXPOSE 3000
+ENTRYPOINT ["node", "server.js"]

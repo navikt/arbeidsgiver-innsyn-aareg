@@ -1,9 +1,10 @@
 import React from 'react';
-import { Loader } from '@navikt/ds-react';
+import NavFrontendSpinner from 'nav-frontend-spinner';
 
 const Lasteboks = () => (
+
     <div className="spinner">
-        <Loader size="3xlarge" />
+        <NavFrontendSpinner type="L" />
     </div>
 );
 

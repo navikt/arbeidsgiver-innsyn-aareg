@@ -1,10 +1,5 @@
-import * as amplitude from '@amplitude/analytics-browser';
-import { Types } from '@amplitude/analytics-browser';
-import { gittMiljo } from './environment';
-import { Identify } from '@amplitude/analytics-types/lib/esm/event';
-import { EventOptions } from '@amplitude/analytics-types/lib/esm/base-event';
-import { AmplitudeReturn } from '@amplitude/analytics-types/lib/esm/amplitude-promise';
-import { Result } from '@amplitude/analytics-types/lib/esm/result';
+import amplitude from 'amplitude-js';
+import { gittMiljø } from './environment';
 
 const getApiKey = () => {
     return window.location.hostname === 'arbeidsgiver.nav.no'
@@ -12,52 +7,31 @@ const getApiKey = () => {
         : '6ed1f00aabc6ced4fd6fcb7fcdc01b30';
 };
 
-type AmplitudeInstance = Pick<Types.BrowserClient, 'logEvent' | 'identify'>;
-const createAmpltiudeInstance = (): AmplitudeInstance => {
-    amplitude
-        .init(getApiKey(), undefined, {
-            serverUrl: 'https://amplitude.nav.no/collect',
-            useBatch: false,
-        })
-        .promise.catch((error) => {
-            console.error('#MSA error initializing amplitude', error);
-        });
-    return amplitude;
-};
+const createAmpltiudeInstance = () => {
+    const instance = amplitude.getInstance();
 
-const mockedAmplitude = (): AmplitudeInstance => ({
-    logEvent: (eventInput: Types.BaseEvent | string, eventProperties?: Record<string, any>) => {
-        console.group('Mocked amplitude-event');
-        console.table({ eventInput, ...eventProperties });
-        console.groupEnd();
-        return {
-            promise: new Promise<Types.Result>((resolve) =>
-                resolve({
-                    event: { event_type: 'MockEvent' },
-                    code: 200,
-                    message: 'Success: mocked amplitude-tracking',
-                })
-            ),
-        };
-    },
-    identify(identify: Identify, eventOptions?: EventOptions): AmplitudeReturn<Result> {
-        console.group('Mocked amplitude-identify');
-        console.table(identify);
-        console.groupEnd();
-        return {
-            promise: new Promise<Types.Result>((resolve) =>
-                resolve({
-                    event: { event_type: 'MockIdentify' },
-                    code: 200,
-                    message: 'Success: mocked amplitude-identify',
-                })
-            ),
-        };
-    },
-});
+    instance.init(getApiKey(), '', {
+        apiEndpoint: 'amplitude.nav.no/collect',
+        saveEvents: false,
+        includeUtm: true,
+        batchEvents: false,
+        includeReferrer: true
+    });
 
-export default gittMiljo({
+    return instance;
+}
+
+
+export default gittMiljø({
     prod: () => createAmpltiudeInstance(),
     dev: () => createAmpltiudeInstance(),
-    other: () => mockedAmplitude(),
+    other: () => ({
+        logEvent: (event: string, data?: any) => {
+            console.log(`${event}: ${JSON.stringify(data)}`, {event, data})
+        },
+        setUserProperties:(userProps:object) => {
+            console.log(`set userprops: ${JSON.stringify(userProps)}`)
+        }
+    } as amplitude.AmplitudeClient )
 })();
+

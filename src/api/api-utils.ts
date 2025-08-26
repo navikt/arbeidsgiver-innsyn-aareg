@@ -1,3 +1,9 @@
+export enum APISTATUS {
+    LASTER,
+    OK,
+    FEILET
+}
+
 export class FetchError extends Error {
     public response: Response;
 
@@ -5,16 +11,4 @@ export class FetchError extends Error {
         super(reason);
         this.response = response;
     }
-}
-
-export async function fetchJson<T>(
-    url: string,
-    headers: Record<string, string> = {}
-): Promise<T> {
-    const response = await fetch(url, { headers });
-    if (!response.ok) {
-        const reason = response.statusText !== '' ? response.statusText : response.type;
-        throw new FetchError(reason, response);
-    }
-    return response.json();
 }

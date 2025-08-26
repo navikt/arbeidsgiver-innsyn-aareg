@@ -1,30 +1,62 @@
-import { gittMiljo } from '../utils/environment';
+import { gittMiljø } from '../utils/environment';
+
+const landingsURL = '/arbeidsforhold/';
+
+export const hentArbeidsforholdLink = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/arbeidsforhold';
+};
+
+export const hentTidligereArbeidsforholdLink = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/tidligere-arbeidsforhold';
+};
+
+export const hentAntallArbeidsforholdLink = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/antall-arbeidsforhold';
+};
+
+export const hentTidligereVirksomheterLink = landingsURL + 'arbeidsgiver-arbeidsforhold/api/tidligere-virksomheter';
+
+export const hentOrganisasjonerLink = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/organisasjoner';
+};
+
+export const hentRettigheterTilAltinnTjenesteLink = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/rettigheter-til-tjeneste';
+};
+
+export const sjekkInnloggetLenke = () => {
+    return landingsURL + 'arbeidsgiver-arbeidsforhold/api/innlogget';
+};
+
+export const hentUnderenhetApiLink = (orgnr: string) => {
+    return `https://data.brreg.no/enhetsregisteret/api/underenheter/${orgnr}`;
+};
+
+export const hentOverordnetEnhetApiLink = (orgnr: string) => {
+    return `https://data.brreg.no/enhetsregisteret/api/enheter/${orgnr}`;
+};
 
 export const linkTilMinSideArbeidsgiver = (orgnr: string) => {
     const orgNrDel = orgnr.length > 0 ? '?bedrift=' + orgnr : '';
-    return (
-        gittMiljo({
-            prod: 'https://arbeidsgiver.nav.no/min-side-arbeidsgiver/',
-            dev: 'https://arbeidsgiver.intern.dev.nav.no/min-side-arbeidsgiver/',
-            other: 'https://arbeidsgiver.ansatt.dev.nav.no/min-side-arbeidsgiver/',
-        }) + orgNrDel
-    );
+    return gittMiljø({
+        prod: 'https://arbeidsgiver.nav.no/min-side-arbeidsgiver/',
+        dev: 'https://arbeidsforhold.dev.nav.no/min-side-arbeidsgiver/',
+        other: 'https://arbeidsgiver.labs.nais.io/min-side-arbeidsgiver/'
+    }) + orgNrDel;
 };
 
 export const linkTilArbeidsforhold = (orgnr: string) => {
     const orgNrDel = orgnr.length > 0 ? '?bedrift=' + orgnr : '';
-    return (
-        gittMiljo({
-            prod: 'https://arbeidsgiver.nav.no/arbeidsforhold/',
-            dev: 'https://arbeidsforhold.intern.dev.nav.no/arbeidsforhold',
-            other: 'https://arbeidsforhold.ansatt.dev.nav.no/arbeidsforhold/',
-        }) + orgNrDel
-    );
+    return gittMiljø({
+        prod: 'https://arbeidsgiver.nav.no/arbeidsforhold/',
+        dev: 'https://arbeidsforhold.dev.nav.no/arbeidsforhold/',
+        other: 'https://arbeidsgiver.labs.nais.io/arbeidsforhold/',
+    }) + orgNrDel;
 };
 
-const delegationRequestUrl = gittMiljo({
+const delegationRequestUrl = gittMiljø({
     prod: 'https://altinn.no/ui/DelegationRequest',
-    other: 'https://tt02.altinn.no/ui/DelegationRequest',
+    other: 'https://tt02.altinn.no/ui/DelegationRequest'
 });
 
 export const beOmTilgangIAltinnLink = (
@@ -33,9 +65,9 @@ export const beOmTilgangIAltinnLink = (
     serviceEditionKode: string,
     serviceEditionKodeTest?: string
 ) => {
-    const edition = gittMiljo({
+    const edition = gittMiljø({
         prod: serviceEditionKode,
-        other: serviceEditionKodeTest ?? serviceEditionKode,
+        other: serviceEditionKodeTest ?? serviceEditionKode
     });
 
     return `${delegationRequestUrl}?offeredBy=${orgnr}&resources=${serviceKode}_${edition}`;
