@@ -7,12 +7,15 @@ metadata:
     team: arbeidsforhold
 spec:
   image: {{image}}
+  port: 3000
   ingresses:
     - https://arbeidsgiver.nav.no/arbeidsforhold
   liveness:
     path: /arbeidsforhold/internal/isAlive
+    initialDelay: 20
   readiness:
     path: /arbeidsforhold/internal/isReady
+    initialDelay: 20
   prometheus:
     enabled: true
     path: /arbeidsforhold/internal/metrics
@@ -25,16 +28,14 @@ spec:
   env:
     - name: NODE_EXTRA_CA_CERTS
       value: /etc/ssl/ca-bundle.pem
-    - name: API_URL
-      value: https://aareg-innsyn-arbeidsgiver-api.prod-fss-pub.nais.io/arbeidsgiver-arbeidsforhold-api
+    - name: API_GATEWAY
+      value: https://aareg-innsyn-arbeidsgiver-api.prod-fss-pub.nais.io
     - name: LOGIN_URL
-      value: https://arbeidsforhold.nav.no/arbeidsforhold/oauth2/login
+      value: https://loginservice.nav.no/login?redirect=https://arbeidsgiver.nav.no/arbeidsforhold
     - name: DECORATOR_EXTERNAL_URL
       value: https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4
     - name: MILJO
       value: prod
-    - name: GIT_COMMIT
-      value: {{commit}}
   accessPolicy:
     outbound:
       rules:

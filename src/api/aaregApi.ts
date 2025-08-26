@@ -1,55 +1,68 @@
+import {
+    hentAntallArbeidsforholdLink,
+    hentArbeidsforholdLink, hentTidligereArbeidsforholdLink,
+    hentTidligereVirksomheterLink
+} from '../App/lenker';
 import { ObjektFraAAregisteret } from '../App/Objekter/ObjektFraAAreg';
-import { FetchError, fetchJson } from './api-utils';
+import { FetchError } from './api-utils';
 import { overSiktPerUnderenhetPar } from '../App/Objekter/OversiktOverAntallForholdPerUnderenhet';
-import { loggArbeidsforholdLastet } from '../utils/amplitudefunksjonerForLogging';
-import { Organisasjon, OrganisasjonlowerCase } from '../App/Objekter/OrganisasjonFraAltinn';
+import {
+    loggArbeidsforholdLastet
+} from '../utils/amplitudefunksjonerForLogging';
+import { Organisasjon } from '../App/Objekter/OrganisasjonFraAltinn';
 import { mapOrganisasjonerFraLowerCaseTilupper } from './altinnApi';
 
 export async function hentArbeidsforholdFraAAreg(
     underenhet: string,
     enhet: string,
+    signal: any,
     erTidligereArbeidsforhold: boolean
 ): Promise<ObjektFraAAregisteret> {
-    const url = erTidligereArbeidsforhold
-        ? '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/tidligere-arbeidsforhold'
-        : '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/arbeidsforhold';
-
-    const data = await fetchJson<ObjektFraAAregisteret>(url, {
-        jurenhet: enhet,
-        orgnr: underenhet,
-    });
-
-    loggArbeidsforholdLastet(data.arbeidsforholdoversikter);
-    return data;
+    const headere = lagHeadere(enhet, underenhet);
+    const linkTilEndepunkt = erTidligereArbeidsforhold ?
+        hentTidligereArbeidsforholdLink() : hentArbeidsforholdLink();
+    let response: Response = await fetch(linkTilEndepunkt, { headers: headere, signal: signal });
+    if (response.ok) {
+        const jsonRespons: ObjektFraAAregisteret = await response.json();
+        loggArbeidsforholdLastet(jsonRespons.arbeidsforholdoversikter);
+        return jsonRespons;
+    } else {
+        throw new FetchError(response.statusText || response.type, response);
+    }
 }
 
 export async function hentAntallArbeidsforholdFraAareg(
     underenhet: string,
-    enhet: string
+    enhet: string,
+    signal: any
 ): Promise<number | undefined> {
-    try {
-        const data = await fetchJson<overSiktPerUnderenhetPar>(
-            '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/antall-arbeidsforhold',
-            {
-                jurenhet: enhet,
-                orgnr: underenhet,
-            }
-        );
-        return data.second;
-    } catch {
+    const headere = lagHeadere(enhet, underenhet);
+    let respons = await fetch(hentAntallArbeidsforholdLink(), { headers: headere, signal: signal });
+    if (respons.ok) {
+        const jsonRespons: overSiktPerUnderenhetPar = await respons.json();
+        return jsonRespons.second;
+    } else {
         return undefined;
     }
 }
 
 export async function hentTidligereVirksomheter(
-    enhet: string
+    enhet: string,
+    signal: any
 ): Promise<Organisasjon[]> {
-    const data = await fetchJson<OrganisasjonlowerCase[]>(
-        '/arbeidsforhold/arbeidsgiver-arbeidsforhold/api/tidligere-virksomheter',
-        {
-            jurenhet: enhet,
-        }
-    );
-
-    return mapOrganisasjonerFraLowerCaseTilupper(data);
+    const headere = lagHeadere(enhet);
+    let response: Response = await fetch(hentTidligereVirksomheterLink, { headers: headere, signal: signal });
+    if (response.ok) {
+        const organisasjoner = await response.json();
+        return mapOrganisasjonerFraLowerCaseTilupper(organisasjoner);
+    } else {
+        throw new FetchError(response.statusText || response.type, response);
+    }
 }
+
+const lagHeadere = (jurenhet: string, orgnr?: string) => {
+    const headere = new Headers();
+    headere.set('jurenhet', jurenhet);
+    orgnr && headere.set('orgnr', orgnr);
+    return headere;
+};

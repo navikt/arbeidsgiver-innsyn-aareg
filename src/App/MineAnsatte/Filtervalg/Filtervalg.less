@@ -1,0 +1,31 @@
+@import '~nav-frontend-core/less/_variabler';
+
+.togglecontainer {
+    @media (min-width: @screen-md) {
+        display: flex;
+    }
+
+    .toggleGruppe {
+        width: fit-content;
+        margin-bottom: 1rem;
+
+        .toggleKnapp {
+            min-height: 4rem;
+            width: 33.3%;
+            white-space: normal;
+
+            @media (min-width: @screen-sm) {
+                min-height: initial;
+                width: initial;
+                white-space: initial;
+            }
+        }
+    }
+    .varselKnapp {
+        width: fit-content;
+
+        @media (min-width: @screen-md) {
+            margin-left: 3rem;
+        }
+    }
+}

@@ -1,12 +1,12 @@
 import React from 'react';
-import './EnkelBanner.css';
-import { Heading } from '@navikt/ds-react';
+import { Innholdstittel } from 'nav-frontend-typografi';
+import './EnkelBanner.less';
 
 const EnkelBanner = () => {
     return (
         <div className="banner">
             <div className="banner__tekst">
-                <Heading size="large">Arbeidsforhold</Heading>
+                <Innholdstittel>Arbeidsforhold</Innholdstittel>
             </div>
         </div>
     );

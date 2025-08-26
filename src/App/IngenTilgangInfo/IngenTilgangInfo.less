@@ -1,0 +1,121 @@
+@import '~nav-frontend-core/less/_variabler';
+
+.ingen-tilgang-innhold {
+    &__ingress {
+        margin-bottom: 1rem;
+    }
+
+    &__be-om-tilgang-boks {
+        display: flex;
+        flex-direction: row;
+        margin: 1rem 0 1rem;
+    }
+
+    &__be-om-tilgang-tekst {
+        display: flex;
+        flex-direction: column;
+        margin-left: 1.5rem;
+    }
+}
+
+.ingen-tilgang-info-container {
+    padding: 1.5rem 0 0;
+
+    @media (min-width: @screen-sm) {
+        padding: 1.5rem 0 4rem;
+    }
+
+    .brodsmule {
+        padding: 0 0 1.5rem 1rem;
+
+        @media (min-width: @screen-sm) {
+            padding: 0 0 1.5rem 2rem;
+        }
+
+        @media (min-width: @screen-md) {
+            padding: 0 0 1.5rem;
+            width: 60rem;
+            margin: 0 auto;
+        }
+    }
+
+    .ingen-tilgang {
+        background-color: white;
+        padding: 1rem 1rem 4rem;
+
+        .ingen-tilgang-header {
+            margin: 1.5rem 0 2rem;
+            text-align: center;
+            color: @navGra60;
+
+            &__innhold {
+            }
+
+            &__ikon {
+                height: 2rem;
+                margin: 0 0 0.5rem;
+            }
+        }
+
+        .ingen-tilgang-innhold {
+            &__bedrifter-med-tilgang-panel {
+                margin: 1.5rem 0;
+            }
+
+            &__panelinnhold {
+                margin-left: 2rem;
+            }
+
+            &__lenker {
+                margin-top: 2rem;
+
+                ul {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0.5rem 0 0 0;
+
+                    li {
+                        margin-bottom: 0.8rem;
+                    }
+                }
+                .nyfane-ikon {
+                    margin-left: 4px;
+                }
+            }
+        }
+    }
+
+    @media (min-width: @screen-sm) {
+        .ingen-tilgang {
+            padding: 2rem;
+            border-radius: 4px;
+            width: 30rem;
+            margin: 0 auto;
+        }
+    }
+
+    @media (min-width: @screen-md) {
+        .ingen-tilgang {
+            padding: 4rem;
+            width: 40rem;
+
+            .ingen-tilgang-header {
+                margin: 0 0 2rem;
+
+                &__innhold {
+                    display: flex;
+                    width: 30rem;
+                    margin: 0 auto;
+                }
+
+                &__ikon {
+                    margin: 0 0.7rem 0 0;
+                }
+
+                &__overskrift {
+                    width: 27rem;
+                }
+            }
+        }
+    }
+}

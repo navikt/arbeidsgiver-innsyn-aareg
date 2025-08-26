@@ -1,24 +1,25 @@
-name: Deploy til dev
+name: Deploy til prod
 on:
   workflow_dispatch:
 
+env:
+  IMAGE: ghcr.io/${{ github.repository }}/${{ github.event.repository.name }}:${{ github.sha }}
 
 jobs:
-  bygg:
-    permissions:
-      contents: "read"
-      id-token: "write"
-    name: Deploy prod
+  deploy-branch:
+    name: Deploy til prod
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: nais/login@v0
-        id: login
-        with:
-          team: arbeidsforhold
-      - uses: nais/deploy/actions/deploy@v2
+      - name: Sjekk ut kode
+        uses: actions/checkout@v3
+
+      - name: Deploy til prod-gcp
+        uses: nais/deploy/actions/deploy@v1
         env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: nais/prod-gcp.yaml
-          VAR: commit=${{ github.sha }},image=${{ steps.login.outputs.registry }}/arbeidsgiver-innsyn-aareg:${{ github.sha }}
-          REF: ${{ github.sha }}
+          PRINT_PAYLOAD: true
+          REF: ${{ env.COMMIT }}
+          IMAGE: ${{ env.IMAGE }}

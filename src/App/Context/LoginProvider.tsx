@@ -1,4 +1,4 @@
-import { createContext, FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
+import { createContext, FunctionComponent, useEffect, useState } from 'react';
 import { sjekkInnlogget } from '../../api/altinnApi';
 
 export enum Innlogget {
@@ -12,21 +12,24 @@ interface Context {
 }
 
 export const LoginContext = createContext<Context>({
-    innlogget: Innlogget.LASTER,
+    innlogget: Innlogget.LASTER
 });
 
-export const LoginProvider: FunctionComponent<PropsWithChildren> = (props) => {
+export const LoginProvider: FunctionComponent = props => {
     const [innlogget, setInnlogget] = useState(Innlogget.LASTER);
 
     useEffect(() => {
-        sjekkInnlogget().then((innloggetResultat) => {
-            setInnlogget(innloggetResultat ? Innlogget.INNLOGGET : Innlogget.IKKE_INNLOGGET);
-        });
+        sjekkInnlogget()
+            .then(innloggetResultat => {
+                setInnlogget(innloggetResultat ? Innlogget.INNLOGGET : Innlogget.IKKE_INNLOGGET);
+            });
     }, []);
 
     const state = {
-        innlogget: innlogget,
+        innlogget: innlogget
     };
 
-    return <LoginContext.Provider value={state}>{props.children}</LoginContext.Provider>;
+    return <LoginContext.Provider value={state}>
+        {props.children}
+    </LoginContext.Provider>;
 };

@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import './AttributtVisning.css';
+import './AttributtVisning.less';
 
 interface Props {
     className?: string;
@@ -7,9 +7,9 @@ interface Props {
     attributtVerdi: any;
 }
 
-const AttributtVisning: FunctionComponent<Props> = (props) => {
+const AttributtVisning: FunctionComponent<Props> = props => {
     return (
-        <li className="attributt" aria-label={`${props.attributt}, ${props.attributtVerdi}`}>
+        <li className="attributt"  aria-label={`${props.attributt}, ${props.attributtVerdi}`}>
             <div className="attributt__navn"> {props.attributt}</div>
             <div className="attributt__verdi"> {props.attributtVerdi}</div>
         </li>
