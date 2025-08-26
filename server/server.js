@@ -195,20 +195,17 @@ const main = async () => {
         );
 
         app.use(
-            '/arbeidsforhold/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
+            '/arbeidsforhold/tms-arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
             tokenXMiddleware({
                 log: log,
                 audience: {
-                    dev: 'dev-gcp:personbruker:arbeidsforhold-api',
-                    prod: 'prod-gcp:personbruker:arbeidsforhold-api',
+                    dev: 'dev-gcp:min-side:tms-arbeidsforhold-api',
+                    prod: 'prod-gcp:min-side:tms-arbeidsforhold-api',
                 }[MILJO],
             }),
             createProxyMiddleware({
                 ...proxyOptions,
-                target: {
-                    dev: 'https://www.intern.dev.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
-                    prod: 'https://www.nav.no/person/arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
-                }[MILJO],
+                target: 'http://tms-arbeidsforhold-api.min-side/tms-arbeidsforhold-api/arbeidsforholdinnslag/arbeidsgiver',
             })
         );
 

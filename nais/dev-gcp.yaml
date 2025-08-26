@@ -46,10 +46,6 @@ spec:
         - application: tms-arbeidsforhold-api
           namespace: min-side
           cluster: dev-gcp
-        - application: arbeidsforhold-api
-          namespace: personbruker
-          cluster: dev-gcp
       external:
-        - host: www.intern.dev.nav.no
         - host: aareg-innsyn-arbeidsgiver-api.dev-fss-pub.nais.io
         - host: dekoratoren.ekstern.dev.nav.no
