@@ -64,7 +64,6 @@ jobs:
     name: Deploy
     needs: bygg
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -81,6 +80,7 @@ jobs:
           PRINT_PAYLOAD: true
 
       - name: Deploy til prod-gcp
+        if: github.ref == 'refs/heads/master'
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
@@ -89,6 +89,7 @@ jobs:
           PRINT_PAYLOAD: true
 
       - name: Deploy demo til dev-gcp
+        if: github.ref == 'refs/heads/master'
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
