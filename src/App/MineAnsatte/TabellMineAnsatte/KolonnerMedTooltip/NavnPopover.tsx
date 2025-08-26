@@ -1,24 +1,23 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Popover, { PopoverOrientering } from 'nav-frontend-popover';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { Arbeidsforhold } from '../../../Objekter/ArbeidsForhold';
 import { loggBrukerklikk } from '../../../../utils/amplitudefunksjonerForLogging';
-import './PopOverStyling.css';
+import './PopOverStyling.less';
 import { useReplace } from '../../../../utils/UrlManipulation';
-import { BodyShort, Popover } from '@navikt/ds-react';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold;
 }
 
 const NavnPopover: FunctionComponent<Props> = ({ arbeidsforhold }) => {
-    const [anker, setAnker] = useState<HTMLSelectElement | null>(null);
+    const [anker, setAnker] = useState<HTMLElement | undefined>(undefined);
     const [skalVisePopover, setSkalVisePopover] = useState(true);
     const replace = useReplace();
 
     const naVærendeUrl = new URL(window.location.href);
-    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl
-        .toString()
-        .includes('tidligere-arbeidsforhold');
+    const ERPATIDLIGEREARBEIDSFORHOLD = naVærendeUrl.toString().includes('tidligere-arbeidsforhold');
 
     const maxBreddeAvKolonne = 140;
 
@@ -28,7 +27,7 @@ const NavnPopover: FunctionComponent<Props> = ({ arbeidsforhold }) => {
             ? '/tidligere-arbeidsforhold/enkeltArbeidsforhold'
             : '/enkeltArbeidsforhold';
         replace({ pathname: redirectPath, search: search });
-        loggBrukerklikk('arbeidsforhol');
+        arbeidsforhold.varsler?.length ? loggBrukerklikk('arbeidsforhol', ) : loggBrukerklikk('arbeidsforhol');
     };
 
     useEffect(() => {
@@ -42,30 +41,27 @@ const NavnPopover: FunctionComponent<Props> = ({ arbeidsforhold }) => {
     const spørringdelAvUrl = naVærendeUrl.search;
 
     return (
-        <div className="pop-over-container">
+        <div className='pop-over-container'>
             <Link
                 aria-label={`Gå til detaljvisning over arbeidsforhold til ${arbeidsforhold.arbeidstaker.navn}`}
                 to={`enkeltarbeidsforhold/${spørringdelAvUrl}&arbeidsforhold=${arbeidsforhold.navArbeidsforholdId}`}
                 onClick={() => oppdaterValgtArbeidsforhold(arbeidsforhold)}
-                className="lenke"
+                className='lenke'
             >
-                <BodyShort
-                    className="pop-over__navn"
+                <Normaltekst
+                    className='pop-over__navn'
                     onMouseEnter={(e: any) => {
                         setAnker(e.currentTarget);
                     }}
-                    onMouseLeave={(e: any) => setAnker(null)}
+                    onMouseLeave={(e: any) => setAnker(undefined)}
                 >
                     {arbeidsforhold.arbeidstaker.navn.toLowerCase()}
-                </BodyShort>
-                <Popover
-                    open={skalVisePopover}
-                    onClose={() => null}
-                    anchorEl={anker}
-                    placement="top"
-                >
-                    <p style={{ padding: '1rem' }}>{arbeidsforhold.arbeidstaker.navn}</p>
-                </Popover>
+                </Normaltekst>
+                {skalVisePopover && (
+                    <Popover ankerEl={anker} orientering={PopoverOrientering.Over}>
+                        <p style={{ padding: '1rem' }}>{arbeidsforhold.arbeidstaker.navn}</p>
+                    </Popover>
+                )}
             </Link>
         </div>
     );

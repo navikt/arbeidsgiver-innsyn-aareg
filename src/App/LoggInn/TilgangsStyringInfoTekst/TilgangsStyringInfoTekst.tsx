@@ -1,7 +1,8 @@
 import React from 'react';
-import { Label, Link as Lenke } from '@navikt/ds-react';
+import { Element } from 'nav-frontend-typografi';
+import Lenke from 'nav-frontend-lenker';
 import alertikon from './infomation-circle-2.svg';
-import './TilgangsStyringInfoTekst.css';
+import './TilgangsStyringInfoTekst.less';
 
 export const TilgangsStyringInfoTekst = () => {
     return (
@@ -13,13 +14,8 @@ export const TilgangsStyringInfoTekst = () => {
                     className="informasjonsboks__ikon"
                 />
                 <div className="informasjonsboks__tekst">
-                    <Label className="informasjonsboks__overskrift">
-                        Tildeling av roller foregår i Altinn{' '}
-                    </Label>
-                    <Lenke
-                        className="informasjonsboks__lenke"
-                        href="https://arbeidsgiver.nav.no/min-side-arbeidsgiver/informasjon-om-tilgangsstyring"
-                    >
+                    <Element className="informasjonsboks__overskrift">Tildeling av roller foregår i Altinn </Element>
+                    <Lenke className="informasjonsboks__lenke" href="https://arbeidsgiver.nav.no/min-side-arbeidsgiver/informasjon-om-tilgangsstyring">
                         Les mer om roller og tilganger
                     </Lenke>
                 </div>

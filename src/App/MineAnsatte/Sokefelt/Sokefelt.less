@@ -1,0 +1,33 @@
+@import '~nav-frontend-core/less/_variabler';
+
+.mine-ansatte .sokefelt {
+    position: relative;
+    margin: 1.5rem 0;
+    height: 40px;
+
+    @media (min-width: @screen-sm) {
+        margin: 2rem 0;
+        width: 19rem;
+    }
+
+    &__felt {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+        position: relative;
+    }
+
+    &__ikon {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        margin-right: 0.5rem;
+    }
+
+    &__ikon--klikkbart {
+        cursor: pointer;
+    }
+}
